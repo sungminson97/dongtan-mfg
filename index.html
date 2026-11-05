@@ -36,8 +36,8 @@ input,select,textarea{font:inherit;color:inherit}
 @media (max-width:640px){.wrap{padding:0 16px}}
 
 /* ── 위 머리줄 ── */
-header{position:fixed;inset:0 0 auto 0;height:calc(var(--hdr) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);z-index:50;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
-header.solid{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-color:var(--line)}
+header{position:fixed;inset:0 0 auto 0;height:calc(var(--hdr) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);z-index:50;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+header.solid{background:color-mix(in srgb,var(--bg) 96%,transparent);border-color:var(--line)}
 header .wrap{height:100%;display:flex;align-items:center;gap:20px}
 .brand{display:flex;align-items:center;gap:12px;flex:none;text-decoration:none;cursor:pointer;transition:opacity .2s}
 .brand:hover{opacity:.8}
@@ -66,7 +66,7 @@ nav.top .pill{position:absolute;top:0;height:100%;border-radius:999px;background
 .tbl td b{white-space:nowrap}
 
 /* ── 아래 탭 (폰) ── */
-nav.bot{display:none;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;height:64px;border-radius:22px;background:color-mix(in srgb,var(--card) 86%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 34px -12px rgba(0,0,0,.35);border:1px solid var(--line);padding:6px}
+nav.bot{display:none;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;height:64px;border-radius:22px;background:color-mix(in srgb,var(--card) 97%,transparent);box-shadow:0 12px 34px -12px rgba(0,0,0,.35);border:1px solid var(--line);padding:6px}
 nav.bot .in{position:relative;display:grid;grid-template-columns:repeat(7,1fr);height:100%}
 nav.bot button{font-size:10px;letter-spacing:-.03em}
 nav.bot button svg{width:20px;height:20px}
@@ -92,7 +92,7 @@ p.ds{color:var(--sub);font-size:15px;margin-top:8px;line-height:1.6}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-2}
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(1200px 600px at 75% 30%,rgba(91,124,255,.28),transparent 60%),radial-gradient(800px 500px at 10% 90%,rgba(34,211,238,.14),transparent 60%),linear-gradient(180deg,transparent 70%,#070b16)}
 .hero .wrap{position:relative;min-height:max(640px,100svh);display:flex;flex-direction:column;justify-content:center;padding-top:var(--hdr);padding-bottom:110px}
-.live{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:13px;font-weight:700;letter-spacing:-.01em;width:max-content;backdrop-filter:blur(8px)}
+.live{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);font-size:13px;font-weight:700;letter-spacing:-.01em;width:max-content}
 .live i{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:pulse 1.8s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
 .hero h1{margin-top:22px;font-size:clamp(32px,9vw,120px);font-weight:900;line-height:.92;letter-spacing:-.055em}
@@ -112,7 +112,7 @@ p.ds{color:var(--sub);font-size:15px;margin-top:8px;line-height:1.6}
 .btn svg{width:17px;height:17px;transition:transform .25s}
 .btn:hover svg{transform:translateX(3px)}
 .hstat{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:56px;max-width:1080px;opacity:0;animation:fade .9s .8s forwards}
-.hstat button{position:relative;text-align:left;color:#fff;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .2s,border-color .2s,transform .2s}
+.hstat button{position:relative;text-align:left;color:#fff;padding:16px 18px;border-radius:12px;background:rgba(16,22,40,.82);border:1px solid rgba(255,255,255,.1);transition:background .2s,border-color .2s,transform .2s}
 .hstat button:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
 .hstat button:active{transform:scale(.97)}
 .hstat button::after{content:"";position:absolute;right:16px;top:20px;width:6px;height:6px;border-right:2px solid rgba(255,255,255,.45);border-top:2px solid rgba(255,255,255,.45);transform:rotate(45deg);transition:transform .2s}
@@ -342,6 +342,41 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .in .bars i u,.bars.in i u{width:var(--p)}
 .bars b{text-align:right}
 
+/* 출하 실적 */
+.shtop{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:10px}
+.shbig span{display:block;font-size:13px;font-weight:700;color:var(--sub)}
+.shbig b{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1.05}
+.shbig b small{font-size:16px;margin-left:3px;color:var(--sub)}
+.shchips{display:flex;gap:6px;flex-wrap:wrap}
+.shchips span{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--bg2);font-size:12.5px;font-weight:700;color:var(--sub)}
+.shchips b{color:var(--text)}
+.shchips i,.shlg i,.shr .nm i{width:8px;height:8px;border-radius:2px;display:inline-block;flex:none}
+.shsub{margin-top:8px;font-size:13px;color:var(--sub);font-weight:600}
+.sbar{display:flex;align-items:flex-end;gap:6px;height:170px;margin-top:14px}
+.sbar>div{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+.sbar .stk{width:100%;max-width:34px;display:flex;flex-direction:column;justify-content:flex-end;border-radius:4px 4px 0 0;overflow:hidden}
+.sbar .stk u{display:block;width:100%;height:0;transition:height 1s cubic-bezier(.2,.8,.2,1)}
+.sbar .stk u.pl{background:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--sub) 45%,transparent) 3px 5px);border:1px dashed color-mix(in srgb,var(--sub) 60%,transparent);border-bottom:0;border-radius:4px 4px 0 0}
+.sbar em{font-style:normal;font-size:11.5px;font-weight:900}
+.sbar small{font-size:11px;font-weight:700;color:var(--sub);white-space:nowrap}
+.sbar .on small{color:var(--text)}
+.shlg{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;font-weight:700;color:var(--sub)}
+.shlg span{display:inline-flex;align-items:center;gap:6px}
+.shlg i.pl{border:1px dashed var(--sub);width:10px;height:10px}
+.shtb{margin-top:12px;display:grid}
+.shr{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(4,minmax(0,1fr));gap:6px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-size:13.5px;font-weight:800;text-align:right}
+.shr .nm{display:flex;align-items:center;gap:7px;text-align:left;min-width:0}
+.shr .nm b{white-space:nowrap}
+.shr>span{white-space:nowrap}
+.shr .nm small{font-size:11.5px;color:var(--sub);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shr .z{color:var(--sub);opacity:.55;font-weight:600}
+.shr.shh{border-top:0;font-size:11.5px;color:var(--sub);font-weight:700;padding-top:0}
+.shr.hd{background:var(--bg2);border-radius:8px;border-top-color:transparent;padding-left:10px;padding-right:8px;margin-top:4px}
+.shr.sb{font-weight:700}
+.shr.sb .nm{padding-left:12px}
+.shnote{margin-top:12px;font-size:11.5px;color:var(--sub);line-height:1.5}
+.subt{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
+@media (max-width:560px){.shr{font-size:12.5px;gap:4px;grid-template-columns:minmax(66px,1.2fr) repeat(4,minmax(0,1fr))}.shr .nm small{display:none}.shr.hd{padding-left:8px;padding-right:6px}.shr.sb .nm{padding-left:4px}.shr.shh{font-size:10.5px}.shbig b{font-size:38px}.sbar{gap:4px}.sbar em{font-size:10.5px}.sbar small{font-size:10px}}
 /* 월별 */
 .mchart{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:22px}
 .mchart>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;height:100%}
@@ -507,8 +542,9 @@ footer{padding:40px 0 60px;color:var(--sub);font-size:12.5px;font-weight:700;bor
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 /* 커서 따라오는 빛 (PC) */
-.glow{position:absolute;width:520px;height:520px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(124,92,255,.22),transparent);transform:translate(-50%,-50%);z-index:-1;transition:opacity .3s}
+.glow{position:absolute;left:0;top:0;will-change:transform;width:520px;height:520px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(124,92,255,.22),transparent);z-index:-1;transition:opacity .3s}
 @media (hover:none){.glow{display:none}}
+.hero.off *{animation-play-state:paused!important}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.hero h1 .ln>span{transform:none}.hero .lead,.hbtn,.hstat{opacity:1}}
 </style>
@@ -572,10 +608,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div></section>
 
     <section class="sec band"><div class="wrap">
-      <div class="shd rv"><div><span class="eyebrow">Output</span><h2 class="tt">출하 · 업체</h2></div></div>
+      <div class="shd rv"><div><span class="eyebrow">Output</span><h2 class="tt">출하 · 업체</h2></div><button class="more" type="button" data-go="ship">출하 실적 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       <div class="g2">
-        <div class="card rv"><span class="cap">Monthly</span><h3 style="margin-top:6px">월별 출하</h3><div class="mchart" id="mchart"></div></div>
-        <div class="card rv" style="--d:1"><span class="cap">Partners</span><h3 style="margin-top:6px">업체별 진행 장비</h3><div class="bars" id="vbars"></div></div>
+        <div class="card rv" id="shA"></div>
+        <div class="card rv" style="--d:1" id="shB"></div>
       </div>
     </div></section>
 
@@ -633,7 +669,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 입고 · 출하 ═════ -->
   <div class="view" id="v-ship"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">향후 2주간 날짜별 FRAME 입고 · 출하 일정입니다.</p></div>
+    <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">제조1팀 출하 실적과 향후 2주간 FRAME 입고 · 출하 일정입니다.</p></div>
+    <div class="g2" style="margin-bottom:28px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
+    <h3 class="subt">향후 2주 일정</h3>
     <div class="g4" id="fkpi" style="margin-bottom:16px"></div>
     <div id="fcal" style="display:grid;gap:12px"></div>
   </div></div>
@@ -727,11 +765,11 @@ function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function 
 function nq(s) { return String(s || "").toUpperCase().replace(/[\s\-_.·]/g, ""); }
 function ymd(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
 function addD(s, n) { var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2] + n); return ymd(d); }
-function md(s) { if (!s) return "-"; var p = String(s).slice(0, 10).split("-"); return +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }
+function md(s) { if (!s) return "-"; var p = String(s).slice(0, 10).split("-"); return (+p[0] !== new Date().getFullYear() ? "'" + p[0].slice(2) + "." : "") + +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }   // 올해가 아니면 '27. 붙임
 var RM = false; try { RM = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
 
 var STAGES = ["자재불출", "FRAME 입고", "배선", "MODULE", "I/O CHECK", "1차 LEVEL", "1차 검수", "제조완료", "QC", "PACKING", "출하"];
-var SCOL = ["#94a3b8", "#0ea5e9", "#3b82f6", "#6366f1", "#8b5cf6", "#a855f7", "#d946ef", "#ec4899", "#f59e0b", "#14b8a6", "#22c55e"];
+var SCOL = ["#94a3b8", "#22d3ee", "#f59e0b", "#a78bfa", "#3b82f6", "#f472b6", "#e879f9", "#a3e635", "#fb7185", "#2dd4bf", "#22c55e"];   // 자재불출 회색 · 입고 청록 · 배선 주황 · MODULE 보라 · I/O 파랑 · LEVEL 분홍 · 1차검수 자주 · 제조완료 연두 · QC 장미 · PACKING 민트 · 출하 초록
 
 /* ── 예시 데이터 (서버 붙기 전 화면 확인용) ── */
 function demoData() {
@@ -796,9 +834,11 @@ function load(force) {
     sbFetch("equipment?select=*&order=out_date.asc.nullslast,name.asc"),
     sbFetch("logs?select=*&order=created_at.desc&limit=300"),
     sbFetch("notices?select=*&order=created_at.desc&limit=200"),
-    sbFetch("materials?select=*&order=updated_at.desc&limit=300")
+    sbFetch("materials?select=*&order=updated_at.desc&limit=300"),
+    sbFetch("site_stats?select=data&id=eq.ship").catch(function () { return []; })
   ]).then(function (a) {
     D = liveData(a[0], a[1], a[2], a[3]);
+    D.ship = a[4] && a[4][0] && a[4][0].data && a[4][0].data.v ? a[4][0].data : null;
     try { sset("cache", JSON.stringify(D)); } catch (e) {}
     return D;
   });
@@ -983,8 +1023,9 @@ function spark(vals) {
   return '<svg class="sp" viewBox="0 0 90 34" fill="none"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs><polyline points="' + s + '" stroke="url(#sg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
+function isAct(e) { return e.st < 10 && !!e.inD && e.inD <= D.today; }   // 진행 중 = 입고됨 + 출하 전 (입고 예정 제외)
 function drawDash() {
-  var T = D.today, act = D.eq.filter(function (e) { return e.st < 10; }), c = stCount();
+  var T = D.today, act = D.eq.filter(isAct), c = stCount();
   var wk = D.eq.filter(function (e) { return e.out >= T && e.out <= addD(T, 6); }).length;
   var qWait = D.eq.filter(function (e) { return e.q1 === "업로드 필요" || e.q2 === "업로드 필요"; }).length;
   var open = D.issues.filter(function (x) { return x.r !== "완료"; }).length;
@@ -1031,9 +1072,9 @@ function drawDash() {
   });
   // KPI
   var kp = $("kpis"); kp.innerHTML = "";
-  var ms = D.months.map(function (m) { return m[1]; }), yr = ms.reduce(function (a, b) { return a + b; }, 0);
+  var SS = D.ship, ms = SS ? SS.months.slice(-6).map(function (m) { return shipSum(m[1]); }) : D.months.map(function (m) { return m[1]; }), yr = SS ? SS.total : ms.reduce(function (a, b) { return a + b; }, 0);
   var done1 = D.eq.filter(function (e) { return e.q1 === "완료"; }).length, all1 = D.eq.filter(function (e) { return e.q1; }).length;
-  [["올해 출하 (6개월)", yr, "대", "지난달 <b>" + ms[ms.length - 2] + "대</b>", spark(ms), "dark"],
+  [[SS ? SS.year + "년 출하 (제조1팀)" : "올해 출하", yr, "대", "지난달 <b>" + (ms[ms.length - 2] || 0) + "대</b> · 이번 달 <b>" + (ms[ms.length - 1] || 0) + "대</b>", spark(ms), "dark"],
    ["1차 검수 완료율", all1 ? Math.round(done1 / all1 * 100) : 0, "%", "완료 <b>" + done1 + "</b> / " + all1 + "대", ""],
    ["자리 미배정", D.eq.filter(function (e) { return !e.loc && e.st < 10; }).length, "대", "자리 배치 필요", ""],
    ["긴급 장비", D.eq.filter(function (e) { return e.u && e.st < 10; }).length, "대", "우선 진행 대상", ""]].forEach(function (k, i) {
@@ -1053,14 +1094,8 @@ function drawDash() {
   fill("tin", D.eq.filter(function (e) { return e.inD === T; }), "IN", function (e) { return e.t + " · " + e.v; });
   fill("tqc", D.eq.filter(function (e) { return e.q1 === "업로드 필요" || e.q2 === "업로드 필요"; }).slice(0, 4), "QC", function (e) { return (e.q1 === "업로드 필요" ? "1차" : "2차") + " 검수 · " + e.p; });
   fill("tout", D.eq.filter(function (e) { return e.out >= T && e.out <= addD(T, 6); }).sort(function (a, b) { return a.out < b.out ? -1 : 1; }).slice(0, 4), "OUT", function (e) { return md(e.out) + " · " + e.t; });
-  // 월별
-  var mc = $("mchart"); mc.innerHTML = ""; var mm = Math.max.apply(null, ms.concat([1]));
-  D.months.forEach(function (m, i) { var d = el("div", i === D.months.length - 1 ? "on" : ""); d.style.setProperty("--i", i); d.appendChild(el("em", null, m[1] + "대")); var u = el("u"); u.style.setProperty("--h", Math.max(4, m[1] / mm * 130) + "px"); d.appendChild(u); d.appendChild(el("small", null, m[0])); mc.appendChild(d); });
-  // 업체별
-  var vb = $("vbars"); vb.innerHTML = ""; var vc = {}; act.forEach(function (e) { vc[e.v] = (vc[e.v] || 0) + 1; });
-  var vl = Object.keys(vc).sort(function (a, b) { return vc[b] - vc[a]; }), vm = vl.length ? vc[vl[0]] : 1;
-  if (!vl.length) vb.appendChild(el("div", "dz", "진행 중인 장비가 없습니다"));
-  vl.forEach(function (v) { var d = el("div"); d.appendChild(el("span", null, v)); var i = el("i"), u = el("u"); u.style.setProperty("--p", vc[v] / vm * 100 + "%"); i.appendChild(u); d.appendChild(i); d.appendChild(el("b", null, vc[v] + "대")); vb.appendChild(d); });
+  // 출하 실적 (제조1팀 · A팀 · B팀 · 업체)
+  drawShipStats($("shA"), $("shB"));
   // ISSUE
   var is = $("iss"); is.innerHTML = ""; if (!D.issues.length) is.appendChild(el("div", "empty", "등록된 기록이 없습니다")); D.issues.slice(0, 4).forEach(function (x) { is.appendChild(issEl(x)); });
 }
@@ -1076,7 +1111,7 @@ function drawEq() {
   [].forEach.call($("eqv").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === EQV); b.onclick = function () { EQV = b.dataset.v; sset("eqv", EQV); drawEq(); }; });
   var k = nq($("q").value), list = D.eq.filter(function (e) {
     if (k && nq([e.n, e.t, e.v, e.p, e.loc].join(" ")).indexOf(k) < 0 && nq(e.n).indexOf(k) < 0) return false;
-    if (QF === "act") return e.st < 10; if (QF === "u") return e.u; if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요";
+    if (QF === "act") return isAct(e); if (QF === "u") return e.u; if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요";
     if (/^s\d+$/.test(QF)) return e.st === +QF.slice(1);
     return true;
   }).sort(function (a, b) { var x = a.out || "9999", y = b.out || "9999"; return x < y ? -1 : x > y ? 1 : (b.u ? 1 : 0) - (a.u ? 1 : 0); });   // 출하일 없는 장비는 맨 아래
@@ -1145,7 +1180,68 @@ $("qform").onsubmit = function (e) {
     .then(function () { sb.disabled = false; sb.textContent = "저장"; });
 };
 
+/* ── 📊 출하 실적: 장비통계 시트와 같은 기준 (Factory Out Date · 제조1팀 담당자 A팀/B팀 · 업체) ── */
+var SHC = { A: "#5b9df9", B: "#e3b341", V: "#2dd4bf" };
+function shipSum(o) { var n = 0; for (var k in o) n += o[k] || 0; return n; }
+function shipVen(o, S) { var n = 0; S.keys.forEach(function (k) { if (k !== "A" && k !== "B") n += (o && o[k]) || 0; }); return n; }
+function drawShipStats(a, b) {
+  if (!a || !b) return;
+  a.innerHTML = ""; b.innerHTML = "";
+  var S = D.ship;
+  if (!S) {
+    a.appendChild(el("span", "cap", "Shipping")); a.appendChild(el("h3", null, "제조1팀 출하"));
+    a.appendChild(el("div", "empty", "출하 통계를 준비 중입니다"));
+    b.appendChild(el("span", "cap", "Partners")); b.appendChild(el("h3", null, "나인벨 · 업체"));
+    b.appendChild(el("div", "empty", "출하 통계를 준비 중입니다"));
+    return;
+  }
+  var vens = S.keys.filter(function (k) { return k !== "A" && k !== "B"; }), T = S.tot || {};
+  var cm = S.months.length ? S.months[S.months.length - 1] : ["", {}], cmN = shipSum(cm[1]), plan = shipSum(S.plan || {});
+  // 왼쪽: 올해 출하 + 월별 (A · B · 업체 쌓기)
+  a.appendChild(el("span", "cap", "Shipping · " + S.year));
+  var top = el("div", "shtop");
+  var big = el("div", "shbig"); big.appendChild(el("span", null, "제조1팀 올해 출하")); var bn = num(S.total, "대"); big.appendChild(bn); top.appendChild(big);
+  var chips = el("div", "shchips");
+  [["A팀", T.A || 0, SHC.A], ["B팀", T.B || 0, SHC.B], ["업체", shipVen(T, S), SHC.V]].forEach(function (c) { var d = el("span"); var i = el("i"); i.style.background = c[2]; d.appendChild(i); d.appendChild(document.createTextNode(c[0] + " ")); d.appendChild(el("b", null, c[1] + "대")); chips.appendChild(d); });
+  top.appendChild(chips); a.appendChild(top);
+  a.appendChild(el("p", "shsub", +cm[0].slice(5, 7) + "월 " + cmN + "대 출하 · 남은 예정 " + plan + "대"));
+  var ch = el("div", "sbar"), mx = 1;
+  S.months.forEach(function (m, i) { var t = shipSum(m[1]) + (i === S.months.length - 1 ? plan : 0); if (t > mx) mx = t; });
+  S.months.forEach(function (m, i) {
+    var o = m[1], last = i === S.months.length - 1, t = shipSum(o), col = el("div", last ? "on" : "");
+    col.appendChild(el("em", null, String(t)));
+    var st = el("div", "stk");
+    if (last && plan) { var pu = el("u", "pl"); pu.dataset.h = plan / mx * 120; st.appendChild(pu); }
+    [["V", shipVen(o, S)], ["B", o.B || 0], ["A", o.A || 0]].forEach(function (x) { if (!x[1]) return; var u = el("u"); u.style.background = SHC[x[0]]; u.dataset.h = x[1] / mx * 120; u.title = (x[0] === "V" ? "업체" : x[0] + "팀") + " " + x[1] + "대"; st.appendChild(u); });
+    col.appendChild(st); col.appendChild(el("small", null, +m[0].slice(5, 7) + "월"));
+    col.title = +m[0].slice(5, 7) + "월 · A팀 " + (o.A || 0) + " · B팀 " + (o.B || 0) + " · 업체 " + shipVen(o, S) + (last && plan ? " · 남은 예정 " + plan : "");
+    ch.appendChild(col);
+  });
+  a.appendChild(ch);
+  var lg = el("div", "shlg"); [["A팀", SHC.A], ["B팀", SHC.B], ["업체", SHC.V], ["이번 달 남은 예정", ""]].forEach(function (x) { var d = el("span"); var i = el("i", x[1] ? "" : "pl"); if (x[1]) i.style.background = x[1]; d.appendChild(i); d.appendChild(document.createTextNode(x[0])); lg.appendChild(d); }); a.appendChild(lg);
+  // 오른쪽: 나인벨(A·B팀) · 업체별
+  b.appendChild(el("span", "cap", "NineBell · Partners")); b.appendChild(el("h3", null, "나인벨 · 업체"));
+  var g = function (o, k) { return (o && o[k]) || 0; };
+  var rows = [["나인벨", "A팀 + B팀", (T.A || 0) + (T.B || 0), g(S.ing, "A") + g(S.ing, "B"), g(S.plan, "A") + g(S.plan, "B"), g(S.pre, "A") + g(S.pre, "B"), "", "hd"],
+    ["A팀", "", T.A || 0, g(S.ing, "A"), g(S.plan, "A"), g(S.pre, "A"), SHC.A, "sb"],
+    ["B팀", "", T.B || 0, g(S.ing, "B"), g(S.plan, "B"), g(S.pre, "B"), SHC.B, "sb"],
+    ["업체", vens.join(" · ") || "-", shipVen(T, S), shipVen(S.ing, S), shipVen(S.plan, S), shipVen(S.pre, S), "", "hd"]];
+  vens.forEach(function (v) { rows.push([v, "", g(T, v), g(S.ing, v), g(S.plan, v), g(S.pre, v), SHC.V, "sb"]); });
+  var tb = el("div", "shtb");
+  var hd = el("div", "shr shh"); ["", "올해 출하", "진행 중", "이달 예정", "입고 예정"].forEach(function (x) { hd.appendChild(el("span", null, x)); }); tb.appendChild(hd);
+  rows.forEach(function (r) {
+    var d = el("div", "shr " + r[7]), n = el("span", "nm");
+    if (r[6]) { var i = el("i"); i.style.background = r[6]; n.appendChild(i); }
+    n.appendChild(el("b", null, r[0])); if (r[1]) n.appendChild(el("small", null, r[1])); d.appendChild(n);
+    [2, 3, 4, 5].forEach(function (j) { d.appendChild(el("span", r[j] ? "" : "z", r[j] + "대")); });
+    tb.appendChild(d);
+  });
+  b.appendChild(tb);
+  b.appendChild(el("p", "shnote", "B팀 장비통계와 같은 기준 · 제조1팀 담당자 칸의 A팀/B팀, 팀 표시 없이 업체만 적힌 장비는 업체로 셉니다 · " + (S.built || S.today) + " 기준"));
+  setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = Math.max(3, +u.dataset.h) + "px"; }); countUp(bn); }, 60);
+}
 function drawShip() {
+  drawShipStats($("fshA"), $("fshB"));
   var T = D.today, end = addD(T, 13);
   var inn = D.eq.filter(function (e) { return e.inD >= T && e.inD <= end; }), out = D.eq.filter(function (e) { return e.out >= T && e.out <= end; });
   kpiRow("fkpi", [["2주 입고", inn.length, "대"], ["2주 출하", out.length, "대"], ["오늘 출하", out.filter(function (e) { return e.out === T; }).length, "대"], ["내일 출하", out.filter(function (e) { return e.out === addD(T, 1); }).length, "대"]]);
@@ -1406,39 +1502,53 @@ $("bref").onclick = function () {
 
 /* ── 히어로 배경: 웨이퍼 격자 + 흐르는 빛 (캔버스) ── */
 (function () {
-  var cv = $("fx"), cx = cv.getContext("2d"), W, H, dpr, pts = [], t0 = performance.now(), run = true;
+  var cv = $("fx"), cx = cv.getContext("2d"), W, H, dpr, pts = [], t0 = performance.now(), run = true, base = null, cells = [], R, ox, oy, g = 26, lastT = 0;
   function size() {
-    dpr = Math.min(2, window.devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    pts = []; var n = Math.round(W * H / 26000); for (var i = 0; i < n; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, v: .2 + Math.random() * .6, r: Math.random() * 1.6 + .4 });
+    dpr = Math.min(1.5, window.devicePixelRatio || 1); W = cv.clientWidth; H = cv.clientHeight; if (!W || !H) { base = null; return; }   // 다른 탭에서 시작하면 히어로가 숨어 있음 → 돌아올 때 다시 계산
+    cv.width = W * dpr; cv.height = H * dpr; cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    pts = []; var n = Math.round(W * H / 40000); for (var i = 0; i < n; i++) pts.push({ x: Math.random() * W, y: Math.random() * H, v: .2 + Math.random() * .6, r: Math.random() * 1.6 + .4 });
+    // ⚡ 격자 바탕은 한 번만 그려 두고, 매 프레임엔 빛나는 칸만 덧그림
+    R = Math.min(W, H) * .62; ox = W * .78; oy = H * .46; cells = [];
+    base = document.createElement("canvas"); base.width = W * dpr; base.height = H * dpr; var bx = base.getContext("2d"); bx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    bx.save(); bx.beginPath(); bx.arc(ox, oy, R, 0, Math.PI * 2); bx.clip();
+    for (var x = ox - R; x < ox + R; x += g) for (var y = oy - R; y < oy + R; y += g) {
+      var d = Math.hypot(x - ox, y - oy) / R; if (d > 1.05) continue;
+      cells.push({ x: x, y: y, a: Math.atan2(y - oy, x - ox) });
+      bx.fillStyle = "rgba(120,150,255," + (.05 + (1 - d) * .1).toFixed(3) + ")"; bx.fillRect(x + 2, y + 2, g - 5, g - 5);
+    }
+    bx.restore();
+    bx.strokeStyle = "rgba(140,170,255,.25)"; bx.lineWidth = 1; bx.beginPath(); bx.arc(ox, oy, R, 0, Math.PI * 2); bx.stroke();
+    bx.strokeStyle = "rgba(140,170,255,.12)"; bx.beginPath(); bx.arc(ox, oy, R * 1.12, 0, Math.PI * 2); bx.stroke();
   }
   function frame(now) {
     if (!run) return;
+    requestAnimationFrame(frame);
+    if (now - lastT < 32) return; lastT = now;
+    if (!base || cv.clientWidth !== W) { size(); if (!base) return; }                     // 배경은 30fps면 충분 → 스크롤에 여유
     var t = (now - t0) / 1000; cx.clearRect(0, 0, W, H);
-    // 원형 웨이퍼 격자
-    var R = Math.min(W, H) * .62, ox = W * .78, oy = H * .46, g = 26;
+    cx.drawImage(base, 0, 0, W, H);
+    var sweep = ((t * .55) % (Math.PI * 2)) - Math.PI;
     cx.save(); cx.beginPath(); cx.arc(ox, oy, R, 0, Math.PI * 2); cx.clip();
-    for (var x = ox - R; x < ox + R; x += g) for (var y = oy - R; y < oy + R; y += g) {
-      var d = Math.hypot(x - ox, y - oy) / R, ang = Math.atan2(y - oy, x - ox), sweep = ((t * .55) % (Math.PI * 2)) - Math.PI;
-      var da = Math.abs(((ang - sweep + Math.PI * 3) % (Math.PI * 2)) - Math.PI), hi = Math.max(0, 1 - da / .9);
-      cx.fillStyle = "rgba(" + (120 + hi * 100 | 0) + "," + (150 + hi * 80 | 0) + ",255," + (.05 + (1 - d) * .1 + hi * .45) + ")";
-      cx.fillRect(x + 2, y + 2, g - 5, g - 5);
+    for (var i = 0; i < cells.length; i++) {
+      var c = cells[i], da = Math.abs(((c.a - sweep + Math.PI * 3) % (Math.PI * 2)) - Math.PI); if (da >= .9) continue;
+      var hi = 1 - da / .9; cx.fillStyle = "rgba(" + (120 + hi * 100 | 0) + "," + (150 + hi * 80 | 0) + ",255," + (hi * .45).toFixed(2) + ")";
+      cx.fillRect(c.x + 2, c.y + 2, g - 5, g - 5);
     }
     cx.restore();
-    cx.strokeStyle = "rgba(140,170,255,.25)"; cx.lineWidth = 1; cx.beginPath(); cx.arc(ox, oy, R, 0, Math.PI * 2); cx.stroke();
-    cx.strokeStyle = "rgba(140,170,255,.12)"; cx.beginPath(); cx.arc(ox, oy, R * 1.12, 0, Math.PI * 2); cx.stroke();
     // 스캔 선
     var sy = (t * 90) % (H + 200) - 100, lg = cx.createLinearGradient(0, sy - 60, 0, sy + 2);
     lg.addColorStop(0, "rgba(94,231,247,0)"); lg.addColorStop(1, "rgba(94,231,247,.16)"); cx.fillStyle = lg; cx.fillRect(0, sy - 60, W, 62);
     // 떠다니는 점
-    pts.forEach(function (p) { p.y -= p.v; if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; } cx.fillStyle = "rgba(180,200,255,.5)"; cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, Math.PI * 2); cx.fill(); });
-    requestAnimationFrame(frame);
+    cx.fillStyle = "rgba(180,200,255,.5)";
+    pts.forEach(function (p) { p.y -= p.v * 2; if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; } cx.fillRect(p.x, p.y, p.r * 1.6, p.r * 1.6); });
   }
-  size(); window.addEventListener("resize", size);
-  if (RM) { run = false; frame(t0 + 2000); run = false; } else requestAnimationFrame(frame);
+  size(); var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(size, 150); });
+  if (RM) { run = true; lastT = -1e9; frame(t0 + 2000); run = false; } else requestAnimationFrame(frame);
   document.addEventListener("visibilitychange", function () { var was = run; run = !document.hidden && !RM && cur === "dash"; if (run && !was) requestAnimationFrame(frame); });
-  window.addEventListener("scroll", function () { var on = window.pageYOffset < H && cur === "dash" && !RM && !document.hidden; if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; }, { passive: true });
+  var heroEl = $("hero");
+  window.addEventListener("scroll", function () { var vis = window.pageYOffset < H, on = vis && cur === "dash" && !RM && !document.hidden; heroEl.classList.toggle("off", !vis); if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; }, { passive: true });
   // 커서 따라오는 빛
-  $("hero").addEventListener("pointermove", function (e) { var r = this.getBoundingClientRect(), g = $("glow"); g.style.left = e.clientX - r.left + "px"; g.style.top = e.clientY - r.top + "px"; });
+  $("hero").addEventListener("pointermove", function (e) { var r = this.getBoundingClientRect(), g = $("glow"); g.style.transform = "translate3d(" + (e.clientX - r.left - 260) + "px," + (e.clientY - r.top - 260) + "px,0)"; });
 })();
 
 /* ── 시계 ── */
