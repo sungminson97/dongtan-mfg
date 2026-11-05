@@ -39,7 +39,9 @@ input,select,textarea{font:inherit;color:inherit}
 header{position:fixed;inset:0 0 auto 0;height:calc(var(--hdr) + env(safe-area-inset-top));padding-top:env(safe-area-inset-top);z-index:50;transition:background .3s,border-color .3s,backdrop-filter .3s;border-bottom:1px solid transparent}
 header.solid{background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-color:var(--line)}
 header .wrap{height:100%;display:flex;align-items:center;gap:20px}
-.brand{display:flex;align-items:center;gap:12px;flex:none}
+.brand{display:flex;align-items:center;gap:12px;flex:none;text-decoration:none;cursor:pointer;transition:opacity .2s}
+.brand:hover{opacity:.8}
+.brand:active{transform:scale(.97)}
 .brand img{height:17px;display:block}
 .brand .lg-d{display:none}
 .onhero .brand .lg-l{display:none}.onhero .brand .lg-d{display:block}
@@ -479,7 +481,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
 <header id="hdr" class="onhero">
   <div class="wrap">
-    <div class="brand"><img class="lg-l" src="logo.png" alt="NINEBELL"><img class="lg-d" src="logo_dark.png" alt="NINEBELL"><b>동탄 제조</b></div>
+    <a class="brand" id="home" href="./" aria-label="메인 화면으로"><img class="lg-l" src="logo.png" alt="NINEBELL"><img class="lg-d" src="logo_dark.png" alt="NINEBELL"><b>동탄 제조</b></a>
     <nav class="top" id="ntop"><div class="pill"></div></nav>
     <div class="hact">
       <span class="demo" id="demob" style="display:none">● 예시 데이터</span>
@@ -1210,6 +1212,12 @@ setInterval(tick, 15000); tick();
 
 /* ── 시작 ── */
 buildNav(); authUi();
+// 🏠 NINEBELL 로고 → 메인(대시보드 첫 화면)으로 · 첫 화면 글자 애니메이션 다시
+$("home").onclick = function (e) {
+  e.preventDefault(); drClose();
+  if (cur !== "dash") go("dash"); else window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
+  var h = document.querySelector(".hero h1"); if (h && !RM) { var c = h.cloneNode(true); h.parentNode.replaceChild(c, h); }
+};
 var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return t[0] === start; })) start = "dash";
 load(false).then(function () { go(start, true); setTimeout(pill, 300); }).catch(function (e) { toast("⚠️ " + e.message); });
 try { document.fonts.ready.then(pill); } catch (e) {}
