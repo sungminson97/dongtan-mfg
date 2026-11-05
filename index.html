@@ -228,6 +228,31 @@ section.sec.band.join{padding-top:0}
 .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:16px;font-size:12px;font-weight:700;color:var(--sub)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
+.planw{overflow-x:auto;margin:-4px -6px 0;padding:4px 6px 6px;-webkit-overflow-scrolling:touch}
+svg.plan{display:block;width:100%;min-width:820px;height:auto;font-family:var(--mono)}
+.plan .wall{fill:none;stroke:#3a4560;stroke-width:2}
+.plan .room{fill:rgba(107,140,255,.035);stroke:#2a3550;stroke-width:1.2}
+.plan .zone{fill:rgba(255,255,255,.015);stroke:#253049;stroke-width:1;stroke-dasharray:4 4}
+.plan .fix{fill:rgba(255,255,255,.03);stroke:#2a3348;stroke-width:1}
+.plan .fixl{stroke:#2a3348;stroke-width:1}
+.plan .scap{font-size:9px;font-weight:700;fill:#3f4a63}
+.plan .rm{font-family:"Pretendard Variable",Pretendard,sans-serif;font-size:12px;font-weight:700;fill:#6b7488}
+.plan .rid{font-size:15px;font-weight:800;fill:#8a96b3;letter-spacing:.08em}
+.plan .slot .sb{fill:rgba(255,255,255,.015);stroke:#33405e;stroke-width:1;stroke-dasharray:3 3;transition:fill .25s,stroke .25s}
+.plan .slot.on{cursor:pointer}
+.plan .slot.on .sb{fill:color-mix(in srgb,var(--c) 22%,transparent);stroke:var(--c);stroke-width:1.5;stroke-dasharray:none}
+.plan .slot.on:hover .sb{fill:color-mix(in srgb,var(--c) 40%,transparent);filter:drop-shadow(0 0 6px var(--c))}
+.plan .sid{font-size:8.5px;font-weight:700;fill:#5d6780}
+.plan .slot.on .sid{fill:var(--c)}
+.plan .sn{font-size:10.5px;font-weight:800;fill:#fff}
+.plan .sp{fill:var(--c)}
+.in .plan .slot{animation:slotIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k)*25ms)}
+@keyframes slotIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.plan .slot{transform-box:fill-box;transform-origin:center}
+.psum{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;font-weight:700;color:var(--sub)}
+.psum b{color:var(--text);font-family:var(--mono)}
+.psum .ph{margin-left:auto;display:none}
+@media (max-width:820px){.psum .ph{display:inline}}
 /* 막대 */
 .bars{display:grid;gap:10px;margin-top:16px}
 .bars>div{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;font-weight:800}
@@ -423,8 +448,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div></section>
 
     <section class="sec"><div class="wrap">
-      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 자리 배치</h2><p class="ds">칸을 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div><button class="more" type="button" data-go="eq">전체 장비 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
-      <div class="card rv" id="baycard"><div class="bay" id="bay"></div><div class="legend" id="legend"></div></div>
+      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 배치도</h2><p class="ds">CR4 도면 기준입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div><button class="more" type="button" data-go="eq">전체 장비 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      <div class="card rv" id="baycard"><div id="bay"></div><div class="legend" id="legend"></div></div>
     </div></section>
 
     <section class="sec"><div class="wrap">
@@ -556,7 +581,7 @@ function demoData() {
   var eq = [];
   for (var i = 0; i < 18; i++) {
     var s = Math.floor(rnd() * 11), inD = addD(T, -Math.floor(rnd() * 40) - 3);
-    eq.push({ n: ["HJ92-2", "HH91-2", "HK10-", "HL03-"][i % 4] + (30 + i * 3), t: TY[i % 5], v: V[i % 4], p: P[i % 4], loc: i < 15 ? "1-" + (i + 1) : "", st: s,
+    eq.push({ n: ["HJ92-2", "HH91-2", "HK10-", "HL03-"][i % 4] + (30 + i * 3), t: TY[i % 5], v: V[i % 4], p: P[i % 4], loc: i < 14 ? PLAN[[0, 1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15, 16][i]].id : "", st: s,
       inD: inD, out: addD(T, Math.floor(rnd() * 20) + 1), q1: s >= 6 ? (rnd() > .3 ? "완료" : "업로드 필요") : "", q2: s >= 8 ? (rnd() > .5 ? "완료" : "업로드 필요") : "", u: rnd() > .85 });
   }
   eq[0].inD = T; eq[3].inD = T; eq[7].inD = addD(T, 2); eq[11].inD = addD(T, 5); eq[5].out = addD(T, 1);
@@ -580,6 +605,63 @@ function load(force) {
   if (!API_URL) { D = demoData(); return Promise.resolve(D); }
   return fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ fn: "getAll", pin: sget("pin") || "", force: !!force }) })
     .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error || "불러오기 실패"); D = j.data; return D; });
+}
+
+/* ── 🗺 동탄 배치도 (도면 기준 · CR4) ──
+ * 자리 이름: 위줄 A1~A9 (12·18·24CH) · 아래줄 B1~B9 (12CH) — 왼쪽부터. 실제 이름이 정해지면 id만 바꾸면 됨
+ */
+var PLAN = (function () {
+  var s = [];
+  [355, 418, 481, 544, 607, 670, 733, 796, 859].forEach(function (x, i) { s.push({ id: "A" + (i + 1), x: x, y: 42.5, w: 42.5, h: 110, cap: "12·18·24CH" }); });
+  [453, 516, 579, 642, 705, 768, 831, 894, 957].forEach(function (x, i) { s.push({ id: "B" + (i + 1), x: x, y: 206, w: 42.5, h: 109, cap: "12CH" }); });
+  return s;
+})();
+function svgEl(t, a, txt) { var e = document.createElementNS("http://www.w3.org/2000/svg", t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; }
+function drawPlan() {
+  var box = $("bay"); box.innerHTML = "";
+  var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
+  var sv = svgEl("svg", { viewBox: "8 -6 1152 396", class: "plan", role: "img", "aria-label": "동탄 CR4 배치도" });
+  var W = function (x, y, w, h, c) { sv.appendChild(svgEl("rect", { x: x, y: y, width: w, height: h, class: c || "wall" })); };
+  var L = function (x1, y1, x2, y2, c) { sv.appendChild(svgEl("line", { x1: x1, y1: y1, x2: x2, y2: y2, class: c || "fixl" })); };
+  var T = function (x, y, t, c) { sv.appendChild(svgEl("text", { x: x, y: y, class: c || "rm", "text-anchor": "middle" }, t)); };
+  // 건물 · 방
+  W(18, 3, 1132, 352);
+  W(22, 7, 302, 344, "zone"); T(170, 160, "하역장");
+  W(268, 188, 56, 57, "zone"); L(268, 188, 324, 245); L(324, 188, 268, 245);
+  W(228, 247, 96, 104, "zone"); T(276, 305, "방풍실");
+  W(326, 5, 714, 342, "room");
+  W(1044, 5, 102, 298, "zone"); T(1095, 150, "공조실");
+  W(1044, 305, 102, 46, "zone");
+  W(837, 359, 163, 21, "fix"); for (var st = 852; st < 1000; st += 8) L(st, 361, st, 378);
+  sv.appendChild(svgEl("text", { x: 716, y: 183, class: "rid", "text-anchor": "middle" }, "CR4"));
+  // 작업대 · 랙 · 받침선
+  W(329, 16, 13.5, 115, "fix"); W(1014, 78, 12, 102, "fix"); W(1014, 224, 12, 116, "fix");
+  L(355, 165, 903, 165); W(901, 42.5, 17.5, 110, "fix");
+  // 자리
+  var used = 0;
+  PLAN.forEach(function (p, k) {
+    var e = byLoc[p.id], g = svgEl("g", { class: "slot" + (e ? " on" : ""), style: "--c:" + (e ? SCOL[e.st] : "transparent") + ";--k:" + k });
+    g.appendChild(svgEl("rect", { x: p.x, y: p.y, width: p.w, height: p.h, rx: 4, class: "sb" }));
+    g.appendChild(svgEl("text", { x: p.x + p.w / 2, y: p.y - 6, class: "sid", "text-anchor": "middle" }, p.id));
+    var cx = p.x + p.w / 2, cy = p.y + p.h / 2, rot = "rotate(-90 " + cx + " " + cy + ")";
+    if (e) {
+      used++;
+      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: rot }, e.n));
+      var ph = (p.h - 8) * (e.st + 1) / 11;
+      g.appendChild(svgEl("rect", { x: p.x + 4, y: p.y + p.h - 4 - ph, width: 3, height: ph, rx: 1.5, class: "sp" }));
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + e.n + " · " + STAGES[e.st]));
+      g.addEventListener("click", function () { eqOpen(e.n); });
+    } else {
+      g.appendChild(svgEl("text", { x: cx, y: cy, class: "scap", "text-anchor": "middle", "dominant-baseline": "central", transform: rot }, p.cap));
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 빈 자리 (" + p.cap + ")"));
+    }
+    sv.appendChild(g);
+  });
+  var wrap = el("div", "planw"); wrap.appendChild(sv); box.appendChild(wrap);
+  requestAnimationFrame(function () { if (wrap.scrollWidth > wrap.clientWidth + 4) wrap.scrollLeft = wrap.scrollWidth * 0.27; });   // 📱 좁은 화면: 하역장 말고 CR4부터 보이게
+  var sm = el("div", "psum");
+  sm.innerHTML = "<span>CR4 <b>" + used + "</b> / " + PLAN.length + " 자리 사용</span><span>빈 자리 <b>" + (PLAN.length - used) + "</b></span><span class=\"ph\">← 옆으로 밀어서 전체 보기</span>";
+  box.appendChild(sm);
 }
 
 /* ── 탭 ── */
@@ -738,19 +820,7 @@ function drawDash() {
     kp.appendChild(cd);
   });
   // 배치도
-  var bay = $("bay"); bay.innerHTML = "";
-  var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
-  for (var b = 1; b <= 18; b++) {
-    var lc = "1-" + b, e = byLoc[lc], x = el("div", "bx" + (e ? " on" : ""));
-    x.appendChild(el("span", "lc", "동탄 " + lc));
-    if (e) {
-      x.style.setProperty("--c", SCOL[e.st]); x.style.setProperty("--p", Math.round((e.st + 1) / 11 * 100) + "%");
-      x.appendChild(el("b", null, e.n)); x.appendChild(el("em", null, STAGES[e.st]));
-      var pr = el("div", "pr"); pr.appendChild(el("u")); x.appendChild(pr);
-      (function (n) { x.onclick = function () { eqOpen(n); }; })(e.n);
-    } else x.appendChild(el("em", null, "빈 자리"));
-    bay.appendChild(x);
-  }
+  drawPlan();
   var lg = $("legend"); lg.innerHTML = "";
   STAGES.forEach(function (s, i) { var sp = el("span"); var ii = el("i"); ii.style.background = SCOL[i]; sp.appendChild(ii); sp.appendChild(document.createTextNode(s)); lg.appendChild(sp); });
   // 오늘
