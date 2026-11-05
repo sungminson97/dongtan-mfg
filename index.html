@@ -1073,6 +1073,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .srkp b small{font-size:13px;font-weight:700;color:var(--sub);margin-left:2px}
 .srkp em{display:block;margin-top:2px;font-style:normal;font-size:11.5px;font-weight:600;color:var(--sub)}
 .srsub{margin:22px 0 8px;font-size:15px;font-weight:800;letter-spacing:-.02em}
+.syncw{position:sticky;top:var(--hdr);z-index:40;background:color-mix(in srgb,#f59e0b 14%,var(--bg));border-bottom:1px solid color-mix(in srgb,#f59e0b 40%,transparent)}
+.syncw[hidden]{display:none!important}
+.syncw .wrap{display:flex;align-items:center;gap:10px;padding-top:9px;padding-bottom:9px;font-size:13px;font-weight:700;color:#b45309}
+:root[data-theme="dark"] .syncw .wrap{color:#fbbf24}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .syncw .wrap{color:#fbbf24}}
+.syncw i{flex:none;width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:blink 1.6s infinite}
 </style>
 </head>
 <body>
@@ -1090,6 +1096,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 </header>
 
 <main>
+<div class="syncw" id="syncw" hidden><div class="wrap"><i></i><span></span></div></div>
   <!-- ═════ 대시보드 ═════ -->
   <div class="view on" id="v-dash">
     <div class="hero" id="hero">
@@ -1486,7 +1493,28 @@ function liveData(eq, lg, nt, mt) {
   return { demo: 0, live: 1, updated: new Date().toTimeString().slice(0, 5), today: T, eq: E, months: months,
     issues: (lg || []).map(mapLog), notice: (nt || []).map(mapNotice), mat: (mt || []).map(function (m) { return [m.equip, m.item, m.vendor, m.status]; }), insp: [] };
 }
-var LSIG = "";   // 마지막으로 받은 데이터의 바뀜 확인 값 (서버 dt_sig)
+var LSIG = "", SYNC = null;   // 바뀜 확인 값 (서버 dt_sig) · 반영 상태 { ok, okAt }
+// dt_sig 응답 "바뀜확인값|정상(true/false)|마지막 정상 반영 시각" → 나눠 둠
+function sigSet(v) {
+  if (typeof v !== "string") { LSIG = ""; return ""; }
+  var p = v.split("|"); LSIG = p[0];
+  SYNC = p.length >= 3 && p[2] ? { ok: p[1] !== "false", okAt: p[2] } : null;
+  return p[0];
+}
+// 반영 지연 안내: 동탄.gs가 멈췄거나(시트 머리글이 바뀌는 등) · 근무 시간에 1시간 넘게 반영이 안 되면
+function syncUi() {
+  var b = $("syncw"); if (!b) return;
+  var t = "";
+  if (SYNC && SYNC.okAt) {
+    var at = new Date(SYNC.okAt), now = new Date(), h = now.getHours() + now.getMinutes() / 60, late = now - at > 3600000 && h >= 6.5 && h < 22;
+    if (!SYNC.ok || late) t = "데이터 반영이 지연되고 있습니다 · 마지막 반영 " + (at.getMonth() + 1) + "/" + at.getDate() + " " + ("0" + at.getHours()).slice(-2) + ":" + ("0" + at.getMinutes()).slice(-2) + " · 지금 보이는 내용은 그 시점 기준입니다";
+  }
+  b.hidden = !t; b.querySelector("span").textContent = t;
+}
+function updTxt() {   // 아래 '기준' 시각 = 마지막으로 정상 반영된 시각 (모르면 받은 시각)
+  if (SYNC && SYNC.okAt) { var at = new Date(SYNC.okAt); if (!isNaN(at)) return ("0" + at.getHours()).slice(-2) + ":" + ("0" + at.getMinutes()).slice(-2) + " 기준"; }
+  return D.updated + " 기준";
+}
 function load(force) {
   if (!LIVE) { D = demoData(); return Promise.resolve(D); }
   return Promise.all([
@@ -1498,7 +1526,7 @@ function load(force) {
     sbFetch("ft_runs?select=equip,dry,full_cycle,writer,updated_at").catch(function () { return []; }),
     rpc("dt_sig", {}).catch(function () { return null; })   // 바뀜 확인 값 (3분마다 이것만 비교)
   ]).then(function (a) {
-    LSIG = typeof a[6] === "string" ? a[6] : "";
+    sigSet(a[6]);
     D = liveData(a[0], a[1], a[2], a[3]);
     D.ship = a[4] && a[4][0] && a[4][0].data && a[4][0].data.v ? a[4][0].data : null;
     D.ft = {}; (a[5] || []).forEach(function (r) { D.ft[r.equip] = mapFt(r); });
@@ -1685,7 +1713,7 @@ function draw() {
   if (!D) return;
   try { qcCalc(); } catch (e) {}
   $("demob").style.display = D.demo ? "" : "none";
-  $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + D.updated + " 기준";
+  $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); syncUi();
   if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else if (cur === "elec") drawElec(); else if (cur === "mech") drawMech(); else if (cur === "ft") drawFt(); else if (cur === "qa") drawQa(); else if (cur === "nc") drawNc(); else { drawEtc(); if (LIVE) { matLoad(false); inspLoad(false); } }
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
@@ -4807,18 +4835,19 @@ var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return
   var c = LIVE ? cacheData() : null, shown = false;
   if (c) { D = c; go(start, true); shown = true; setTimeout(pill, 300); }   // ⚡ 지난번 화면 먼저
   var sig0 = c ? dataSig(c) : "";
-  load(false).then(function () { if (shown) { if (dataSig(D) !== sig0) { draw(); reveal(); } else { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} } } else { go(start, true); setTimeout(pill, 300); } })
+  load(false).then(function () { if (shown) { if (dataSig(D) !== sig0) { draw(); reveal(); } else { try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} } } else { go(start, true); setTimeout(pill, 300); } })
     .catch(function (e) { if (!shown) { D = emptyData(); go(start, true); setTimeout(pill, 300); } toast("불러오기 실패: " + e.message); });
   // 🔄 3분마다 조용히 최신으로 (입력 중 · 창 열림 · 화면 꺼짐일 땐 건너뜀)
   setInterval(function () {
     if (!LIVE || document.hidden || $("dr").classList.contains("on") || $("lg").classList.contains("on")) return;
     var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
     var y = window.pageYOffset, before = dataSig(D);
-    var full = function () { load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {}); };   // 바뀐 게 있을 때만 다시 그림
+    var full = function () { load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {}); };   // 바뀐 게 있을 때만 다시 그림
     if (!LSIG) { full(); return; }   // 서버에 바뀜 확인 기능이 아직 없으면 예전처럼 전부 받음
     // ⚡ 전송량 줄이기: 바뀌었는지만 먼저 물어봄 (약 40바이트) → 바뀌었을 때만 전부 받음
     rpc("dt_sig", {}).then(function (sg) {
-      if (typeof sg === "string" && sg === LSIG) { D.updated = new Date().toTimeString().slice(0, 5); try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; }
+      var was = LSIG;
+      if (typeof sg === "string" && sg.split("|")[0] === was) { sigSet(sg); D.updated = new Date().toTimeString().slice(0, 5); try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; }
       full();
     }, full);
   }, 180000);
