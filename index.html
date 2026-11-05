@@ -1731,10 +1731,10 @@ function drawInsp() {
   if (!IS.d) { box.appendChild(el("div", "card empty", IS.err || "수입검사 현황을 불러오는 중…")); return; }
   var R = IS.d.rows || [], T = D.today, wait = R.filter(function (x) { return !x[13]; }), urg = wait.filter(function (x) { return x[1]; }), ng = R.filter(function (x) { return /NG/i.test(x[12]); }), mine = R.filter(function (x) { return x[15]; });
   var setI = function (f) { return function () { IS.f = f; drawEtc(); goList("#ilistc"); }; };
-  kpiRowEl(box, [["검사 대기", wait.length, "건", wait.length > 0, setI("wait"), IS.f === "wait"], ["긴급 대기", urg.length, "건", urg.length > 0, setI("urg"), IS.f === "urg"], ["NG", ng.length, "건", ng.length > 0, setI("ng"), IS.f === "ng"], ["동탄 장비 관련", mine.length, "건", false, setI("mine"), IS.f === "mine"]]);
+  kpiRowEl(box, [["검사 대기", wait.length, "건", wait.length > 0, setI("wait"), IS.f === "wait"], ["긴급 대기", urg.length, "건", urg.length > 0, setI("urg"), IS.f === "urg"], ["NG", ng.length, "건", ng.length > 0, setI("ng"), IS.f === "ng"], ["진행 장비 관련", mine.length, "건", false, setI("mine"), IS.f === "mine"]]);
   var c = el("div", "card"); c.id = "ilistc"; box.appendChild(c);
   var hd = el("div", "ehd"), ch = el("div", "chips");
-  [["wait", "검사 대기 " + wait.length], ["urg", "긴급 " + urg.length], ["mine", "동탄 장비 " + mine.length], ["ng", "NG " + ng.length], ["all", "전체 " + R.length]].forEach(function (o) { var b = el("button", "chip" + (IS.f === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { IS.f = o[0]; drawEtc(); }; ch.appendChild(b); });
+  [["wait", "검사 대기 " + wait.length], ["urg", "긴급 " + urg.length], ["mine", "진행 장비 " + mine.length], ["ng", "NG " + ng.length], ["all", "전체 " + R.length]].forEach(function (o) { var b = el("button", "chip" + (IS.f === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { IS.f = o[0]; drawEtc(); }; ch.appendChild(b); });
   hd.appendChild(ch); c.appendChild(hd);
   var sr = el("label", "srch msrch"); sr.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
   var inp = el("input"); inp.placeholder = "프로젝트 · PART NO. · 품명 · 업체 찾기"; inp.value = IS.q; inp.autocomplete = "off"; sr.appendChild(inp); c.appendChild(sr);
@@ -1756,7 +1756,7 @@ function drawInsp() {
   };
   inp.oninput = function () { IS.q = inp.value; paint(); };
   paint();
-  c.appendChild(el("p", "shnote", "품질팀 '" + (IS.d.tab || "2026 수입 검사 관리대장(동탄)") + "' 기준 · 검사 대기 · 동탄 장비 관련 · 최근 45일 건 · " + (IS.d.built || "") + " 기준"));
+  c.appendChild(el("p", "shnote", "품질팀 '" + (IS.d.tab || "2026 수입 검사 관리대장(동탄)") + "' 기준 · 진행 장비 = 프로젝트가 Backlog 동탄 장비(장비 탭 목록)와 같은 건 · 누르면 장비 상세 · 검사 대기 · 진행 장비 · 최근 45일 건만 표시 · " + (IS.d.built || "") + " 기준"));
 }
 function goList(id) { setTimeout(function () { var x = $(id) || document.querySelector(id); if (x) { var y = x.getBoundingClientRect().top + window.pageYOffset - 90; window.scrollTo({ top: y, behavior: RM ? "auto" : "smooth" }); } }, 40); }
 function kpiRowEl(box, arr) { var w = el("div", "g4"); w.style.marginBottom = "16px"; var id = "k" + Math.random().toString(36).slice(2, 8); w.id = id; box.appendChild(w); kpiRow(id, arr); }
