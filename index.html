@@ -72,10 +72,12 @@ nav.top .pill{position:absolute;top:0;height:100%;border-radius:999px;background
 
 /* ── 아래 탭 (폰) ── */
 nav.bot{display:none;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;height:64px;border-radius:22px;background:color-mix(in srgb,var(--card) 97%,transparent);box-shadow:0 12px 34px -12px rgba(0,0,0,.35);border:1px solid var(--line);padding:6px}
-nav.bot .in{position:relative;display:grid;grid-template-columns:repeat(7,1fr);height:100%}
+nav.bot .in{position:relative;display:grid;grid-template-columns:repeat(8,1fr);height:100%}
 nav.bot button{font-size:10px;letter-spacing:-.03em}
 nav.bot button svg{width:20px;height:20px}
 @media (max-width:1180px){nav.top button{padding:9px 10px;font-size:14px}}
+@media (max-width:1040px){nav.top{gap:0}nav.top button{padding:8px 8px;font-size:13px;letter-spacing:-.02em}}
+@media (max-width:960px){nav.top button{padding:8px 6px;font-size:12.5px}}
 nav.bot button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;color:var(--sub);transition:color .25s}
 nav.bot button svg{width:21px;height:21px}
 nav.bot button.on{color:#fff}
@@ -428,6 +430,39 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .srch svg{width:18px;height:18px;color:var(--sub);flex:none}
 .srch input{flex:1;min-width:0;border:0;background:transparent;outline:0;font-size:16px;font-weight:700}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
+/* 전장 */
+.g2>*,.g4>*{min-width:0}
+.fm select,.fm input,.fm textarea{width:100%;min-width:0;max-width:100%}
+.ehd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.ehd .chip{height:32px;padding:0 12px;font-size:12.5px}
+.ds2{margin-top:4px;font-size:13px;color:var(--sub);font-weight:600}
+.ewt td{white-space:nowrap}
+.ewt .ok{color:var(--ok)}
+.ewt .dim{color:var(--sub);font-weight:600}
+.wpg{display:flex;align-items:center;gap:8px}
+.wpg i{display:block;width:64px;height:6px;border-radius:6px;background:var(--bg2);overflow:hidden}
+.wpg i u{display:block;height:100%;border-radius:6px;background:#f59e0b}
+.wpg.late i u{background:var(--warn)}
+.prep{display:grid;gap:0;margin-top:10px}
+.prep>div{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;padding:11px 2px;border-top:1px solid var(--line);font-size:13px;font-weight:800}
+.prep>div.h{border-top:0;font-size:12px;color:var(--sub);padding-top:2px}
+.prep>div>span{text-align:center}
+.prep>div>span:first-child{text-align:left;min-width:0}
+.prep>div>span:first-child small{display:block;font-size:12px;color:var(--sub);font-weight:600;margin-top:2px}
+.prep .tag{height:24px;font-size:11.5px}
+.is .act{margin-left:auto}
+.is .done{height:30px;padding:0 12px;border-radius:8px;border:1px solid var(--line);font-size:12.5px;font-weight:800;color:var(--sub);background:transparent}
+.is .done:hover{border-color:var(--ok);color:var(--ok)}
+.ewm{display:none}
+.ewm>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 10px;padding:13px 2px;border-top:1px solid var(--line);cursor:pointer}
+.ewm>div:first-child{border-top:0}
+.ewm b{font-size:14.5px;font-weight:900}
+.ewm .s1{font-size:12.5px;color:var(--sub);font-weight:700;grid-column:1/-1}
+.ewm .s2{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12.5px;font-weight:700;grid-column:1/-1}
+.ewm .s2 em{font-style:normal;color:var(--sub);font-weight:600}
+.ewm .ok{color:var(--ok)}
+@media (max-width:640px){.ewm{display:block;margin-top:8px}.ewd{display:none}}
+@media (max-width:560px){.prep>div{grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,.9fr));gap:4px;font-size:12.5px}.prep .tag{padding:0 6px;font-size:11px}}
 .chip{height:38px;padding:0 14px;border-radius:999px;background:transparent;border:1px solid var(--line);font-size:13px;font-weight:800;color:var(--sub);transition:all .2s}
 .chip.on{background:var(--text);color:var(--bg);border-color:var(--text)}
 .eqg{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
@@ -701,6 +736,29 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div id="fcal" style="display:grid;gap:12px"></div>
   </div></div>
 
+  <!-- ═════ 전장 ═════ -->
+  <div class="view" id="v-elec"><div class="wrap">
+    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">Backlog 일정 기준 FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p></div>
+    <div class="g4" id="ekpi" style="margin-bottom:16px"></div>
+    <div class="card" style="padding-bottom:10px">
+      <div class="ehd"><h3>FRAME 배선 현황</h3><div class="chips" id="ewf"></div></div>
+      <div class="ewm" id="ewm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>FRAME 입고</th><th>배선 완료</th><th>I/O CHECK</th><th>하네스</th><th>상태</th></tr></thead><tbody id="ewtb"></tbody></table></div>
+    </div>
+    <div class="g2" style="align-items:start;margin-top:16px">
+      <div class="card"><h3>전장 자재 준비</h3><p class="ds2">배선 전 장비의 전장 E-BOM · 전장 발주 · 하네스 상태 (FRAME 입고 3주 이내)</p><div id="eprep"></div></div>
+      <div class="card lockc" id="ecard"><h3>전장 이슈 기록</h3>
+        <div class="lk"><b>🔒 로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
+        <form class="fm" id="eform" style="margin-top:14px" autocomplete="off">
+          <label>장비<select id="ee"></select></label>
+          <div class="row"><label>구분<select id="ek"><option>배선</option><option>하네스</option><option>전장 자재</option><option>I/O CHECK</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="er"><option>진행 중</option><option>완료</option></select></label></div>
+          <label>내용<textarea id="et" placeholder="예) 하네스 CN3 핀 배열 도면과 상이 → 업체 재제작 요청"></textarea></label>
+          <button class="sbtn" type="submit">저장</button>
+        </form>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><div class="ehd"><h3>전장 이슈</h3><div class="chips" id="eif"></div></div><div class="iss" id="elog" style="margin-top:12px"></div></div>
+  </div></div>
+
   <!-- ═════ 자재 · 기타 ═════ -->
   <div class="view" id="v-etc"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Material · Etc</span><h2 class="tt">자재 · 수입검사</h2></div>
@@ -846,7 +904,7 @@ function liveData(eq, lg, nt, mt) {
   var T = ymd(new Date());
   var E = (eq || []).map(function (x) {
     return { n: x.name, t: x.type || "", v: x.vendor || "", p: x.owner || "", loc: (x.loc || "").toUpperCase().trim(), st: Math.max(0, Math.min(10, +x.stage || 0)),
-      inD: x.in_date || "", out: x.out_date || "", q1: x.q1 || "", q2: x.q2 || "", u: !!x.urgent };
+      inD: x.in_date || "", out: x.out_date || "", q1: x.q1 || "", q2: x.q2 || "", u: !!x.urgent, ds: x.dates && typeof x.dates === "object" ? x.dates : {} };
   });
   var months = [];   // 최근 6개월 출하(공정 '출하' + 출하일 기준)
   for (var i = 5; i >= 0; i--) { var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); var key = ymd(d).slice(0, 7); months.push([(d.getMonth() + 1) + "월", E.filter(function (e) { return e.st === 10 && e.out && e.out.slice(0, 7) === key; }).length]); }
@@ -952,6 +1010,7 @@ var TABS = [
   ["eq", "장비", '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'],
   ["qc", "검수 · 이력", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'],
   ["ship", "입고 · 출하", '<path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>'],
+  ["elec", "전장", '<path d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12z"/>'],
   ["etc", "자재 · 기타", '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>'],
   ["map", "배치도", '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8v4M12 8v4M16 8v4M10 15v2M14 15v2"/>']
 ];
@@ -1011,7 +1070,7 @@ function draw() {
   if (!D) return;
   $("demob").style.display = D.demo ? "" : "none";
   $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + D.updated + " 기준";
-  if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else drawEtc();
+  if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else if (cur === "elec") drawElec(); else drawEtc();
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
 function eqOpen(n) {
@@ -1022,7 +1081,7 @@ function eqOpen(n) {
   p.appendChild(ph);
   var bd = el("div", "bd");
   var kv = el("div", "kv");
-  [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"], ["출하 예정", md(e.out)], ["1차 검수", e.q1 || "-"], ["2차 검수", e.q2 || "-"]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
+  [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["FRAME 배선", (function () { var w = sd(e, 2); return w[0] ? md(w[0]) + (w[1] ? " 완료" : " 예정") : "-"; })()], ["하네스", (function () { var h = dsx(e, "hn"); return h[0] === "NA" ? "해당 없음" : h[1] ? "완료" : h[0] ? md(h[0]) + " 예정" : "-"; })()], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"], ["출하 예정", md(e.out)], ["1차 검수", e.q1 || "-"], ["2차 검수", e.q2 || "-"]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
   bd.appendChild(kv);
   var c = el("div", "card"); c.appendChild(el("h3", null, "공정 진행"));
   var tl = el("div", "tline"); tl.style.marginTop = "10px";
@@ -1201,6 +1260,118 @@ $("qform").onsubmit = function (e) {
   if (!LIVE) { done(); return; }
   var sb = $("qform").querySelector(".sbtn"); sb.disabled = true; sb.textContent = "저장 중…";
   rpc("dt_add_log", { n: nm, pin: sget("upin") || "", equip: rec.e, kind: rec.k, result: rec.r, body: rec.t })
+    .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); } done(j.row); })
+    .catch(function (er) { toast("⚠️ 저장 실패: " + er.message); })
+    .then(function () { sb.disabled = false; sb.textContent = "저장"; });
+};
+
+/* ── ⚡ 전장: FRAME 배선 · I/O CHECK · 전장 자재 · 전장 이슈 ──
+ * dates.s[i] = [날짜, 완료(1/0)] (0 자재불출 · 1 FRAME 입고 · 2 배선 · 3 MODULE · 4 I/O CHECK …) · eb 전장 E-BOM · po 전장 발주 · hn 하네스
+ */
+var EWF = "ing", EIF = "open";
+function sd(e, i) { var s = (e.ds && e.ds.s) || []; return s[i] || ["", 0]; }
+function dsx(e, k) { return (e.ds && e.ds[k]) || ["", 0]; }
+function wireOf(e) {   // 배선 상태
+  var T = D.today, fi = sd(e, 1), wr = sd(e, 2), io = sd(e, 4);
+  if (!fi[0] && !wr[0]) return null;
+  if (wr[1]) return { k: "done", fi: fi, wr: wr, io: io };
+  var inYet = fi[1] || (fi[0] && fi[0] <= T);
+  if (!inYet) return { k: "pre", fi: fi, wr: wr, io: io };
+  return { k: wr[0] && wr[0] < T ? "late" : "ing", fi: fi, wr: wr, io: io };
+}
+function prepTag(p, need) {   // [날짜, 완료] → 태그 · need = 이 날짜까지 필요(배선 완료일)
+  var T = D.today;
+  if (p[0] === "NA") return '<span class="tag">해당 없음</span>';
+  if (p[1]) return '<span class="tag g">완료</span>';
+  if (!p[0]) return '<span class="tag">미정</span>';
+  if (p[0] < T) return '<span class="tag r">' + esc(md(p[0]).replace(/\(.\)/, "")) + " 지연</span>";
+  if (need && p[0] > need) return '<span class="tag r" title="배선 완료 예정일보다 늦게 들어옵니다">' + esc(md(p[0]).replace(/\(.\)/, "")) + " · 배선 후</span>";
+  return '<span class="tag a">' + esc(md(p[0]).replace(/\(.\)/, "")) + " 예정</span>";
+}
+function prepOk(p) { return p[0] === "NA" || !!p[1]; }
+function isElecLog(x) { return /^전장/.test(x.k || ""); }
+function drawElec() {
+  var T = D.today, d14 = addD(T, 14), d21 = addD(T, 21), d7 = addD(T, -7);
+  var W = D.eq.map(function (e) { return { e: e, w: wireOf(e) }; }).filter(function (x) { return x.w; });
+  var ing = W.filter(function (x) { return x.w.k === "ing" || x.w.k === "late"; }), late = W.filter(function (x) { return x.w.k === "late"; });
+  var pre = W.filter(function (x) { return x.w.k === "pre" && x.w.wr[0] && x.w.wr[0] <= d14; });
+  var done = W.filter(function (x) { return x.w.k === "done" && x.w.wr[0] >= d7; });
+  var needHn = D.eq.filter(function (e) { var w = wireOf(e); if (!w || w.k === "done") return false; var fi = w.fi[0]; return fi && fi <= d21 && !prepOk(dsx(e, "hn")); });
+  var elogs = D.issues.filter(isElecLog), open = elogs.filter(function (x) { return x.r !== "완료"; });
+  kpiRow("ekpi", [["배선 중", ing.length, "대"], ["배선 지연", late.length, "대", late.length > 0], ["하네스 미완료", needHn.length, "대", needHn.length > 0], ["열린 전장 이슈", open.length, "건", open.length > 0]]);
+  // 배선 현황 표
+  var f = $("ewf"); f.innerHTML = "";
+  [["ing", "배선 중 " + ing.length], ["pre", "2주 내 예정 " + pre.length], ["done", "최근 완료 " + done.length]].forEach(function (o) { var b = el("button", "chip" + (EWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { EWF = o[0]; drawElec(); }; f.appendChild(b); });
+  var list = EWF === "ing" ? ing : EWF === "pre" ? pre : done;
+  list = list.slice().sort(function (a, b) { var x = (EWF === "done" ? b : a).w.wr[0] || "9999", y = (EWF === "done" ? a : b).w.wr[0] || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
+  var tb = $("ewtb"); tb.innerHTML = ""; var mw = $("ewm"); mw.innerHTML = "";
+  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", EWF === "ing" ? "지금 배선 중인 장비가 없습니다" : EWF === "pre" ? "2주 안에 배선 예정인 장비가 없습니다" : "최근 7일 안에 배선을 마친 장비가 없습니다"); td0.colSpan = 8; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); }
+  list.forEach(function (x) {
+    var e = x.e, w = x.w, tr = el("tr"), st;
+    if (w.k === "done") st = '<span class="tag g">배선 완료</span>';
+    else if (w.k === "pre") st = '<span class="tag">입고 대기</span>';
+    else {
+      var a0 = w.fi[0] || T, b0 = w.wr[0] || T, tot = Math.max(1, Math.round((new Date(b0) - new Date(a0)) / 864e5)), gone = Math.round((new Date(T) - new Date(a0)) / 864e5), pc = Math.max(4, Math.min(100, gone / tot * 100));
+      var dl = Math.round((new Date(b0) - new Date(T)) / 864e5);
+      st = '<div class="wpg' + (w.k === "late" ? " late" : "") + '"><i><u style="width:' + pc + '%"></u></i><span class="tag ' + (w.k === "late" ? "r" : dl <= 1 ? "a" : "b") + '">' + (w.k === "late" ? "지연 " + (-dl) + "일" : dl === 0 ? "오늘 완료" : "D-" + dl) + "</span></div>";
+    }
+    var dt = function (p) { return p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0])) + (p[1] ? " ✓" : "") + "</span>" : '<span class="dim">-</span>'; };
+    tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
+    var m = el("div"); m.onclick = function () { eqOpen(e.n); };
+    var dm = function (lb, p) { return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (p[1] ? "✓" : "") + "</span>" : "-"); };
+    m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dm("입고", w.fi) + " · " + dm("배선", w.wr) + " · " + dm("I/O", w.io) + " · <em>하네스</em> " + prepTag(dsx(e, "hn"), w.wr[0]) + "</span>";
+    mw.appendChild(m);
+    tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + '</td><td>' + (e.loc ? esc(e.loc) : '<span class="dim">-</span>') + "</td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + dt(w.fi) + "</td><td>" + dt(w.wr) + "</td><td>" + dt(w.io) + "</td><td>" + prepTag(dsx(e, "hn"), w.wr[0]) + "</td><td>" + st + "</td>";
+    tb.appendChild(tr);
+  });
+  // 전장 자재 준비 (배선 전 · FRAME 입고 3주 이내)
+  var pr = D.eq.filter(function (e) { var w = wireOf(e); if (!w || w.k === "done") return false; var fi = w.fi[0]; return fi && fi <= d21 && !(prepOk(dsx(e, "eb")) && prepOk(dsx(e, "po")) && prepOk(dsx(e, "hn"))); })
+    .sort(function (a, b) { var x = sd(a, 1)[0], y = sd(b, 1)[0]; return x < y ? -1 : x > y ? 1 : 0; });
+  var pw = $("eprep"); pw.innerHTML = "";
+  if (!pr.length) pw.appendChild(el("div", "empty", "3주 안에 들어오는 장비는 전장 자재 준비가 모두 끝났습니다"));
+  else {
+    var box = el("div", "prep"); box.innerHTML = '<div class="h"><span>장비 · FRAME 입고</span><span>전장 E-BOM</span><span>전장 발주</span><span>하네스</span></div>';
+    pr.forEach(function (e) { var r = el("div"); r.style.cursor = "pointer"; r.onclick = function () { eqOpen(e.n); }; r.innerHTML = "<span><b>" + esc(e.n) + "</b><small>입고 " + esc(md(sd(e, 1)[0])) + (e.v ? " · " + esc(e.v) : "") + "</small></span><span>" + prepTag(dsx(e, "eb")) + "</span><span>" + prepTag(dsx(e, "po")) + "</span><span>" + prepTag(dsx(e, "hn"), sd(e, 2)[0]) + "</span>"; box.appendChild(r); });
+    pw.appendChild(box);
+  }
+  // 이슈 기록 장비 목록 (배선 중 · 예정 먼저)
+  var ee = $("ee"), keep = ee.value; ee.innerHTML = "";
+  var first = ing.concat(pre).map(function (x) { return x.e; }), rest = D.eq.filter(function (e) { return first.indexOf(e) < 0; });
+  first.concat(rest).forEach(function (e) { var o = el("option", null, e.n + (e.loc ? " · " + e.loc : "") + " · " + e.t); o.value = e.n; ee.appendChild(o); });
+  if (keep) ee.value = keep;
+  // 이슈 목록
+  var fi2 = $("eif"); fi2.innerHTML = "";
+  [["open", "진행 중 " + open.length], ["all", "전체 " + elogs.length]].forEach(function (o) { var b = el("button", "chip" + (EIF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { EIF = o[0]; drawElec(); }; fi2.appendChild(b); });
+  var lg = $("elog"); lg.innerHTML = "";
+  var show = EIF === "open" ? open : elogs;
+  if (!show.length) lg.appendChild(el("div", "empty", EIF === "open" ? "진행 중인 전장 이슈가 없습니다" : "등록된 전장 이슈가 없습니다"));
+  show.forEach(function (x) {
+    var it = issEl(x);
+    if (x.r !== "완료" && x.id) {
+      var bt = el("button", "done", "완료 처리"); bt.type = "button";
+      bt.onclick = function () {
+        var nm = authName(); if (!nm) { openLogin(); return; }
+        if (!LIVE) { x.r = "완료"; x.lv = "ok"; drawElec(); toast("✔ 완료 처리되었습니다"); return; }
+        bt.disabled = true; bt.textContent = "처리 중…";
+        rpc("dt_set_log_result", { n: nm, pin: sget("upin") || "", log_id: x.id, result: "완료" })
+          .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "처리 실패"); } x.r = "완료"; x.lv = "ok"; drawElec(); toast("✔ 완료 처리되었습니다"); })
+          .catch(function (er) { bt.disabled = false; bt.textContent = "완료 처리"; toast("⚠️ " + er.message); });
+      };
+      var mt = it.querySelector(".mt"); if (mt) { var ac = el("span", "act"); ac.appendChild(bt); mt.appendChild(ac); }
+    }
+    lg.appendChild(it);
+  });
+}
+$("eform").onsubmit = function (ev) {
+  ev.preventDefault();
+  var nm = authName(); if (!nm) { openLogin(); return; }
+  var t = $("et").value.trim(); if (!t) { $("et").focus(); toast("내용을 입력해 주세요"); return; }
+  var kind = ("전장·" + $("ek").value).slice(0, 20), res = $("er").value;
+  var rec = { e: $("ee").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
+  var done = function (row) { D.issues.unshift(row ? mapLog(row) : rec); $("et").value = ""; EIF = res === "완료" ? "all" : "open"; drawElec(); toast("✔ 저장되었습니다"); };
+  if (!LIVE) { done(); return; }
+  var sb = $("eform").querySelector(".sbtn"); sb.disabled = true; sb.textContent = "저장 중…";
+  rpc("dt_add_log", { n: nm, pin: sget("upin") || "", equip: rec.e, kind: kind, result: res, body: t })
     .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); } done(j.row); })
     .catch(function (er) { toast("⚠️ 저장 실패: " + er.message); })
     .then(function () { sb.disabled = false; sb.textContent = "저장"; });
@@ -1528,9 +1699,11 @@ function authUi() {
   $("nmtx").textContent = n || "로그인";
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
   $("qcard").classList.toggle("locked", !n);
+  $("ecard").classList.toggle("locked", !n);
 }
 $("bname").onclick = openLogin;
 $("lkgo").onclick = openLogin;
+[].forEach.call(document.querySelectorAll(".lkgo2"), function (b) { b.onclick = openLogin; });
 $("lgx").onclick = closeLogin;
 $("lgview").onclick = function () { closeLogin(); toast("조회 전용으로 이용합니다"); };
 $("lg").onclick = function (e) { if (e.target === this) closeLogin(); };
