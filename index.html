@@ -1037,6 +1037,7 @@ function go(v, keep) {
   if (!keep) window.scrollTo(0, 0);
   try { history.replaceState(null, "", v === "dash" ? location.pathname + location.search : "#" + v); } catch (e) {}   // 대시보드는 주소 뒤에 아무것도 안 붙임
   draw(); reveal();
+  if (window.fxWake) window.fxWake();   // 대시보드로 돌아오면 웨이퍼 배경 다시 켜기
 }
 document.addEventListener("click", function (e) { var g = e.target.closest("[data-go]"); if (g) go(g.dataset.go); });
 
@@ -1240,6 +1241,21 @@ function kpiRow(id, arr) {
   var w = $(id); w.innerHTML = "";
   arr.forEach(function (k, i) { var c = el("div", "card kpi rv in"); var t = el("div", "k"); t.appendChild(el("span", null, k[0])); c.appendChild(t); var v = el("div", "v"); v.appendChild(document.createTextNode("0")); v.dataset.cnt = k[1]; v.appendChild(el("small", null, k[2])); if (k[3]) v.style.color = "var(--warn)"; c.appendChild(v); w.appendChild(c); setTimeout(function () { countUp(v); }, 80 + i * 60); });
 }
+// 장비 고르기 칸: 지금 동탄에 있는 장비(자리순) → 입고 예정(입고일순) → 출하 완료 · 자리 · 장비명 · TYPE
+function eqSelect(sel, firstList) {
+  var keep = sel.value; sel.innerHTML = "";
+  var locK = function (e) { var m = (e.loc || "").match(/^([A-Z])(\d+)$/); return m ? m[1] + ("0" + m[2]).slice(-2) : "Z" + (e.loc || ""); };
+  var fl = firstList || [], src = D.eq.filter(function (e) { return fl.indexOf(e) < 0; });
+  var inn = src.filter(function (e) { return isAct(e); }).sort(function (a, b) { return locK(a) < locK(b) ? -1 : 1; });
+  var pre = src.filter(function (e) { return e.st < 10 && !isAct(e); }).sort(function (a, b) { var x = a.inD || "9999", y = b.inD || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
+  var out = src.filter(function (e) { return e.st >= 10; });
+  var grp = function (title, arr, lab) { if (!arr.length) return; var g = document.createElement("optgroup"); g.label = title + " (" + arr.length + "대)"; arr.forEach(function (e) { var o = el("option", null, lab(e)); o.value = e.n; g.appendChild(o); }); sel.appendChild(g); };
+  if (firstList && firstList.length) grp("⚡ 배선 중 · 예정", firstList, function (e) { return (e.loc ? e.loc + " · " : "") + e.n + " · " + e.t; });
+  grp("동탄에 있는 장비", inn, function (e) { return (e.loc ? e.loc + " · " : "미배정 · ") + e.n + " · " + e.t; });
+  grp("입고 예정", pre, function (e) { return (e.inD ? md(e.inD).replace(/\(.\)/, "") + " 입고 · " : "") + e.n + " · " + e.t; });
+  grp("출하 완료", out, function (e) { return e.n + " · " + e.t; });
+  if (keep) sel.value = keep;
+}
 function drawQc() {
   var w1 = D.eq.filter(function (e) { return e.q1 === "업로드 필요"; }).length, w2 = D.eq.filter(function (e) { return e.q2 === "업로드 필요"; }).length, op = D.issues.filter(function (x) { return x.r !== "완료"; }).length;
   kpiRow("qkpi", [["1차 대기", w1, "대", w1 > 0], ["2차 대기", w2, "대", w2 > 0], ["열린 ISSUE", op, "건", op > 0], ["이번 달 기록", D.issues.length, "건"]]);
@@ -1248,7 +1264,7 @@ function drawQc() {
   if (!rows.length) { var tr0 = el("tr"), td0 = el("td", null, "대기 항목이 없습니다"); td0.colSpan = 5; tr0.appendChild(td0); tb.appendChild(tr0); }
   var tg = function (s) { return s ? '<span class="tag ' + (s === "완료" ? "g" : "a") + '">' + esc(s) + "</span>" : '<span class="tag">-</span>'; };
   rows.forEach(function (e) { var tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); }; tr.innerHTML = "<td><b>" + esc(e.n) + "</b></td><td>" + esc(e.t) + "</td><td>" + tg(e.q1) + "</td><td>" + tg(e.q2) + "</td><td>" + esc(e.p) + "</td>"; tb.appendChild(tr); });
-  var fe = $("fe"), keep = fe.value; fe.innerHTML = ""; D.eq.forEach(function (e) { var o = el("option", null, e.n + " · " + e.t); o.value = e.n; fe.appendChild(o); }); if (keep) fe.value = keep;
+  eqSelect($("fe"));
   var lg = $("qlog"); lg.innerHTML = ""; if (!D.issues.length) lg.appendChild(el("div", "empty", "등록된 기록이 없습니다")); D.issues.forEach(function (x) { lg.appendChild(issEl(x)); });
 }
 $("qform").onsubmit = function (e) {
@@ -1335,10 +1351,7 @@ function drawElec() {
     pw.appendChild(box);
   }
   // 이슈 기록 장비 목록 (배선 중 · 예정 먼저)
-  var ee = $("ee"), keep = ee.value; ee.innerHTML = "";
-  var first = ing.concat(pre).map(function (x) { return x.e; }), rest = D.eq.filter(function (e) { return first.indexOf(e) < 0; });
-  first.concat(rest).forEach(function (e) { var o = el("option", null, e.n + (e.loc ? " · " + e.loc : "") + " · " + e.t); o.value = e.n; ee.appendChild(o); });
-  if (keep) ee.value = keep;
+  eqSelect($("ee"), ing.concat(pre).map(function (x) { return x.e; }));
   // 이슈 목록
   var fi2 = $("eif"); fi2.innerHTML = "";
   [["open", "진행 중 " + open.length], ["all", "전체 " + elogs.length]].forEach(function (o) { var b = el("button", "chip" + (EIF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { EIF = o[0]; drawElec(); }; fi2.appendChild(b); });
@@ -1737,8 +1750,11 @@ $("bref").onclick = function () {
   function frame(now) {
     if (!run) return;
     requestAnimationFrame(frame);
-    if (now - lastT < 32) return; lastT = now;
-    if (!base || cv.clientWidth !== W) { size(); if (!base) return; }                     // 배경은 30fps면 충분 → 스크롤에 여유
+    if (now - lastT < 32) return; lastT = now;                     // 배경은 30fps면 충분 → 스크롤에 여유
+    paint(now);
+  }
+  function paint(now) {
+    if (!base || cv.clientWidth !== W || cv.clientHeight !== H) { size(); if (!base) return; }
     var t = (now - t0) / 1000; cx.clearRect(0, 0, W, H);
     cx.drawImage(base, 0, 0, W, H);
     var sweep = ((t * .55) % (Math.PI * 2)) - Math.PI;
@@ -1756,10 +1772,17 @@ $("bref").onclick = function () {
     cx.fillStyle = "rgba(180,200,255,.5)";
     pts.forEach(function (p) { p.y -= p.v * 2; if (p.y < -5) { p.y = H + 5; p.x = Math.random() * W; } cx.fillRect(p.x, p.y, p.r * 1.6, p.r * 1.6); });
   }
-  size(); var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(size, 150); });
-  if (RM) { run = true; lastT = -1e9; frame(t0 + 2000); run = false; } else requestAnimationFrame(frame);
-  document.addEventListener("visibilitychange", function () { var was = run; run = !document.hidden && !RM && cur === "dash"; if (run && !was) requestAnimationFrame(frame); });
-  window.addEventListener("scroll", function () { var on = window.pageYOffset < H && cur === "dash" && !RM && !document.hidden; if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; }, { passive: true });
+  // 🌀 켜기/끄기: 대시보드 맨 위가 보일 때만 움직임 · 창 크기 바뀌거나 탭 돌아오면 바로 다시 그림
+  function wake() {
+    var on = cur === "dash" && !document.hidden && window.pageYOffset < (H || cv.clientHeight || 800);
+    if (RM) { run = false; if (cur === "dash") paint(t0 + 2000); return; }
+    if (on && !run) { run = true; lastT = 0; requestAnimationFrame(frame); } else if (!on) run = false;
+  }
+  window.fxWake = function () { requestAnimationFrame(function () { if (cur === "dash") paint(performance.now()); wake(); }); };
+  size(); var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(function () { size(); if (cur === "dash") paint(performance.now()); wake(); }, 150); });
+  run = false; wake(); if (cur === "dash") paint(performance.now());
+  document.addEventListener("visibilitychange", wake);
+  window.addEventListener("scroll", wake, { passive: true });
   // 커서 따라오는 빛
   $("hero").addEventListener("pointermove", function (e) { var r = this.getBoundingClientRect(), g = $("glow"); g.style.transform = "translate3d(" + (e.clientX - r.left - 260) + "px," + (e.clientY - r.top - 260) + "px,0)"; });
 })();
