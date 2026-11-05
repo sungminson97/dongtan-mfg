@@ -13,9 +13,14 @@
 <meta name="apple-mobile-web-app-title" content="동탄 제조">
 <meta name="application-name" content="동탄 제조">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- ⚡ 데이터 서버 · 글꼴 서버에 미리 연결 (첫 화면 빨리) -->
+<link rel="preconnect" href="https://wxzxqhcdtvrwdodnbdnu.supabase.co" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap">
+<!-- ⚡ 글꼴은 화면을 막지 않고 뒤에서 받음 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"></noscript>
 <style>
 :root{
   --bg:#f4f3ef;--bg2:#eae8e2;--card:#fbfaf8;--text:#0e121b;--sub:#6b6f78;--line:#dedbd3;--grid:rgba(14,18,27,.045);--mono:"JetBrains Mono","Pretendard Variable",Pretendard,sans-serif;
@@ -147,6 +152,7 @@ p.ds{color:var(--sub);font-size:15px;margin-top:8px;line-height:1.6}
 /* ── 섹션 ── */
 main{counter-reset:sec}
 section.sec{padding:84px 0 0}
+section.sec{content-visibility:auto;contain-intrinsic-size:auto 700px}   /* ⚡ 화면 밖 구역은 볼 때 그림 */
 section.sec:last-of-type{padding-bottom:90px}
 section.sec.band{padding-bottom:84px}
 section.sec.band.join{padding-top:0}
@@ -212,9 +218,10 @@ section.sec.band.join{padding-top:0}
 
 /* 오늘 */
 .tl{display:grid;gap:0;margin-top:10px}
-.ti{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);transition:padding .2s}
+.ti{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 8px;margin:0 -8px;border-radius:10px;border-bottom:1px solid var(--line);transition:background .2s}
 .ti:last-child{border-bottom:0}
-.ti:hover{padding-left:8px}
+.ti:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
+.ti>.tag{display:inline-flex;align-items:center;justify-content:center;align-self:center;margin:0;height:28px;padding:0 12px;line-height:1;font-size:12px}
 .ti .ic{width:40px;height:30px;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.04em;background:var(--text);color:var(--bg)}
 .ti b{display:block;font-size:14.5px;font-weight:900}
 .ti span{display:block;font-size:12px;color:var(--sub);font-weight:700;margin-top:2px}
@@ -368,13 +375,13 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .shr .nm{display:flex;align-items:center;gap:7px;text-align:left;min-width:0}
 .shr .nm b{white-space:nowrap}
 .shr>span{white-space:nowrap}
-.shr .nm small{font-size:11.5px;color:var(--sub);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shr .nm small{font-size:12.5px;color:var(--sub);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shr .z{color:var(--sub);opacity:.55;font-weight:600}
-.shr.shh{border-top:0;font-size:11.5px;color:var(--sub);font-weight:700;padding-top:0}
+.shr.shh{border-top:0;font-size:12.5px;color:var(--sub);font-weight:700;padding-top:0}
 .shr.hd{background:var(--bg2);border-radius:8px;border-top-color:transparent;padding-left:10px;padding-right:8px;margin-top:4px}
 .shr.sb{font-weight:700}
 .shr.sb .nm{padding-left:12px}
-.shnote{margin-top:12px;font-size:11.5px;color:var(--sub);line-height:1.5}
+.shnote{margin-top:14px;font-size:13px;color:var(--sub);line-height:1.6;font-weight:600}
 .subt{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
 @media (max-width:560px){.shr{font-size:12.5px;gap:4px;grid-template-columns:minmax(66px,1.2fr) repeat(4,minmax(0,1fr))}.shr .nm small{display:none}.shr.hd{padding-left:8px;padding-right:6px}.shr.sb .nm{padding-left:4px}.shr.shh{font-size:10.5px}.shbig b{font-size:38px}.sbar{gap:4px}.sbar em{font-size:10.5px}.sbar small{font-size:10px}}
 /* 월별 */
@@ -544,7 +551,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 /* 커서 따라오는 빛 (PC) */
 .glow{position:absolute;left:0;top:0;will-change:transform;width:520px;height:520px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(124,92,255,.22),transparent);z-index:-1;transition:opacity .3s}
 @media (hover:none){.glow{display:none}}
-.hero.off *{animation-play-state:paused!important}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.hero h1 .ln>span{transform:none}.hero .lead,.hbtn,.hstat{opacity:1}}
 </style>
@@ -843,6 +849,7 @@ function load(force) {
     return D;
   });
 }
+function dataSig(d) { try { return JSON.stringify([d.eq, d.issues, d.notice, d.mat, d.ship]); } catch (e) { return String(Math.random()); } }
 function cacheData() { try { var c = JSON.parse(sget("cache") || "null"); if (c && c.eq) { c.today = ymd(new Date()); return c; } } catch (e) {} return null; }
 function emptyData() { return liveData([], [], [], []); }
 
@@ -1545,8 +1552,7 @@ $("bref").onclick = function () {
   size(); var rz; window.addEventListener("resize", function () { clearTimeout(rz); rz = setTimeout(size, 150); });
   if (RM) { run = true; lastT = -1e9; frame(t0 + 2000); run = false; } else requestAnimationFrame(frame);
   document.addEventListener("visibilitychange", function () { var was = run; run = !document.hidden && !RM && cur === "dash"; if (run && !was) requestAnimationFrame(frame); });
-  var heroEl = $("hero");
-  window.addEventListener("scroll", function () { var vis = window.pageYOffset < H, on = vis && cur === "dash" && !RM && !document.hidden; heroEl.classList.toggle("off", !vis); if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; }, { passive: true });
+  window.addEventListener("scroll", function () { var on = window.pageYOffset < H && cur === "dash" && !RM && !document.hidden; if (on && !run) { run = true; requestAnimationFrame(frame); } else if (!on) run = false; }, { passive: true });
   // 커서 따라오는 빛
   $("hero").addEventListener("pointermove", function (e) { var r = this.getBoundingClientRect(), g = $("glow"); g.style.transform = "translate3d(" + (e.clientX - r.left - 260) + "px," + (e.clientY - r.top - 260) + "px,0)"; });
 })();
@@ -1567,15 +1573,16 @@ var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return
 (function () {
   var c = LIVE ? cacheData() : null, shown = false;
   if (c) { D = c; go(start, true); shown = true; setTimeout(pill, 300); }   // ⚡ 지난번 화면 먼저
-  load(false).then(function () { if (shown) { draw(); reveal(); } else { go(start, true); setTimeout(pill, 300); } })
+  var sig0 = c ? dataSig(c) : "";
+  load(false).then(function () { if (shown) { if (dataSig(D) !== sig0) { draw(); reveal(); } else { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} } } else { go(start, true); setTimeout(pill, 300); } })
     .catch(function (e) { if (!shown) { D = emptyData(); go(start, true); setTimeout(pill, 300); } toast("⚠️ 불러오기 실패: " + e.message); });
-  // 🔄 2분마다 조용히 최신으로 (입력 중 · 창 열림 · 화면 꺼짐일 땐 건너뜀)
+  // 🔄 3분마다 조용히 최신으로 (입력 중 · 창 열림 · 화면 꺼짐일 땐 건너뜀)
   setInterval(function () {
     if (!LIVE || document.hidden || $("dr").classList.contains("on") || $("lg").classList.contains("on")) return;
     var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
-    var y = window.pageYOffset;
-    load(false).then(function () { draw(); window.scrollTo(0, y); }).catch(function () {});
-  }, 120000);
+    var y = window.pageYOffset, before = dataSig(D);
+    load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {});   // 바뀐 게 있을 때만 다시 그림
+  }, 180000);
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
 </script>
