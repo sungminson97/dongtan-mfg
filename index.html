@@ -593,6 +593,17 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .qtl b{font-size:13.5px;font-weight:800}
 .qtl small{grid-column:1/-1;font-size:12px;color:var(--sub);font-weight:700}
 .drbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fold{display:flex;align-items:center;gap:10px;width:100%;text-align:left}
+.tline[hidden]{display:none!important}
+.fold span{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.fold small{font-size:12px;font-weight:800;color:var(--ac2);margin-left:2px}
+.fold svg{width:18px;height:18px;margin-left:auto;color:var(--sub);transition:transform .25s}
+.fold.on svg{transform:rotate(180deg)}
+.wrt{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.wrt span{font-size:12.5px;font-weight:700;color:var(--sub)}
+.wrt b{font-size:14.5px;font-weight:900}
+.wrt small{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--sub)}
+.ftnote{display:flex;gap:8px;align-items:flex-start;margin-top:10px;padding:10px 12px;border-radius:10px;font-size:12.5px;font-weight:700;line-height:1.5;color:#fcd34d;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.22)}
 .msw button{min-width:64px}
 .prep>div{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;padding:11px 2px;border-top:1px solid var(--line);font-size:13px;font-weight:800}
 .prep>div.h{border-top:0;font-size:12px;color:var(--sub);padding-top:2px}
@@ -868,6 +879,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div class="card nform" id="nform" hidden>
       <h3>공지 작성</h3>
       <form class="fm" id="nfm" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
         <div class="row"><label>분류<select id="nc"><option>일반</option><option>안전</option><option>일정</option></select></label><label class="ck"><input type="checkbox" id="np"> 필독으로 상단 고정</label></div>
         <label>제목<input id="nt" maxlength="60" placeholder="제목을 입력해 주세요"></label>
         <label>내용<textarea id="nb" placeholder="내용을 입력해 주세요"></textarea></label>
@@ -897,6 +909,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="card lockc" id="qcard"><h3>이력 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" id="lkgo">로그인</button></div>
         <form class="fm" id="qform" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="fe"></select></label>
           <div class="row"><label>구분<select id="fk"><option>1차 검수</option><option>2차 검수</option><option>ISSUE</option><option>QC</option></select></label><label>결과<select id="fr"><option>완료</option><option>보완 필요</option><option>NG</option></select></label></div>
           <label>내용<textarea id="ft" placeholder="예) LEVEL 재조정 후 정상"></textarea></label>
@@ -931,6 +944,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="card lockc" id="mcard"><h3>기구 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="mform" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="me"></select></label>
           <div class="row"><label>구분<select id="mk"><option>FRAME</option><option>MODULE</option><option>LEVEL</option><option>기구 자재</option><option>조립 품질</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="mr"><option>진행 중</option><option>완료</option></select></label></div>
           <label>내용<textarea id="mt" placeholder="예) MODULE 브라켓 체결 홀 위치 상이 → 업체 수정 가공 요청"></textarea></label>
@@ -942,7 +956,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 제조 · FT ═════ -->
   <div class="view" id="v-ft"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT · 구동 테스트</h2><p class="ds">제조완료 이후 DRY · FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div></div>
+    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">제조완료 이후 DRY · FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
     <div class="g4" id="fkpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -950,20 +964,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="ewm" id="fwm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>제조완료</th><th>FT 구동 (DRY + FULL CYCLE)</th><th>QC</th><th>ACM 검수</th><th>PACKING</th><th>출하</th><th>상태</th></tr></thead><tbody id="fwtb"></tbody></table></div>
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
-      <div class="card lockc" id="ftcard"><h3>FT 구동 시간 기록</h3><p class="ds2">DRY · FULL CYCLE 각 24시간 기준 · 모자란 시간은 다른 쪽으로 채워 합계 48시간이면 OK</p>
+      <div class="card lockc" id="ftcard"><h3>FT 구동 시간 기록</h3><p class="ds2">DRY · FULL CYCLE 각 24시간 기준 · 모자란 시간은 다른 쪽으로 채워 합계 48시간이면 OK</p><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 구동 시간은 그날그날 기록해 주세요.</div>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="ftfm" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="fte"></select></label>
           <div class="ftin"><label>DRY 구동 시간<input id="ftd" type="number" inputmode="decimal" min="0" max="200" step="0.5" placeholder="0"><em>h</em></label><label>FULL CYCLE 구동 시간<input id="ftf" type="number" inputmode="decimal" min="0" max="200" step="0.5" placeholder="0"><em>h</em></label></div>
           <div class="ftsum" id="ftsum"></div>
           <button class="sbtn" type="submit">저장</button>
         </form>
       </div>
-      <div class="card lockc" id="ficard"><h3>FT 이슈 기록</h3>
+      <div class="card lockc" id="ficard"><h3>FT 이슈 기록</h3><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 이슈는 발생한 날 바로 기록해 주세요.</div>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="fifm" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="fie"></select></label>
-          <div class="row"><label>구분<select id="fik"><option>DRY</option><option>FULL CYCLE</option><option>알람 · 에러</option><option>부품 · 교체</option><option>기타</option></select></label><label>상태<select id="fir"><option>진행 중</option><option>완료</option></select></label></div>
+          <div class="row"><label>구분<select id="fik"><option>제조공정</option><option>DRY</option><option>FULL CYCLE</option><option>알람 · 에러</option><option>부품 · 교체</option><option>기타</option></select></label><label>상태<select id="fir"><option>진행 중</option><option>완료</option></select></label></div>
           <label>내용<textarea id="fit" placeholder="예) FULL CYCLE 18h 경과 중 Z축 알람 발생 → 센서 교체 후 재구동"></textarea></label>
           <button class="sbtn" type="submit">저장</button>
         </form>
@@ -985,6 +1001,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="card lockc" id="qicard"><h3>품질 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="qifm" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="qie"></select></label>
           <div class="row"><label>구분<select id="qik"><option>QC 검수</option><option>ACM 검수</option><option>FT</option><option>PACKING</option><option>외관 · 사양</option><option>기타</option></select></label><label>상태<select id="qir"><option>진행 중</option><option>완료</option></select></label></div>
           <label>내용<textarea id="qit" placeholder="예) ACM 검수 중 커버 도장 찍힘 발견 → 업체 보수 요청"></textarea></label>
@@ -1008,6 +1025,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="card lockc" id="ecard"><h3>전장 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="eform" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="ee"></select></label>
           <div class="row"><label>구분<select id="ek"><option>배선</option><option>하네스</option><option>전장 자재</option><option>I/O CHECK</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="er"><option>진행 중</option><option>완료</option></select></label></div>
           <label>내용<textarea id="et" placeholder="예) 하네스 CN3 핀 배열 도면과 상이 → 업체 재제작 요청"></textarea></label>
@@ -1289,7 +1307,7 @@ function buildNav() {
       a.className = "mfgb"; a.setAttribute("aria-haspopup", "true");
       a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
       var dm = el("div", "ddm"), di = el("div", "in"); dm.id = "mfgm"; dm.appendChild(di);
-      [["mech", "기구", "FRAME · MODULE · LEVEL · 조립"], ["elec", "전장", "FRAME 배선 · 하네스 · I/O CHECK"], ["ft", "FT", "DRY · FULL CYCLE 구동 · 48h"]].forEach(function (m) {
+      [["mech", "기구", "FRAME · MODULE · LEVEL · 조립"], ["elec", "전장", "FRAME 배선 · 하네스 · I/O CHECK"], ["ft", "FT (Final Test)", "Teaching · LEVEL · TEST · FULL CYCLE"]].forEach(function (m) {
         var x = el("button"); x.type = "button"; x.dataset.m = m[0]; x.appendChild(document.createTextNode(m[1])); x.appendChild(el("small", null, m[2]));
         x.onclick = function () { go(m[0]); try { x.blur(); a.blur(); } catch (e) {} }; di.appendChild(x);
       });
@@ -1371,14 +1389,18 @@ function eqOpen(n, opt) {
   var bd = el("div", "bd");
   if (opt.row) bd.appendChild(drInsp(e, opt.row));   // 수입검사에서 누르면: 그 검사 건 + 이 장비 수입검사 현황 먼저
   var kv = el("div", "kv");
-  [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["FRAME 배선", (function () { var w = sd(e, 2); return w[0] ? md(w[0]) + (w[1] ? " 완료" : " 예정") : "-"; })()], ["하네스", (function () { var h = dsx(e, "hn"); return h[0] === "NA" ? "해당 없음" : h[1] ? "완료" : h[0] ? md(h[0]) + " 예정" : "-"; })()], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"], ["1차 검수", sdTx(e, 6)], ["PACKING", sdTx(e, 9)], ["출하", sdTx(e, 10, e.out)]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
+  [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"]].forEach(function (k, ki) { var d = el("div"); if (ki === 2) d.style.gridColumn = "1 / -1"; d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
   bd.appendChild(kv);
-  var c = el("div", "card"); c.appendChild(el("h3", null, "공정 진행"));
-  var tl = el("div", "tline"); tl.style.marginTop = "10px";
+  var c = el("div", "card"), tl = el("div", "tline"); tl.style.marginTop = "10px";
+  if (opt.ft) {   // FT 탭에서 열면 공정 진행은 접어 둠 (화살표로 펼치기)
+    var fb = el("button", "fold"); fb.type = "button"; fb.innerHTML = '<span>공정 진행</span><small>' + esc(STAGES[e.st]) + '</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
+    tl.hidden = true; fb.onclick = function () { tl.hidden = !tl.hidden; fb.classList.toggle("on", !tl.hidden); };
+    c.appendChild(fb);
+  } else c.appendChild(el("h3", null, "공정 진행"));
   STAGES.forEach(function (s, i) { var r = el("div", i < e.st ? "d" : i === e.st ? "c" : ""), dd = sd(e, i)[0]; r.appendChild(el("i")); r.appendChild(el("b", null, s)); r.appendChild(el("span", null, (dd ? md(dd) + (i <= e.st ? " · " : "") : "") + (i < e.st ? "완료" : i === e.st ? "진행 중" : dd ? "" : "-"))); tl.appendChild(r); });
   c.appendChild(tl); bd.appendChild(c);
   var fc = drFt(e); if (fc) bd.appendChild(fc);
-  var mc = drMat(e); if (mc) bd.appendChild(mc);
+  var mc = opt.ft ? null : drMat(e); if (mc) bd.appendChild(mc);
   if (!opt.row && IS.d && (IS.d.rows || []).some(function (x) { return x[15] === e.n; })) bd.appendChild(drInsp(e, null));
   if (LIVE && (!MS.list || !IS.d) && !opt.loaded) {   // 자재 · 수입검사 아직 안 받았으면 받아서 다시 그림
     Promise.all([matLoad(false), inspLoad(false)]).then(function () { if (DRN === n && $("dr").classList.contains("on")) eqOpen(n, Object.assign({}, opt, { loaded: 1 })); });
@@ -1433,7 +1455,7 @@ document.addEventListener("keydown", function (e) { if (e.key === "Escape") { dr
 function issEl(x) {
   var d = el("div", "is " + (x.lv || "")); d.appendChild(el("i", "sv"));
   var w = el("div"); w.appendChild(el("b", null, x.e + " · " + x.k)); w.appendChild(el("p", null, x.t));
-  var mt = el("div", "mt"); mt.appendChild(el("span", "tag " + (x.r === "완료" ? "g" : x.r === "NG" ? "r" : "a"), x.r)); mt.appendChild(el("span", "tag", md(x.d))); if (x.w) mt.appendChild(el("span", "tag", x.w));
+  var mt = el("div", "mt"); mt.appendChild(el("span", "tag " + (x.r === "완료" ? "g" : x.r === "NG" ? "r" : "a"), x.r)); mt.appendChild(el("span", "tag", md(x.d))); if (x.w) mt.appendChild(el("span", "tag", "작성 " + x.w));
   w.appendChild(mt); d.appendChild(w); return d;
 }
 function tItem(ic, a, b, n) { var d = el("div", "ti"); d.appendChild(el("div", "ic", ic)); var w = el("div"); w.appendChild(el("b", null, a)); w.appendChild(el("span", null, b)); d.appendChild(w); if (n) { d.style.cursor = "pointer"; d.onclick = function () { eqOpen(n); }; d.appendChild(el("span", "tag b", "상세")); } return d; }
@@ -1526,7 +1548,7 @@ function drawDash() {
     var c = el("div", "ic" + (x.r !== "완료" ? " op" : "")); c.onclick = function () { eqOpen(x.e); };
     c.appendChild(el("small", null, String(x.k || "").replace("·", " · ")));
     c.appendChild(el("b", null, x.e)); c.appendChild(el("p", null, x.t));
-    var mt = el("div", "mt"); mt.appendChild(el("span", "tag " + (x.r === "완료" ? "g" : x.r === "NG" ? "r" : "a"), x.r)); mt.appendChild(el("span", "tag", md(x.d).replace(/\(.\)/, ""))); if (x.w) mt.appendChild(el("span", "tag", x.w));
+    var mt = el("div", "mt"); mt.appendChild(el("span", "tag " + (x.r === "완료" ? "g" : x.r === "NG" ? "r" : "a"), x.r)); mt.appendChild(el("span", "tag", md(x.d).replace(/\(.\)/, ""))); if (x.w) mt.appendChild(el("span", "tag", "작성 " + x.w));
     c.appendChild(mt); is.appendChild(c);
   });
 }
@@ -2045,7 +2067,7 @@ function ftPreview() {
   b.className = "ftsum" + (ok ? " ok" : "");
   b.innerHTML = '<div class="r"><span>합계</span><b>' + hf(t) + " / " + FT_NEED + "h · " + (ok ? '<span class="tag g">OK</span>' : '<span class="tag a">' + hf(FT_NEED - t) + " 부족</span>") + '</b></div><div class="drbar"><u style="width:' + Math.min(100, t / FT_NEED * 100) + '%"></u></div>' +
     "<p>" + (d < 24 && f > 24 && ok ? "DRY " + hf(24 - d) + " 부족분을 FULL CYCLE로 채워 합계 48시간을 달성했습니다." : d > 24 && f < 24 && ok ? "FULL CYCLE " + hf(24 - f) + " 부족분을 DRY로 채워 합계 48시간을 달성했습니다." : ok ? "DRY · FULL CYCLE 합계 48시간을 달성했습니다." : "DRY · FULL CYCLE 각 24시간 기준 · 합계 48시간이 되면 OK입니다.") +
-    (r ? "<br>마지막 저장: DRY " + hf(r.dry) + " · FULL CYCLE " + hf(r.full) + (r.w ? " · " + esc(r.w) : "") + (r.at ? " · " + esc(md(r.at)) : "") : "") + "</p>";
+    (r ? "<br>마지막 저장: DRY " + hf(r.dry) + " · FULL CYCLE " + hf(r.full) + (r.w ? " · 작성 " + esc(r.w) : "") + (r.at ? " · " + esc(md(r.at)) : "") : "") + "</p>";
 }
 function ftFill() { var e = D.eq.filter(function (x) { return x.n === $("fte").value; })[0], r = e && ftRec(e); $("ftd").value = r ? r.dry : ""; $("ftf").value = r ? r.full : ""; ftPreview(); }
 $("fte").addEventListener("change", ftFill); $("ftd").addEventListener("input", ftPreview); $("ftf").addEventListener("input", ftPreview);
@@ -2073,12 +2095,22 @@ function drFt(e) {
   [["제조완료", sd(e, 7)[0]], ["QC", sd(e, 8)[0]], ["ACM 검수", acmP(e)[0] === "NA" ? "" : acmP(e)[0]], ["PACKING", sd(e, 9)[0]], ["출하", sd(e, 10)[0] || e.out], ["FT 구동", f.r ? hf(f.tot) + " / " + FT_NEED + "h" : ""]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1] ? (/^\d{4}-/.test(k[1]) ? md(k[1]) : k[1]) : "-")); kv.appendChild(d); });
   c.appendChild(kv);
   var bar = el("div", "drbar"), u = el("u"); u.style.width = Math.min(100, f.tot / FT_NEED * 100) + "%"; if (f.ok) u.style.background = "var(--ok)"; bar.appendChild(u); c.appendChild(bar);
-  c.appendChild(el("p", "drp2", f.r ? "DRY " + hf(f.dry) + " · FULL CYCLE " + hf(f.full) + " · 합계 " + hf(f.tot) + " / " + FT_NEED + "h" + (f.r.w ? " · " + f.r.w : "") : "FT 구동 시간이 아직 기록되지 않았습니다"));
+  c.appendChild(el("p", "drp2", f.r ? "DRY " + hf(f.dry) + " · FULL CYCLE " + hf(f.full) + " · 합계 " + hf(f.tot) + " / " + FT_NEED + "h" + (f.r.w ? " · 작성 " + f.r.w : "") : "FT 구동 시간이 아직 기록되지 않았습니다"));
   var bs = el("div", "drbtns");
-  var b1 = el("button", "drgo", "구동 시간 기록"); b1.type = "button"; b1.onclick = function () { drClose(); go("ft"); setTimeout(function () { $("fte").value = e.n; ftFill(); goForm("ftcard", "ftd"); }, 60); };
+  var b1 = el("button", "drgo", "구동 시간 기록"); b1.type = "button"; b1.onclick = function () { if (!ftAfter1(e)) { toast(e.st >= 10 ? "출하된 장비는 기록할 수 없습니다" : "1차 검수 이후 장비만 기록할 수 있습니다"); return; } drClose(); go("ft"); setTimeout(function () { $("fte").value = e.n; ftFill(); goForm("ftcard", "ftd"); }, 60); };
   var b2 = el("button", "drgo", "품질 이슈 기록"); b2.type = "button"; b2.onclick = function () { drClose(); go("qa"); setTimeout(function () { $("qie").value = e.n; goForm("qicard", "qit"); }, 60); };
   bs.appendChild(b1); bs.appendChild(b2); c.appendChild(bs);
   return c;
+}
+// FT 기록 장비: 1차 검수를 마친(또는 날짜가 지난) 장비 중 출하 전 · 제조완료 빠른 순
+function ftAfter1(e) { var p = sd(e, 6); return e.st < 10 && (mDone(e, 6) || (p[0] && p[0] <= D.today)); }
+function ftSelect(sel) {
+  var keep = sel.value; sel.innerHTML = "";
+  var L = D.eq.filter(ftAfter1).sort(function (a, b) { var x = sd(a, 7)[0] || "9999", y = sd(b, 7)[0] || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
+  if (!L.length) { var o = el("option", null, "1차 검수를 마친 장비가 없습니다"); o.value = ""; sel.appendChild(o); sel.disabled = true; return; }
+  sel.disabled = false;
+  L.forEach(function (e) { var o = el("option", null, [e.loc, e.n, e.t].filter(Boolean).join(" · ")); o.value = e.n; sel.appendChild(o); });
+  if (keep && L.some(function (e) { return e.n === keep; })) sel.value = keep;
 }
 function drawFt() {
   var T = D.today, d14 = addD(T, 14);
@@ -2097,20 +2129,20 @@ function drawFt() {
   var tb = $("fwtb"); tb.innerHTML = ""; var mw = $("fwm"); mw.innerHTML = "";
   if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", FWF === "ing" ? "2주 안에 제조완료 예정인 장비가 없습니다" : FWF === "run" ? "FT 진행 중인 장비가 없습니다" : FWF === "ok" ? "FT를 마친 장비가 없습니다" : "표시할 장비가 없습니다"); td0.colSpan = 10; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); }
   list.forEach(function (x) {
-    var e = x.e, tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
+    var e = x.e, tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { ft: 1 }); };
     var st = x.f.ok ? '<span class="tag g">FT OK</span>' : mfgTag(x.m);
     tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</td><td>" + (e.loc ? esc(e.loc) : '<span class="dim">-</span>') + "</td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + dCell(e, 7) + "</td><td>" + ftCell(x.f) + "</td><td>" + dCell(e, 8) + "</td><td>" + dCellA(e) + "</td><td>" + dCell(e, 9) + "</td><td>" + dCell(e, 10) + "</td><td>" + st + "</td>";
     tb.appendChild(tr);
-    var m = el("div"); m.onclick = function () { eqOpen(e.n); };
+    var m = el("div"); m.onclick = function () { eqOpen(e.n, { ft: 1 }); };
     m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dMob("제조완료", e, 7) + " · " + dMob("QC", e, 8) + " · " + dMobA(e) + " · " + dMob("PACKING", e, 9) + " · " + dMob("출하", e, 10) + '</span><span class="s2"><em>FT</em> ' + (x.f.r ? "DRY " + hf(x.f.dry) + " · FULL " + hf(x.f.full) + " " + ftTag(x.f) : '<span class="tag">미입력</span>') + "</span>";
     mw.appendChild(m);
   });
   // 기록 폼: 제조완료 지난 장비 먼저
   var keep = $("fte").value;
-  eqSelect($("fte"), run.concat(ing).map(function (x) { return x.e; }));
+  ftSelect($("fte"));
   if (keep && keep !== $("fte").value) $("fte").value = keep;
   if ($("fte")._v !== $("fte").value) { $("fte")._v = $("fte").value; ftFill(); } else ftPreview();
-  eqSelect($("fie"), run.concat(ing).map(function (x) { return x.e; }));
+  ftSelect($("fie"));
   issBox({ logs: flogs, f: FIF, setF: function (v) { FIF = v; }, more: FMORE, setMore: function () { FMORE = true; }, chips: "fif", sub: "fisub", box: "flog", name: "FT 이슈", redraw: drawFt });
 }
 function drawQa() {
@@ -2143,7 +2175,7 @@ function drawQa() {
   var tl = $("qftl"); tl.innerHTML = "";
   var runs = D.issues.filter(isFtRun).slice(0, 8);
   if (!runs.length) tl.appendChild(el("div", "empty", "아직 FT 구동 시간 기록이 없습니다"));
-  runs.forEach(function (x) { var r = el("div"); r.onclick = function () { eqOpen(x.e); }; var ok2 = /OK/.test(x.t); r.innerHTML = "<b>" + esc(x.e) + '</b><span class="tag ' + (ok2 ? "g" : "a") + '">' + (ok2 ? "OK" : "진행") + "</span><small>" + esc(x.t) + " · " + esc(md(x.d).replace(/\(.\)/, "")) + (x.w ? " · " + esc(x.w) : "") + "</small>"; tl.appendChild(r); });
+  runs.forEach(function (x) { var r = el("div"); r.onclick = function () { eqOpen(x.e); }; var ok2 = /OK/.test(x.t); r.innerHTML = "<b>" + esc(x.e) + '</b><span class="tag ' + (ok2 ? "g" : "a") + '">' + (ok2 ? "OK" : "진행") + "</span><small>" + esc(x.t) + " · " + esc(md(x.d).replace(/\(.\)/, "")) + (x.w ? " · 작성 " + esc(x.w) : "") + "</small>"; tl.appendChild(r); });
   eqSelect($("qie"), act.map(function (x) { return x.e; }));
   issBox({ logs: qlogs, f: QIF, setF: function (v) { QIF = v; }, more: QMORE, setMore: function () { QMORE = true; }, chips: "qif", sub: "qisub", box: "qilog", name: "품질 이슈", redraw: drawQa });
 }
@@ -2907,6 +2939,7 @@ function authUi() {
   if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));   // 화면이 좁은 PC에선 직함 숨김 (메뉴랑 안 겹치게)
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
   [].forEach.call(document.querySelectorAll(".lockc"), function (c) { c.classList.toggle("locked", !n); });
+  [].forEach.call(document.querySelectorAll("[data-wrt]"), function (b) { b.textContent = n ? dname(n, ti) : "로그인 필요"; });   // 작성자 = 로그인한 이름 (입력 칸 없음)
   if (typeof cur !== "undefined" && D && /^(ship|eq|elec|mech|ft|qa)$/.test(cur)) try { draw(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
 }
 $("bname").onclick = openLogin;
