@@ -663,6 +663,10 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .me b{display:block;font-size:20px;font-weight:800}
 .me span{font-size:13px;color:var(--ok);font-weight:700}
 .ib .dt{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.2)}
+.lgme{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;width:100%;margin-top:14px;padding:13px 16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--ac) 40%,var(--line));background:color-mix(in srgb,var(--ac) 8%,transparent);text-align:left;transition:border-color .2s,background .2s}
+.lgme b{font-size:14.5px;font-weight:900;color:var(--text)}.lgme span{grid-column:1;font-size:12.5px;font-weight:700;color:var(--sub)}
+.lgme svg{grid-row:1/3;grid-column:2;width:18px;height:18px;color:var(--ac)}
+.lgme:hover{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
 .lockc{position:relative}
 .lockc .lk{display:none}
 .lockc.locked .fm{opacity:.28;pointer-events:none;filter:blur(1px)}
@@ -789,7 +793,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div class="g2" style="align-items:start">
       <div class="card"><h3>검수 대기</h3><div class="tbw" style="margin-top:12px"><table class="tbl"><thead><tr><th>장비</th><th>TYPE</th><th>1차</th><th>2차</th><th>담당</th></tr></thead><tbody id="qtb"></tbody></table></div></div>
       <div class="card lockc" id="qcard"><h3>이력 기록</h3>
-        <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>PIN 입력 후 이름을 선택해 주세요.</span><button type="button" id="lkgo">로그인</button></div>
+        <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" id="lkgo">로그인</button></div>
         <form class="fm" id="qform" style="margin-top:14px" autocomplete="off">
           <label>장비<select id="fe"></select></label>
           <div class="row"><label>구분<select id="fk"><option>1차 검수</option><option>2차 검수</option><option>ISSUE</option><option>QC</option></select></label><label>결과<select id="fr"><option>완료</option><option>보완 필요</option><option>NG</option></select></label></div>
@@ -863,18 +867,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <button class="mx" id="lgx" type="button" aria-label="닫기">✕</button>
   <div class="lgs" id="lg1">
     <div class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg></div>
-    <h5>로그인</h5>
-    <p>기록 · 수정은 PIN 입력 후 가능합니다.<br>조회는 로그인 없이 이용할 수 있습니다.</p>
+    <h5>처음 등록 · 공용 PIN</h5>
+    <p>처음 등록할 때만 팀 공용 PIN이 필요합니다.<br>조회는 로그인 없이 이용할 수 있습니다.</p>
     <label class="pin" id="pinb"><i></i><i></i><i></i><i></i><input id="pini" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN 4자리"></label>
     <div class="perr" id="perr"></div>
+    <button class="lgme" id="lgname" type="button"><b>이미 개인 PIN을 정했어요</b><span>이름 + 개인 PIN으로 로그인</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
     <button class="lgl" id="lgview" type="button">로그인 없이 조회하기</button>
   </div>
   <div class="lgs" id="lg2" hidden>
-    <h5>이름 입력</h5>
-    <p>기록에 남을 본인 이름을 정확하게 입력해 주세요.</p>
-    <div class="nmlock">한 번 등록한 이름은 변경할 수 없습니다.</div>
+    <button class="lgback" id="nmback" type="button" hidden>‹ 처음 등록 (공용 PIN)</button>
+    <h5 id="nmh">이름 입력</h5>
+    <p id="nmp">기록에 남을 본인 이름을 정확하게 입력해 주세요.</p>
+    <div class="nmlock" id="nmlk">한 번 등록한 이름은 변경할 수 없습니다.</div>
     <form id="nmform" autocomplete="off">
-      <input class="nmin" id="nmin" placeholder="예) 박제민" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
+      <input class="nmin" id="nmin" placeholder="예) 홍길동" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
       <div class="nmhint" id="nmhint">한글 3글자로 입력해 주세요.</div>
       <button class="sbtn" id="nmnext" type="submit" disabled>다음</button>
     </form>
@@ -1838,12 +1844,26 @@ function pinHash(p) { var h = 5381, s = "nb-dt|" + p; for (var i = 0; i < s.leng
 function authGet() { try { var a = JSON.parse(sget("auth") || "null"); if (a && a.n && Date.now() - a.t < 90 * 864e5) return a; } catch (e) {} return null; }
 function authName() { var a = authGet(); return a ? a.n : ""; }
 function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
+/* 🔐 로그인 순서
+ *  ① 이 기기에서 로그인한 적 있으면 → 바로 '손성민 · 개인 PIN' (공용 PIN 없이)
+ *  ② 처음 화면(공용 PIN)에서 '이미 개인 PIN을 정했어요' → 이름 → 개인 PIN
+ *  ③ 처음 등록 → 공용 PIN → 이름 → 본인 확인 → 개인 PIN 정하기 (두 번)
+ */
+var LGM = "team";   // team: 공용 PIN으로 시작 · direct: 이름 + 개인 PIN
 function openLogin() {
-  var a = authGet();
-  if (a) { $("mename").textContent = a.n; $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); }
-  else { pinReset(); lgStep(1); }
+  var a = authGet(), last = sget("last") || "";
   $("lg").classList.add("on");
-  if (!a) setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
+  if (a) { $("mename").textContent = a.n; $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
+  if (NAME_RE.test(last)) { LGM = "direct"; TP = ""; upStart(last, "set"); return; }   // ① 이 기기에서 쓰던 이름
+  LGM = "team"; pinReset(); lgStep(1);
+  setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
+}
+function nameMode() {   // 이름 입력 화면 문구: 처음 등록 / 개인 PIN 로그인
+  var d = LGM === "direct";
+  $("nmback").hidden = !d;
+  $("nmh").textContent = d ? "이름으로 로그인" : "이름 입력";
+  $("nmp").textContent = d ? "개인 PIN을 정한 본인 이름을 입력해 주세요." : "기록에 남을 본인 이름을 정확하게 입력해 주세요.";
+  $("nmlk").hidden = d;
 }
 function closeLogin() { $("lg").classList.remove("on"); try { $("pini").blur(); } catch (e) {} }
 function pinReset() { $("pini").value = ""; $("perr").textContent = ""; $("pinb").className = "pin"; pinDraw(); }
@@ -1870,10 +1890,10 @@ var UP = { n: "", mode: "", first: "", bad: 0 };
 function upKey(n) { return "upin_" + n; }
 function upHas(n) { return !!sget(upKey(n)); }
 function upHash(n, p) { return String(pinHash(n + "|" + p)); }
-/* ✍️ 이름 직접 입력: 한글 3글자만 (예: 박제민) → 본인 맞는지 확인 → 개인 PIN */
+/* ✍️ 이름 직접 입력: 한글 3글자만 (예: 홍길동) → 본인 맞는지 확인 → 개인 PIN */
 var NAME_RE = /^[가-힣]{3}$/;
 function nameGrid() {
-  $("nmin").value = ""; nmCheck(true);
+  nameMode(); $("nmin").value = ""; nmCheck(true);
   setTimeout(function () { try { $("nmin").focus(); } catch (e) {} }, 80);
 }
 function nmCheck(quiet) {
@@ -1891,9 +1911,23 @@ $("nmform").onsubmit = function (e) {
   e.preventDefault();
   var v = nmCheck(false); if (!v) { $("nmin").focus(); return; }
   try { $("nmin").blur(); } catch (er) {}
+  UP.n = v;
+  if (LGM === "direct") {   // ② 이름 + 개인 PIN: 등록된 이름이면 바로 PIN, 처음이면 공용 PIN부터
+    var nb = $("nmnext"); nb.disabled = true; nb.textContent = "확인 중…";
+    var go = function (st) {
+      nb.disabled = false; nb.textContent = "다음";
+      if (st === "set") { upStart(v, "set"); return; }
+      LGM = "team"; pinReset(); lgStep(1); $("perr").textContent = v + "님은 아직 등록 전입니다. 처음 등록은 공용 PIN을 입력해 주세요.";
+    };
+    if (!LIVE) { go(upHas(v) ? "set" : "new"); return; }
+    rpc("dt_name_status", { n: v }).then(function (j) { if (!j || !j.ok) { nb.disabled = false; nb.textContent = "다음"; toast((j && j.error) || "확인 실패"); return; } go(j.status); }, function (er) { nb.disabled = false; nb.textContent = "다음"; toast(er.message); });
+    return;
+  }
   $("cfname").textContent = v; $("cfav").textContent = v.slice(-2, -1);
-  UP.n = v; lgStep(5);
+  lgStep(5);
 };
+$("lgname").onclick = function () { LGM = "direct"; TP = ""; try { $("pini").blur(); } catch (e) {} nameGrid(); lgStep(2); };
+$("nmback").onclick = function () { LGM = "team"; pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80); };
 $("cfno").onclick = function () { nameGrid(); lgStep(2); };
 $("cfyes").onclick = function () {
   if (!LIVE) { upStart(UP.n); return; }
@@ -1907,6 +1941,7 @@ $("cfyes").onclick = function () {
 function upStart(n, st) {
   UP.n = n; UP.first = ""; UP.bad = 0; UP.mode = (st ? st === "set" : upHas(n)) ? "check" : "set1";
   $("upname").textContent = n; $("upav").textContent = n.slice(-2, -1) || n[0];
+  $("lgback").textContent = LGM === "direct" ? "‹ 다른 이름으로 로그인" : "‹ 이름 다시 입력";
   try { $("pini2").value = ""; } catch (e) {}
   upText(); upReset(); lgStep(4);
   setTimeout(function () { try { $("pini2").focus(); } catch (e) {} }, 80);
@@ -1914,8 +1949,8 @@ function upStart(n, st) {
 function upText() {
   var m = UP.mode;
   $("upst").textContent = m === "check" ? "본인 확인" : "처음 로그인 · PIN 설정";
-  $("upmsg").textContent = m === "check" ? "본인 PIN 4자리를 입력해 주세요." : m === "set1" ? "본인만 아는 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
-  $("uphelp").textContent = m === "check" ? "PIN을 잊으셨으면 관리자에게 초기화를 요청해 주세요. (5회 틀리면 10분간 잠김)" : "다른 사람이 이 이름으로 기록하지 못하도록 막는 용도입니다. 공용 PIN과 같은 번호는 쓸 수 없습니다.";
+  $("upmsg").textContent = m === "check" ? "개인 PIN 4자리를 입력해 주세요." : m === "set1" ? "본인만 아는 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
+  $("uphelp").textContent = m === "check" ? "처음에 정한 개인 PIN입니다. 잊으셨으면 관리자에게 초기화를 요청해 주세요. (5회 틀리면 10분간 잠김)" : "다른 사람이 이 이름으로 기록하지 못하도록 막는 용도입니다. 공용 PIN과 같은 번호는 쓸 수 없습니다.";
 }
 function upReset() { $("pini2").value = ""; $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw(); }
 function upDraw() {
@@ -1929,7 +1964,7 @@ function upBad(msg) {
 function upDone(pin) {
   $("pinb2").className = "pin ok"; TP = "";
   if (pin) sset("upin", pin);
-  sset("auth", JSON.stringify({ n: UP.n, t: Date.now() }));
+  sset("auth", JSON.stringify({ n: UP.n, t: Date.now() })); sset("last", UP.n);   // 다음엔 이 이름 + 개인 PIN만
   setTimeout(function () { authUi(); closeLogin(); toast(UP.n + "님, 로그인되었습니다"); }, 260);
 }
 $("pini2").addEventListener("input", function () {
@@ -1939,7 +1974,7 @@ $("pini2").addEventListener("input", function () {
   var inp = this;
   if (LIVE && UP.mode === "check") {
     inp.disabled = true; $("perr2").textContent = "확인 중…";
-    rpc("dt_login", { team_pin: TP, n: UP.n, pin: p }).then(function (j) {
+    rpc(TP ? "dt_login" : "dt_login2", TP ? { team_pin: TP, n: UP.n, pin: p } : { n: UP.n, pin: p }).then(function (j) {
       inp.disabled = false; $("perr2").textContent = ""; try { inp.focus(); } catch (e) {}
       if (j && j.ok) { upDone(p); return; }
       var m = (j && j.error) || "로그인 실패"; upBad(m);
@@ -1976,7 +2011,7 @@ function authLost(msg) {
   authUi(); toast("" + (msg || "다시 로그인해 주세요")); setTimeout(openLogin, 600);
 }
 $("pini2").addEventListener("focus", upDraw); $("pini2").addEventListener("blur", upDraw);
-$("lgback").onclick = function () { nameGrid(); lgStep(2); };
+$("lgback").onclick = function () { if (LGM === "direct") { try { localStorage.removeItem("dt_last"); } catch (e) {} } nameGrid(); lgStep(2); };
 function authUi() {
   var n = authName(), b = $("bname");
   b.querySelector("svg").style.display = n ? "none" : "";
