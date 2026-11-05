@@ -664,7 +664,6 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .me span{font-size:13px;color:var(--ok);font-weight:700}
 .ib .dt{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.2)}
 .lghi{display:flex;align-items:center;gap:12px;margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--ok) 45%,var(--line));background:color-mix(in srgb,var(--ok) 9%,transparent);animation:fade .3s}
-.lghi .av{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--grd);color:#fff;font-weight:900;font-size:16px}
 .lghi b{display:block;font-size:17px;font-weight:900}.lghi span{font-size:12.5px;font-weight:700;color:var(--ok)}
 .lgme{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 10px;width:100%;margin-top:14px;padding:13px 16px;border-radius:14px;border:1px solid color-mix(in srgb,var(--ac) 40%,var(--line));background:color-mix(in srgb,var(--ac) 8%,transparent);text-align:left;transition:border-color .2s,background .2s}
 .lgme b{font-size:14.5px;font-weight:900;color:var(--text)}.lgme span{grid-column:1;font-size:12.5px;font-weight:700;color:var(--sub)}
@@ -874,7 +873,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <p>개인 PIN 4자리를 입력하면 이름이 확인되고 바로 로그인됩니다.<br>처음이면 팀 공용 PIN을 입력해 등록해 주세요.</p>
     <label class="pin" id="pinb"><i></i><i></i><i></i><i></i><input id="pini" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN 4자리"></label>
     <div class="perr" id="perr"></div>
-    <div class="lghi" id="lghi" hidden><span class="av" id="lghav"></span><div><b id="lghn"></b><span>확인되었습니다 · 로그인 중</span></div></div>
+    <div class="lghi" id="lghi" hidden><div><b id="lghn"></b><span>확인되었습니다 · 로그인 중</span></div></div>
     <button class="lgl" id="lgview" type="button">로그인 없이 조회하기</button>
   </div>
   <div class="lgs" id="lg2" hidden>
@@ -1880,7 +1879,7 @@ $("pini").addEventListener("input", function () {
   var ok = function () { LGM = "team"; TP = p; $("pinb").className = "pin ok"; setTimeout(function () { nameGrid(); lgStep(2); }, 260); };   // 공용 PIN → 처음 등록
   var me = function (n) {   // 개인 PIN → 이름 띄우고 로그인
     UP.n = n; $("pinb").className = "pin ok"; $("perr").textContent = "";
-    $("lghn").textContent = n + "님"; $("lghav").textContent = n.slice(-2, -1) || n[0]; $("lghi").hidden = false;
+    $("lghn").textContent = n + "님"; $("lghi").hidden = false;
     try { inp.blur(); } catch (e) {}
     setTimeout(function () { upDone(p); }, 650);
   };
