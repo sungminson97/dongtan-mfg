@@ -367,6 +367,25 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .sbar em{font-style:normal;font-size:11.5px;font-weight:900}
 .sbar small{font-size:11px;font-weight:700;color:var(--sub);white-space:nowrap}
 .sbar .on small{color:var(--text)}
+.shvs{margin-top:16px}
+.vsh{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:13px;font-weight:800;margin-bottom:7px}
+.vsh .a{color:#5b9df9}.vsh .b{color:#e3b341}
+.vsh b{font-size:12px;padding:3px 9px;border-radius:999px;background:var(--bg2);color:var(--text)}
+.vsb{display:flex;height:12px;border-radius:999px;overflow:hidden;background:var(--bg2);gap:2px}
+.vsb u{display:block;height:100%;width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.vsb u.a{background:#5b9df9;border-radius:999px 0 0 999px}.vsb u.b{background:#e3b341;border-radius:0 999px 999px 0}
+.gbar{display:flex;align-items:flex-end;gap:6px;height:178px;margin-top:18px}
+.gbar>div{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;height:100%}
+.gbar .grp{display:flex;align-items:flex-end;justify-content:center;gap:2px;width:100%;height:100%}
+.gbar .gb{flex:1;max-width:18px;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%}
+.gbar .stk{width:100%;display:flex;flex-direction:column;justify-content:flex-end;border-radius:3px 3px 0 0;overflow:hidden}
+.gbar .stk u{display:block;width:100%;height:0;transition:height 1s cubic-bezier(.2,.8,.2,1)}
+.gbar .stk u.pl{background:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--sub) 40%,transparent) 3px 5px);border:1px dashed;border-bottom:0;border-radius:3px 3px 0 0;box-sizing:border-box}
+.gbar em{font-style:normal;font-size:11px;font-weight:900;line-height:1}
+.gbar .gb.a em{color:#8fb8ff}.gbar .gb.b em{color:#f0c96a}.gbar .gb.v em{color:#5eead4}
+.gbar small{font-size:11px;font-weight:700;color:var(--sub);white-space:nowrap}
+.gbar .on small{color:var(--text)}
+@media (max-width:560px){.gbar{gap:3px}.gbar .grp{gap:1px}.gbar em{font-size:9.5px;letter-spacing:-.04em}.gbar small{font-size:10px}.vsh{font-size:12px}}
 .shlg{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;font-weight:700;color:var(--sub)}
 .shlg span{display:inline-flex;align-items:center;gap:6px}
 .shlg i.pl{border:1px dashed var(--sub);width:10px;height:10px}
@@ -1212,20 +1231,35 @@ function drawShipStats(a, b) {
   [["A팀", T.A || 0, SHC.A], ["B팀", T.B || 0, SHC.B], ["업체", shipVen(T, S), SHC.V]].forEach(function (c) { var d = el("span"); var i = el("i"); i.style.background = c[2]; d.appendChild(i); d.appendChild(document.createTextNode(c[0] + " ")); d.appendChild(el("b", null, c[1] + "대")); chips.appendChild(d); });
   top.appendChild(chips); a.appendChild(top);
   a.appendChild(el("p", "shsub", +cm[0].slice(5, 7) + "월 " + cmN + "대 출하 · 남은 예정 " + plan + "대"));
-  var ch = el("div", "sbar"), mx = 1;
-  S.months.forEach(function (m, i) { var t = shipSum(m[1]) + (i === S.months.length - 1 ? plan : 0); if (t > mx) mx = t; });
+  // A팀 vs B팀 한눈에 (비율 막대)
+  var tA = T.A || 0, tB = T.B || 0, tAB = Math.max(1, tA + tB), dif = tB - tA;
+  var vs = el("div", "shvs");
+  var vh = el("div", "vsh"); vh.appendChild(el("span", "a", "A팀 " + tA + "대 · " + Math.round(tA / tAB * 100) + "%")); vh.appendChild(el("b", null, dif ? (dif > 0 ? "B팀" : "A팀") + " +" + Math.abs(dif) + "대" : "동률")); vh.appendChild(el("span", "b", "B팀 " + tB + "대 · " + Math.round(tB / tAB * 100) + "%")); vs.appendChild(vh);
+  var vb = el("div", "vsb"), ua = el("u", "a"), ub = el("u", "b"); ua.dataset.w = tA / tAB * 100; ub.dataset.w = tB / tAB * 100; vb.appendChild(ua); vb.appendChild(ub); vs.appendChild(vb);
+  a.appendChild(vs);
+  // 월별: A팀 · B팀 나란히 (업체는 출하가 생기면 같이)
+  var hasV = S.months.some(function (m) { return shipVen(m[1], S) > 0; });
+  var ser = [["A", SHC.A], ["B", SHC.B]].concat(hasV ? [["V", SHC.V]] : []);
+  var val = function (o, k) { return k === "V" ? shipVen(o, S) : (o[k] || 0); };
+  var pv = function (k) { return k === "V" ? shipVen(S.plan || {}, S) : ((S.plan || {})[k] || 0); };
+  var ch = el("div", "gbar" + (hasV ? " v3" : "")), mx = 1;
+  S.months.forEach(function (m, i) { ser.forEach(function (x) { var t = val(m[1], x[0]) + (i === S.months.length - 1 ? pv(x[0]) : 0); if (t > mx) mx = t; }); });
   S.months.forEach(function (m, i) {
-    var o = m[1], last = i === S.months.length - 1, t = shipSum(o), col = el("div", last ? "on" : "");
-    col.appendChild(el("em", null, String(t)));
-    var st = el("div", "stk");
-    if (last && plan) { var pu = el("u", "pl"); pu.dataset.h = plan / mx * 120; st.appendChild(pu); }
-    [["V", shipVen(o, S)], ["B", o.B || 0], ["A", o.A || 0]].forEach(function (x) { if (!x[1]) return; var u = el("u"); u.style.background = SHC[x[0]]; u.dataset.h = x[1] / mx * 120; u.title = (x[0] === "V" ? "업체" : x[0] + "팀") + " " + x[1] + "대"; st.appendChild(u); });
-    col.appendChild(st); col.appendChild(el("small", null, +m[0].slice(5, 7) + "월"));
-    col.title = +m[0].slice(5, 7) + "월 · A팀 " + (o.A || 0) + " · B팀 " + (o.B || 0) + " · 업체 " + shipVen(o, S) + (last && plan ? " · 남은 예정 " + plan : "");
+    var o = m[1], last = i === S.months.length - 1, col = el("div", last ? "on" : ""), grp = el("div", "grp");
+    ser.forEach(function (x) {
+      var n = val(o, x[0]), pn = last ? pv(x[0]) : 0, bar = el("div", "gb " + x[0].toLowerCase());
+      bar.appendChild(el("em", null, String(n)));
+      var stk = el("div", "stk");
+      if (pn) { var pu = el("u", "pl"); pu.dataset.h = pn / mx * 120; pu.style.borderColor = x[1]; stk.appendChild(pu); }
+      var u = el("u"); u.style.background = x[1]; u.dataset.h = n / mx * 120; stk.appendChild(u);
+      bar.appendChild(stk); grp.appendChild(bar);
+    });
+    col.appendChild(grp); col.appendChild(el("small", null, +m[0].slice(5, 7) + "월"));
+    col.title = +m[0].slice(5, 7) + "월 · A팀 " + (o.A || 0) + "대 · B팀 " + (o.B || 0) + "대" + (hasV ? " · 업체 " + shipVen(o, S) + "대" : "") + (last && plan ? " · 남은 예정 " + plan + "대" : "");
     ch.appendChild(col);
   });
   a.appendChild(ch);
-  var lg = el("div", "shlg"); [["A팀", SHC.A], ["B팀", SHC.B], ["업체", SHC.V], ["이번 달 남은 예정", ""]].forEach(function (x) { var d = el("span"); var i = el("i", x[1] ? "" : "pl"); if (x[1]) i.style.background = x[1]; d.appendChild(i); d.appendChild(document.createTextNode(x[0])); lg.appendChild(d); }); a.appendChild(lg);
+  var lg = el("div", "shlg"); [["A팀", SHC.A], ["B팀", SHC.B]].concat(hasV ? [["업체", SHC.V]] : []).concat([["이번 달 남은 예정", ""]]).forEach(function (x) { var d = el("span"); var i = el("i", x[1] ? "" : "pl"); if (x[1]) i.style.background = x[1]; d.appendChild(i); d.appendChild(document.createTextNode(x[0])); lg.appendChild(d); }); a.appendChild(lg);
   // 오른쪽: 나인벨(A·B팀) · 업체별
   b.appendChild(el("span", "cap", "NineBell · Partners")); b.appendChild(el("h3", null, "나인벨 · 업체"));
   var g = function (o, k) { return (o && o[k]) || 0; };
@@ -1245,7 +1279,7 @@ function drawShipStats(a, b) {
   });
   b.appendChild(tb);
   b.appendChild(el("p", "shnote", "B팀 장비통계와 같은 기준 · 제조1팀 담당자 칸의 A팀/B팀, 팀 표시 없이 업체만 적힌 장비는 업체로 셉니다 · " + (S.built || S.today) + " 기준"));
-  setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = Math.max(3, +u.dataset.h) + "px"; }); countUp(bn); }, 60);
+  setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = (+u.dataset.h ? Math.max(3, +u.dataset.h) : 0) + "px"; }); [].forEach.call(a.querySelectorAll(".vsb u"), function (u) { u.style.width = u.dataset.w + "%"; }); countUp(bn); }, 60);
 }
 function drawShip() {
   drawShipStats($("fshA"), $("fshB"));
