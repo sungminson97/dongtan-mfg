@@ -265,7 +265,8 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .mapw svg.plan{min-width:720px}
 .plan .scap{font-size:9px;font-weight:700;fill:#3f4a63}
 .plan .rm{font-family:"Pretendard Variable",Pretendard,sans-serif;font-size:12px;font-weight:700;fill:#6b7488}
-.plan .rid{font-size:15px;font-weight:800;fill:#8a96b3;letter-spacing:.08em}
+.plan .rid{font-family:var(--mono);font-size:26px;font-weight:800;fill:#8a96b3;letter-spacing:.06em;opacity:.85}
+.plan .rsub{font-family:var(--mono);font-size:8px;font-weight:700;fill:#5d6782;letter-spacing:.24em}
 .plan .slot .sb{fill:rgba(255,255,255,.015);stroke:#33405e;stroke-width:1;stroke-dasharray:3 3;transition:fill .25s,stroke .25s}
 .plan .slot.on{cursor:pointer}
 .plan .slot.on .sb{fill:color-mix(in srgb,var(--c) 22%,transparent);stroke:var(--c);stroke-width:1.5;stroke-dasharray:none}
@@ -1038,7 +1039,9 @@ function drawPlan(boxId) {
   W(326, 5, 714, 342, "room");
   W(1044, 5, 102, 346, "zone ship"); T(1095, 168, "출하장", "rm sh"); sv.appendChild(svgEl("path", { d: "M1080 190h30m-9-7l9 7-9 7", class: "arr" }));
   W(837, 359, 163, 21, "fix"); for (var st = 852; st < 1000; st += 8) L(st, 361, st, 378);
-  sv.appendChild(svgEl("text", { x: 716, y: 183, class: "rid", "text-anchor": "middle" }, "CR4"));
+  // 방 이름: 왼쪽 아래 빈 곳 (A9 왼쪽) — 자리 사이 통로를 가리지 않게
+  sv.appendChild(svgEl("text", { x: 392, y: 300, class: "rid", "text-anchor": "middle" }, "CR4"));
+  sv.appendChild(svgEl("text", { x: 392, y: 318, class: "rsub", "text-anchor": "middle" }, "CLEAN ROOM"));
   // 작업대 · 랙 · 받침선
   W(329, 16, 13.5, 115, "fix"); W(1014, 78, 12, 102, "fix"); W(1014, 224, 12, 116, "fix");
   L(355, 165, 903, 165); W(901, 42.5, 17.5, 110, "fix");
