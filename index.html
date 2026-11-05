@@ -537,11 +537,24 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .ewt td{white-space:nowrap}
 .ewt .ok{color:var(--ok)}
 .ewt .dim{color:var(--sub);font-weight:600}
+.ewt .bad{color:var(--warn);font-weight:900}
 .wpg{display:flex;align-items:center;gap:8px}
 .wpg i{display:block;width:64px;height:6px;border-radius:6px;background:var(--bg2);overflow:hidden}
 .wpg i u{display:block;height:100%;border-radius:6px;background:#f59e0b}
 .wpg.late i u{background:var(--warn)}
 .prep{display:grid;gap:0;margin-top:10px}
+/* 제조 메뉴: 마우스를 올리면 기구 · 전장 */
+nav.top .mfgb svg{width:11px;height:11px;margin-left:3px;vertical-align:-1px;transition:transform .25s}
+nav.top .mfgb:hover svg,nav.top .mfgb:focus-visible svg{transform:rotate(180deg)}
+nav.top .ddm{position:absolute;top:100%;left:0;padding-top:10px;transform:translate(-50%,-4px);opacity:0;visibility:hidden;transition:opacity .2s,transform .2s,visibility .2s;z-index:5}
+nav.top .mfgb:hover+.ddm,nav.top .ddm:hover,nav.top .mfgb:focus-visible+.ddm,nav.top .ddm:focus-within{opacity:1;visibility:visible;transform:translate(-50%,0)}
+nav.top .ddm .in{display:flex;flex-direction:column;gap:2px;min-width:196px;padding:6px;border-radius:16px;background:var(--card);border:1px solid var(--line);box-shadow:0 18px 40px -16px rgba(0,0,0,.35)}
+nav.top .ddm button,.onhero nav.top .ddm button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;padding:10px 12px;border-radius:11px;font-size:14px;font-weight:800;color:var(--text);text-align:left;letter-spacing:0}
+nav.top .ddm button small{font-size:11.5px;font-weight:600;color:var(--sub)}
+nav.top .ddm button:hover{background:var(--bg2)}
+nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);color:var(--ac)}
+.msw{display:inline-flex;margin:14px 0 0}
+.msw button{min-width:64px}
 .prep>div{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;padding:11px 2px;border-top:1px solid var(--line);font-size:13px;font-weight:800}
 .prep>div.h{border-top:0;font-size:12px;color:var(--sub);padding-top:2px}
 .prep>div>span{text-align:center}
@@ -858,9 +871,32 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <div id="fcal" style="display:grid;gap:12px"></div>
   </div></div>
 
+  <!-- ═════ 제조 · 기구 ═════ -->
+  <div class="view" id="v-mech"><div class="wrap">
+    <div class="vtop"><span class="eyebrow">Mechanical</span><h2 class="tt">기구 · 조립</h2><p class="ds">FRAME 입고부터 MODULE · 1차 LEVEL · 1차 검수 · 제조완료까지 기구 조립 진행 현황입니다. 기구 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button></div><button class="xbtn vx" type="button" id="mcx"></button></div>
+    <div class="card eiss miss"><div class="ehd"><div><h3>기구 이슈</h3><p class="ds2" id="misub"></p></div><div class="ehr"><div class="chips" id="mif"></div><button class="wbtn" type="button" id="mwrite">이슈 기록</button></div></div><div class="iss" id="mlog" style="margin-top:6px"></div></div>
+    <div class="g4" id="mkpi" style="margin:16px 0"></div>
+    <div class="card" style="padding-bottom:10px">
+      <div class="ehd"><h3>기구 조립 현황</h3><div class="chips" id="mwf"></div></div>
+      <div class="ewm" id="mwm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>FRAME 입고</th><th>MODULE</th><th>1차 LEVEL</th><th>1차 검수</th><th>제조완료</th><th>상태</th></tr></thead><tbody id="mwtb"></tbody></table></div>
+    </div>
+    <div class="g2" style="align-items:start;margin-top:16px">
+      <div class="card"><h3>기구 자재 입고</h3><p class="ds2">MODULE 장착 전 장비의 자재 입고 상태 (조립 중 · FRAME 입고 3주 이내)</p><div id="mprep"></div></div>
+      <div class="card lockc" id="mcard"><h3>기구 이슈 기록</h3>
+        <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
+        <form class="fm" id="mform" style="margin-top:14px" autocomplete="off">
+          <label>장비<select id="me"></select></label>
+          <div class="row"><label>구분<select id="mk"><option>FRAME</option><option>MODULE</option><option>LEVEL</option><option>기구 자재</option><option>조립 품질</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="mr"><option>진행 중</option><option>완료</option></select></label></div>
+          <label>내용<textarea id="mt" placeholder="예) MODULE 브라켓 체결 홀 위치 상이 → 업체 수정 가공 요청"></textarea></label>
+          <button class="sbtn" type="submit">저장</button>
+        </form>
+      </div>
+    </div>
+  </div></div>
+
   <!-- ═════ 전장 ═════ -->
   <div class="view" id="v-elec"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p><button class="xbtn vx" type="button" id="elx"></button></div>
+    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button></div><button class="xbtn vx" type="button" id="elx"></button></div>
     <div class="card eiss"><div class="ehd"><div><h3>전장 이슈</h3><p class="ds2" id="eisub"></p></div><div class="ehr"><div class="chips" id="eif"></div><button class="wbtn" type="button" id="ewrite">이슈 기록</button></div></div><div class="iss" id="elog" style="margin-top:6px"></div></div>
     <div class="g4" id="ekpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -1136,7 +1172,7 @@ var TABS = [
   ["eq", "장비", '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'],
   ["qc", "검수 · 이력", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'],
   ["ship", "입고 · 출하", '<path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>'],
-  ["elec", "전장", '<path d="M13 2L4.5 13.5H11l-1 8.5 8.5-11.5H12z"/>'],
+  ["mfg", "제조", '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>'],
   ["etc", "자재 · 수입검사", '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>'],
   ["map", "배치도", '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8v4M12 8v4M16 8v4M10 15v2M14 15v2"/>']
 ];
@@ -1144,6 +1180,16 @@ var cur = "dash";
 function buildNav() {
   TABS.forEach(function (t) {
     var a = el("button", null, t[1]); a.type = "button"; a.dataset.v = t[0]; a.onclick = function () { go(t[0]); }; $("ntop").appendChild(a);
+    if (t[0] === "mfg") {   // 제조: 마우스를 올리면 기구 · 전장
+      a.className = "mfgb"; a.setAttribute("aria-haspopup", "true");
+      a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
+      var dm = el("div", "ddm"), di = el("div", "in"); dm.id = "mfgm"; dm.appendChild(di);
+      [["mech", "기구", "FRAME · MODULE · LEVEL · 조립"], ["elec", "전장", "FRAME 배선 · 하네스 · I/O CHECK"]].forEach(function (m) {
+        var x = el("button"); x.type = "button"; x.dataset.m = m[0]; x.appendChild(document.createTextNode(m[1])); x.appendChild(el("small", null, m[2]));
+        x.onclick = function () { go(m[0]); try { x.blur(); a.blur(); } catch (e) {} }; di.appendChild(x);
+      });
+      $("ntop").appendChild(dm);
+    }
     var b = el("button"); b.type = "button"; b.dataset.v = t[0];
     b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + t[2] + "</svg>" + esc(t[3] || t[1].replace(/ · .*/, ""));
     b.onclick = function () { go(t[0]); }; $("nbot").querySelector(".in").appendChild(b);
@@ -1151,13 +1197,20 @@ function buildNav() {
 }
 function pill() {
   ["ntop", "nbot"].forEach(function (id) {
-    var n = $(id), on = n.querySelector('button[data-v="' + cur + '"]'), p = n.querySelector(".pill"); if (!on || !p) return;
+    var n = $(id), on = n.querySelector('button[data-v="' + navKey(cur) + '"]'), p = n.querySelector(".pill"); if (!on || !p) return;
     [].forEach.call(n.querySelectorAll("button"), function (b) { b.classList.toggle("on", b === on); });
     p.style.width = on.offsetWidth + "px"; p.style.transform = "translateX(" + on.offsetLeft + "px)";
   });
+  var mb = document.querySelector("#ntop .mfgb"), mm = $("mfgm");
+  if (mb && mm) { mm.style.left = (mb.offsetLeft + mb.offsetWidth / 2) + "px"; [].forEach.call(mm.querySelectorAll("button"), function (b) { b.classList.toggle("cur", b.dataset.m === cur); }); }
 }
+var MFG = sget("mfg") === "elec" ? "elec" : "mech";   // 제조 → 마지막에 본 기구/전장
+function navKey(v) { return v === "mech" || v === "elec" ? "mfg" : v; }
 function go(v, keep) {
+  if (v === "mfg") v = MFG;
+  if (v === "mech" || v === "elec") { MFG = v; sset("mfg", v); }
   cur = v;
+  [].forEach.call(document.querySelectorAll(".msw button"), function (b) { b.classList.toggle("on", b.dataset.go === v); });
   [].forEach.call(document.querySelectorAll(".view"), function (x) { x.classList.toggle("on", x.id === "v-" + v); });
   pill(); hdrState();
   if (!keep) window.scrollTo(0, 0);
@@ -1198,7 +1251,7 @@ function draw() {
   try { qcCalc(); } catch (e) {}
   $("demob").style.display = D.demo ? "" : "none";
   $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + D.updated + " 기준";
-  if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else if (cur === "elec") drawElec(); else { drawEtc(); if (LIVE) { matLoad(false); inspLoad(false); } }
+  if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else if (cur === "elec") drawElec(); else if (cur === "mech") drawMech(); else { drawEtc(); if (LIVE) { matLoad(false); inspLoad(false); } }
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
 var DRN = "";
@@ -1658,6 +1711,141 @@ $("eform").onsubmit = function (ev) {
     .then(function () { sb.disabled = false; sb.textContent = "저장"; });
 };
 
+/* ── 🔧 기구: FRAME 입고 → MODULE → 1차 LEVEL → 1차 검수 → 제조완료 · 기구 자재 · 기구 이슈 ──
+ * 단계 완료 = 그 단계 완료 체크 또는 현재 공정이 이미 넘어감 */
+var MSTEP = [[1, "FRAME 입고"], [3, "MODULE"], [5, "1차 LEVEL"], [6, "1차 검수"], [7, "제조완료"]];
+var MWF = "ing", MIF = "open", MMORE = false;
+function mDone(e, i) { return !!sd(e, i)[1] || e.st > i; }
+function mechOf(e) {
+  var T = D.today, fi = sd(e, 1), mc = sd(e, 7);
+  if (!fi[0] && !mc[0] && e.st < 1) return null;
+  var n = MSTEP.filter(function (m) { return mDone(e, m[0]); }).length;
+  if (mDone(e, 7)) return { k: "done", n: 5, fi: fi, mc: mc };
+  if (!(mDone(e, 1) || (fi[0] && fi[0] <= T))) return { k: "pre", n: 0, fi: fi, mc: mc };
+  var nx = MSTEP.filter(function (m) { return m[0] > 1 && !mDone(e, m[0]); })[0], nd = sd(e, nx[0])[0];
+  return { k: nd && nd < T ? "late" : "ing", n: n, fi: fi, mc: mc, nx: nx, nd: nd };
+}
+function mDays(a, b) { return Math.round((new Date(a) - new Date(b)) / 864e5); }
+function mStat(w) {   // 상태 글자
+  var T = D.today;
+  if (w.k === "done") return "제조완료";
+  if (w.k === "pre") return w.fi[0] ? "입고 D-" + mDays(w.fi[0], T) : "입고일 미정";
+  if (!w.nd) return w.nx[1] + " · 일정 미정";
+  var d = mDays(w.nd, T); return w.nx[1] + (w.k === "late" ? " 지연 " + (-d) + "일" : d === 0 ? " 오늘" : " D-" + d);
+}
+function mMat(e) { return (MS.list || []).filter(function (x) { return x.eq === e.n; })[0] || null; }
+function isMechLog(x) { return /^기구/.test(x.k || ""); }
+function mPrepList() {
+  var d21 = addD(D.today, 21);
+  return D.eq.filter(function (e) { var w = mechOf(e); if (!w || w.k === "done" || mDone(e, 3)) return false; return w.k !== "pre" || (w.fi[0] && w.fi[0] <= d21); })
+    .map(function (e) { return { e: e, m: mMat(e) }; }).filter(function (x) { return x.m && x.m.n; })
+    .sort(function (a, b) { var x = sd(a.e, 1)[0] || "9", y = sd(b.e, 1)[0] || "9"; return x < y ? -1 : x > y ? 1 : 0; });
+}
+function mMatTxt(x) { var T = D.today, md3 = sd(x.e, 3)[0]; if (!x.m.wait) return "전부 입고"; return "미입고 " + x.m.wait + (md3 && md3 <= addD(T, 7) ? " · 긴급" : ""); }
+function mBuild(X, G, prep, mlogs) {
+  var T = D.today, fn = "동탄제조_기구현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : "-"; };
+  var H1 = ["구분", "장비", "자리", "업체", "담당", "FRAME 입고", "MODULE", "1차 LEVEL", "1차 검수", "제조완료", "상태", "긴급"], r1 = [];
+  G.forEach(function (g) {
+    r1.push({ t: "band", v: [g[0] + " · " + g[1].length + "대"] });
+    g[1].forEach(function (x) { var e = x.e, s0 = mStat(x.w); r1.push({ v: [g[0], e.n, e.loc || "-", e.v || "-", e.p || "-", d(e, 1), d(e, 3), d(e, 5), d(e, 6), d(e, 7), s0, e.u ? "긴급" : ""], c: { 1: { bold: true }, 10: { color: /지연/.test(s0) ? XC.warn : /제조완료/.test(s0) ? XC.ok : XC.navy, bold: true }, 11: { color: XC.warn, bold: true } } }); });
+  });
+  var H2 = ["장비", "FRAME 입고", "MODULE 예정", "업체", "자재 품목", "입고 완료", "미입고", "상태"], r2 = prep.map(function (x) { var t = mMatTxt(x); return { v: [x.e.n, d(x.e, 1), d(x.e, 3), x.e.v || "-", x.m.n, x.m.n - x.m.wait, x.m.wait, t], c: { 0: { bold: true }, 6: x.m.wait ? { color: XC.warn, bold: true } : undefined, 7: { color: x.m.wait ? (/긴급/.test(t) ? XC.warn : XC.amb) : XC.ok, bold: true } } }; });
+  var H3 = ["날짜", "장비", "구분", "상태", "내용", "작성"], r3 = mlogs.map(function (x) { return { v: [x.d, x.e, String(x.k).replace(/^기구·/, ""), x.r, x.t, x.w], c: { 1: { bold: true }, 3: { color: x.r === "완료" ? XC.ok : XC.amb, bold: true } } }; });
+  if (!X) return { fn: fn, csv: [H1].concat(r1.filter(function (r) { return r.t !== "band"; }).map(function (r) { return r.v; })) };
+  var wb = new X.Workbook(), sub = xlStamp() + " · ✓ = 완료";
+  xlSheet(wb, "기구 조립 현황", "동탄 제조 · 기구 조립 현황", sub, H1.map(function (h, j) { return { h: h, w: [11, 24, 7, 11, 10, 11, 11, 11, 11, 11, 18, 7][j], c: j >= 2 && j !== 3 && j !== 4 }; }), r1, { land: true });
+  xlSheet(wb, "기구 자재 입고", "동탄 제조 · 기구 자재 입고 (MODULE 장착 전)", sub, H2.map(function (h, j) { return { h: h, w: [26, 12, 12, 12, 10, 10, 10, 14][j], c: j >= 1 && j !== 3 }; }), r2.length ? r2 : [{ v: ["확인할 장비가 없습니다", "", "", "", "", "", "", ""], t: "pl" }]);
+  xlSheet(wb, "기구 이슈", "동탄 제조 · 기구 이슈", sub, H3.map(function (h, j) { return { h: h, w: [12, 22, 12, 10, 60, 10][j], c: j === 3, wrap: j === 4 }; }), r3.length ? r3 : [{ v: ["", "기록된 기구 이슈가 없습니다", "", "", "", ""], t: "pl" }], { h: 30 });
+  return { wb: wb, fn: fn, msg: "기구 현황 엑셀을 내려받았습니다" };
+}
+function drawMech() {
+  var T = D.today, d14 = addD(T, 14), d7 = addD(T, -7);
+  if (LIVE && !MS.list && !MS.ld) matLoad(false);
+  var W = D.eq.map(function (e) { return { e: e, w: mechOf(e) }; }).filter(function (x) { return x.w; });
+  var byNd = function (a, b) { var x = a.w.nd || "9999", y = b.w.nd || "9999"; return x < y ? -1 : x > y ? 1 : 0; };
+  var ing = W.filter(function (x) { return x.w.k === "ing" || x.w.k === "late"; }).sort(byNd), late = ing.filter(function (x) { return x.w.k === "late"; });
+  var pre = W.filter(function (x) { return x.w.k === "pre" && x.w.fi[0] && x.w.fi[0] <= d14; }).sort(function (a, b) { return a.w.fi[0] < b.w.fi[0] ? -1 : 1; });
+  var done = W.filter(function (x) { return x.w.k === "done" && x.w.mc[0] && x.w.mc[0] >= d7 && x.e.st < 10; }).sort(function (a, b) { return a.w.mc[0] > b.w.mc[0] ? -1 : 1; });
+  var prep = mPrepList(), wait = prep.filter(function (x) { return x.m.wait; });
+  var mlogs = D.issues.filter(isMechLog), open = mlogs.filter(function (x) { return x.r !== "완료"; });
+  kpiRow("mkpi", [["조립 중", ing.length, "대", false, function () { MWF = "ing"; drawMech(); goList("#mwf"); }, MWF === "ing"], ["일정 지연", late.length, "대", late.length > 0, function () { MWF = "late"; drawMech(); goList("#mwf"); }, MWF === "late"],
+    ["자재 미입고", wait.length, "대", wait.length > 0, function () { goList("#mprep"); }], ["열린 기구 이슈", open.length, "건", open.length > 0, function () { MIF = "open"; drawMech(); goList(".miss"); }]]);
+  xlBtn($("mcx"), "기구 엑셀 다운로드", function (X) { return mBuild(X, [["조립 중", ing.filter(function (x) { return x.w.k === "ing"; })], ["일정 지연", late], ["2주 내 입고", pre], ["최근 제조완료", done]], prep, mlogs); });
+  // 조립 현황 표
+  var f = $("mwf"); f.innerHTML = "";
+  [["ing", "조립 중 " + ing.length], ["late", "지연 " + late.length], ["pre", "2주 내 입고 " + pre.length], ["done", "최근 제조완료 " + done.length]].forEach(function (o) { var b = el("button", "chip" + (MWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MWF = o[0]; drawMech(); }; f.appendChild(b); });
+  var list = MWF === "ing" ? ing : MWF === "late" ? late : MWF === "pre" ? pre : done;
+  var tb = $("mwtb"); tb.innerHTML = ""; var mw = $("mwm"); mw.innerHTML = "";
+  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", MWF === "ing" ? "지금 조립 중인 장비가 없습니다" : MWF === "late" ? "일정이 늦어진 장비가 없습니다" : MWF === "pre" ? "2주 안에 FRAME이 들어오는 장비가 없습니다" : "최근 7일 안에 제조완료된 장비가 없습니다"); td0.colSpan = 9; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); }
+  list.forEach(function (x) {
+    var e = x.e, w = x.w, tr = el("tr"), s0 = mStat(w);
+    var tg = w.k === "done" ? "g" : w.k === "late" ? "r" : w.k === "pre" ? "" : (w.nd && mDays(w.nd, T) <= 1 ? "a" : "b");
+    var st = w.k === "done" || w.k === "pre" ? '<span class="tag ' + tg + '">' + esc(s0) + "</span>" : '<div class="wpg' + (w.k === "late" ? " late" : "") + '" title="기구 ' + w.n + ' / 5단계 완료"><i><u style="width:' + Math.max(6, w.n / 5 * 100) + '%"></u></i><span class="tag ' + tg + '">' + esc(s0) + "</span></div>";
+    var dt = function (i) { var p = sd(e, i), ok = mDone(e, i), bad = !ok && w.k === "late" && w.nx && w.nx[0] === i; return p[0] ? '<span class="' + (ok ? "ok" : bad ? "bad" : "") + '">' + esc(md(p[0])) + (ok ? " ✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : '<span class="dim">-</span>'; };
+    var dm = function (lb, i) { var p = sd(e, i), ok = mDone(e, i); return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (ok ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (ok ? "✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : "-"); };
+    tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
+    var m = el("div"); m.onclick = function () { eqOpen(e.n); };
+    m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dm("입고", 1) + " · " + dm("MODULE", 3) + " · " + dm("LEVEL", 5) + " · " + dm("1차", 6) + " · " + dm("완료", 7) + "</span>";
+    mw.appendChild(m);
+    tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</td><td>" + (e.loc ? esc(e.loc) : '<span class="dim">-</span>') + "</td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + dt(1) + "</td><td>" + dt(3) + "</td><td>" + dt(5) + "</td><td>" + dt(6) + "</td><td>" + dt(7) + "</td><td>" + st + "</td>";
+    tb.appendChild(tr);
+  });
+  // 기구 자재 입고
+  var pw = $("mprep"); pw.innerHTML = "";
+  if (LIVE && !MS.list) pw.appendChild(el("div", "empty", "자재 현황을 불러오는 중입니다…"));
+  else if (!prep.length) pw.appendChild(el("div", "empty", MS.err && !LIVE ? MS.err : "MODULE 장착 전 확인할 장비가 없습니다"));
+  else {
+    var box = el("div", "prep"); box.innerHTML = '<div class="h"><span>장비 · FRAME 입고</span><span>입고 완료</span><span>미입고</span><span>MODULE 예정</span></div>';
+    prep.forEach(function (x) {
+      var e = x.e, t = mMatTxt(x), r = el("div"); r.style.cursor = "pointer"; r.onclick = function () { eqOpen(e.n); };
+      var m3 = sd(e, 3)[0];
+      r.innerHTML = "<span><b>" + esc(e.n) + "</b><small>입고 " + esc(md(sd(e, 1)[0])) + (e.v ? " · " + esc(e.v) : "") + "</small></span><span>" + (x.m.n - x.m.wait) + " / " + x.m.n + "</span><span>" + (x.m.wait ? '<span class="tag ' + (/긴급/.test(t) ? "r" : "a") + '">' + x.m.wait + "품목</span>" : '<span class="tag g">전부 입고</span>') + "</span><span>" + (m3 ? '<span class="tag' + (m3 < T ? " r" : "") + '">' + esc(md(m3).replace(/\(.\)/, "")) + "</span>" : '<span class="tag">미정</span>') + "</span>";
+      box.appendChild(r);
+    });
+    pw.appendChild(box);
+  }
+  eqSelect($("me"), ing.concat(pre).map(function (x) { return x.e; }));
+  // 이슈 목록
+  var fi2 = $("mif"); fi2.innerHTML = "";
+  [["open", "진행 중 " + open.length], ["all", "전체 " + mlogs.length]].forEach(function (o) { var b = el("button", "chip" + (MIF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MIF = o[0]; drawMech(); }; fi2.appendChild(b); });
+  var lg = $("mlog"); lg.innerHTML = "";
+  $("misub").textContent = open.length ? "진행 중 " + open.length + "건 · 완료되면 '완료 처리'를 눌러 주세요" : "진행 중인 기구 이슈가 없습니다";
+  var show = MIF === "open" ? open : mlogs, full = show.length, lim = MMORE ? 999 : 4; show = show.slice(0, lim);
+  if (!show.length) lg.appendChild(el("div", "empty", MIF === "open" ? "진행 중인 기구 이슈가 없습니다" : "등록된 기구 이슈가 없습니다"));
+  show.forEach(function (x) {
+    var it = issEl(x);
+    if (x.r !== "완료" && x.id) {
+      var bt = el("button", "done", "완료 처리"); bt.type = "button";
+      bt.onclick = function () {
+        var nm = authName(); if (!nm) { openLogin(); return; }
+        if (!LIVE) { x.r = "완료"; x.lv = "ok"; drawMech(); toast("완료 처리되었습니다"); return; }
+        bt.disabled = true; bt.textContent = "처리 중…";
+        rpc("dt_set_log_result", { n: nm, pin: sget("upin") || "", log_id: x.id, result: "완료" })
+          .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "처리 실패"); } x.r = "완료"; x.lv = "ok"; drawMech(); toast("완료 처리되었습니다"); })
+          .catch(function (er) { bt.disabled = false; bt.textContent = "완료 처리"; toast("" + er.message); });
+      };
+      var mt = it.querySelector(".mt"); if (mt) { var ac = el("span", "act"); ac.appendChild(bt); mt.appendChild(ac); }
+    }
+    lg.appendChild(it);
+  });
+  if (full > lim) { var mb = el("button", "moreb", "이슈 " + (full - lim) + "건 더 보기"); mb.type = "button"; mb.onclick = function () { MMORE = true; drawMech(); }; lg.appendChild(mb); }
+}
+$("mwrite").onclick = function () { var f = $("mcard"); f.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" }); setTimeout(function () { try { (authName() ? $("mt") : f.querySelector(".lkgo2")).focus({ preventScroll: true }); } catch (e) {} }, 450); };
+$("mform").onsubmit = function (ev) {
+  ev.preventDefault();
+  var nm = authName(); if (!nm) { openLogin(); return; }
+  var t = $("mt").value.trim(); if (!t) { $("mt").focus(); toast("내용을 입력해 주세요"); return; }
+  var kind = ("기구·" + $("mk").value).slice(0, 20), res = $("mr").value;
+  var rec = { e: $("me").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
+  var done = function (row) { D.issues.unshift(row ? mapLog(row) : rec); $("mt").value = ""; MIF = res === "완료" ? "all" : "open"; drawMech(); toast("저장되었습니다"); };
+  if (!LIVE) { done(); return; }
+  var sb = $("mform").querySelector(".sbtn"); sb.disabled = true; sb.textContent = "저장 중…";
+  rpc("dt_add_log", { n: nm, pin: sget("upin") || "", equip: rec.e, kind: kind, result: res, body: t })
+    .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); } done(j.row); })
+    .catch(function (er) { toast("저장 실패: " + er.message); })
+    .then(function () { sb.disabled = false; sb.textContent = "저장"; });
+};
+
 /* ── 📊 출하 실적: 장비통계 시트와 같은 기준 (Factory Out Date · 제조1팀 담당자 A팀/B팀 · 업체) ── */
 var SHC = { A: "#5b9df9", B: "#e3b341", V: "#2dd4bf" };
 function shipSum(o) { var n = 0; for (var k in o) n += o[k] || 0; return n; }
@@ -2053,7 +2241,7 @@ function matLoad(force) {
   MS.ld = 1;
   return sbFetch("mat_tabs?select=prj,eq,n,wait,updated_at&order=eq.asc").then(function (r) { MS.list = r || []; MS.err = ""; MS.t = Date.now(); })
     .catch(function (e) { MS.err = /mat_tabs|relation|404|PGRST/.test(e.message) ? "자재 현황을 준비 중입니다" : "불러오기 실패: " + e.message; MS.list = MS.list || []; })
-    .then(function () { MS.ld = 0; if (cur === "etc") drawEtc(); });
+    .then(function () { MS.ld = 0; if (cur === "etc") drawEtc(); else if (cur === "mech") drawMech(); });
 }
 function matOpen(prj) {
   MS.prj = prj; MS.f = "all"; MS.s = ""; drawEtc(); window.scrollTo(0, 0);
@@ -2431,7 +2619,7 @@ function authUi() {
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
   $("qcard").classList.toggle("locked", !n);
   $("ecard").classList.toggle("locked", !n);
-  if (typeof cur !== "undefined" && D && /^(ship|eq|elec)$/.test(cur)) try { draw(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
+  if (typeof cur !== "undefined" && D && /^(ship|eq|elec|mech)$/.test(cur)) try { draw(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
 }
 $("bname").onclick = openLogin;
 $("lkgo").onclick = openLogin;
@@ -2520,7 +2708,7 @@ $("home").onclick = function (e) {
   if (cur !== "dash") go("dash"); else window.scrollTo({ top: 0, behavior: RM ? "auto" : "smooth" });
   var h = document.querySelector(".hero h1"); if (h && !RM) { var c = h.cloneNode(true); h.parentNode.replaceChild(c, h); }
 };
-var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return t[0] === start; })) start = "dash";
+var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return t[0] === start; }) && start !== "mech" && start !== "elec") start = "dash";
 (function () {
   var c = LIVE ? cacheData() : null, shown = false;
   if (c) { D = c; go(start, true); shown = true; setTimeout(pill, 300); }   // ⚡ 지난번 화면 먼저
