@@ -1886,7 +1886,8 @@ function drawDash() {
   var SS = D.ship, ms = SS ? SS.months.slice(-6).map(function (m) { return shipSum(m[1]); }) : D.months.map(function (m) { return m[1]; }), yr = SS ? SS.total : ms.reduce(function (a, b) { return a + b; }, 0);
   var done1 = D.eq.filter(function (e) { return e.q1 === "완료"; }).length, all1 = D.eq.filter(function (e) { return e.q1; }).length;
   [[SS ? SS.year + "년 출하 (제조1팀)" : "올해 출하", yr, "대", "지난달 <b>" + (ms[ms.length - 2] || 0) + "대</b> · 이번 달 <b>" + (ms[ms.length - 1] || 0) + "대</b>", spark(ms), "dark"],
-   ["1차 검수 완료율", all1 ? Math.round(done1 / all1 * 100) : 0, "%", "완료 <b>" + done1 + "</b> / " + all1 + "대", ""],
+   all1 ? ["1차 검수 완료율", Math.round(done1 / all1 * 100), "%", "완료 <b>" + done1 + "</b> / " + all1 + "대", ""]
+     : (function () { var d14 = addD(D.today, 13), L = D.eq.filter(function (e) { var q = sd(e, 6); return q[0] && q[0] >= D.today && q[0] <= d14 && !mDone(e, 6); }); return ["2주 내 1차 검수", L.length, "대", md(D.today) + " ~ " + md(d14) + " 예정", ""]; })(),   // 검수 업로드 기록이 없으면 일정 기준으로
    ["자리 미배정", D.eq.filter(function (e) { return !e.loc && e.st < 10; }).length, "대", "자리 배치 필요", ""],
    ["긴급 장비", D.eq.filter(function (e) { return e.u && e.st < 10; }).length, "대", "우선 진행 대상", ""]].forEach(function (k, i) {
     var cd = el("div", "card kpi tilt rv " + (k[5] || "")); cd.style.setProperty("--d", i);
