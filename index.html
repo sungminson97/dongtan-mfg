@@ -1486,6 +1486,7 @@ function liveData(eq, lg, nt, mt) {
   return { demo: 0, live: 1, updated: new Date().toTimeString().slice(0, 5), today: T, eq: E, months: months,
     issues: (lg || []).map(mapLog), notice: (nt || []).map(mapNotice), mat: (mt || []).map(function (m) { return [m.equip, m.item, m.vendor, m.status]; }), insp: [] };
 }
+var LSIG = "";   // 마지막으로 받은 데이터의 바뀜 확인 값 (서버 dt_sig)
 function load(force) {
   if (!LIVE) { D = demoData(); return Promise.resolve(D); }
   return Promise.all([
@@ -1494,8 +1495,10 @@ function load(force) {
     sbFetch("notices?select=*&order=created_at.desc&limit=200"),
     sbFetch("materials?select=*&order=updated_at.desc&limit=300"),
     sbFetch("site_stats?select=data&id=eq.ship").catch(function () { return []; }),
-    sbFetch("ft_runs?select=equip,dry,full_cycle,writer,updated_at").catch(function () { return []; })
+    sbFetch("ft_runs?select=equip,dry,full_cycle,writer,updated_at").catch(function () { return []; }),
+    rpc("dt_sig", {}).catch(function () { return null; })   // 바뀜 확인 값 (3분마다 이것만 비교)
   ]).then(function (a) {
+    LSIG = typeof a[6] === "string" ? a[6] : "";
     D = liveData(a[0], a[1], a[2], a[3]);
     D.ship = a[4] && a[4][0] && a[4][0].data && a[4][0].data.v ? a[4][0].data : null;
     D.ft = {}; (a[5] || []).forEach(function (r) { D.ft[r.equip] = mapFt(r); });
@@ -4811,7 +4814,13 @@ var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return
     if (!LIVE || document.hidden || $("dr").classList.contains("on") || $("lg").classList.contains("on")) return;
     var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
     var y = window.pageYOffset, before = dataSig(D);
-    load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {});   // 바뀐 게 있을 때만 다시 그림
+    var full = function () { load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {}); };   // 바뀐 게 있을 때만 다시 그림
+    if (!LSIG) { full(); return; }   // 서버에 바뀜 확인 기능이 아직 없으면 예전처럼 전부 받음
+    // ⚡ 전송량 줄이기: 바뀌었는지만 먼저 물어봄 (약 40바이트) → 바뀌었을 때만 전부 받음
+    rpc("dt_sig", {}).then(function (sg) {
+      if (typeof sg === "string" && sg === LSIG) { D.updated = new Date().toTimeString().slice(0, 5); try { $("upd").textContent = D.updated + " 기준"; } catch (e) {} return; }
+      full();
+    }, full);
   }, 180000);
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
