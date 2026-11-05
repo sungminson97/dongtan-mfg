@@ -794,7 +794,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .glow{position:absolute;left:0;top:0;will-change:transform;width:520px;height:520px;border-radius:50%;pointer-events:none;background:radial-gradient(closest-side,rgba(124,92,255,.22),transparent);z-index:-1;transition:opacity .3s}
 @media (hover:none){.glow{display:none}}
 
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}.hero h1 .ln>span{transform:none}.hero .lead,.hbtn,.hstat{opacity:1}}
+/* 윈도우 '애니메이션 효과 끄기'가 켜진 PC에서도 움직이게 함 (현장 대시보드라 움직임을 보여 주기로 함 · 2026-11-05) */
 #ncw .nfbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;border:0;border-radius:12px;background:var(--grd);color:#fff;font:inherit;font-size:15.5px;font-weight:800;box-shadow:none}
 #ncw .nfbtn.sm{height:44px;font-size:14px;border-radius:12px}
 #ncw .nf{display:grid;gap:14px;padding:16px;border-radius:14px;background:var(--card);box-shadow:none}
@@ -1417,7 +1417,7 @@ function nq(s) { return String(s || "").toUpperCase().replace(/[\s\-_.·]/g, "")
 function ymd(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
 function addD(s, n) { var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2] + n); return ymd(d); }
 function md(s) { if (!s) return "-"; var p = String(s).slice(0, 10).split("-"); return (+p[0] !== new Date().getFullYear() ? "'" + p[0].slice(2) + "." : "") + +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }   // 올해가 아니면 '27. 붙임
-var RM = false; try { RM = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+var RM = false;   // 애니메이션 줄이기 설정과 상관없이 숫자 · 그래프 · 흐르는 글자 모두 움직임
 
 var STAGES = ["자재불출", "FRAME 입고", "배선", "MODULE", "I/O CHECK", "1차 LEVEL", "1차 검수", "제조완료", "QC", "PACKING", "출하"];
 var SCOL = ["#94a3b8", "#22d3ee", "#f59e0b", "#a78bfa", "#3b82f6", "#f472b6", "#e879f9", "#a3e635", "#fb7185", "#2dd4bf", "#22c55e"];   // 자재불출 회색 · 입고 청록 · 배선 주황 · MODULE 보라 · I/O 파랑 · LEVEL 분홍 · 1차검수 자주 · 제조완료 연두 · QC 장미 · PACKING 민트 · 출하 초록
@@ -4116,6 +4116,7 @@ function nfForm(box) {
   }
   function upd() {
     nfSave();
+    if (needP && nfClean(f.proj)) needP.style.display = "none";
     autoV(); dupChk(); drawEq();
     var m = nfMsg(f); msgBox.textContent = m.text;
     [].forEach.call(wrap.querySelectorAll(".nfr[data-k]"), function (r) {   // 줄마다 필수 → ✓
@@ -4390,10 +4391,21 @@ function nfForm(box) {
   };
   pnw.appendChild(nin3); if (NC_QR) pnw.appendChild(qb);
   r3.appendChild(pnw); r3.appendChild(hn("pn")); r3.appendChild(hn("dup"));
+  // 장비명 먼저: 장비가 비어 있으면 품번은 못 넣고 안내 → 장비 칸으로 (QR은 라벨에서 장비까지 읽어서 그대로 됨)
+  var needP = el("div", "nfhn w"); needP.style.display = "none"; r3.insertBefore(needP, pnw.nextSibling);
+  function needPrj() {
+    if (nfClean(f.proj)) { needP.style.display = "none"; return false; }
+    needP.textContent = "장비명을 먼저 입력해 주세요"; needP.style.display = "";
+    var rr = pin.closest(".nfr"); if (rr) { rr.classList.remove("flash"); void rr.offsetWidth; rr.classList.add("flash"); rr.scrollIntoView({ behavior: "smooth", block: "center" }); }
+    setTimeout(function () { try { pin.focus({ preventScroll: true }); } catch (e) {} }, 350);
+    return true;
+  }
+  nin3.addEventListener("focus", function () { if (needPrj()) { try { nin3.blur(); } catch (e) {} } });
+  nin3.addEventListener("beforeinput", function (ev) { if (!nfClean(f.proj)) { ev.preventDefault(); needPrj(); } });
   pnWatch(nin3, function () { return f.pn; }, function (v) { f.pn = v; }, "pn");
   r3.appendChild(el("div", "nfsub", "자주 쓰는 품목"));
   var pnq = el("div", "nfc nfg3");
-  lrnSort(NF_PN, "p", function (q) { return q[1]; }).forEach(function (q) { var b = el("button", null, q[0]); b.type = "button"; b.dataset.v = q[1]; b.onclick = function () { f.pn = nfQuick(f.pn) === q[1] ? "" : q[1]; f.pnPend = false; nin3.value = f.pn; hint("pn", ""); upd(); }; pnq.appendChild(b); });
+  lrnSort(NF_PN, "p", function (q) { return q[1]; }).forEach(function (q) { var b = el("button", null, q[0]); b.type = "button"; b.dataset.v = q[1]; b.onclick = function () { if (needPrj()) return; f.pn = nfQuick(f.pn) === q[1] ? "" : q[1]; f.pnPend = false; nin3.value = f.pn; hint("pn", ""); upd(); }; pnq.appendChild(b); });
   r3.appendChild(pnq);
   var partsBox = el("div", "nfparts"); r3.appendChild(partsBox);
   function drawParts() {
