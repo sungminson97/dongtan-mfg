@@ -452,6 +452,34 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .ngrid button{height:54px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:16px;font-weight:800;transition:all .15s;animation:fade .4s both}
 .ngrid button:hover{border-color:var(--ac);color:var(--ac)}
 .ngrid button.on{background:var(--grd);color:#fff;border-color:transparent}
+.ngrid button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.1}
+.ngrid button small{font-size:11px;font-weight:700;color:var(--sub)}
+.ngrid button.on small{color:rgba(255,255,255,.8)}
+.ngrid button small.nw{color:var(--ac)}
+.nmin{width:100%;height:64px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);text-align:center;font-size:26px;font-weight:800;letter-spacing:.3em;padding-left:.3em;outline:0;transition:border-color .2s,box-shadow .2s}
+.nmin::placeholder{color:#4a5368;font-weight:700;letter-spacing:.1em}
+.nmin:focus{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.nmin.bad{border-color:var(--warn)}
+.nmin.ok{border-color:var(--ok)}
+.nmhint{min-height:20px;margin:10px 0 14px;font-size:13px;font-weight:700;color:var(--sub);text-align:center}
+.nmhint.bad{color:var(--warn)}
+.nmhint.ok{color:var(--ok)}
+#nmform .sbtn{width:100%}
+#nmform .sbtn:disabled{opacity:.35;box-shadow:none;cursor:default}
+.cfm{display:flex;flex-direction:column;align-items:center;text-align:center;padding:6px 0 18px}
+.cfm .av{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:var(--grd);color:#fff;font-size:26px;font-weight:900;box-shadow:0 14px 30px -12px rgba(80,90,255,.8)}
+.cfm b{font-size:30px;font-weight:900;letter-spacing:.12em;margin-top:14px}
+.cfm p{margin:10px 0 0!important;font-size:15px!important;color:var(--text)!important;line-height:1.6}
+.cfw{margin-top:12px;font-size:12.5px;font-weight:700;color:#fcd34d;background:rgba(251,191,36,.1);border-radius:10px;padding:8px 12px}
+.cfb{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+/* 이름 앞 동그라미 글자 아이콘 숨김 */
+#cfav,#upav,#meav{display:none}
+.cfm b{margin-top:6px}
+.me{gap:0}
+.lgback{font-size:13.5px;font-weight:700;color:var(--sub);padding:4px 0}
+.lgback:hover{color:var(--text)}
+#upmsg{margin:4px 0 14px}
+.uphelp{font-size:12.5px!important;color:var(--sub)!important;margin:4px 0 0!important}
 .me{display:flex;align-items:center;gap:14px;margin:4px 0 18px}
 .me .av{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--grd);color:#fff;font-size:20px;font-weight:900}
 .me b{display:block;font-size:20px;font-weight:800}
@@ -640,9 +668,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     <button class="lgl" id="lgview" type="button">로그인 없이 조회하기</button>
   </div>
   <div class="lgs" id="lg2" hidden>
-    <h5>이름 선택</h5>
-    <p>기록에 남을 이름을 선택해 주세요.</p>
-    <div class="ngrid" id="ngrid"></div>
+    <h5>이름 입력</h5>
+    <p>기록에 남을 본인 이름을 정확하게 입력해 주세요.</p>
+    <form id="nmform" autocomplete="off">
+      <input class="nmin" id="nmin" placeholder="예) 박제민" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
+      <div class="nmhint" id="nmhint">한글 3글자로 입력해 주세요.</div>
+      <button class="sbtn" id="nmnext" type="submit" disabled>다음</button>
+    </form>
+  </div>
+  <div class="lgs" id="lg5" hidden>
+    <div class="cfm">
+      <span class="av" id="cfav"></span>
+      <b id="cfname"></b>
+      <p>입력한 이름이 정확한가요?<br>본인이 맞는지 확인해 주세요.</p>
+      <span class="cfw">다른 사람 이름으로 로그인하면 기록이 그 사람 이름으로 남습니다.</span>
+    </div>
+    <div class="cfb"><button class="lgl" id="cfno" type="button" style="margin:0">다시 입력</button><button class="sbtn" id="cfyes" type="button">네, 본인입니다</button></div>
+  </div>
+  <div class="lgs" id="lg4" hidden>
+    <button class="lgback" id="lgback" type="button">‹ 이름 다시 입력</button>
+    <div class="me" style="margin:10px 0 6px"><span class="av" id="upav"></span><div><b id="upname"></b><span id="upst" style="color:var(--sub)"></span></div></div>
+    <p id="upmsg"></p>
+    <label class="pin" id="pinb2"><i></i><i></i><i></i><i></i><input id="pini2" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="개인 PIN 4자리"></label>
+    <div class="perr" id="perr2"></div>
+    <p class="uphelp" id="uphelp"></p>
   </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
@@ -1114,7 +1163,7 @@ var PIN_H = 4081541996;
 function pinHash(p) { var h = 5381, s = "nb-dt|" + p; for (var i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h; }
 function authGet() { try { var a = JSON.parse(sget("auth") || "null"); if (a && a.n && Date.now() - a.t < 90 * 864e5) return a; } catch (e) {} return null; }
 function authName() { var a = authGet(); return a ? a.n : ""; }
-function lgStep(n) { ["lg1", "lg2", "lg3"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
+function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
 function openLogin() {
   var a = authGet();
   if (a) { $("mename").textContent = a.n; $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); }
@@ -1141,14 +1190,85 @@ $("pini").addEventListener("input", function () {
   }
 });
 $("pini").addEventListener("focus", pinDraw); $("pini").addEventListener("blur", pinDraw);
+/* 👤 개인 PIN: 이름을 고른 뒤 본인 PIN으로 한 번 더 확인 (다른 사람 이름으로 기록하는 것 방지)
+ * 처음이면 PIN 설정(두 번 입력), 이후엔 PIN 확인 · 지금은 이 기기에 저장 → 서버 붙이면 서버에 저장해서 어느 폰에서나 같은 PIN */
+var UP = { n: "", mode: "", first: "", bad: 0 };
+function upKey(n) { return "upin_" + n; }
+function upHas(n) { return !!sget(upKey(n)); }
+function upHash(n, p) { return String(pinHash(n + "|" + p)); }
+/* ✍️ 이름 직접 입력: 한글 3글자만 (예: 박제민) → 본인 맞는지 확인 → 개인 PIN */
+var NAME_RE = /^[가-힣]{3}$/;
 function nameGrid() {
-  var g = $("ngrid"), now = authName(); g.innerHTML = "";
-  TEAM.forEach(function (n, i) {
-    var b = el("button", n === now ? "on" : "", n); b.type = "button"; b.style.animationDelay = i * 30 + "ms";
-    b.onclick = function () { sset("auth", JSON.stringify({ n: n, t: Date.now() })); authUi(); closeLogin(); toast(n + "님, 로그인되었습니다"); };
-    g.appendChild(b);
-  });
+  $("nmin").value = ""; nmCheck(true);
+  setTimeout(function () { try { $("nmin").focus(); } catch (e) {} }, 80);
 }
+function nmCheck(quiet) {
+  var v = $("nmin").value.replace(/\s/g, ""), h = $("nmhint"), i = $("nmin"), ok = NAME_RE.test(v);
+  var bad = !ok && v.length > 0 && (v.length > 3 || /[^가-힣ㄱ-ㅎㅏ-ㅣ]/.test(v));
+  h.className = "nmhint" + (ok ? " ok" : bad && !quiet ? " bad" : "");
+  i.className = "nmin" + (ok ? " ok" : bad && !quiet ? " bad" : "");
+  h.textContent = ok ? "✔ 확인되었습니다" : bad ? (v.length > 3 ? "3글자까지만 입력할 수 있습니다." : "한글만 입력할 수 있습니다. (숫자 · 영문 · 띄어쓰기 불가)") : "한글 3글자로 입력해 주세요.";
+  $("nmnext").disabled = !ok;
+  return ok ? v : "";
+}
+$("nmin").addEventListener("input", function () { nmCheck(false); });
+$("nmin").addEventListener("compositionend", function () { nmCheck(false); });
+$("nmform").onsubmit = function (e) {
+  e.preventDefault();
+  var v = nmCheck(false); if (!v) { $("nmin").focus(); return; }
+  try { $("nmin").blur(); } catch (er) {}
+  $("cfname").textContent = v; $("cfav").textContent = v.slice(-2, -1);
+  UP.n = v; lgStep(5);
+};
+$("cfno").onclick = function () { nameGrid(); lgStep(2); };
+$("cfyes").onclick = function () { upStart(UP.n); };
+function upStart(n) {
+  UP.n = n; UP.first = ""; UP.bad = 0; UP.mode = upHas(n) ? "check" : "set1";
+  $("upname").textContent = n; $("upav").textContent = n.slice(-2, -1) || n[0];
+  try { $("pini2").value = ""; } catch (e) {}
+  upText(); upReset(); lgStep(4);
+  setTimeout(function () { try { $("pini2").focus(); } catch (e) {} }, 80);
+}
+function upText() {
+  var m = UP.mode;
+  $("upst").textContent = m === "check" ? "본인 확인" : "처음 로그인 · PIN 설정";
+  $("upmsg").textContent = m === "check" ? "본인 PIN 4자리를 입력해 주세요." : m === "set1" ? "본인만 아는 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
+  $("uphelp").textContent = m === "check" ? "PIN을 잊으셨으면 관리자에게 초기화를 요청해 주세요." : "다른 사람이 이 이름으로 기록하지 못하도록 막는 용도입니다. 공용 PIN과 같은 번호는 쓸 수 없습니다.";
+}
+function upReset() { $("pini2").value = ""; $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw(); }
+function upDraw() {
+  var v = $("pini2").value, is = $("pinb2").querySelectorAll("i"), foc = document.activeElement === $("pini2");
+  [].forEach.call(is, function (x, i) { x.className = (i < v.length ? "f" : "") + (foc && i === Math.min(v.length, 3) ? " c" : ""); });
+}
+function upBad(msg) {
+  $("pinb2").className = "pin bad"; $("perr2").textContent = msg;
+  setTimeout(function () { $("pini2").value = ""; $("pinb2").className = "pin"; upDraw(); }, 420);
+}
+function upDone() {
+  $("pinb2").className = "pin ok";
+  sset("auth", JSON.stringify({ n: UP.n, t: Date.now() }));
+  setTimeout(function () { authUi(); closeLogin(); toast(UP.n + "님, 로그인되었습니다"); }, 260);
+}
+$("pini2").addEventListener("input", function () {
+  this.value = this.value.replace(/\D/g, "").slice(0, 4); $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw();
+  if (this.value.length < 4) return;
+  var p = this.value;
+  if (UP.mode === "check") {
+    if (sget(upKey(UP.n)) === upHash(UP.n, p)) { upDone(); return; }
+    if (++UP.bad >= 5) { upBad("5회 틀렸습니다. 처음부터 다시 진행해 주세요."); setTimeout(function () { pinReset(); lgStep(1); }, 900); return; }
+    upBad("PIN이 올바르지 않습니다. (" + UP.bad + "/5)"); return;
+  }
+  if (UP.mode === "set1") {
+    if (pinHash(p) === PIN_H) { upBad("공용 PIN과 다른 번호로 정해 주세요."); return; }
+    if (/^(\d)\1{3}$/.test(p)) { upBad("같은 숫자 4개는 쓸 수 없습니다."); return; }
+    UP.first = p; UP.mode = "set2"; upText();
+    setTimeout(function () { $("pini2").value = ""; upDraw(); }, 160); return;
+  }
+  if (p !== UP.first) { UP.mode = "set1"; UP.first = ""; upText(); upBad("두 번 입력한 PIN이 다릅니다. 처음부터 다시 정해 주세요."); return; }
+  sset(upKey(UP.n), upHash(UP.n, p)); upDone();
+});
+$("pini2").addEventListener("focus", upDraw); $("pini2").addEventListener("blur", upDraw);
+$("lgback").onclick = function () { nameGrid(); lgStep(2); };
 function authUi() {
   var n = authName(), b = $("bname");
   b.querySelector("svg").style.display = n ? "none" : "";
