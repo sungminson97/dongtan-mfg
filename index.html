@@ -65,7 +65,10 @@ nav.top .pill{position:absolute;top:0;height:100%;border-radius:999px;background
 
 /* ── 아래 탭 (폰) ── */
 nav.bot{display:none;position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;height:64px;border-radius:22px;background:color-mix(in srgb,var(--card) 86%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 12px 34px -12px rgba(0,0,0,.35);border:1px solid var(--line);padding:6px}
-nav.bot .in{position:relative;display:grid;grid-template-columns:repeat(5,1fr);height:100%}
+nav.bot .in{position:relative;display:grid;grid-template-columns:repeat(7,1fr);height:100%}
+nav.bot button{font-size:10px;letter-spacing:-.03em}
+nav.bot button svg{width:20px;height:20px}
+@media (max-width:1180px){nav.top button{padding:9px 10px;font-size:14px}}
 nav.bot button{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:11px;font-weight:700;color:var(--sub);transition:color .25s}
 nav.bot button svg{width:21px;height:21px}
 nav.bot button.on{color:#fff}
@@ -106,13 +109,18 @@ p.ds{color:var(--sub);font-size:15px;margin-top:8px;line-height:1.6}
 .btn.g{border:1px solid rgba(255,255,255,.22);color:#fff;background:rgba(255,255,255,.04)}
 .btn svg{width:17px;height:17px;transition:transform .25s}
 .btn:hover svg{transform:translateX(3px)}
-.hstat{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:56px;max-width:900px;opacity:0;animation:fade .9s .8s forwards}
-.hstat div{padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.hstat{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:56px;max-width:1080px;opacity:0;animation:fade .9s .8s forwards}
+.hstat button{position:relative;text-align:left;color:#fff;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .2s,border-color .2s,transform .2s}
+.hstat button:hover{background:rgba(255,255,255,.11);border-color:rgba(255,255,255,.28);transform:translateY(-2px)}
+.hstat button:active{transform:scale(.97)}
+.hstat button::after{content:"";position:absolute;right:16px;top:20px;width:6px;height:6px;border-right:2px solid rgba(255,255,255,.45);border-top:2px solid rgba(255,255,255,.45);transform:rotate(45deg);transition:transform .2s}
+.hstat button:hover::after{transform:translateX(3px) rotate(45deg)}
 .hstat span{display:block;font-size:13px;letter-spacing:-.01em;font-weight:700;color:rgba(255,255,255,.62)}
 .hstat b{display:block;margin-top:6px;font-size:clamp(24px,3vw,34px);font-weight:900;letter-spacing:-.03em}
 .hstat b small{font-size:14px;font-weight:700;color:rgba(255,255,255,.55);margin-left:3px}
 .hstat .r b{color:#ff9a9d}
-@media (max-width:640px){.hstat{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.hstat{grid-template-columns:repeat(2,minmax(0,1fr))}.hstat button:first-child{grid-column:1/-1}}
+@media (min-width:641px) and (max-width:1000px){.hstat{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .scrl{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);font-size:11px;font-weight:800;letter-spacing:.24em;color:rgba(255,255,255,.5);display:flex;flex-direction:column;align-items:center;gap:10px}
 .scrl i{width:1px;height:38px;background:linear-gradient(rgba(255,255,255,.6),transparent);animation:drip 1.8s infinite}
 @keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
@@ -229,12 +237,16 @@ section.sec.band.join{padding-top:0}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 
 .planw{overflow-x:auto;margin:-4px -6px 0;padding:4px 6px 6px;-webkit-overflow-scrolling:touch}
-svg.plan{display:block;width:100%;min-width:820px;height:auto;font-family:var(--mono)}
+svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--mono)}
 .plan .wall{fill:none;stroke:#3a4560;stroke-width:2}
 .plan .room{fill:rgba(107,140,255,.035);stroke:#2a3550;stroke-width:1.2}
 .plan .zone{fill:rgba(255,255,255,.015);stroke:#253049;stroke-width:1;stroke-dasharray:4 4}
 .plan .fix{fill:rgba(255,255,255,.03);stroke:#2a3348;stroke-width:1}
 .plan .fixl{stroke:#2a3348;stroke-width:1}
+.plan .ship{fill:rgba(52,211,153,.05);stroke:rgba(52,211,153,.35);stroke-dasharray:none}
+.plan .rm.sh{fill:#6ee7b7}
+.plan .arr{fill:none;stroke:#6ee7b7;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.mapw svg.plan{min-width:720px}
 .plan .scap{font-size:9px;font-weight:700;fill:#3f4a63}
 .plan .rm{font-family:"Pretendard Variable",Pretendard,sans-serif;font-size:12px;font-weight:700;fill:#6b7488}
 .plan .rid{font-size:15px;font-weight:800;fill:#8a96b3;letter-spacing:.08em}
@@ -253,6 +265,66 @@ svg.plan{display:block;width:100%;min-width:820px;height:auto;font-family:var(--
 .psum b{color:var(--text);font-family:var(--mono)}
 .psum .ph{margin-left:auto;display:none}
 @media (max-width:820px){.psum .ph{display:inline}}
+/* 공지사항 */
+.nbtn{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;background:var(--grd);color:#fff;font-size:14px;font-weight:800}
+.nbtn svg{width:16px;height:16px}
+.nform{margin-bottom:16px;animation:fade .35s}
+.fm label.ck{display:flex;flex-direction:row;align-items:center;gap:8px;align-self:end;height:48px;font-size:14px;color:var(--text)}
+.fm label.ck input{width:18px;height:18px;accent-color:var(--ac)}
+.nl>div{border-bottom:1px solid var(--line)}
+.nl>div:last-child{border-bottom:0}
+.nh{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;padding:18px 0;text-align:left}
+.nh .tg{display:flex;gap:5px}
+.nh b{font-size:16px;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nh .mt{font-size:12.5px;color:var(--sub);font-weight:600;white-space:nowrap}
+.nh i{display:inline-block;width:8px;height:8px;margin-left:10px;border-right:2px solid var(--sub);border-bottom:2px solid var(--sub);transform:rotate(45deg) translateY(-3px);transition:transform .25s}
+.on>.nh i{transform:rotate(-135deg) translateY(-1px)}
+.nbody{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.2,.8,.2,1)}
+.on>.nbody{grid-template-rows:1fr}
+.nbody>div{overflow:hidden}
+.nbody p{padding:0 0 18px;font-size:14.5px;line-height:1.75;color:var(--text);white-space:pre-line;font-weight:500}
+.nl .npin .nh b::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warn);margin-right:8px;vertical-align:3px}
+.more2{text-align:left;display:grid;gap:6px;cursor:pointer;transition:border-color .2s}
+.more2:hover{border-color:var(--text)}
+.more2 b{font-size:17px;font-weight:800}
+.more2 span:last-child{font-size:13px;color:var(--sub);font-weight:600}
+@media (max-width:640px){.nh{grid-template-columns:1fr auto;gap:6px 10px}.nh .tg{grid-column:1/-1}.nh .mt{grid-column:1/-1;order:3}.nh b{white-space:normal}}
+/* 장비 (보기 쉽게) */
+.eqbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.eqbar .cnt{margin:0}
+.seg{margin-left:auto;display:inline-flex;padding:3px;border-radius:999px;border:1px solid var(--line)}
+.seg button{height:30px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:800;color:var(--sub)}
+.seg button.on{background:var(--text);color:var(--bg)}
+.eqg2{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.eq2{cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:0;padding:18px 18px 16px}
+.eq2 .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.eq2 .nm{font-family:var(--mono);font-size:20px;font-weight:800;letter-spacing:-.02em}
+.eq2 .ty{font-size:13px;color:var(--sub);font-weight:700;margin-top:2px}
+.eq2 .sg{margin-top:16px;padding:14px;border-radius:12px;background:var(--bg)}
+.eq2 .sg .r{display:flex;justify-content:space-between;align-items:baseline}
+.eq2 .sg span{font-size:12px;font-weight:700;color:var(--sub)}
+.eq2 .sg b{display:block;font-size:17px;font-weight:800;margin-top:2px;color:var(--c)}
+.eq2 .sg .n{font-family:var(--mono);font-size:13px;font-weight:800;color:var(--text)}
+.pbar{height:6px;border-radius:6px;background:var(--bg2);overflow:hidden;margin-top:10px}
+.pbar u{display:block;height:100%;border-radius:6px;background:var(--c)}
+.eq2 .nx{font-size:12px;font-weight:600;color:var(--sub);margin-top:8px}
+.eq2 .kv3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.eq2 .kv3 div{padding:10px 0 10px 10px;border-left:1px solid var(--line);min-width:0}
+.eq2 .kv3 div:first-child{border-left:0;padding-left:0}
+.eq2 .kv3 span{display:block;font-size:11.5px;font-weight:700;color:var(--sub)}
+.eq2 .kv3 b{display:block;font-size:14px;font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eq2 .ft2{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;font-weight:700;color:var(--sub)}
+.eq2 .ft2 b{color:var(--text);font-size:14px}
+.dd{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:12px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--bg2);color:var(--sub)}
+.dd.r{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.dd.a{background:rgba(251,191,36,.14);color:#fcd34d}
+.etbl td{white-space:nowrap}
+.etbl td>b,.etbl td>.tag{vertical-align:middle}
+.etbl td>.tag{margin-left:6px}
+.etbl .pst{display:flex;align-items:center;gap:10px;min-width:200px}
+.etbl .pst .pbar{flex:1;margin:0;max-width:90px}
+.etbl .pst em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--sub)}
+.etbl td .dd{margin-left:8px}
 /* 막대 */
 .bars{display:grid;gap:10px;margin-top:16px}
 .bars>div{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;font-weight:800}
@@ -448,7 +520,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div></section>
 
     <section class="sec"><div class="wrap">
-      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 배치도</h2><p class="ds">CR4 도면 기준입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div><button class="more" type="button" data-go="eq">전체 장비 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 배치도</h2><p class="ds">CR4 도면 기준입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div><button class="more" type="button" data-go="map">배치도 크게 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       <div class="card rv" id="baycard"><div id="bay"></div><div class="legend" id="legend"></div></div>
     </div></section>
 
@@ -475,6 +547,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div></section>
   </div>
 
+  <!-- ═════ 공지사항 ═════ -->
+  <div class="view" id="v-notice"><div class="wrap">
+    <div class="vtop"><span class="eyebrow">Notice</span><h2 class="tt">공지사항</h2><p class="ds">동탄 사업장 공지 · 안내 사항입니다.</p></div>
+    <div class="tool"><div class="chips" id="nf"></div><button class="nbtn" id="nwrite" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>공지 작성</button></div>
+    <div class="card nform" id="nform" hidden>
+      <h3>공지 작성</h3>
+      <form class="fm" id="nfm" style="margin-top:14px" autocomplete="off">
+        <div class="row"><label>분류<select id="nc"><option>일반</option><option>안전</option><option>일정</option></select></label><label class="ck"><input type="checkbox" id="np"> 필독으로 상단 고정</label></div>
+        <label>제목<input id="nt" maxlength="60" placeholder="제목을 입력해 주세요"></label>
+        <label>내용<textarea id="nb" placeholder="내용을 입력해 주세요"></textarea></label>
+        <div class="row"><button class="lgl" type="button" id="ncancel" style="margin:0">취소</button><button class="sbtn" type="submit">등록</button></div>
+      </form>
+    </div>
+    <div class="card" style="padding:6px 22px"><div class="nl" id="nlist"></div></div>
+  </div></div>
+
   <!-- ═════ 장비 ═════ -->
   <div class="view" id="v-eq"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Equipment</span><h2 class="tt">동탄 장비</h2><p class="ds">장비명 · TYPE · 업체 · 담당자로 검색할 수 있습니다. (띄어쓰기 · 하이픈 무관)</p></div>
@@ -482,8 +570,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="q" placeholder="예) HJ92 237, 12CH, 시노드" autocomplete="off"></div>
       <div class="chips" id="qf"></div>
     </div>
-    <div class="cnt" id="qcnt"></div>
-    <div class="eqg" id="eqg"></div>
+    <div class="eqbar"><div class="cnt" id="qcnt"></div><span class="cnt" style="font-weight:600">· 출하 예정 빠른 순</span><div class="seg" id="eqv"><button type="button" data-v="card">카드</button><button type="button" data-v="tbl">표</button></div></div>
+    <div id="eqg"></div>
   </div></div>
 
   <!-- ═════ 검수 · 이력 ═════ -->
@@ -514,14 +602,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 자재 · 기타 ═════ -->
   <div class="view" id="v-etc"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Material · Etc</span><h2 class="tt">자재 · 수입검사 · 공지</h2></div>
+    <div class="vtop"><span class="eyebrow">Material · Etc</span><h2 class="tt">자재 · 수입검사</h2></div>
     <div class="g2" style="align-items:start">
       <div class="card"><h3>자재 입고 · 불출</h3><p class="ds" id="mnote" style="font-size:13px"></p><div class="tbw" style="margin-top:10px"><table class="tbl"><thead><tr><th>장비</th><th>품목</th><th>업체</th><th>상태</th></tr></thead><tbody id="mtb"></tbody></table></div></div>
       <div style="display:grid;gap:16px">
         <div class="card"><h3>수입검사 (동탄)</h3><div class="bars" id="ibars"></div></div>
-        <div class="card"><h3>공지</h3><div class="iss" id="notice"></div></div>
+        <button class="card more2" type="button" data-go="notice"><span class="cap">Notice</span><b>공지사항 보기</b><span id="nlast"></span></button>
       </div>
     </div>
+  </div></div>
+
+  <!-- ═════ 배치도 ═════ -->
+  <div class="view" id="v-map"><div class="wrap">
+    <div class="vtop"><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 CR4 배치도</h2><p class="ds">도면 기준 자리별 장비 현황입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div>
+    <div class="g4" id="mkpi" style="margin-bottom:16px"></div>
+    <div class="card mapw"><div id="bay2"></div><div class="legend" id="legend2"></div></div>
+    <div class="card" style="margin-top:16px"><h3>자리별 현황</h3><div class="tbw" style="margin-top:12px"><table class="tbl"><thead><tr><th>자리</th><th>장비</th><th>TYPE</th><th>공정</th><th>업체 · 담당</th><th>출하 예정</th></tr></thead><tbody id="maptb"></tbody></table></div></div>
   </div></div>
 </main>
 
@@ -596,7 +692,12 @@ function demoData() {
     ],
     mat: [[eq[0].n, "BASE PLATE", "대성", "입고"], [eq[0].n, "CABLE ASSY", "한일테크", "미입고"], [eq[3].n, "ROBOT ARM", "시노드", "불출"], [eq[6].n, "COVER SET", "동오정밀", "미입고"]],
     insp: [["대기", 3], ["긴급", 1], ["NG", 1], ["완료", 46]],
-    notice: [{ t: "동탄 2층 출입 카드 등록 안내", p: "신규 인원은 총무팀에 사진을 제출해 주시기 바랍니다.", d: addD(T, -1) }, { t: "11월 셋째 주 고객 방문", p: "방문 전일까지 작업 공간 정리 부탁드립니다.", d: addD(T, -3) }]
+    notice: [
+      { t: "동탄 사업장 안전 수칙 안내", p: "CR4 출입 시 안전화 · 방진복 착용을 필수로 지켜 주시기 바랍니다.\n지게차 이동 동선(CR4 ↔ 출하장)에서는 반드시 우측 보행 바랍니다.", d: addD(T, 0), w: "고현우", c: "안전", pin: 1 },
+      { t: "동탄 2층 출입 카드 등록 안내", p: "신규 인원은 총무팀에 사진을 제출해 주시기 바랍니다.", d: addD(T, -1), w: "손성민", c: "일반" },
+      { t: "11월 셋째 주 고객 방문", p: "방문 전일까지 작업 공간 정리 부탁드립니다.\n출하장 앞 적재물은 전날 오후까지 정리해 주세요.", d: addD(T, -3), w: "고현우", c: "일정", pin: 1 },
+      { t: "B줄 자리 배치 기준", p: "B줄은 출하장 쪽(B1)부터 우선 배치합니다.", d: addD(T, -6), w: "나영훈", c: "일반" }
+    ]
   };
 }
 
@@ -608,30 +709,27 @@ function load(force) {
 }
 
 /* ── 🗺 동탄 배치도 (도면 기준 · CR4) ──
- * 자리 이름: 위줄 A1~A9 (12·18·24CH) · 아래줄 B1~B9 (12CH) — 왼쪽부터. 실제 이름이 정해지면 id만 바꾸면 됨
+ * 자리 이름 (현장 기준 · 출하장은 오른쪽): 위줄 = 출하장 쪽(오른쪽)부터 B1 → B9
+ *                                        아래줄 = 왼쪽부터 A9 → A1 · A9는 B8 맞은편, A1은 출하장 쪽
  */
 var PLAN = (function () {
   var s = [];
-  [355, 418, 481, 544, 607, 670, 733, 796, 859].forEach(function (x, i) { s.push({ id: "A" + (i + 1), x: x, y: 42.5, w: 42.5, h: 110, cap: "12·18·24CH" }); });
-  [453, 516, 579, 642, 705, 768, 831, 894, 957].forEach(function (x, i) { s.push({ id: "B" + (i + 1), x: x, y: 206, w: 42.5, h: 109, cap: "12CH" }); });
+  [355, 418, 481, 544, 607, 670, 733, 796, 859].forEach(function (x, i) { s.push({ id: "B" + (9 - i), x: x, y: 42.5, w: 42.5, h: 110 }); });
+  [453, 516, 579, 642, 705, 768, 831, 894, 957].forEach(function (x, i) { s.push({ id: "A" + (9 - i), x: x, y: 206, w: 42.5, h: 109 }); });
   return s;
 })();
 function svgEl(t, a, txt) { var e = document.createElementNS("http://www.w3.org/2000/svg", t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; }
-function drawPlan() {
-  var box = $("bay"); box.innerHTML = "";
+function drawPlan(boxId) {
+  var box = $(boxId || "bay"); box.innerHTML = "";
   var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
-  var sv = svgEl("svg", { viewBox: "8 -6 1152 396", class: "plan", role: "img", "aria-label": "동탄 CR4 배치도" });
+  var sv = svgEl("svg", { viewBox: "312 -8 848 398", class: "plan", role: "img", "aria-label": "동탄 CR4 배치도" });
   var W = function (x, y, w, h, c) { sv.appendChild(svgEl("rect", { x: x, y: y, width: w, height: h, class: c || "wall" })); };
   var L = function (x1, y1, x2, y2, c) { sv.appendChild(svgEl("line", { x1: x1, y1: y1, x2: x2, y2: y2, class: c || "fixl" })); };
   var T = function (x, y, t, c) { sv.appendChild(svgEl("text", { x: x, y: y, class: c || "rm", "text-anchor": "middle" }, t)); };
   // 건물 · 방
-  W(18, 3, 1132, 352);
-  W(22, 7, 302, 344, "zone"); T(170, 160, "하역장");
-  W(268, 188, 56, 57, "zone"); L(268, 188, 324, 245); L(324, 188, 268, 245);
-  W(228, 247, 96, 104, "zone"); T(276, 305, "방풍실");
+  W(322, 1, 828, 356);
   W(326, 5, 714, 342, "room");
-  W(1044, 5, 102, 298, "zone"); T(1095, 150, "공조실");
-  W(1044, 305, 102, 46, "zone");
+  W(1044, 5, 102, 346, "zone ship"); T(1095, 168, "출하장", "rm sh"); sv.appendChild(svgEl("path", { d: "M1080 190h30m-9-7l9 7-9 7", class: "arr" }));
   W(837, 359, 163, 21, "fix"); for (var st = 852; st < 1000; st += 8) L(st, 361, st, 378);
   sv.appendChild(svgEl("text", { x: 716, y: 183, class: "rid", "text-anchor": "middle" }, "CR4"));
   // 작업대 · 랙 · 받침선
@@ -652,13 +750,11 @@ function drawPlan() {
       g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + e.n + " · " + STAGES[e.st]));
       g.addEventListener("click", function () { eqOpen(e.n); });
     } else {
-      g.appendChild(svgEl("text", { x: cx, y: cy, class: "scap", "text-anchor": "middle", "dominant-baseline": "central", transform: rot }, p.cap));
-      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 빈 자리 (" + p.cap + ")"));
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 빈 자리"));
     }
     sv.appendChild(g);
   });
   var wrap = el("div", "planw"); wrap.appendChild(sv); box.appendChild(wrap);
-  requestAnimationFrame(function () { if (wrap.scrollWidth > wrap.clientWidth + 4) wrap.scrollLeft = wrap.scrollWidth * 0.27; });   // 📱 좁은 화면: 하역장 말고 CR4부터 보이게
   var sm = el("div", "psum");
   sm.innerHTML = "<span>CR4 <b>" + used + "</b> / " + PLAN.length + " 자리 사용</span><span>빈 자리 <b>" + (PLAN.length - used) + "</b></span><span class=\"ph\">← 옆으로 밀어서 전체 보기</span>";
   box.appendChild(sm);
@@ -666,18 +762,20 @@ function drawPlan() {
 
 /* ── 탭 ── */
 var TABS = [
+  ["notice", "공지사항", '<path d="M4 10v4a1 1 0 0 0 1 1h2l5 4V5L7 9H5a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/>', "공지"],
   ["dash", "대시보드", '<path d="M4 20V11"/><path d="M10 20V4"/><path d="M16 20v-6"/><path d="M21 20H3"/>'],
   ["eq", "장비", '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'],
   ["qc", "검수 · 이력", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'],
   ["ship", "입고 · 출하", '<path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>'],
-  ["etc", "자재 · 기타", '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>']
+  ["etc", "자재 · 기타", '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>'],
+  ["map", "배치도", '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8v4M12 8v4M16 8v4M10 15v2M14 15v2"/>']
 ];
 var cur = "dash";
 function buildNav() {
   TABS.forEach(function (t) {
     var a = el("button", null, t[1]); a.type = "button"; a.dataset.v = t[0]; a.onclick = function () { go(t[0]); }; $("ntop").appendChild(a);
     var b = el("button"); b.type = "button"; b.dataset.v = t[0];
-    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + t[2] + "</svg>" + esc(t[1].replace(/ · .*/, ""));
+    b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + t[2] + "</svg>" + esc(t[3] || t[1].replace(/ · .*/, ""));
     b.onclick = function () { go(t[0]); }; $("nbot").querySelector(".in").appendChild(b);
   });
 }
@@ -728,7 +826,7 @@ function draw() {
   if (!D) return;
   $("demob").style.display = D.demo ? "" : "none";
   $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + D.updated + " 기준";
-  if (cur === "dash") drawDash(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else drawEtc();
+  if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else drawEtc();
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
 function eqOpen(n) {
@@ -773,7 +871,15 @@ function drawDash() {
   var open = D.issues.filter(function (x) { return x.r !== "완료"; }).length;
   // 히어로 숫자
   var hs = $("hstat"); hs.innerHTML = "";
-  [["진행 중 장비", act.length, "대"], ["이번 주 출하", wk, "대"], ["검수 대기", qWait, "건"], ["열린 ISSUE", open, "건", open > 0]].forEach(function (k) { var d = el("div", k[3] ? "r" : ""); d.appendChild(el("span", null, k[0])); var b = num(k[1], k[2]); d.appendChild(b); hs.appendChild(d); setTimeout(function () { countUp(b); }, 900); });
+  var nPin = (D.notice || []).filter(function (n) { return n.pin; }).length;
+  [["공지사항", (D.notice || []).length, "건", false, function () { NF = "all"; go("notice"); }],
+   ["진행 중 장비", act.length, "대", false, function () { QF = "act"; $("q").value = ""; go("eq"); }],
+   ["이번 주 출하", wk, "대", false, function () { go("ship"); }],
+   ["검수 대기", qWait, "건", false, function () { go("qc"); }],
+   ["열린 ISSUE", open, "건", open > 0, function () { go("qc"); setTimeout(function () { try { $("qlog").scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" }); } catch (e) {} }, 350); }]].forEach(function (k) {
+    var d = el("button", k[3] ? "r" : ""); d.type = "button"; d.onclick = k[4];
+    d.appendChild(el("span", null, k[0] === "공지사항" && nPin ? "공지사항 · 필독 " + nPin : k[0])); var b = num(k[1], k[2]); d.appendChild(b); hs.appendChild(d); setTimeout(function () { countUp(b); }, 900);
+  });
   // 흐르는 띠
   // 흐르는 띠: 지금 동탄 소식 (오늘 입고 · 곧 출하 · 검수 대기 · ISSUE · 공지)
   var news = [];
@@ -840,29 +946,52 @@ function drawDash() {
 }
 
 var QF = "all";
+var EQV = sget("eqv") || (window.innerWidth >= 900 ? "tbl" : "card");
+function dday(ymdS) { var n = Math.round((new Date(ymdS) - new Date(D.today)) / 864e5); return [n <= 0 ? (n === 0 ? "D-DAY" : "지남") : "D-" + n, n <= 3 ? "r" : n <= 7 ? "a" : ""]; }
 function drawEq() {
   var f = $("qf"); f.innerHTML = "";
   var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급"], ["noloc", "자리 미배정"], ["qc", "검수 대기"]];
   if (/^s\d+$/.test(QF)) opts.push([QF, STAGES[+QF.slice(1)]]);
   opts.forEach(function (o) { var b = el("button", "chip" + (QF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { QF = o[0]; drawEq(); }; f.appendChild(b); });
+  [].forEach.call($("eqv").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === EQV); b.onclick = function () { EQV = b.dataset.v; sset("eqv", EQV); drawEq(); }; });
   var k = nq($("q").value), list = D.eq.filter(function (e) {
     if (k && nq([e.n, e.t, e.v, e.p, e.loc].join(" ")).indexOf(k) < 0 && nq(e.n).indexOf(k) < 0) return false;
     if (QF === "act") return e.st < 10; if (QF === "u") return e.u; if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요";
     if (/^s\d+$/.test(QF)) return e.st === +QF.slice(1);
     return true;
-  });
+  }).sort(function (a, b) { return a.out < b.out ? -1 : a.out > b.out ? 1 : (b.u ? 1 : 0) - (a.u ? 1 : 0); });
   $("qcnt").textContent = list.length + "대";
   var g = $("eqg"); g.innerHTML = "";
   if (!list.length) { g.appendChild(el("div", "empty", "검색 결과가 없습니다")); return; }
+  if (EQV === "tbl") {
+    var c0 = el("div", "card"); c0.style.padding = "8px 22px 22px";
+    var w = el("div", "tbw"); w.style.margin = "0 -22px -22px";
+    var t = el("table", "tbl etbl"); t.innerHTML = "<thead><tr><th>장비</th><th>TYPE</th><th>현재 공정</th><th>자리</th><th>업체</th><th>담당</th><th>출하 예정</th></tr></thead>";
+    var tb = el("tbody");
+    list.forEach(function (e) {
+      var tr = el("tr"), dd = dday(e.out), pc = Math.round((e.st + 1) / 11 * 100);
+      tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
+      tr.innerHTML = '<td><b style="font-family:var(--mono);font-size:15px">' + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</td><td>" + esc(e.t) +
+        '</td><td><div class="pst" style="--c:' + SCOL[e.st] + '"><span class="tag" style="color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)">' + esc(STAGES[e.st]) + '</span><div class="pbar"><u style="width:' + pc + '%"></u></div><em>' + (e.st + 1) + "/11</em></div></td><td>" + (e.loc ? "<b>" + esc(e.loc) + "</b>" : '<span style="color:var(--sub)">미배정</span>') +
+        "</td><td>" + esc(e.v) + "</td><td>" + esc(e.p) + "</td><td><b>" + md(e.out) + '</b><em class="dd ' + dd[1] + '">' + dd[0] + "</em></td>";
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb); w.appendChild(t); c0.appendChild(w); g.appendChild(c0); return;
+  }
+  var gg = el("div", "eqg2"); g.appendChild(gg);
   list.forEach(function (e, i) {
-    var c = el("button", "card eq tilt"); c.type = "button"; c.onclick = function () { eqOpen(e.n); };
+    var c = el("button", "card eq2 tilt"); c.type = "button"; c.onclick = function () { eqOpen(e.n); };
+    c.style.setProperty("--c", SCOL[e.st]);
     c.style.animation = RM ? "" : "fade .5s " + Math.min(i, 12) * 35 + "ms both";
-    var hd = el("div", "hd"), w = el("div"); w.appendChild(el("div", "nm", e.n)); w.appendChild(el("div", "ty", e.t + " · " + e.v)); hd.appendChild(w);
-    var tg = el("div"); tg.style.cssText = "display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end"; if (e.u) tg.appendChild(el("span", "tag r", "긴급")); tg.appendChild(el("span", "tag b", STAGES[e.st])); hd.appendChild(tg);
-    c.appendChild(hd);
-    var sg = el("div", "stg"); for (var s = 0; s < 11; s++) sg.appendChild(el("i", s < e.st ? "d" : s === e.st ? "c" : "")); c.appendChild(sg);
-    var ft = el("div", "ft"); ft.innerHTML = "<span>📍 " + (e.loc ? "동탄 " + esc(e.loc) : "미배정") + "</span><span>출하 <b>" + md(e.out) + "</b></span>"; c.appendChild(ft);
-    g.appendChild(c);
+    var h = el("div", "h"); h.appendChild(el("span", "nm", e.n)); if (e.u) h.appendChild(el("span", "tag r", "긴급")); c.appendChild(h);
+    c.appendChild(el("div", "ty", e.t));
+    var sg = el("div", "sg"), r = el("div", "r"), l = el("div"); l.appendChild(el("span", null, "현재 공정")); l.appendChild(el("b", null, STAGES[e.st])); r.appendChild(l); r.appendChild(el("span", "n", (e.st + 1) + " / 11")); sg.appendChild(r);
+    var pb = el("div", "pbar"), u = el("u"); u.style.width = Math.round((e.st + 1) / 11 * 100) + "%"; pb.appendChild(u); sg.appendChild(pb);
+    sg.appendChild(el("div", "nx", e.st < 10 ? "다음 · " + STAGES[e.st + 1] : "출하 완료"));
+    c.appendChild(sg);
+    var kv = el("div", "kv3"); [["자리", e.loc || "미배정"], ["업체", e.v], ["담당", e.p]].forEach(function (x) { var d = el("div"); d.appendChild(el("span", null, x[0])); d.appendChild(el("b", null, x[1])); kv.appendChild(d); }); c.appendChild(kv);
+    var dd = dday(e.out), ft = el("div", "ft2"); ft.appendChild(el("span", null, "출하 예정")); ft.appendChild(el("b", null, md(e.out))); ft.appendChild(el("em", "dd " + dd[1], dd[0])); c.appendChild(ft);
+    gg.appendChild(c);
   });
 }
 $("q").oninput = function () { drawEq(); };
@@ -910,6 +1039,59 @@ function drawShip() {
   }
   if (!w.children.length) w.appendChild(el("div", "empty", "향후 2주간 입고 · 출하 일정이 없습니다"));
 }
+function drawMap() {
+  drawPlan("bay2");
+  var lg = $("legend2"); lg.innerHTML = "";
+  STAGES.forEach(function (s, i) { var sp = el("span"); var ii = el("i"); ii.style.background = SCOL[i]; sp.appendChild(ii); sp.appendChild(document.createTextNode(s)); lg.appendChild(sp); });
+  var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
+  var cnt = function (r) { return PLAN.filter(function (p) { return p.id[0] === r && byLoc[p.id]; }).length; };
+  var used = cnt("A") + cnt("B");
+  kpiRow("mkpi", [["사용 중인 자리", used, "/ " + PLAN.length], ["빈 자리", PLAN.length - used, "자리"], ["B줄 사용", cnt("B"), "/ 9"], ["A줄 사용", cnt("A"), "/ 9"]]);
+  var tb = $("maptb"); tb.innerHTML = "";
+  var order = PLAN.slice().sort(function (a, b) { return a.id[0] !== b.id[0] ? (a.id[0] < b.id[0] ? -1 : 1) : (+a.id.slice(1)) - (+b.id.slice(1)); });
+  order.forEach(function (p) {
+    var e = byLoc[p.id], tr = el("tr");
+    if (e) {
+      tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
+      tr.innerHTML = "<td><b>" + esc(p.id) + "</b></td><td><b>" + esc(e.n) + "</b></td><td>" + esc(e.t) + '</td><td><span class="tag" style="color:' + SCOL[e.st] + ";background:color-mix(in srgb," + SCOL[e.st] + ' 16%,transparent)">' + esc(STAGES[e.st]) + "</span></td><td>" + esc(e.v + " · " + e.p) + "</td><td>" + md(e.out) + "</td>";
+    } else tr.innerHTML = "<td><b>" + esc(p.id) + '</b></td><td colspan="5" style="color:var(--sub)">빈 자리</td>';
+    tb.appendChild(tr);
+  });
+}
+var NF = "all", NOPEN = {};
+function drawNotice() {
+  var f = $("nf"); f.innerHTML = "";
+  [["all", "전체"], ["pin", "필독"], ["일반", "일반"], ["안전", "안전"], ["일정", "일정"]].forEach(function (o) { var b = el("button", "chip" + (NF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { NF = o[0]; drawNotice(); }; f.appendChild(b); });
+  var L = (D.notice || []).map(function (n, i) { n._i = n._i == null ? i : n._i; return n; }).filter(function (n) { return NF === "all" || (NF === "pin" ? n.pin : n.c === NF); })
+    .sort(function (a, b) { return (b.pin ? 1 : 0) - (a.pin ? 1 : 0) || (a.d < b.d ? 1 : a.d > b.d ? -1 : 0); });
+  var w = $("nlist"); w.innerHTML = "";
+  if (!L.length) { w.appendChild(el("div", "empty", "등록된 공지가 없습니다")); return; }
+  L.forEach(function (n, k) {
+    var key = n.t + n.d, it = el("div", (n.pin ? "npin" : "") + (NOPEN[key] || (k === 0 && NOPEN._first !== 0) ? " on" : ""));
+    var h = el("button", "nh"); h.type = "button";
+    var tg = el("span", "tg"); if (n.pin) tg.appendChild(el("span", "tag r", "필독")); tg.appendChild(el("span", "tag " + (n.c === "안전" ? "a" : n.c === "일정" ? "b" : ""), n.c || "일반")); h.appendChild(tg);
+    h.appendChild(el("b", null, n.t));
+    var mt = el("span", "mt", md(n.d) + (n.w ? " · " + n.w : "")); mt.appendChild(el("i")); h.appendChild(mt);
+    h.onclick = function () { NOPEN._first = 0; var on = !it.classList.contains("on"); it.classList.toggle("on", on); NOPEN[key] = on; };
+    it.appendChild(h);
+    var b = el("div", "nbody"), b2 = el("div"); b2.appendChild(el("p", null, n.p)); b.appendChild(b2); it.appendChild(b);
+    w.appendChild(it);
+  });
+}
+$("nwrite").onclick = function () { if (!authName()) { openLogin(); return; } $("nform").hidden = !$("nform").hidden; if (!$("nform").hidden) $("nt").focus(); };
+$("ncancel").onclick = function () { $("nform").hidden = true; };
+$("nfm").onsubmit = function (e) {
+  e.preventDefault();
+  var nm = authName(); if (!nm) { openLogin(); return; }
+  var t = $("nt").value.trim(), b = $("nb").value.trim();
+  if (!t) { $("nt").focus(); toast("제목을 입력해 주세요"); return; }
+  if (!b) { $("nb").focus(); toast("내용을 입력해 주세요"); return; }
+  var rec = { t: t, p: b, d: D.today, w: nm, c: $("nc").value, pin: $("np").checked ? 1 : 0 };
+  var done = function () { D.notice.unshift(rec); $("nt").value = ""; $("nb").value = ""; $("np").checked = false; $("nform").hidden = true; NOPEN[rec.t + rec.d] = true; drawNotice(); toast("✔ 공지가 등록되었습니다"); };
+  if (!API_URL) { done(); return; }
+  fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ fn: "addNotice", pin: sget("pin") || "", me: nm, args: [rec] }) })
+    .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error); done(); }).catch(function (er) { toast("⚠️ 등록 실패: " + er.message); });
+};
 function drawEtc() {
   $("mnote").textContent = D.demo || !D.matLive ? "자재팀 데이터 연동 준비 중입니다. 연동 후 이곳에 표시됩니다." : "";
   var tb = $("mtb"); tb.innerHTML = "";
@@ -917,7 +1099,7 @@ function drawEtc() {
   var ib = $("ibars"); ib.innerHTML = ""; var im = Math.max.apply(null, D.insp.map(function (x) { return x[1]; }).concat([1]));
   D.insp.forEach(function (x) { var d = el("div"); d.appendChild(el("span", null, x[0])); var i = el("i"), u = el("u"); u.style.setProperty("--p", x[1] / im * 100 + "%"); i.appendChild(u); d.appendChild(i); d.appendChild(el("b", null, x[1] + "건")); ib.appendChild(d); });
   setTimeout(function () { ib.classList.add("in"); }, 60);
-  var nt = $("notice"); nt.innerHTML = ""; D.notice.forEach(function (n) { nt.appendChild(issEl({ e: "공지", k: n.t, r: "공지", t: n.p, d: n.d, lv: "ok" })); });
+  var nl = (D.notice || [])[0]; $("nlast").textContent = nl ? "최근 · " + nl.t : "등록된 공지가 없습니다";
 }
 
 /* ── 이름 · 알림 · 새로고침 ── */
