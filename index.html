@@ -260,6 +260,12 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .plan .slot.on .sid{fill:var(--c)}
 .plan .sn{font-size:10.5px;font-weight:800;fill:#fff}
 .plan .sp{fill:var(--c)}
+.plan .slot.pre{cursor:pointer}
+.plan .slot.pre .sb{fill:rgba(107,140,255,.06);stroke:#4b5d94;stroke-dasharray:4 3}
+.plan .slot.pre:hover .sb{fill:rgba(107,140,255,.14)}
+.plan .sn.pre{fill:#7d8bb0;font-weight:700}
+.plan .sdue{font-size:8.5px;font-weight:700;fill:#7d8bb0}
+.plan .smore{font-size:9px;font-weight:800;fill:#fff;opacity:.8}
 .in .plan .slot{animation:slotIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k)*25ms)}
 @keyframes slotIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .plan .slot{transform-box:fill-box;transform-origin:center}
@@ -471,6 +477,8 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .cfm b{font-size:30px;font-weight:900;letter-spacing:.12em;margin-top:14px}
 .cfm p{margin:10px 0 0!important;font-size:15px!important;color:var(--text)!important;line-height:1.6}
 .cfw{margin-top:12px;font-size:12.5px;font-weight:700;color:#fcd34d;background:rgba(251,191,36,.1);border-radius:10px;padding:8px 12px}
+.nmlock{margin:-6px 0 14px;font-size:13px;font-weight:700;color:#fcd34d;background:rgba(251,191,36,.1);border-radius:10px;padding:9px 12px}
+#lg3 .lgl{margin-top:0}
 .cfb{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
 /* 이름 앞 동그라미 글자 아이콘 숨김 */
 #cfav,#upav,#meav{display:none}
@@ -550,7 +558,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div></section>
 
     <section class="sec"><div class="wrap">
-      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 배치도</h2><p class="ds">CR4 도면 기준입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div><button class="more" type="button" data-go="map">배치도 크게 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      <div class="shd rv"><div><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 배치도</h2></div><button class="more" type="button" data-go="map">배치도 크게 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       <div class="card rv" id="baycard"><div id="bay"></div><div class="legend" id="legend"></div></div>
     </div></section>
 
@@ -644,10 +652,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 배치도 ═════ -->
   <div class="view" id="v-map"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 CR4 배치도</h2><p class="ds">도면 기준 자리별 장비 현황입니다. 자리를 선택하면 해당 장비의 상세 정보를 확인할 수 있습니다.</p></div>
+    <div class="vtop"><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 CR4 배치도</h2></div>
     <div class="g4" id="mkpi" style="margin-bottom:16px"></div>
     <div class="card mapw"><div id="bay2"></div><div class="legend" id="legend2"></div></div>
-    <div class="card" style="margin-top:16px"><h3>자리별 현황</h3><div class="tbw" style="margin-top:12px"><table class="tbl"><thead><tr><th>자리</th><th>장비</th><th>TYPE</th><th>공정</th><th>업체 · 담당</th><th>출하 예정</th></tr></thead><tbody id="maptb"></tbody></table></div></div>
+    <div class="card" style="margin-top:16px"><h3>자리별 현황</h3><div class="tbw" style="margin-top:12px"><table class="tbl"><thead><tr><th>자리</th><th>장비</th><th>TYPE</th><th>공정</th><th>업체 · 담당</th><th>출하 예정</th><th>다음 입고</th></tr></thead><tbody id="maptb"></tbody></table></div></div>
   </div></div>
 </main>
 
@@ -670,6 +678,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="lgs" id="lg2" hidden>
     <h5>이름 입력</h5>
     <p>기록에 남을 본인 이름을 정확하게 입력해 주세요.</p>
+    <div class="nmlock">⚠️ 한 번 등록한 이름은 변경할 수 없습니다.</div>
     <form id="nmform" autocomplete="off">
       <input class="nmin" id="nmin" placeholder="예) 박제민" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
       <div class="nmhint" id="nmhint">한글 3글자로 입력해 주세요.</div>
@@ -681,7 +690,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <span class="av" id="cfav"></span>
       <b id="cfname"></b>
       <p>입력한 이름이 정확한가요?<br>본인이 맞는지 확인해 주세요.</p>
-      <span class="cfw">다른 사람 이름으로 로그인하면 기록이 그 사람 이름으로 남습니다.</span>
+      <span class="cfw">한 번 등록한 이름은 변경할 수 없습니다.<br>다른 사람 이름으로 로그인하면 기록이 그 사람 이름으로 남습니다.</span>
     </div>
     <div class="cfb"><button class="lgl" id="cfno" type="button" style="margin:0">다시 입력</button><button class="sbtn" id="cfyes" type="button">네, 본인입니다</button></div>
   </div>
@@ -695,7 +704,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
-    <button class="sbtn" id="chgname" type="button">이름 변경</button>
     <button class="lgl" id="logout" type="button">로그아웃</button>
   </div>
 </div></div>
@@ -703,9 +711,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <script>
 /* ═══════════════════════════════════════════════
  * NINEBELL 동탄 제조 — 사이트 한 파일
- * API_URL이 비어 있으면 예시 데이터로 보여 줌 (서버 붙이면 실제 데이터)
+ * 데이터: Supabase (구글시트 없음) · 사이트가 Supabase에 직접 읽고 씀
+ *  - 읽기: 누구나 (조회 전용) / 쓰기: 로그인(공용 PIN + 이름 + 개인 PIN) 후 서버 함수로만
+ *  - SB_URL · SB_KEY를 비우면 예시 데이터로 보여 줌
  * ═══════════════════════════════════════════════ */
-var API_URL = "";   // 동탄 시트 Apps Script 웹앱 주소 (배포 후 넣기)
+var SB_URL = "https://wxzxqhcdtvrwdodnbdnu.supabase.co";
+var SB_KEY = "sb_publishable_pPGB06YXXBKZy6ZDVjtzIA_rMViuFoF";   // 공개용(publishable) 키 · 사이트에 넣는 용도. Secret 키는 절대 넣지 말 것
+var LIVE = !!(SB_URL && SB_KEY);
 
 var $ = function (id) { return document.getElementById(id); };
 function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
@@ -715,7 +727,7 @@ function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function 
 function nq(s) { return String(s || "").toUpperCase().replace(/[\s\-_.·]/g, ""); }
 function ymd(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
 function addD(s, n) { var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2] + n); return ymd(d); }
-function md(s) { var p = s.split("-"); return +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }
+function md(s) { if (!s) return "-"; var p = String(s).slice(0, 10).split("-"); return +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }
 var RM = false; try { RM = matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
 
 var STAGES = ["자재불출", "FRAME 입고", "배선", "MODULE", "I/O CHECK", "1차 LEVEL", "1차 검수", "제조완료", "QC", "PACKING", "출하"];
@@ -753,11 +765,46 @@ function demoData() {
 }
 
 var D = null;
-function load(force) {
-  if (!API_URL) { D = demoData(); return Promise.resolve(D); }
-  return fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ fn: "getAll", pin: sget("pin") || "", force: !!force }) })
-    .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error || "불러오기 실패"); D = j.data; return D; });
+/* ── Supabase 통신 (apikey 헤더만 · 응답 8초 넘으면 실패 처리) ── */
+function sbFetch(path, opt) {
+  opt = opt || {};
+  var ctl = typeof AbortController !== "undefined" ? new AbortController() : null, tm = ctl ? setTimeout(function () { ctl.abort(); }, 8000) : 0;
+  var h = { apikey: SB_KEY, Accept: "application/json" }; if (opt.body) h["Content-Type"] = "application/json";
+  return fetch(SB_URL + "/rest/v1/" + path, { method: opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined, signal: ctl ? ctl.signal : undefined })
+    .then(function (r) { clearTimeout(tm); return r.text().then(function (t) { var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {} if (!r.ok) throw new Error((j && (j.message || j.hint)) || ("서버 오류 " + r.status)); return j; }); },
+          function (e) { clearTimeout(tm); throw new Error(e && e.name === "AbortError" ? "서버 응답이 늦습니다. 잠시 후 다시 시도해 주세요." : "인터넷 연결을 확인해 주세요."); });
 }
+function rpc(fn, args) { return sbFetch("rpc/" + fn, { method: "POST", body: args || {} }); }
+function kday(ts) { if (!ts) return ""; var d = new Date(ts); return isNaN(d) ? String(ts).slice(0, 10) : ymd(d); }   // 시각 → 한국 날짜
+function lvOf(r) { return r === "완료" ? "ok" : r === "NG" ? "hi" : ""; }
+function mapLog(x) { return { id: x.id, e: x.equip, k: x.kind, r: x.result, t: x.body, d: kday(x.created_at), w: x.writer, lv: lvOf(x.result) }; }
+function mapNotice(x) { return { id: x.id, t: x.title, p: x.body, d: kday(x.created_at), w: x.writer, c: x.cat || "일반", pin: x.pinned ? 1 : 0 }; }
+function liveData(eq, lg, nt, mt) {
+  var T = ymd(new Date());
+  var E = (eq || []).map(function (x) {
+    return { n: x.name, t: x.type || "", v: x.vendor || "", p: x.owner || "", loc: (x.loc || "").toUpperCase().trim(), st: Math.max(0, Math.min(10, +x.stage || 0)),
+      inD: x.in_date || "", out: x.out_date || "", q1: x.q1 || "", q2: x.q2 || "", u: !!x.urgent };
+  });
+  var months = [];   // 최근 6개월 출하(공정 '출하' + 출하일 기준)
+  for (var i = 5; i >= 0; i--) { var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); var key = ymd(d).slice(0, 7); months.push([(d.getMonth() + 1) + "월", E.filter(function (e) { return e.st === 10 && e.out && e.out.slice(0, 7) === key; }).length]); }
+  return { demo: 0, live: 1, updated: new Date().toTimeString().slice(0, 5), today: T, eq: E, months: months,
+    issues: (lg || []).map(mapLog), notice: (nt || []).map(mapNotice), mat: (mt || []).map(function (m) { return [m.equip, m.item, m.vendor, m.status]; }), insp: [] };
+}
+function load(force) {
+  if (!LIVE) { D = demoData(); return Promise.resolve(D); }
+  return Promise.all([
+    sbFetch("equipment?select=*&order=out_date.asc.nullslast,name.asc"),
+    sbFetch("logs?select=*&order=created_at.desc&limit=300"),
+    sbFetch("notices?select=*&order=created_at.desc&limit=200"),
+    sbFetch("materials?select=*&order=updated_at.desc&limit=300")
+  ]).then(function (a) {
+    D = liveData(a[0], a[1], a[2], a[3]);
+    try { sset("cache", JSON.stringify(D)); } catch (e) {}
+    return D;
+  });
+}
+function cacheData() { try { var c = JSON.parse(sget("cache") || "null"); if (c && c.eq) { c.today = ymd(new Date()); return c; } } catch (e) {} return null; }
+function emptyData() { return liveData([], [], [], []); }
 
 /* ── 🗺 동탄 배치도 (도면 기준 · CR4) ──
  * 자리 이름 (현장 기준 · 출하장은 오른쪽): 위줄 = 출하장 쪽(오른쪽)부터 B1 → B9
@@ -769,10 +816,23 @@ var PLAN = (function () {
   [453, 516, 579, 642, 705, 768, 831, 894, 957].forEach(function (x, i) { s.push({ id: "A" + (9 - i), x: x, y: 206, w: 42.5, h: 109 }); });
   return s;
 })();
+/* 한 자리에 여러 장비가 순서대로 잡혀 있음 (배치현황 시트) → 지금 있는 장비 = FRAME 입고일이 지났고 출하 전인 장비 중 가장 최근
+ * 지금 비어 있으면 다음에 들어올 장비를 '입고 예정'으로 보여 줌 */
+function slotMap() {
+  var T = D.today, g = {}, out = {};
+  D.eq.forEach(function (e) { if (e.loc) (g[e.loc] = g[e.loc] || []).push(e); });
+  Object.keys(g).forEach(function (k) {
+    var L = g[k];
+    var cur = L.filter(function (e) { return e.st < 10 && e.inD && e.inD <= T; }).sort(function (a, b) { return a.inD < b.inD ? 1 : a.inD > b.inD ? -1 : 0; });
+    var nx = L.filter(function (e) { return e.st < 10 && (!e.inD || e.inD > T); }).sort(function (a, b) { var x = a.inD || "9999", y = b.inD || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
+    out[k] = { cur: cur[0] || null, more: Math.max(0, cur.length - 1), next: nx[0] || null, wait: nx.length };
+  });
+  return out;
+}
 function svgEl(t, a, txt) { var e = document.createElementNS("http://www.w3.org/2000/svg", t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; }
 function drawPlan(boxId) {
   var box = $(boxId || "bay"); box.innerHTML = "";
-  var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
+  var SM = slotMap();
   var sv = svgEl("svg", { viewBox: "312 -8 848 398", class: "plan", role: "img", "aria-label": "동탄 CR4 배치도" });
   var W = function (x, y, w, h, c) { sv.appendChild(svgEl("rect", { x: x, y: y, width: w, height: h, class: c || "wall" })); };
   var L = function (x1, y1, x2, y2, c) { sv.appendChild(svgEl("line", { x1: x1, y1: y1, x2: x2, y2: y2, class: c || "fixl" })); };
@@ -789,17 +849,25 @@ function drawPlan(boxId) {
   // 자리
   var used = 0;
   PLAN.forEach(function (p, k) {
-    var e = byLoc[p.id], g = svgEl("g", { class: "slot" + (e ? " on" : ""), style: "--c:" + (e ? SCOL[e.st] : "transparent") + ";--k:" + k });
+    var si = SM[p.id] || {}, e = si.cur, nx = si.next;
+    var g = svgEl("g", { class: "slot" + (e ? " on" : nx ? " pre" : ""), style: "--c:" + (e ? SCOL[e.st] : "transparent") + ";--k:" + k });
     g.appendChild(svgEl("rect", { x: p.x, y: p.y, width: p.w, height: p.h, rx: 4, class: "sb" }));
     g.appendChild(svgEl("text", { x: p.x + p.w / 2, y: p.y - 6, class: "sid", "text-anchor": "middle" }, p.id));
     var cx = p.x + p.w / 2, cy = p.y + p.h / 2, rot = "rotate(-90 " + cx + " " + cy + ")";
+    var fs = function (n) { return "font-size:" + Math.min(10.5, (p.h - 14) / (String(n).length * 0.62)).toFixed(1) + "px"; };   // 긴 장비명은 칸에 맞게 글씨 줄임
     if (e) {
       used++;
-      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: rot }, e.n));
+      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(e.n) }, e.n));
       var ph = (p.h - 8) * (e.st + 1) / 11;
       g.appendChild(svgEl("rect", { x: p.x + 4, y: p.y + p.h - 4 - ph, width: 3, height: ph, rx: 1.5, class: "sp" }));
-      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + e.n + " · " + STAGES[e.st]));
+      if (si.more) g.appendChild(svgEl("text", { x: p.x + p.w - 4, y: p.y + 11, class: "smore", "text-anchor": "end" }, "+" + si.more));
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + e.n + " · " + STAGES[e.st] + (nx ? "\n다음 입고: " + nx.n + " (" + md(nx.inD) + ")" : "")));
       g.addEventListener("click", function () { eqOpen(e.n); });
+    } else if (nx) {
+      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn pre", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(nx.n) }, nx.n));
+      g.appendChild(svgEl("text", { x: cx, y: p.y + p.h + 12, class: "sdue", "text-anchor": "middle" }, nx.inD ? md(nx.inD).replace(/\(.\)/, "") + " 입고" : "입고 예정"));
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 비어 있음\n입고 예정: " + nx.n + (nx.inD ? " (" + md(nx.inD) + ")" : "")));
+      g.addEventListener("click", function () { eqOpen(nx.n); });
     } else {
       g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 빈 자리"));
     }
@@ -884,11 +952,11 @@ function eqOpen(n) {
   var e = D.eq.filter(function (x) { return x.n === n; })[0]; if (!e) return;
   var p = $("drp"); p.innerHTML = "";
   var ph = el("div", "ph"); var x = el("button", "x", "✕"); x.type = "button"; x.onclick = drClose; ph.appendChild(x);
-  ph.appendChild(el("span", "tag b", STAGES[e.st])); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, e.t + " · " + e.v + " · " + e.p));
+  ph.appendChild(el("span", "tag b", STAGES[e.st])); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, [e.t, e.v, e.p].filter(Boolean).join(" · ")));
   p.appendChild(ph);
   var bd = el("div", "bd");
   var kv = el("div", "kv");
-  [["자리", e.loc ? "동탄 " + e.loc : "미배정"], ["FRAME 입고", md(e.inD)], ["업체 · 담당", e.v + " · " + e.p], ["출하 예정", md(e.out)], ["1차 검수", e.q1 || "-"], ["2차 검수", e.q2 || "-"]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
+  [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"], ["출하 예정", md(e.out)], ["1차 검수", e.q1 || "-"], ["2차 검수", e.q2 || "-"]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
   bd.appendChild(kv);
   var c = el("div", "card"); c.appendChild(el("h3", null, "공정 진행"));
   var tl = el("div", "tline"); tl.style.marginTop = "10px";
@@ -991,14 +1059,15 @@ function drawDash() {
   // 업체별
   var vb = $("vbars"); vb.innerHTML = ""; var vc = {}; act.forEach(function (e) { vc[e.v] = (vc[e.v] || 0) + 1; });
   var vl = Object.keys(vc).sort(function (a, b) { return vc[b] - vc[a]; }), vm = vl.length ? vc[vl[0]] : 1;
+  if (!vl.length) vb.appendChild(el("div", "dz", "진행 중인 장비가 없습니다"));
   vl.forEach(function (v) { var d = el("div"); d.appendChild(el("span", null, v)); var i = el("i"), u = el("u"); u.style.setProperty("--p", vc[v] / vm * 100 + "%"); i.appendChild(u); d.appendChild(i); d.appendChild(el("b", null, vc[v] + "대")); vb.appendChild(d); });
   // ISSUE
-  var is = $("iss"); is.innerHTML = ""; D.issues.slice(0, 4).forEach(function (x) { is.appendChild(issEl(x)); });
+  var is = $("iss"); is.innerHTML = ""; if (!D.issues.length) is.appendChild(el("div", "empty", "등록된 기록이 없습니다")); D.issues.slice(0, 4).forEach(function (x) { is.appendChild(issEl(x)); });
 }
 
 var QF = "all";
 var EQV = sget("eqv") || (window.innerWidth >= 900 ? "tbl" : "card");
-function dday(ymdS) { var n = Math.round((new Date(ymdS) - new Date(D.today)) / 864e5); return [n <= 0 ? (n === 0 ? "D-DAY" : "지남") : "D-" + n, n <= 3 ? "r" : n <= 7 ? "a" : ""]; }
+function dday(ymdS) { if (!ymdS) return ["미정", ""]; var n = Math.round((new Date(ymdS) - new Date(D.today)) / 864e5); return [n <= 0 ? (n === 0 ? "D-DAY" : "지남") : "D-" + n, n <= 3 ? "r" : n <= 7 ? "a" : ""]; }
 function drawEq() {
   var f = $("qf"); f.innerHTML = "";
   var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급"], ["noloc", "자리 미배정"], ["qc", "검수 대기"]];
@@ -1010,7 +1079,7 @@ function drawEq() {
     if (QF === "act") return e.st < 10; if (QF === "u") return e.u; if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요";
     if (/^s\d+$/.test(QF)) return e.st === +QF.slice(1);
     return true;
-  }).sort(function (a, b) { return a.out < b.out ? -1 : a.out > b.out ? 1 : (b.u ? 1 : 0) - (a.u ? 1 : 0); });
+  }).sort(function (a, b) { var x = a.out || "9999", y = b.out || "9999"; return x < y ? -1 : x > y ? 1 : (b.u ? 1 : 0) - (a.u ? 1 : 0); });   // 출하일 없는 장비는 맨 아래
   $("qcnt").textContent = list.length + "대";
   var g = $("eqg"); g.innerHTML = "";
   if (!list.length) { g.appendChild(el("div", "empty", "검색 결과가 없습니다")); return; }
@@ -1060,17 +1129,20 @@ function drawQc() {
   var tg = function (s) { return s ? '<span class="tag ' + (s === "완료" ? "g" : "a") + '">' + esc(s) + "</span>" : '<span class="tag">-</span>'; };
   rows.forEach(function (e) { var tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); }; tr.innerHTML = "<td><b>" + esc(e.n) + "</b></td><td>" + esc(e.t) + "</td><td>" + tg(e.q1) + "</td><td>" + tg(e.q2) + "</td><td>" + esc(e.p) + "</td>"; tb.appendChild(tr); });
   var fe = $("fe"), keep = fe.value; fe.innerHTML = ""; D.eq.forEach(function (e) { var o = el("option", null, e.n + " · " + e.t); o.value = e.n; fe.appendChild(o); }); if (keep) fe.value = keep;
-  var lg = $("qlog"); lg.innerHTML = ""; D.issues.forEach(function (x) { lg.appendChild(issEl(x)); });
+  var lg = $("qlog"); lg.innerHTML = ""; if (!D.issues.length) lg.appendChild(el("div", "empty", "등록된 기록이 없습니다")); D.issues.forEach(function (x) { lg.appendChild(issEl(x)); });
 }
 $("qform").onsubmit = function (e) {
   e.preventDefault();
   var nm = authName(); if (!nm) { openLogin(); return; }
   var t = $("ft").value.trim(); if (!t) { $("ft").focus(); toast("내용을 입력해 주세요"); return; }
   var rec = { e: $("fe").value, k: $("fk").value, r: $("fr").value, t: t, d: D.today, w: nm, lv: $("fr").value === "완료" ? "ok" : $("fr").value === "NG" ? "hi" : "" };
-  var done = function () { D.issues.unshift(rec); $("ft").value = ""; drawQc(); toast("✔ 저장되었습니다"); };
-  if (!API_URL) { done(); return; }
-  fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ fn: "addLog", pin: sget("pin") || "", me: nm, args: [rec] }) })
-    .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error); done(); }).catch(function (er) { toast("⚠️ 저장 실패: " + er.message); });
+  var done = function (row) { D.issues.unshift(row ? mapLog(row) : rec); $("ft").value = ""; drawQc(); toast("✔ 저장되었습니다"); };
+  if (!LIVE) { done(); return; }
+  var sb = $("qform").querySelector(".sbtn"); sb.disabled = true; sb.textContent = "저장 중…";
+  rpc("dt_add_log", { n: nm, pin: sget("upin") || "", equip: rec.e, kind: rec.k, result: rec.r, body: rec.t })
+    .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); } done(j.row); })
+    .catch(function (er) { toast("⚠️ 저장 실패: " + er.message); })
+    .then(function () { sb.disabled = false; sb.textContent = "저장"; });
 };
 
 function drawShip() {
@@ -1094,18 +1166,22 @@ function drawMap() {
   drawPlan("bay2");
   var lg = $("legend2"); lg.innerHTML = "";
   STAGES.forEach(function (s, i) { var sp = el("span"); var ii = el("i"); ii.style.background = SCOL[i]; sp.appendChild(ii); sp.appendChild(document.createTextNode(s)); lg.appendChild(sp); });
-  var byLoc = {}; D.eq.forEach(function (e) { if (e.loc) byLoc[e.loc] = e; });
-  var cnt = function (r) { return PLAN.filter(function (p) { return p.id[0] === r && byLoc[p.id]; }).length; };
+  var SM = slotMap();
+  var cnt = function (r) { return PLAN.filter(function (p) { return p.id[0] === r && SM[p.id] && SM[p.id].cur; }).length; };
   var used = cnt("A") + cnt("B");
   kpiRow("mkpi", [["사용 중인 자리", used, "/ " + PLAN.length], ["빈 자리", PLAN.length - used, "자리"], ["B줄 사용", cnt("B"), "/ 9"], ["A줄 사용", cnt("A"), "/ 9"]]);
   var tb = $("maptb"); tb.innerHTML = "";
   var order = PLAN.slice().sort(function (a, b) { return a.id[0] !== b.id[0] ? (a.id[0] < b.id[0] ? -1 : 1) : (+a.id.slice(1)) - (+b.id.slice(1)); });
   order.forEach(function (p) {
-    var e = byLoc[p.id], tr = el("tr");
+    var si = SM[p.id] || {}, e = si.cur, nx = si.next, tr = el("tr");
+    var nxt = nx ? "<b>" + esc(nx.n) + "</b> · " + md(nx.inD) + (si.wait > 1 ? ' <span class="tag">외 ' + (si.wait - 1) + "대</span>" : "") : '<span style="color:var(--sub)">-</span>';
     if (e) {
       tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
-      tr.innerHTML = "<td><b>" + esc(p.id) + "</b></td><td><b>" + esc(e.n) + "</b></td><td>" + esc(e.t) + '</td><td><span class="tag" style="color:' + SCOL[e.st] + ";background:color-mix(in srgb," + SCOL[e.st] + ' 16%,transparent)">' + esc(STAGES[e.st]) + "</span></td><td>" + esc(e.v + " · " + e.p) + "</td><td>" + md(e.out) + "</td>";
-    } else tr.innerHTML = "<td><b>" + esc(p.id) + '</b></td><td colspan="5" style="color:var(--sub)">빈 자리</td>';
+      tr.innerHTML = "<td><b>" + esc(p.id) + "</b></td><td><b>" + esc(e.n) + "</b></td><td>" + esc(e.t) + '</td><td><span class="tag" style="color:' + SCOL[e.st] + ";background:color-mix(in srgb," + SCOL[e.st] + ' 16%,transparent)">' + esc(STAGES[e.st]) + "</span></td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + md(e.out) + "</td><td>" + nxt + "</td>";
+    } else {
+      tr.innerHTML = "<td><b>" + esc(p.id) + '</b></td><td colspan="5" style="color:var(--sub)">비어 있음</td><td>' + nxt + "</td>";
+      if (nx) { tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(nx.n); }; }
+    }
     tb.appendChild(tr);
   });
 }
@@ -1138,16 +1214,21 @@ $("nfm").onsubmit = function (e) {
   if (!t) { $("nt").focus(); toast("제목을 입력해 주세요"); return; }
   if (!b) { $("nb").focus(); toast("내용을 입력해 주세요"); return; }
   var rec = { t: t, p: b, d: D.today, w: nm, c: $("nc").value, pin: $("np").checked ? 1 : 0 };
-  var done = function () { D.notice.unshift(rec); $("nt").value = ""; $("nb").value = ""; $("np").checked = false; $("nform").hidden = true; NOPEN[rec.t + rec.d] = true; drawNotice(); toast("✔ 공지가 등록되었습니다"); };
-  if (!API_URL) { done(); return; }
-  fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ fn: "addNotice", pin: sget("pin") || "", me: nm, args: [rec] }) })
-    .then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error(j.error); done(); }).catch(function (er) { toast("⚠️ 등록 실패: " + er.message); });
+  var done = function (row) { if (row) rec = mapNotice(row); D.notice.unshift(rec); $("nt").value = ""; $("nb").value = ""; $("np").checked = false; $("nform").hidden = true; NOPEN[rec.t + rec.d] = true; drawNotice(); toast("✔ 공지가 등록되었습니다"); };
+  if (!LIVE) { done(); return; }
+  var sb = $("nfm").querySelector(".sbtn"); sb.disabled = true; sb.textContent = "등록 중…";
+  rpc("dt_add_notice", { n: nm, pin: sget("upin") || "", title: rec.t, body: rec.p, cat: rec.c, pinned: !!rec.pin })
+    .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "등록 실패"); } done(j.row); })
+    .catch(function (er) { toast("⚠️ 등록 실패: " + er.message); })
+    .then(function () { sb.disabled = false; sb.textContent = "등록"; });
 };
 function drawEtc() {
-  $("mnote").textContent = D.demo || !D.matLive ? "자재팀 데이터 연동 준비 중입니다. 연동 후 이곳에 표시됩니다." : "";
+  $("mnote").textContent = D.live ? "자재팀 연동 전까지 Supabase 'materials' 표에 직접 입력한 내용이 표시됩니다." : "자재팀 데이터 연동 준비 중입니다. 연동 후 이곳에 표시됩니다.";
   var tb = $("mtb"); tb.innerHTML = "";
+  if (!D.mat.length) { var tr0 = el("tr"), td0 = el("td", null, "등록된 자재가 없습니다"); td0.colSpan = 4; td0.style.color = "var(--sub)"; tr0.appendChild(td0); tb.appendChild(tr0); }
   D.mat.forEach(function (m) { var tr = el("tr"); tr.innerHTML = "<td><b>" + esc(m[0]) + "</b></td><td>" + esc(m[1]) + "</td><td>" + esc(m[2]) + '</td><td><span class="tag ' + (m[3] === "미입고" ? "r" : m[3] === "불출" ? "b" : "g") + '">' + esc(m[3]) + "</span></td>"; tb.appendChild(tr); });
   var ib = $("ibars"); ib.innerHTML = ""; var im = Math.max.apply(null, D.insp.map(function (x) { return x[1]; }).concat([1]));
+  if (!D.insp.length) ib.appendChild(el("div", "dz", "수입검사(동탄) 연동 준비 중입니다."));
   D.insp.forEach(function (x) { var d = el("div"); d.appendChild(el("span", null, x[0])); var i = el("i"), u = el("u"); u.style.setProperty("--p", x[1] / im * 100 + "%"); i.appendChild(u); d.appendChild(i); d.appendChild(el("b", null, x[1] + "건")); ib.appendChild(d); });
   setTimeout(function () { ib.classList.add("in"); }, 60);
   var nl = (D.notice || [])[0]; $("nlast").textContent = nl ? "최근 · " + nl.t : "등록된 공지가 없습니다";
@@ -1180,15 +1261,15 @@ function pinDraw() {
 $("pini").addEventListener("input", function () {
   this.value = this.value.replace(/\D/g, "").slice(0, 4); $("perr").textContent = ""; $("pinb").className = "pin"; pinDraw();
   if (this.value.length < 4) return;
-  var p = this.value;
-  if (pinHash(p) === PIN_H) {
-    $("pinb").className = "pin ok"; sset("pin", p);
-    setTimeout(function () { nameGrid(); lgStep(2); }, 260);
-  } else {
-    $("pinb").className = "pin bad"; $("perr").textContent = "PIN이 올바르지 않습니다. 다시 입력해 주세요.";
-    setTimeout(function () { $("pini").value = ""; pinDraw(); }, 420);
-  }
+  var p = this.value, inp = this;
+  var ok = function () { TP = p; $("pinb").className = "pin ok"; setTimeout(function () { nameGrid(); lgStep(2); }, 260); };
+  var bad = function (m) { $("pinb").className = "pin bad"; $("perr").textContent = m || "PIN이 올바르지 않습니다. 다시 입력해 주세요."; setTimeout(function () { inp.value = ""; pinDraw(); }, 420); };
+  if (!LIVE) { if (pinHash(p) === PIN_H) ok(); else bad(); return; }
+  inp.disabled = true; $("perr").textContent = "확인 중…";
+  var re = function () { inp.disabled = false; try { inp.focus(); } catch (e) {} };   // 비활성화되면 키보드가 내려가서 다시 올림
+  rpc("dt_team_check", { team_pin: p }).then(function (j) { re(); $("perr").textContent = ""; if (j && j.ok) ok(); else bad(j && j.error); }, function (e) { re(); bad("⚠️ " + e.message); });
 });
+var TP = "";   // 공용 PIN (로그인하는 동안만 · 저장 안 함)
 $("pini").addEventListener("focus", pinDraw); $("pini").addEventListener("blur", pinDraw);
 /* 👤 개인 PIN: 이름을 고른 뒤 본인 PIN으로 한 번 더 확인 (다른 사람 이름으로 기록하는 것 방지)
  * 처음이면 PIN 설정(두 번 입력), 이후엔 PIN 확인 · 지금은 이 기기에 저장 → 서버 붙이면 서버에 저장해서 어느 폰에서나 같은 PIN */
@@ -1221,9 +1302,17 @@ $("nmform").onsubmit = function (e) {
   UP.n = v; lgStep(5);
 };
 $("cfno").onclick = function () { nameGrid(); lgStep(2); };
-$("cfyes").onclick = function () { upStart(UP.n); };
-function upStart(n) {
-  UP.n = n; UP.first = ""; UP.bad = 0; UP.mode = upHas(n) ? "check" : "set1";
+$("cfyes").onclick = function () {
+  if (!LIVE) { upStart(UP.n); return; }
+  var b = this; b.disabled = true; b.textContent = "확인 중…";
+  rpc("dt_member_status", { team_pin: TP, n: UP.n }).then(function (j) {
+    b.disabled = false; b.textContent = "네, 본인입니다";
+    if (!j || !j.ok) { toast("⚠️ " + ((j && j.error) || "확인 실패")); if (j && /공용 PIN/.test(j.error || "")) { pinReset(); lgStep(1); } return; }
+    upStart(UP.n, j.status);
+  }, function (e) { b.disabled = false; b.textContent = "네, 본인입니다"; toast("⚠️ " + e.message); });
+};
+function upStart(n, st) {
+  UP.n = n; UP.first = ""; UP.bad = 0; UP.mode = (st ? st === "set" : upHas(n)) ? "check" : "set1";
   $("upname").textContent = n; $("upav").textContent = n.slice(-2, -1) || n[0];
   try { $("pini2").value = ""; } catch (e) {}
   upText(); upReset(); lgStep(4);
@@ -1233,7 +1322,7 @@ function upText() {
   var m = UP.mode;
   $("upst").textContent = m === "check" ? "본인 확인" : "처음 로그인 · PIN 설정";
   $("upmsg").textContent = m === "check" ? "본인 PIN 4자리를 입력해 주세요." : m === "set1" ? "본인만 아는 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
-  $("uphelp").textContent = m === "check" ? "PIN을 잊으셨으면 관리자에게 초기화를 요청해 주세요." : "다른 사람이 이 이름으로 기록하지 못하도록 막는 용도입니다. 공용 PIN과 같은 번호는 쓸 수 없습니다.";
+  $("uphelp").textContent = m === "check" ? "PIN을 잊으셨으면 관리자에게 초기화를 요청해 주세요. (5회 틀리면 10분간 잠김)" : "다른 사람이 이 이름으로 기록하지 못하도록 막는 용도입니다. 공용 PIN과 같은 번호는 쓸 수 없습니다.";
 }
 function upReset() { $("pini2").value = ""; $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw(); }
 function upDraw() {
@@ -1244,8 +1333,9 @@ function upBad(msg) {
   $("pinb2").className = "pin bad"; $("perr2").textContent = msg;
   setTimeout(function () { $("pini2").value = ""; $("pinb2").className = "pin"; upDraw(); }, 420);
 }
-function upDone() {
-  $("pinb2").className = "pin ok";
+function upDone(pin) {
+  $("pinb2").className = "pin ok"; TP = "";
+  if (pin) sset("upin", pin);
   sset("auth", JSON.stringify({ n: UP.n, t: Date.now() }));
   setTimeout(function () { authUi(); closeLogin(); toast(UP.n + "님, 로그인되었습니다"); }, 260);
 }
@@ -1253,20 +1343,45 @@ $("pini2").addEventListener("input", function () {
   this.value = this.value.replace(/\D/g, "").slice(0, 4); $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw();
   if (this.value.length < 4) return;
   var p = this.value;
+  var inp = this;
+  if (LIVE && UP.mode === "check") {
+    inp.disabled = true; $("perr2").textContent = "확인 중…";
+    rpc("dt_login", { team_pin: TP, n: UP.n, pin: p }).then(function (j) {
+      inp.disabled = false; $("perr2").textContent = ""; try { inp.focus(); } catch (e) {}
+      if (j && j.ok) { upDone(p); return; }
+      var m = (j && j.error) || "로그인 실패"; upBad(m);
+      if (/공용 PIN/.test(m)) setTimeout(function () { pinReset(); lgStep(1); }, 900);
+    }, function (e) { inp.disabled = false; try { inp.focus(); } catch (er) {} upBad("⚠️ " + e.message); });
+    return;
+  }
   if (UP.mode === "check") {
-    if (sget(upKey(UP.n)) === upHash(UP.n, p)) { upDone(); return; }
+    if (sget(upKey(UP.n)) === upHash(UP.n, p)) { upDone(p); return; }
     if (++UP.bad >= 5) { upBad("5회 틀렸습니다. 처음부터 다시 진행해 주세요."); setTimeout(function () { pinReset(); lgStep(1); }, 900); return; }
     upBad("PIN이 올바르지 않습니다. (" + UP.bad + "/5)"); return;
   }
   if (UP.mode === "set1") {
-    if (pinHash(p) === PIN_H) { upBad("공용 PIN과 다른 번호로 정해 주세요."); return; }
+    if (LIVE ? p === TP : pinHash(p) === PIN_H) { upBad("공용 PIN과 다른 번호로 정해 주세요."); return; }
     if (/^(\d)\1{3}$/.test(p)) { upBad("같은 숫자 4개는 쓸 수 없습니다."); return; }
     UP.first = p; UP.mode = "set2"; upText();
     setTimeout(function () { $("pini2").value = ""; upDraw(); }, 160); return;
   }
   if (p !== UP.first) { UP.mode = "set1"; UP.first = ""; upText(); upBad("두 번 입력한 PIN이 다릅니다. 처음부터 다시 정해 주세요."); return; }
-  sset(upKey(UP.n), upHash(UP.n, p)); upDone();
+  if (LIVE) {
+    inp.disabled = true; $("perr2").textContent = "저장 중…";
+    rpc("dt_member_create", { team_pin: TP, n: UP.n, pin: p }).then(function (j) {
+      inp.disabled = false; $("perr2").textContent = ""; try { inp.focus(); } catch (e) {}
+      if (j && j.ok) { upDone(p); return; }
+      UP.mode = /이미/.test((j && j.error) || "") ? "check" : "set1"; UP.first = ""; upText(); upBad((j && j.error) || "저장 실패");
+    }, function (e) { inp.disabled = false; try { inp.focus(); } catch (er) {} UP.mode = "set1"; UP.first = ""; upText(); upBad("⚠️ " + e.message); });
+    return;
+  }
+  sset(upKey(UP.n), upHash(UP.n, p)); upDone(p);
 });
+// 서버에서 본인 확인이 안 되면(PIN 초기화 등) 로그아웃하고 다시 로그인
+function authLost(msg) {
+  try { localStorage.removeItem("dt_auth"); localStorage.removeItem("dt_upin"); } catch (e) {}
+  authUi(); toast("⚠️ " + (msg || "다시 로그인해 주세요")); setTimeout(openLogin, 600);
+}
 $("pini2").addEventListener("focus", upDraw); $("pini2").addEventListener("blur", upDraw);
 $("lgback").onclick = function () { nameGrid(); lgStep(2); };
 function authUi() {
@@ -1282,8 +1397,8 @@ $("lkgo").onclick = openLogin;
 $("lgx").onclick = closeLogin;
 $("lgview").onclick = function () { closeLogin(); toast("조회 전용으로 이용합니다"); };
 $("lg").onclick = function (e) { if (e.target === this) closeLogin(); };
-$("chgname").onclick = function () { nameGrid(); lgStep(2); };
-$("logout").onclick = function () { try { localStorage.removeItem("dt_auth"); localStorage.removeItem("dt_pin"); } catch (e) {} authUi(); closeLogin(); toast("로그아웃되었습니다"); };
+
+$("logout").onclick = function () { try { localStorage.removeItem("dt_auth"); localStorage.removeItem("dt_upin"); localStorage.removeItem("dt_pin"); } catch (e) {} authUi(); closeLogin(); toast("로그아웃되었습니다"); };
 $("bref").onclick = function () {
   var b = this; if (b.disabled) return; b.disabled = true; b.classList.add("spin");
   load(true).then(function () { draw(); reveal(); toast("✔ 최신 정보로 갱신되었습니다 · " + D.updated); }).catch(function (e) { toast("⚠️ " + e.message); }).then(function () { b.disabled = false; b.classList.remove("spin"); });
@@ -1339,7 +1454,19 @@ $("home").onclick = function (e) {
   var h = document.querySelector(".hero h1"); if (h && !RM) { var c = h.cloneNode(true); h.parentNode.replaceChild(c, h); }
 };
 var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return t[0] === start; })) start = "dash";
-load(false).then(function () { go(start, true); setTimeout(pill, 300); }).catch(function (e) { toast("⚠️ " + e.message); });
+(function () {
+  var c = LIVE ? cacheData() : null, shown = false;
+  if (c) { D = c; go(start, true); shown = true; setTimeout(pill, 300); }   // ⚡ 지난번 화면 먼저
+  load(false).then(function () { if (shown) { draw(); reveal(); } else { go(start, true); setTimeout(pill, 300); } })
+    .catch(function (e) { if (!shown) { D = emptyData(); go(start, true); setTimeout(pill, 300); } toast("⚠️ 불러오기 실패: " + e.message); });
+  // 🔄 2분마다 조용히 최신으로 (입력 중 · 창 열림 · 화면 꺼짐일 땐 건너뜀)
+  setInterval(function () {
+    if (!LIVE || document.hidden || $("dr").classList.contains("on") || $("lg").classList.contains("on")) return;
+    var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    var y = window.pageYOffset;
+    load(false).then(function () { draw(); window.scrollTo(0, y); }).catch(function () {});
+  }, 120000);
+})();
 try { document.fonts.ready.then(pill); } catch (e) {}
 </script>
 </body>
