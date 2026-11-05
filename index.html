@@ -798,7 +798,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 검수 · 이력 ═════ -->
   <div class="view" id="v-qc"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Inspection</span><h2 class="tt">검수 · 이력</h2><p class="ds">1차 검수는 Backlog <b>1차 검수(DRY)일</b>, 2차 검수 · ISSUE는 <b>PACKING일</b>이 되면 대기에 올라옵니다. 기록하면 완료로 바뀌고, 입력한 내용은 바로 저장됩니다.</p></div>
+    <div class="vtop"><span class="eyebrow">Inspection</span><h2 class="tt">검수 · 이력</h2><p class="ds">1차 검수는 <b>1차 검수(DRY)일</b>, 2차 검수 · ISSUE는 <b>PACKING일</b>이 되면 대기에 올라오고, 기록하면 완료로 바뀝니다.</p></div>
     <div class="g4" id="qkpi" style="margin-bottom:16px"></div>
     <div class="g2" style="align-items:start">
       <div class="card" id="qwc"><div class="ehd"><h3>검수 대기</h3><div class="chips" id="qwf"></div></div><div class="qwl" id="qtb"></div><p class="ds2" style="margin-top:10px">줄을 누르면 오른쪽 기록 칸에 장비와 구분이 채워집니다.</p></div>
@@ -826,7 +826,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 전장 ═════ -->
   <div class="view" id="v-elec"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">Backlog 일정 기준 FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p></div>
+    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p></div>
     <div class="card eiss"><div class="ehd"><div><h3>전장 이슈</h3><p class="ds2" id="eisub"></p></div><div class="ehr"><div class="chips" id="eif"></div><button class="wbtn" type="button" id="ewrite">이슈 기록</button></div></div><div class="iss" id="elog" style="margin-top:6px"></div></div>
     <div class="g4" id="ekpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -849,10 +849,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 자재 · 기타 ═════ -->
   <div class="view" id="v-etc"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Material · Inspection</span><h2 class="tt">자재 · 수입검사</h2><p class="ds">자재팀 '양산장비 입고 불출 시트'와 품질팀 '2026 수입 검사 관리대장(동탄)'을 보기만 합니다. (1시간마다 갱신)</p></div>
+    <div class="vtop"><span class="eyebrow">Material · Inspection</span><h2 class="tt">자재 · 수입검사</h2><p class="ds">장비별 자재 입고 · 불출과 수입검사 진행 현황입니다.</p></div>
     <div class="srcs" id="etab">
-      <button type="button" data-v="mat"><span class="k">Material</span><b>자재 입고 · 불출</b><span class="sub">자재팀 · 2026년 양산장비 입고 불출 시트</span><span class="cnt" id="etm"></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-      <button type="button" data-v="insp"><span class="k">Inspection</span><b>수입검사 · 동탄</b><span class="sub">품질팀 · 2026 수입 검사 관리대장(동탄)</span><span class="cnt" id="eti"></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" data-v="mat"><span class="k">Material</span><b>자재 입고 · 불출</b><span class="cnt" id="etm"></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+      <button type="button" data-v="insp"><span class="k">Inspection</span><b>수입검사 · 동탄</b><span class="cnt" id="eti"></span><svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
     <div id="emat"></div>
     <div id="einsp" hidden></div>
@@ -1654,7 +1654,7 @@ function drawShipStats(a, b) {
     tb.appendChild(d);
   });
   b.appendChild(tb);
-  b.appendChild(el("p", "shnote", "B팀 장비통계와 같은 기준 · 제조1팀 담당자 칸의 A팀/B팀, 팀 표시 없이 업체만 적힌 장비는 업체로 셉니다 · " + (S.built || S.today) + " 기준"));
+  b.appendChild(el("p", "shnote", (S.built || S.today) + " 기준"));
   setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = (+u.dataset.h ? Math.max(3, +u.dataset.h) : 0) + "px"; }); [].forEach.call(a.querySelectorAll(".vsb u"), function (u) { u.style.width = u.dataset.w + "%"; }); countUp(bn); }, 60);
 }
 function drawShip() {
@@ -1750,7 +1750,7 @@ function matLoad(force) {
   if (MS.ld || (MS.list && !force && Date.now() - MS.t < 300000)) return Promise.resolve();
   MS.ld = 1;
   return sbFetch("mat_tabs?select=prj,eq,n,wait,updated_at&order=eq.asc").then(function (r) { MS.list = r || []; MS.err = ""; MS.t = Date.now(); })
-    .catch(function (e) { MS.err = /mat_tabs|relation|404|PGRST/.test(e.message) ? "자재 연동 준비 중입니다" : "불러오기 실패: " + e.message; MS.list = MS.list || []; })
+    .catch(function (e) { MS.err = /mat_tabs|relation|404|PGRST/.test(e.message) ? "자재 현황을 준비 중입니다" : "불러오기 실패: " + e.message; MS.list = MS.list || []; })
     .then(function () { MS.ld = 0; if (cur === "etc") drawEtc(); });
 }
 function matOpen(prj) {
@@ -1763,7 +1763,7 @@ function inspLoad(force) {
   if (!LIVE) { IS.d = { rows: [] }; IS.err = "예시 화면에서는 수입검사 데이터가 없습니다"; return Promise.resolve(); }
   if (IS.ld || (IS.d && !force && Date.now() - IS.t < 300000)) return Promise.resolve();
   IS.ld = 1;
-  return sbFetch("site_stats?select=data,updated_at&id=eq.insp").then(function (r) { IS.d = r && r[0] && r[0].data ? r[0].data : null; IS.err = IS.d ? "" : "수입검사 연동 준비 중입니다"; IS.t = Date.now(); })
+  return sbFetch("site_stats?select=data,updated_at&id=eq.insp").then(function (r) { IS.d = r && r[0] && r[0].data ? r[0].data : null; IS.err = IS.d ? "" : "수입검사 현황을 준비 중입니다"; IS.t = Date.now(); })
     .catch(function (e) { IS.err = "불러오기 실패: " + e.message; }).then(function () { IS.ld = 0; if (cur === "etc") drawEtc(); });
 }
 function eqByName(n) { return D.eq.filter(function (e) { return e.n === n; })[0]; }
@@ -1771,10 +1771,10 @@ function drawEtc() {
   [].forEach.call($("etab").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === ETAB); b.onclick = function () { ETAB = b.dataset.v; sset("etab", ETAB); drawEtc(); }; });
   $("emat").hidden = ETAB !== "mat"; $("einsp").hidden = ETAB !== "insp";
   var tw = 0; (MS.list || []).forEach(function (x) { tw += x.wait || 0; });
-  $("etm").textContent = MS.list ? (MS.err ? "연동 준비 중" : MS.list.length + "대 · 미입고 " + tw + "건") : "불러오는 중";
+  $("etm").textContent = MS.list ? (MS.err ? "준비 중" : MS.list.length + "대 · 미입고 " + tw + "건") : "불러오는 중";
   $("etm").className = "cnt" + (tw ? " w" : "");
   var iw = IS.d ? (IS.d.rows || []).filter(function (x) { return !x[13]; }).length : 0;
-  $("eti").textContent = IS.d ? "검사 대기 " + iw + "건" : IS.err ? "연동 준비 중" : "불러오는 중";
+  $("eti").textContent = IS.d ? "검사 대기 " + iw + "건" : IS.err ? "준비 중" : "불러오는 중";
   $("eti").className = "cnt" + (iw ? " a" : "");
   if (ETAB === "mat") drawMat(); else drawInsp();
 }
@@ -1785,7 +1785,7 @@ function drawMat() {
   if (!MS.prj) {
     var L = MS.list, tw = 0; L.forEach(function (x) { tw += x.wait || 0; });
     var setLf = function (f) { return function () { MS.lf = MS.lf === f ? "all" : f; drawEtc(); goList("#mlist"); }; };
-    kpiRowEl(box, [["연동 장비", L.length, "대", false, setLf("all"), MS.lf === "all"], ["미입고 품목", tw, "건", tw > 0, setLf("wait"), MS.lf === "wait"], ["미입고 있는 장비", L.filter(function (x) { return x.wait > 0; }).length, "대", false, setLf("wait"), false], ["전부 입고", L.filter(function (x) { return x.n && !x.wait; }).length, "대", false, setLf("done"), MS.lf === "done"]]);
+    kpiRowEl(box, [["장비", L.length, "대", false, setLf("all"), MS.lf === "all"], ["미입고 품목", tw, "건", tw > 0, setLf("wait"), MS.lf === "wait"], ["미입고 있는 장비", L.filter(function (x) { return x.wait > 0; }).length, "대", false, setLf("wait"), false], ["전부 입고", L.filter(function (x) { return x.n && !x.wait; }).length, "대", false, setLf("done"), MS.lf === "done"]]);
     var c = el("div", "card"); c.id = "mlist"; box.appendChild(c);
     var hd = el("div", "ehd"); hd.appendChild(el("h3", null, "장비 고르기")); var lch = el("div", "chips");
     [["all", "전체"], ["wait", "미입고 있음"], ["done", "전부 입고"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.lf === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MS.lf = o[0]; drawEtc(); }; lch.appendChild(b); });
@@ -1798,7 +1798,7 @@ function drawMat() {
       g.innerHTML = "";
       var k = nq(MS.q), rank = function (x) { var e = eqByName(x.eq); return e ? (isAct(e) ? 0 : 1) : 2; };
       var arr = L.filter(function (x) { if (MS.lf === "wait" && !x.wait) return false; if (MS.lf === "done" && !(x.n && !x.wait)) return false; return !k || nq(x.eq + " " + x.prj).indexOf(k) >= 0; }).sort(function (a, b) { var e1 = eqByName(a.eq), e2 = eqByName(b.eq); return rank(a) - rank(b) || ((e1 && e1.inD) || "9") < ((e2 && e2.inD) || "9") ? -1 : 1; });
-      if (!arr.length) { g.appendChild(el("div", "empty", L.length ? "'" + MS.q + "' 장비가 없습니다" : "아직 연동된 장비가 없습니다")); return; }
+      if (!arr.length) { g.appendChild(el("div", "empty", L.length ? "'" + MS.q + "' 장비가 없습니다" : "표시할 장비가 없습니다")); return; }
       arr.forEach(function (x) {
         var e = eqByName(x.eq), b = el("button", "mtc"); b.type = "button";
         var t = el("div", "mtct"); t.appendChild(el("b", null, x.eq)); if (e && e.loc) t.appendChild(el("i", null, e.loc)); b.appendChild(t);
@@ -1818,7 +1818,7 @@ function drawMat() {
   if (!d) { box.appendChild(el("div", "card empty", meta.eq + " 자재 불러오는 중…")); return; }
   if (d.err) { box.appendChild(el("div", "card empty", d.err)); return; }
   var R = d.rows, wN = R.filter(function (r) { return mtN(r[8]) < mtN(r[7]); }).length, oN = R.filter(mtIsOut).length;
-  var h = el("div", "mhd"); h.appendChild(el("h3", null, meta.eq)); h.appendChild(el("span", null, "자재팀 탭: " + (d.tabs || []).join(" · ") + (d.at ? " · " + kday(d.at) + " " + new Date(d.at).toTimeString().slice(0, 5) + " 기준" : ""))); box.appendChild(h);
+  var h = el("div", "mhd"); h.appendChild(el("h3", null, meta.eq)); h.appendChild(el("span", null, d.at ? kday(d.at) + " " + new Date(d.at).toTimeString().slice(0, 5) + " 기준" : "")); box.appendChild(h);
   var setF = function (f) { return function () { MS.f = MS.f === f ? "all" : f; drawEtc(); goList("#mitems"); }; };
   kpiRowEl(box, [["전체 품목", R.length, "건", false, setF("all"), MS.f === "all"], ["입고 완료", R.length - wN, "건", false, setF("done"), MS.f === "done"], ["미입고", wN, "건", wN > 0, setF("wait"), MS.f === "wait"], ["외주조립", oN, "건", false, setF("out"), MS.f === "out"]]);
   var c2 = el("div", "card"); c2.id = "mitems"; box.appendChild(c2);
@@ -1887,7 +1887,7 @@ function drawInsp() {
   };
   inp.oninput = function () { IS.q = inp.value; paint(); };
   paint();
-  c.appendChild(el("p", "shnote", "품질팀 '" + (IS.d.tab || "2026 수입 검사 관리대장(동탄)") + "' 기준 · 진행 장비 = 프로젝트가 Backlog 동탄 장비(장비 탭 목록)와 같은 건 · 누르면 장비 상세 · 검사 대기 · 진행 장비 · 최근 45일 건만 표시 · " + (IS.d.built || "") + " 기준"));
+  c.appendChild(el("p", "shnote", "품질팀 자료 기준"));
 }
 function goList(id) { setTimeout(function () { var x = $(id) || document.querySelector(id); if (x) { var y = x.getBoundingClientRect().top + window.pageYOffset - 90; window.scrollTo({ top: y, behavior: RM ? "auto" : "smooth" }); } }, 40); }
 function kpiRowEl(box, arr) { var w = el("div", "g4"); w.style.marginBottom = "16px"; var id = "k" + Math.random().toString(36).slice(2, 8); w.id = id; box.appendChild(w); kpiRow(id, arr); }
