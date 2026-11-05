@@ -923,25 +923,36 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <!-- ═════ 입고 · 출하 ═════ -->
   <div class="view" id="v-ship"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">제조1팀 출하 실적과 향후 2주간 FRAME 입고 · 출하 일정입니다.</p></div>
+    <div class="card eiss siss" style="margin-bottom:16px"><div class="ehd"><div><h3>입고 · 출하 이슈</h3><p class="ds2" id="sisub"></p></div><div class="ehr"><div class="chips" id="sif"></div><button class="wbtn" type="button" id="swrite">이슈 기록</button></div></div><div class="iss" id="silog" style="margin-top:6px"></div></div>
     <div class="g2" style="margin-bottom:16px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
     <div class="card" id="srep" style="margin-bottom:28px"></div>
     <h3 class="subt">향후 2주 일정</h3>
     <div class="g4" id="fkpi" style="margin-bottom:16px"></div>
     <div id="fcal" style="display:grid;gap:12px"></div>
+    <div class="card lockc" id="sicard" style="margin-top:20px;max-width:640px"><h3>입고 · 출하 이슈 기록</h3><p class="ds2">로그인하면 누구나 기록할 수 있습니다</p>
+      <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 개인 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
+      <form class="fm" id="sifm" style="margin-top:14px" autocomplete="off">
+          <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
+          <label>장비<select id="sie"></select></label>
+          <div class="row"><label>구분<select id="sik"><option>입고 지연</option><option>입고 품질</option><option>출하 일정</option><option>포장 · 운송</option><option>업체</option><option>기타</option></select></label><label>상태<select id="sir"><option>진행 중</option><option>완료</option></select></label></div>
+          <label>내용<textarea id="sit" placeholder="예) FRAME 입고 하루 지연 → 업체 11/7 오전 입고 예정"></textarea></label>
+          <button class="sbtn" type="submit">저장</button>
+      </form>
+    </div>
   </div></div>
 
   <!-- ═════ 제조 · 기구 ═════ -->
   <div class="view" id="v-mech"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Mechanical</span><h2 class="tt">기구 · 조립</h2><p class="ds">FRAME 입고부터 MODULE · 1차 LEVEL · 1차 검수 · 제조완료까지 기구 조립 진행 현황입니다. 기구 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="mcx"></button></div>
     <div class="card eiss miss"><div class="ehd"><div><h3>기구 이슈</h3><p class="ds2" id="misub"></p></div><div class="ehr"><div class="chips" id="mif"></div><button class="wbtn" type="button" id="mwrite">이슈 기록</button></div></div><div class="iss" id="mlog" style="margin-top:6px"></div></div>
-    <div class="g4" id="mkpi" style="margin:16px 0"></div>
+    <div class="g4" id="mckpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>기구 조립 현황</h3><div class="chips" id="mwf"></div></div>
       <div class="ewm" id="mwm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>FRAME 입고</th><th>MODULE</th><th>1차 LEVEL</th><th>1차 검수</th><th>제조완료</th><th>상태</th></tr></thead><tbody id="mwtb"></tbody></table></div>
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
       <div class="card"><h3>기구 자재 입고</h3><p class="ds2">MODULE 장착 전 장비의 자재 입고 상태 (조립 중 · FRAME 입고 3주 이내)</p><div id="mprep"></div></div>
-      <div class="card lockc" id="mcard"><h3>기구 이슈 기록</h3>
+      <div class="card lockc" id="mcard" data-role="기구"><h3>기구 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="mform" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
@@ -956,15 +967,15 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 제조 · FT ═════ -->
   <div class="view" id="v-ft"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">제조완료 이후 DRY · FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div></div>
+    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
-    <div class="g4" id="fkpi" style="margin:16px 0"></div>
+    <div class="g4" id="ftkpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>FT 현황</h3><div class="chips" id="fwf"></div></div>
       <div class="ewm" id="fwm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>제조완료</th><th>FT 구동 (DRY + FULL CYCLE)</th><th>QC</th><th>ACM 검수</th><th>PACKING</th><th>출하</th><th>상태</th></tr></thead><tbody id="fwtb"></tbody></table></div>
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
-      <div class="card lockc" id="ftcard"><h3>FT 구동 시간 기록</h3><p class="ds2">DRY · FULL CYCLE 각 24시간 기준 · 모자란 시간은 다른 쪽으로 채워 합계 48시간이면 OK</p><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 구동 시간은 그날그날 기록해 주세요.</div>
+      <div class="card lockc" id="ftcard" data-role="FT"><h3>FT 구동 시간 기록</h3><p class="ds2">DRY · FULL CYCLE 각 24시간 기준 · 모자란 시간은 다른 쪽으로 채워 합계 48시간이면 OK</p><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 구동 시간은 그날그날 기록해 주세요.</div>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="ftfm" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
@@ -974,7 +985,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
           <button class="sbtn" type="submit">저장</button>
         </form>
       </div>
-      <div class="card lockc" id="ficard"><h3>FT 이슈 기록</h3><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 이슈는 발생한 날 바로 기록해 주세요.</div>
+      <div class="card lockc" id="ficard" data-role="FT"><h3>FT 이슈 기록</h3><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 이슈는 발생한 날 바로 기록해 주세요.</div>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="fifm" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
@@ -998,7 +1009,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
       <div class="card"><h3>최근 FT 기록</h3><p class="ds2">FT 탭에서 저장한 구동 시간 기록입니다</p><div class="qtl" id="qftl"></div></div>
-      <div class="card lockc" id="qicard"><h3>품질 이슈 기록</h3>
+      <div class="card lockc" id="qicard" data-role="품질"><h3>품질 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="qifm" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
@@ -1022,7 +1033,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
       <div class="card"><h3>전장 자재 준비</h3><p class="ds2">배선 전 장비의 전장 E-BOM · 전장 발주 · 하네스 상태 (FRAME 입고 3주 이내)</p><div id="eprep"></div></div>
-      <div class="card lockc" id="ecard"><h3>전장 이슈 기록</h3>
+      <div class="card lockc" id="ecard" data-role="전장"><h3>전장 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="eform" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
@@ -1823,7 +1834,7 @@ function drawElec() {
     if (x.r !== "완료" && x.id) {
       var bt = el("button", "done", "완료 처리"); bt.type = "button";
       bt.onclick = function () {
-        var nm = authName(); if (!nm) { openLogin(); return; }
+        var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("전장")) return;
         if (!LIVE) { x.r = "완료"; x.lv = "ok"; drawElec(); toast("완료 처리되었습니다"); return; }
         bt.disabled = true; bt.textContent = "처리 중…";
         rpc("dt_set_log_result", { n: nm, pin: sget("upin") || "", log_id: x.id, result: "완료" })
@@ -1839,7 +1850,7 @@ function drawElec() {
 $("ewrite").onclick = function () { var f = $("ecard"); f.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" }); setTimeout(function () { try { (authName() ? $("et") : f.querySelector(".lkgo2")).focus({ preventScroll: true }); } catch (e) {} }, 450); };
 $("eform").onsubmit = function (ev) {
   ev.preventDefault();
-  var nm = authName(); if (!nm) { openLogin(); return; }
+  var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("전장")) return;
   var t = $("et").value.trim(); if (!t) { $("et").focus(); toast("내용을 입력해 주세요"); return; }
   var kind = ("전장·" + $("ek").value).slice(0, 20), res = $("er").value;
   var rec = { e: $("ee").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
@@ -1909,7 +1920,7 @@ function drawMech() {
   var done = W.filter(function (x) { return x.w.k === "done" && x.w.mc[0] && x.w.mc[0] >= d7 && x.e.st < 10; }).sort(function (a, b) { return a.w.mc[0] > b.w.mc[0] ? -1 : 1; });
   var prep = mPrepList(), wait = prep.filter(function (x) { return x.m.wait; });
   var mlogs = D.issues.filter(isMechLog), open = mlogs.filter(function (x) { return x.r !== "완료"; });
-  kpiRow("mkpi", [["조립 중", ing.length, "대", false, function () { MWF = "ing"; drawMech(); goList("#mwf"); }, MWF === "ing"], ["일정 지연", late.length, "대", late.length > 0, function () { MWF = "late"; drawMech(); goList("#mwf"); }, MWF === "late"],
+  kpiRow("mckpi", [["조립 중", ing.length, "대", false, function () { MWF = "ing"; drawMech(); goList("#mwf"); }, MWF === "ing"], ["일정 지연", late.length, "대", late.length > 0, function () { MWF = "late"; drawMech(); goList("#mwf"); }, MWF === "late"],
     ["자재 미입고", wait.length, "대", wait.length > 0, function () { goList("#mprep"); }], ["열린 기구 이슈", open.length, "건", open.length > 0, function () { MIF = "open"; drawMech(); goList(".miss"); }]]);
   xlBtn($("mcx"), "기구 엑셀 다운로드", function (X) { return mBuild(X, [["조립 중", ing.filter(function (x) { return x.w.k === "ing"; })], ["일정 지연", late], ["2주 내 입고", pre], ["최근 제조완료", done]], prep, mlogs); });
   // 조립 현황 표
@@ -1958,7 +1969,7 @@ function drawMech() {
     if (x.r !== "완료" && x.id) {
       var bt = el("button", "done", "완료 처리"); bt.type = "button";
       bt.onclick = function () {
-        var nm = authName(); if (!nm) { openLogin(); return; }
+        var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("기구")) return;
         if (!LIVE) { x.r = "완료"; x.lv = "ok"; drawMech(); toast("완료 처리되었습니다"); return; }
         bt.disabled = true; bt.textContent = "처리 중…";
         rpc("dt_set_log_result", { n: nm, pin: sget("upin") || "", log_id: x.id, result: "완료" })
@@ -1974,7 +1985,7 @@ function drawMech() {
 $("mwrite").onclick = function () { var f = $("mcard"); f.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" }); setTimeout(function () { try { (authName() ? $("mt") : f.querySelector(".lkgo2")).focus({ preventScroll: true }); } catch (e) {} }, 450); };
 $("mform").onsubmit = function (ev) {
   ev.preventDefault();
-  var nm = authName(); if (!nm) { openLogin(); return; }
+  var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("기구")) return;
   var t = $("mt").value.trim(); if (!t) { $("mt").focus(); toast("내용을 입력해 주세요"); return; }
   var kind = ("기구·" + $("mk").value).slice(0, 20), res = $("mr").value;
   var rec = { e: $("me").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
@@ -2023,7 +2034,7 @@ function issBox(o) {
     if (x.r !== "완료" && x.id) {
       var bt = el("button", "done", "완료 처리"); bt.type = "button";
       bt.onclick = function () {
-        var nm = authName(); if (!nm) { openLogin(); return; }
+        var nm = authName(); if (!nm) { openLogin(); return; } if (o.role && !roleOk(o.role)) return;
         if (!LIVE) { x.r = "완료"; x.lv = "ok"; o.redraw(); toast("완료 처리되었습니다"); return; }
         bt.disabled = true; bt.textContent = "처리 중…";
         rpc("dt_set_log_result", { n: nm, pin: sget("upin") || "", log_id: x.id, result: "완료" })
@@ -2037,10 +2048,10 @@ function issBox(o) {
   if (full > lim) { var mb = el("button", "moreb", "이슈 " + (full - lim) + "건 더 보기"); mb.type = "button"; mb.onclick = function () { o.setMore(); o.redraw(); }; lg.appendChild(mb); }
 }
 // 이슈 저장 폼 (FT · 품질 공용)
-function issForm(fid, eid, kid, rid, tid, pre, after) {
+function issForm(fid, eid, kid, rid, tid, pre, after, role) {
   $(fid).onsubmit = function (ev) {
     ev.preventDefault();
-    var nm = authName(); if (!nm) { openLogin(); return; }
+    var nm = authName(); if (!nm) { openLogin(); return; } if (role && !roleOk(role)) return;
     var t = $(tid).value.trim(); if (!t) { $(tid).focus(); toast("내용을 입력해 주세요"); return; }
     if (!$(eid).value) { toast("장비를 골라 주세요"); return; }
     var kind = (pre + "·" + $(kid).value).slice(0, 20), res = $(rid).value;
@@ -2054,8 +2065,10 @@ function issForm(fid, eid, kid, rid, tid, pre, after) {
       .then(function () { sb.disabled = false; sb.textContent = "저장"; });
   };
 }
-issForm("fifm", "fie", "fik", "fir", "fit", "FT", function (res) { FIF = res === "완료" ? "all" : "open"; draw(); });
-issForm("qifm", "qie", "qik", "qir", "qit", "품질", function (res) { QIF = res === "완료" ? "all" : "open"; draw(); });
+issForm("fifm", "fie", "fik", "fir", "fit", "FT", function (res) { FIF = res === "완료" ? "all" : "open"; draw(); }, "FT");
+issForm("qifm", "qie", "qik", "qir", "qit", "품질", function (res) { QIF = res === "완료" ? "all" : "open"; draw(); }, "품질");
+issForm("sifm", "sie", "sik", "sir", "sit", "입고출하", function (res) { SIF = res === "완료" ? "all" : "open"; draw(); });
+$("swrite").onclick = function () { goForm("sicard", "sit"); };
 $("fwrite").onclick = function () { goForm("ficard", "fit"); };
 $("qwrite").onclick = function () { goForm("qicard", "qit"); };
 function goForm(cid, tid) { var f = $(cid); f.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "center" }); setTimeout(function () { try { (authName() ? $(tid) : f.querySelector(".lkgo2")).focus({ preventScroll: true }); } catch (e) {} }, 450); }
@@ -2073,7 +2086,7 @@ function ftFill() { var e = D.eq.filter(function (x) { return x.n === $("fte").v
 $("fte").addEventListener("change", ftFill); $("ftd").addEventListener("input", ftPreview); $("ftf").addEventListener("input", ftPreview);
 $("ftfm").onsubmit = function (ev) {
   ev.preventDefault();
-  var nm = authName(); if (!nm) { openLogin(); return; }
+  var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("FT")) return;
   var eq = $("fte").value, d = ftNum("ftd"), f = ftNum("ftf");
   if (!eq) { toast("장비를 골라 주세요"); return; }
   if (d < 0 || f < 0 || d > 200 || f > 200) { toast("구동 시간은 0 ~ 200시간 사이로 입력해 주세요"); return; }
@@ -2121,7 +2134,7 @@ function drawFt() {
   var ok = L.filter(function (x) { return x.f.ok; }).sort(byM);
   var all = L.slice().sort(byM);
   var flogs = D.issues.filter(isFtIss), fopen = flogs.filter(function (x) { return x.r !== "완료"; });
-  kpiRow("fkpi", [["제조 중 · 2주 내 완료", ing.length, "대", false, function () { FWF = "ing"; drawFt(); goList("#fwf"); }, FWF === "ing"], ["FT 진행 · 48h 미만", run.length, "대", run.length > 0, function () { FWF = "run"; drawFt(); goList("#fwf"); }, FWF === "run"],
+  kpiRow("ftkpi", [["제조 중 · 2주 내 완료", ing.length, "대", false, function () { FWF = "ing"; drawFt(); goList("#fwf"); }, FWF === "ing"], ["FT 진행 · 48h 미만", run.length, "대", run.length > 0, function () { FWF = "run"; drawFt(); goList("#fwf"); }, FWF === "run"],
     ["FT OK", ok.length, "대", false, function () { FWF = "ok"; drawFt(); goList("#fwf"); }, FWF === "ok"], ["열린 FT 이슈", fopen.length, "건", fopen.length > 0, function () { FIF = "open"; drawFt(); goList(".fiss"); }]]);
   var f = $("fwf"); f.innerHTML = "";
   [["ing", "제조 중 " + ing.length], ["run", "FT 진행 " + run.length], ["ok", "FT OK " + ok.length], ["all", "전체 " + all.length]].forEach(function (o) { var b = el("button", "chip" + (FWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { FWF = o[0]; drawFt(); }; f.appendChild(b); });
@@ -2143,7 +2156,7 @@ function drawFt() {
   if (keep && keep !== $("fte").value) $("fte").value = keep;
   if ($("fte")._v !== $("fte").value) { $("fte")._v = $("fte").value; ftFill(); } else ftPreview();
   ftSelect($("fie"));
-  issBox({ logs: flogs, f: FIF, setF: function (v) { FIF = v; }, more: FMORE, setMore: function () { FMORE = true; }, chips: "fif", sub: "fisub", box: "flog", name: "FT 이슈", redraw: drawFt });
+  issBox({ role: "FT", logs: flogs, f: FIF, setF: function (v) { FIF = v; }, more: FMORE, setMore: function () { FMORE = true; }, chips: "fif", sub: "fisub", box: "flog", name: "FT 이슈", redraw: drawFt });
 }
 function drawQa() {
   var T = D.today, d14 = addD(T, 14);
@@ -2177,7 +2190,7 @@ function drawQa() {
   if (!runs.length) tl.appendChild(el("div", "empty", "아직 FT 구동 시간 기록이 없습니다"));
   runs.forEach(function (x) { var r = el("div"); r.onclick = function () { eqOpen(x.e); }; var ok2 = /OK/.test(x.t); r.innerHTML = "<b>" + esc(x.e) + '</b><span class="tag ' + (ok2 ? "g" : "a") + '">' + (ok2 ? "OK" : "진행") + "</span><small>" + esc(x.t) + " · " + esc(md(x.d).replace(/\(.\)/, "")) + (x.w ? " · 작성 " + esc(x.w) : "") + "</small>"; tl.appendChild(r); });
   eqSelect($("qie"), act.map(function (x) { return x.e; }));
-  issBox({ logs: qlogs, f: QIF, setF: function (v) { QIF = v; }, more: QMORE, setMore: function () { QMORE = true; }, chips: "qif", sub: "qisub", box: "qilog", name: "품질 이슈", redraw: drawQa });
+  issBox({ role: "품질", logs: qlogs, f: QIF, setF: function (v) { QIF = v; }, more: QMORE, setMore: function () { QMORE = true; }, chips: "qif", sub: "qisub", box: "qilog", name: "품질 이슈", redraw: drawQa });
 }
 
 /* ── 📊 출하 실적: 장비통계 시트와 같은 기준 (Factory Out Date · 제조1팀 담당자 A팀/B팀 · 업체) ── */
@@ -2498,7 +2511,11 @@ function drawShip() {
     c.appendChild(l); w.appendChild(c);
   }
   if (!w.children.length) w.appendChild(el("div", "empty", "향후 2주간 입고 · 출하 일정이 없습니다"));
+  // 입고 · 출하 이슈 (로그인하면 누구나)
+  issBox({ logs: D.issues.filter(function (x) { return /^입고출하/.test(x.k || ""); }), f: SIF, setF: function (v) { SIF = v; }, more: SMORE, setMore: function () { SMORE = true; }, chips: "sif", sub: "sisub", box: "silog", name: "입고 · 출하 이슈", redraw: drawShip });
+  var sel = $("sie"), keep = sel.value; eqSelect(sel); if (keep) sel.value = keep;
 }
+var SIF = "open", SMORE = false;
 function drawMap() {
   drawPlan("bay2");
   var lg = $("legend2"); lg.innerHTML = "";
@@ -2726,6 +2743,17 @@ var PIN_H = 4081541996;
 function pinHash(p) { var h = 5381, s = "nb-dt|" + p; for (var i = 0; i < s.length; i++) h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; return h; }
 function authGet() { try { var a = JSON.parse(sget("auth") || "null"); if (a && a.n && Date.now() - a.t < 90 * 864e5) return a; } catch (e) {} return null; }
 function authName() { var a = authGet(); return a ? a.n : ""; }
+/* 👥 담당 (기구 · 전장 · FT · 품질) — 명단은 서버에만 · 로그인하면 내 담당만 받아 둠 */
+function hasRole(r) { var a = authGet(); if (!a) return false; if (!r || !a.roles) return true; return a.roles.indexOf(r) >= 0; }
+function roleOk(r) { if (hasRole(r)) return true; toast(r + " 담당자만 기록 · 처리할 수 있습니다"); return false; }
+function rolesFetch(n, pin) {
+  if (!LIVE || !pin) return;
+  rpc("dt_roles", { n: n, pin: pin }).then(function (j) {
+    if (!j || !j.ok) return;
+    var a = authGet(); if (!a || a.n !== n) return;
+    a.roles = j.roles || []; sset("auth", JSON.stringify(a)); authUi();
+  }, function () {});   // 서버 준비 전이면 그냥 둠 (서버가 막지 않음)
+}
 function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
 /* 🔐 로그인: PIN 칸 하나
  *  · 개인 PIN → 서버가 누구인지 찾아서 이름 띄우고 바로 로그인
@@ -2880,6 +2908,7 @@ function upDone(pin, title) {
   save(title); sset("last", n);   // 다음엔 이 이름 + 개인 PIN만
   setTimeout(function () { authUi(); closeLogin(); toast(dname(n, title) + "님, 로그인되었습니다"); }, 260);
   if (title == null && LIVE && pin) titleFetch(n, pin, true);
+  if (LIVE && pin) setTimeout(function () { rolesFetch(n, pin); }, 400);
 }
 function titleFetch(n, pin, quiet) {   // 직함을 모를 때 (예전 로그인 · 처음 등록) 서버에서 받아 옴
   rpc("dt_title", { n: n, pin: pin }).then(function (j) {
@@ -2938,7 +2967,18 @@ function authUi() {
   var ti = n ? authTitle() : ""; $("nmtx").textContent = n || "로그인";
   if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));   // 화면이 좁은 PC에선 직함 숨김 (메뉴랑 안 겹치게)
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
-  [].forEach.call(document.querySelectorAll(".lockc"), function (c) { c.classList.toggle("locked", !n); });
+  [].forEach.call(document.querySelectorAll(".lockc"), function (c) {
+    var need = c.dataset.role || "", ok = !!n && hasRole(need), lk = c.querySelector(".lk");
+    c.classList.toggle("locked", !ok);
+    if (lk) {
+      var b = lk.querySelector("b"), sp = lk.querySelector("span"), bt = lk.querySelector("button");
+      if (!lk.dataset.b) { lk.dataset.b = b.textContent; lk.dataset.s = sp.textContent; }
+      var noRole = !!n && !ok;
+      b.textContent = noRole ? need + " 담당자만 기록할 수 있습니다" : lk.dataset.b;
+      sp.textContent = noRole ? "보기는 누구나 가능합니다 · 기록 권한이 필요하면 관리자에게 요청해 주세요." : lk.dataset.s;
+      if (bt) bt.style.display = noRole ? "none" : "";
+    }
+  });
   [].forEach.call(document.querySelectorAll("[data-wrt]"), function (b) { b.textContent = n ? dname(n, ti) : "로그인 필요"; });   // 작성자 = 로그인한 이름 (입력 칸 없음)
   if (typeof cur !== "undefined" && D && /^(ship|eq|elec|mech|ft|qa)$/.test(cur)) try { draw(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
 }
@@ -3021,7 +3061,7 @@ setInterval(tick, 15000); tick();
 
 /* ── 시작 ── */
 buildNav(); authUi();
-(function () { var a = authGet(), pn = sget("upin"); if (a && a.ti == null && pn && LIVE) titleFetch(a.n, pn, true); })();   // 예전에 로그인해 둔 기기: 직함 한 번 받아 오기
+(function () { var a = authGet(), pn = sget("upin"); if (a && a.ti == null && pn && LIVE) titleFetch(a.n, pn, true); if (a && pn && LIVE) rolesFetch(a.n, pn); })();   // 담당은 열 때마다 최신으로   // 예전에 로그인해 둔 기기: 직함 한 번 받아 오기
 // 🏠 NINEBELL 로고 → 메인(대시보드 첫 화면)으로 · 첫 화면 글자 애니메이션 다시
 $("home").onclick = function (e) {
   e.preventDefault(); drClose();
