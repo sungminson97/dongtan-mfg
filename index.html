@@ -362,6 +362,22 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .bars b{text-align:right}
 
 /* 출하 실적 */
+.xbtn{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 14px;border-radius:999px;background:var(--grd);color:#fff;font-size:13px;font-weight:800;white-space:nowrap}
+.xbtn svg{width:15px;height:15px}
+.xbtn.lk{background:transparent;color:var(--sub);border:1px solid var(--line);box-shadow:none}.xbtn.lk:hover{color:var(--text);border-color:var(--ac)}.xbtn:disabled{opacity:.6}
+.srt{margin-top:12px}
+.srt th.n,.srt td.n{text-align:right;white-space:nowrap}
+.srt td.sum{font-weight:900}
+.srt .z{color:var(--sub);opacity:.5;font-weight:600}
+.srt tr.cur td{background:color-mix(in srgb,var(--ac) 7%,transparent)}
+.srt tr.tot td{border-top:2px solid var(--line);font-weight:900}
+.srt td.up{color:var(--ok)}.srt td.dn{color:var(--warn)}
+.srt td.bar{width:28%;min-width:120px}
+.srt td.bar i{display:flex;height:8px;border-radius:8px;background:var(--bg2);overflow:hidden}
+.srt td.bar u{display:block;height:100%;background:var(--grd)}.srt td.bar u.pl{background:repeating-linear-gradient(135deg,transparent 0 3px,color-mix(in srgb,var(--sub) 50%,transparent) 3px 5px)}
+.srt td.bar small{display:block;font-size:11px;color:var(--sub);font-weight:700;margin-top:3px}
+.srt i.dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:middle}
+.srt small.dim{color:var(--sub);font-weight:600;font-size:11.5px}
 .shtop{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:10px}
 .shbig span{display:block;font-size:13px;font-weight:700;color:var(--sub)}
 .shbig b{font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1.05}
@@ -818,7 +834,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <!-- ═════ 입고 · 출하 ═════ -->
   <div class="view" id="v-ship"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">제조1팀 출하 실적과 향후 2주간 FRAME 입고 · 출하 일정입니다.</p></div>
-    <div class="g2" style="margin-bottom:28px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
+    <div class="g2" style="margin-bottom:16px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
+    <div class="card" id="srep" style="margin-bottom:28px"></div>
     <h3 class="subt">향후 2주 일정</h3>
     <div class="g4" id="fkpi" style="margin-bottom:16px"></div>
     <div id="fcal" style="display:grid;gap:12px"></div>
@@ -1657,8 +1674,110 @@ function drawShipStats(a, b) {
   b.appendChild(el("p", "shnote", (S.built || S.today) + " 기준"));
   setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = (+u.dataset.h ? Math.max(3, +u.dataset.h) : 0) + "px"; }); [].forEach.call(a.querySelectorAll(".vsb u"), function (u) { u.style.width = u.dataset.w + "%"; }); countUp(bn); }, 60);
 }
+/* ── 📈 출하 실적 상세: 주간 · 월간 · 업체별 + 엑셀 내보내기 ──
+ * D.ship.list = [출하일, 장비, TYPE, 팀/업체(A · B · 업체명), 담당, 출하됨 1 / 예정 0] */
+var SRV = "week";
+function srKeys(S) { return S.keys || ["A", "B"]; }
+function srName(k) { return k === "A" ? "A팀" : k === "B" ? "B팀" : k; }
+function srMon(d) { var t = new Date(d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10)), w = (t.getDay() + 6) % 7; t.setDate(t.getDate() - w); return ymd(t); }   // 그 주 월요일
+function srMd(d) { return +d.slice(5, 7) + "/" + +d.slice(8, 10); }
+function srData() {
+  var S = D.ship, T = D.today, L = (S && S.list) || [], K = srKeys(S), out = {};
+  var cnt = function (arr) { var o = { _: 0 }; K.forEach(function (k) { o[k] = 0; }); arr.forEach(function (x) { o[x[3]] = (o[x[3]] || 0) + 1; o._++; }); return o; };
+  var done = L.filter(function (x) { return x[5]; }), plan = L.filter(function (x) { return !x[5]; });
+  // 주간: 최근 12주 (월~일)
+  var w0 = srMon(T), weeks = [];
+  for (var i = 11; i >= 0; i--) { var a = addD(w0, -7 * i), b = addD(a, 6); weeks.push({ a: a, b: b, c: cnt(done.filter(function (x) { return x[0] >= a && x[0] <= b; })), p: plan.filter(function (x) { return x[0] >= a && x[0] <= b; }).length }); }
+  out.weeks = weeks;
+  // 월간: 1월 ~ 이번 달
+  var y = T.slice(0, 4), months = [];
+  for (var m = 1; m <= +T.slice(5, 7); m++) { var key = y + "-" + ("0" + m).slice(-2); months.push({ m: key, c: cnt(done.filter(function (x) { return x[0].slice(0, 7) === key; })), p: plan.filter(function (x) { return x[0].slice(0, 7) === key; }).length }); }
+  out.months = months;
+  // 업체별
+  var ym = T.slice(0, 7), pm = (function () { var d = new Date(+y, +T.slice(5, 7) - 2, 1); return ymd(d).slice(0, 7); })(), wk = srMon(T);
+  out.vend = K.map(function (k) {
+    var mine = done.filter(function (x) { return x[3] === k; });
+    return { k: k, y: mine.length, m: mine.filter(function (x) { return x[0].slice(0, 7) === ym; }).length, pm: mine.filter(function (x) { return x[0].slice(0, 7) === pm; }).length, w: mine.filter(function (x) { return x[0] >= wk; }).length,
+      ing: (S.ing || {})[k] || 0, pl: plan.filter(function (x) { return x[3] === k && x[0].slice(0, 7) === ym; }).length };
+  });
+  out.K = K; out.done = done; out.plan = plan;
+  return out;
+}
+function drawShipReport() {
+  var box = $("srep"); if (!box) return; box.innerHTML = "";
+  var S = D.ship;
+  var hd = el("div", "ehd"), tl = el("div"); tl.appendChild(el("span", "cap", "Report")); tl.appendChild(el("h3", null, "출하 실적")); hd.appendChild(tl);
+  var rt = el("div", "ehr"), sg = el("div", "chips");
+  [["week", "주간"], ["month", "월간"], ["vendor", "업체별"]].forEach(function (o) { var b = el("button", "chip sm" + (SRV === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { SRV = o[0]; drawShipReport(); }; sg.appendChild(b); });
+  rt.appendChild(sg);
+  var me = authName(), xb = el("button", "xbtn" + (me ? "" : " lk")); xb.type = "button";
+  xb.innerHTML = me ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 19h14"/></svg>엑셀 다운로드'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>로그인 후 엑셀 다운로드';
+  xb.onclick = function () { if (!authName()) { toast("엑셀 다운로드는 로그인 후 이용할 수 있습니다"); openLogin(); return; } srExport(xb); };   // 🔒 내려받기는 로그인한 사람만
+  rt.appendChild(xb); hd.appendChild(rt); box.appendChild(hd);
+  if (!S || !S.list) { box.appendChild(el("div", "empty", "출하 실적을 준비 중입니다")); xb.disabled = true; return; }
+  var R = srData(), K = R.K, w = el("div", "tbw"), t = el("table", "tbl srt"), th = "", tb = "";
+  var num = function (n, cls) { return '<td class="n' + (cls ? " " + cls : "") + '">' + (n ? n : '<span class="z">0</span>') + "</td>"; };
+  if (SRV === "week") {
+    th = "<tr><th>주간</th>" + K.map(function (k) { return '<th class="n">' + esc(srName(k)) + "</th>"; }).join("") + '<th class="n">합계</th><th></th></tr>';
+    var mx = Math.max.apply(null, R.weeks.map(function (x) { return x.c._ + x.p; }).concat([1]));
+    R.weeks.slice().reverse().forEach(function (x, i) {
+      tb += "<tr" + (i === 0 ? ' class="cur"' : "") + "><td><b>" + srMd(x.a) + " ~ " + srMd(x.b) + "</b>" + (i === 0 ? ' <span class="tag b">이번 주</span>' : "") + "</td>" + K.map(function (k) { return num(x.c[k]); }).join("") + num(x.c._, "sum") +
+        '<td class="bar"><i><u style="width:' + (x.c._ / mx * 100) + '%"></u>' + (x.p ? '<u class="pl" style="width:' + (x.p / mx * 100) + '%"></u>' : "") + "</i>" + (x.p ? "<small>예정 " + x.p + "</small>" : "") + "</td></tr>";
+    });
+  } else if (SRV === "month") {
+    th = "<tr><th>월</th>" + K.map(function (k) { return '<th class="n">' + esc(srName(k)) + "</th>"; }).join("") + '<th class="n">합계</th><th class="n">전월 대비</th><th class="n">누적</th></tr>';
+    var acc = 0, rows = R.months.map(function (x, i) { acc += x.c._; var pv = i ? R.months[i - 1].c._ : null; return { x: x, acc: acc, d: pv == null ? null : x.c._ - pv }; });
+    rows.reverse().forEach(function (r, i) {
+      var x = r.x, dd = i === 0 ? '<td class="n"><span class="z">진행 중</span></td>' : r.d == null ? '<td class="n"><span class="z">-</span></td>' : '<td class="n ' + (r.d > 0 ? "up" : r.d < 0 ? "dn" : "") + '">' + (r.d > 0 ? "+" : "") + r.d + "</td>";
+      tb += "<tr" + (i === 0 ? ' class="cur"' : "") + "><td><b>" + +x.m.slice(5) + "월</b>" + (i === 0 && x.p ? ' <span class="tag a">예정 ' + x.p + "</span>" : "") + "</td>" + K.map(function (k) { return num(x.c[k]); }).join("") + num(x.c._, "sum") + dd + '<td class="n">' + r.acc + "</td></tr>";
+    });
+    var tot = { _: 0 }; K.forEach(function (k) { tot[k] = 0; }); R.months.forEach(function (x) { K.forEach(function (k) { tot[k] += x.c[k] || 0; }); tot._ += x.c._; });
+    tb += '<tr class="tot"><td><b>합계</b></td>' + K.map(function (k) { return num(tot[k]); }).join("") + num(tot._, "sum") + '<td></td><td></td></tr>';
+  } else {
+    th = '<tr><th>팀 · 업체</th><th class="n">올해 출하</th><th class="n">이번 달</th><th class="n">지난달</th><th class="n">이번 주</th><th class="n">진행 중</th><th class="n">이달 예정</th></tr>';
+    var T2 = { y: 0, m: 0, pm: 0, w: 0, ing: 0, pl: 0 };
+    R.vend.forEach(function (v) {
+      Object.keys(T2).forEach(function (k) { T2[k] += v[k]; });
+      tb += '<tr><td><b><i class="dot" style="background:' + (v.k === "A" ? SHC.A : v.k === "B" ? SHC.B : SHC.V) + '"></i>' + esc(srName(v.k)) + "</b>" + (v.k === "A" || v.k === "B" ? ' <small class="dim">나인벨</small>' : ' <small class="dim">업체</small>') + "</td>" + num(v.y, "sum") + num(v.m) + num(v.pm) + num(v.w) + num(v.ing) + num(v.pl) + "</tr>";
+    });
+    tb += '<tr class="tot"><td><b>합계</b></td>' + num(T2.y, "sum") + num(T2.m) + num(T2.pm) + num(T2.w) + num(T2.ing) + num(T2.pl) + "</tr>";
+  }
+  t.innerHTML = "<thead>" + th + "</thead><tbody>" + tb + "</tbody>"; w.appendChild(t); box.appendChild(w);
+  box.appendChild(el("p", "shnote", (S.built || S.today) + " 기준"));
+}
+// 📥 엑셀 (시트 4개: 업체별 · 월간 · 주간 · 출하 목록) — 엑셀 도구는 누를 때만 받아 옴
+function srLib() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise(function (ok, no) { var sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; sc.onload = function () { window.XLSX ? ok(window.XLSX) : no(new Error("엑셀 도구를 불러오지 못했습니다")); }; sc.onerror = function () { no(new Error("엑셀 도구를 불러오지 못했습니다")); }; document.head.appendChild(sc); });
+}
+function srExport(btn) {
+  if (!authName()) { openLogin(); return; }
+  var S = D.ship; if (!S || !S.list) return;
+  var R = srData(), K = R.K, nm = K.map(srName), T = D.today;
+  var vend = [["팀 · 업체", "구분", "올해 출하", "이번 달", "지난달", "이번 주", "진행 중", "이달 예정"]].concat(R.vend.map(function (v) { return [srName(v.k), v.k === "A" || v.k === "B" ? "나인벨" : "업체", v.y, v.m, v.pm, v.w, v.ing, v.pl]; }));
+  var acc = 0, mon = [["월"].concat(nm, ["합계", "누적", "이달 남은 예정"])].concat(R.months.map(function (x, i) { acc += x.c._; return [+x.m.slice(5) + "월"].concat(K.map(function (k) { return x.c[k] || 0; }), [x.c._, acc, i === R.months.length - 1 ? x.p : ""]); }));
+  var wk = [["주 시작(월)", "주 끝(일)"].concat(nm, ["합계", "예정"])].concat(R.weeks.map(function (x) { return [x.a, x.b].concat(K.map(function (k) { return x.c[k] || 0; }), [x.c._, x.p]); }));
+  var lst = [["출하일", "장비", "TYPE", "팀 · 업체", "담당", "구분"]].concat(S.list.map(function (x) { return [x[0], x[1], x[2], srName(x[3]), x[4], x[5] ? "출하" : "예정"]; }));
+  var fn = "동탄제조_출하실적_" + T + ".xlsx", lab = btn.innerHTML;
+  btn.disabled = true; btn.lastChild.nodeValue = "만드는 중…";
+  srLib().then(function (X) {
+    var wb = X.utils.book_new(), add = function (rows, name, cols) { var ws = X.utils.aoa_to_sheet(rows); ws["!cols"] = cols.map(function (w) { return { wch: w }; }); X.utils.book_append_sheet(wb, ws, name); };
+    add(vend, "업체별", [14, 8, 10, 9, 9, 9, 9, 10]);
+    add(mon, "월간", [8].concat(K.map(function () { return 10; }), [8, 8, 14]));
+    add(wk, "주간", [12, 12].concat(K.map(function () { return 10; }), [8, 8]));
+    add(lst, "출하 목록", [12, 26, 24, 12, 10, 8]);
+    X.writeFile(wb, fn);
+    toast("엑셀 파일을 내려받았습니다");
+  }).catch(function () {   // 엑셀 도구를 못 받으면 → CSV (엑셀에서 열림)
+    var csv = "\ufeff" + lst.map(function (r) { return r.map(function (v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }).join(","); }).join("\r\n");
+    var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" })); a.download = fn.replace(".xlsx", ".csv"); document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    toast("CSV 파일로 내려받았습니다");
+  }).then(function () { btn.disabled = false; btn.innerHTML = lab; });
+}
 function drawShip() {
   drawShipStats($("fshA"), $("fshB"));
+  drawShipReport();
   var T = D.today, end = addD(T, 13);
   var inn = D.eq.filter(function (e) { return e.inD >= T && e.inD <= end; }), out = D.eq.filter(function (e) { return e.out >= T && e.out <= end; });
   kpiRow("fkpi", [["2주 입고", inn.length, "대"], ["2주 출하", out.length, "대"], ["오늘 출하", out.filter(function (e) { return e.out === T; }).length, "대"], ["내일 출하", out.filter(function (e) { return e.out === addD(T, 1); }).length, "대"]]);
@@ -2129,6 +2248,7 @@ function authUi() {
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
   $("qcard").classList.toggle("locked", !n);
   $("ecard").classList.toggle("locked", !n);
+  if (typeof cur !== "undefined" && cur === "ship" && D) try { drawShipReport(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
 }
 $("bname").onclick = openLogin;
 $("lkgo").onclick = openLogin;
