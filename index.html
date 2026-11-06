@@ -4118,7 +4118,15 @@ $("lgx").onclick = closeLogin;
 
 $("lg").onclick = function (e) { if (e.target === this) closeLogin(); };
 
-$("logout").onclick = function () { try { localStorage.removeItem("dt_auth"); localStorage.removeItem("dt_upin"); localStorage.removeItem("dt_pin"); localStorage.removeItem("dt_gate"); } catch (e) {} /* 로그아웃 → 이 창을 닫으면 다시 입장 화면 */ authUi(); closeLogin(); toast("로그아웃되었습니다"); };
+$("logout").onclick = function () {
+  try { localStorage.removeItem("dt_auth"); localStorage.removeItem("dt_upin"); localStorage.removeItem("dt_pin"); localStorage.removeItem("dt_gate"); } catch (e) {}
+  if (GATE.t) {   /* 입장 비밀번호를 쓰는 중 → 로그아웃하면 입장 화면으로 (보기 전용도 다시 입력) */
+    gateForget(); GATE.t = "";
+    try { sessionStorage.setItem("dt_bye", "1"); } catch (e) {}
+    location.reload(); return;
+  }
+  authUi(); closeLogin(); toast("로그아웃되었습니다");
+};
 $("updgo").onclick = function () { var b = this; if (VER.on) { b.disabled = true; location.reload(); return; } b.disabled = true; updApply().then(function () { toast("최신 내용으로 바뀌었습니다"); }, function (e) { toast("" + e.message); }).then(function () { b.disabled = false; }); };
 $("bref").onclick = function () {
   var b = this; if (b.disabled) return; b.disabled = true; b.classList.add("spin");
@@ -5502,7 +5510,8 @@ function gateShow(len) {
   var g = $("gate"); g.hidden = false; g.classList.remove("out"); document.documentElement.classList.add("gate");
   var d = new Date(), wk = "일월화수목금토"[d.getDay()];
   $("gclock").textContent = "동탄 사업장 · " + (d.getMonth() + 1) + "/" + d.getDate() + "(" + wk + ")";
-  $("gpw").value = ""; $("gmsg").textContent = ""; gfxStart();
+  $("gpw").value = ""; $("gmsg").className = "gmsg wait"; $("gmsg").textContent = ""; gfxStart();
+  try { if (sessionStorage.getItem("dt_bye")) { sessionStorage.removeItem("dt_bye"); $("gmsg").textContent = "로그아웃되었습니다. 다시 로그인해 주세요."; } } catch (e) {}
   setTimeout(function () { try { $("gpw").focus({ preventScroll: true }); } catch (e) {} }, 350);
 }
 function gatePass(t) {
