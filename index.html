@@ -1754,11 +1754,11 @@ function draw() {
   if (cur === "dash") drawDash(); else if (cur === "notice") drawNotice(); else if (cur === "eq") drawEq(); else if (cur === "qc") drawQc(); else if (cur === "ship") drawShip(); else if (cur === "map") drawMap(); else if (cur === "elec") drawElec(); else if (cur === "mech") drawMech(); else if (cur === "ft") drawFt(); else if (cur === "qa") drawQa(); else if (cur === "nc") drawNc(); else { drawEtc(); if (LIVE) { matLoad(false); inspLoad(false); } }
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
-var DRN = "";
+var DRN = "", DRO = null;
 function sdTx(e, i, fb) { var p = sd(e, i), d = p[0] || fb || ""; return d ? md(d) + (p[1] || e.st > i ? " 완료" : " 예정") : "-"; }   // 장비 상세: 공정 날짜 + 완료/예정
 function eqOpen(n, opt) {
   var e = D.eq.filter(function (x) { return x.n === n; })[0]; if (!e) return;
-  opt = opt || {}; var same = DRN === n && $("dr").classList.contains("on"), keepY = same ? $("drp").scrollTop : 0; DRN = n;
+  opt = opt || {}; var same = DRN === n && $("dr").classList.contains("on"), keepY = same ? $("drp").scrollTop : 0; DRN = n; DRO = opt;
   var p = $("drp"); p.innerHTML = "";
   var ph = el("div", "ph"); var x = el("button", "x", "✕"); x.type = "button"; x.onclick = drClose; ph.appendChild(x);
   ph.appendChild(el("span", "tag b", STAGES[e.st])); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, [e.t, e.v, e.p].filter(Boolean).join(" · ")));
@@ -4973,12 +4973,22 @@ var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return
   var sig0 = c ? dataSig(c) : "";
   load(false).then(function () { if (shown) { if (dataSig(D) !== sig0) { draw(); reveal(); } else { try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} } } else { go(start, true); setTimeout(pill, 300); } })
     .catch(function (e) { if (!shown) { D = emptyData(); go(start, true); setTimeout(pill, 300); } toast("불러오기 실패: " + e.message); });
-  // 🔄 3분마다 조용히 최신으로 (입력 중 · 창 열림 · 화면 꺼짐일 땐 건너뜀)
-  setInterval(function () {
-    if (!LIVE || document.hidden || $("dr").classList.contains("on") || $("lg").classList.contains("on")) return;
+  // 🔄 3분마다 조용히 최신으로 (입력 중 · 로그인 창 · 화면 꺼짐일 땐 건너뜀)
+  // 2026-11-06: 장비 상세창을 열어 둔 채여도 최신으로 바꿈 (상세창도 같은 장비로 다시 그림) · 다른 탭 갔다 오면 바로 확인
+  //             → 팀원마다 보는 날짜가 달라지지 않게
+  var lastChk = Date.now();
+  var chk = function () {
+    if (!LIVE || document.hidden || $("lg").classList.contains("on")) return;
     var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return;
+    lastChk = Date.now();
     var y = window.pageYOffset, before = dataSig(D);
-    var full = function () { load(false).then(function () { if (dataSig(D) === before) { try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; } draw(); window.scrollTo(0, y); }).catch(function () {}); };   // 바뀐 게 있을 때만 다시 그림
+    var full = function () { load(false).then(function () {
+      if (dataSig(D) === before) { try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; }
+      var drOn = $("dr").classList.contains("on"), dn = DRN, dy = drOn ? $("drp").scrollTop : 0;
+      draw(); window.scrollTo(0, y);
+      if (drOn && dn) { try { eqOpen(dn, DRO); $("drp").scrollTop = dy; } catch (e) {} }   // 상세창도 최신으로
+      toast("최신 내용으로 바뀌었습니다");
+    }).catch(function () {}); };   // 바뀐 게 있을 때만 다시 그림
     if (!LSIG) { full(); return; }   // 서버에 바뀜 확인 기능이 아직 없으면 예전처럼 전부 받음
     // ⚡ 전송량 줄이기: 바뀌었는지만 먼저 물어봄 (약 40바이트) → 바뀌었을 때만 전부 받음
     rpc("dt_sig", {}).then(function (sg) {
@@ -4986,7 +4996,9 @@ var start = (location.hash || "").slice(1); if (!TABS.some(function (t) { return
       if (typeof sg === "string" && sg.split("|")[0] === was) { sigSet(sg); D.updated = new Date().toTimeString().slice(0, 5); try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; }
       full();
     }, full);
-  }, 180000);
+  };
+  setInterval(chk, 180000);
+  document.addEventListener("visibilitychange", function () { if (!document.hidden && Date.now() - lastChk > 30000) chk(); });   // 다른 탭 · 앱 갔다 오면 바로 확인
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
 </script>
