@@ -304,6 +304,11 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .plan .sdue{font-size:8.5px;font-weight:700;fill:#7d8bb0}
 .plan .smore{font-size:8.5px;font-weight:900;fill:#fff}
 .plan .smb{fill:color-mix(in srgb,var(--c) 70%,#000)}
+.plan .sn.s2{fill:#c3cad8;font-weight:700}.plan .sn.pre.s2{fill:#6b7898}
+.plan .snx{fill:#0d121e;stroke:#fff;stroke-width:1.6}
+.lgx i{background:transparent!important;border:2px solid var(--text);border-radius:50%!important;box-sizing:border-box}
+.nxo{display:inline-block;width:7px;height:7px;border-radius:50%;border:2px solid var(--text);box-sizing:border-box;margin-right:5px;vertical-align:0}
+.psum .pn{display:inline-flex;align-items:center;gap:6px}.psum .pn i{width:7px;height:7px;border-radius:50%;border:2px solid var(--text);box-sizing:border-box;display:inline-block}
 .tbl small.also{display:block;font-size:11.5px;color:var(--sub);font-weight:700;margin-top:2px}
 .psum .pm{display:inline-flex;align-items:center;gap:6px}.psum .pm i{font-style:normal;font-size:11px;font-weight:900;padding:1px 6px;border-radius:4px;background:var(--bg2);color:var(--text)}
 .in .plan .slot{animation:slotIn .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k)*25ms)}
@@ -456,19 +461,20 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .shlg span{display:inline-flex;align-items:center;gap:6px}
 .shlg i.pl{border:1px dashed var(--sub);width:10px;height:10px}
 .shtb{margin-top:12px;display:grid}
-.shr{display:grid;grid-template-columns:minmax(0,1.5fr) repeat(4,minmax(0,1fr));gap:6px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-size:13.5px;font-weight:800;text-align:right}
+.shr{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(5,minmax(0,1fr));gap:6px;align-items:center;padding:9px 2px;border-top:1px solid var(--line);font-size:13.5px;font-weight:800;text-align:right}
 .shr .nm{display:flex;align-items:center;gap:7px;text-align:left;min-width:0}
 .shr .nm b{white-space:nowrap}
 .shr>span{white-space:nowrap}
 .shr .nm small{font-size:12.5px;color:var(--sub);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shr .z{color:var(--sub);opacity:.55;font-weight:600}
+.shr>span.cm:not(.z){color:var(--ac)}.shr.shh>span.cm{color:var(--ac)}
 .shr.shh{border-top:0;font-size:12.5px;color:var(--sub);font-weight:700;padding-top:0}
 .shr.hd{background:var(--bg2);border-radius:8px;border-top-color:transparent;padding-left:10px;padding-right:8px;margin-top:4px}
 .shr.sb{font-weight:700}
 .shr.sb .nm{padding-left:12px}
 .shnote{margin-top:14px;font-size:13px;color:var(--sub);line-height:1.6;font-weight:600}
 .subt{font-size:18px;font-weight:800;margin:0 0 12px;letter-spacing:-.02em}
-@media (max-width:560px){.shr{font-size:12.5px;gap:4px;grid-template-columns:minmax(66px,1.2fr) repeat(4,minmax(0,1fr))}.shr .nm small{display:none}.shr.hd{padding-left:8px;padding-right:6px}.shr.sb .nm{padding-left:4px}.shr.shh{font-size:10.5px}.shbig b{font-size:38px}.sbar{gap:4px}.sbar em{font-size:10.5px}.sbar small{font-size:10px}}
+@media (max-width:560px){.shr{font-size:12.5px;gap:4px;grid-template-columns:minmax(58px,1.1fr) repeat(5,minmax(0,1fr))}.shr .nm small{display:none}.shr.hd{padding-left:8px;padding-right:6px}.shr.sb .nm{padding-left:4px}.shr.shh{font-size:10.5px}.shbig b{font-size:38px}.sbar{gap:4px}.sbar em{font-size:10.5px}.sbar small{font-size:10px}}
 /* 월별 */
 .mchart{display:flex;align-items:flex-end;gap:10px;height:180px;margin-top:22px}
 .mchart>div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;height:100%}
@@ -1669,6 +1675,10 @@ function slotMap() {
   });
   return out;
 }
+// 칸이 좁아서 이름을 둘로: "CC04-156 EFEM" → ["CC04-156", "EFEM"] · "MISC-12CH BS PROCESS #10" → ["MISC-12CH", "BS PROCESS #10"]
+function planSplit(n) { var t = String(n || "").trim(), m = t.match(/^(\S+)\s+(.+)$/); return m ? [m[1], m[2]] : [t, ""]; }
+// 2대 이상일 때 한 줄용 짧은 이름: "MISC-12CH BS PROCESS #10" → "MISC-12CH #10" · "NR63-014 PROCESS" → "NR63-014 PRO"
+function planShort(n) { var p = planSplit(n), r = p[1], h = r.match(/#\s*\d+/); if (h) return p[0] + " " + h[0].replace(/\s/g, ""); return p[0] + (r ? " " + r.replace(/PROCESS/i, "PRO").split(/\s+/).slice(-1)[0] : ""); }
 function svgEl(t, a, txt) { var e = document.createElementNS("http://www.w3.org/2000/svg", t); for (var k in a) e.setAttribute(k, a[k]); if (txt != null) e.textContent = txt; return e; }
 function drawPlan(boxId) {
   var box = $(boxId || "bay"); box.innerHTML = "";
@@ -1699,14 +1709,29 @@ function drawPlan(boxId) {
     var fs = function (n) { return "font-size:" + Math.min(10.5, (p.h - 14) / (String(n).length * 0.62)).toFixed(1) + "px"; };   // 긴 장비명은 칸에 맞게 글씨 줄임
     if (e) {
       used++;
-      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(e.n) }, e.n));
+      var all = [e].concat(si.others || []);
+      if (all.length > 1) {   // 한 자리에 2대 이상 (같은 날 · 다른 날 들어온 것 모두): 이름을 줄마다 하나씩 · 위에 '2대'
+        var nn = all.slice(0, 3), gap = 13, x0 = cx - (nn.length - 1) * gap / 2;
+        nn.forEach(function (o, j) { var xx = x0 + j * gap, nm = planShort(o.n); g.appendChild(svgEl("text", { x: xx, y: cy + 5, class: "sn" + (j ? " s2" : ""), "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(-90 " + xx + " " + (cy + 5) + ")", style: "font-size:" + Math.min(9.5, (p.h - 26) / (nm.length * 0.6)).toFixed(1) + "px" }, nm)); });
+        g.appendChild(svgEl("rect", { x: cx - 10, y: p.y + 3, width: 20, height: 11, rx: 3, class: "smb" })); g.appendChild(svgEl("text", { x: cx, y: p.y + 11.2, class: "smore", "text-anchor": "middle" }, all.length + "대"));
+      } else {   // 1대: 이름을 둘로 (CC04-156 / EFEM) → 글씨가 작아지거나 잘리지 않게
+        var sp2 = planSplit(e.n);
+        if (sp2[1]) {
+          g.appendChild(svgEl("text", { x: cx - 5, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(-90 " + (cx - 5) + " " + cy + ")", style: fs(sp2[0]) }, sp2[0]));
+          g.appendChild(svgEl("text", { x: cx + 7, y: cy, class: "sn s2", "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(-90 " + (cx + 7) + " " + cy + ")", style: "font-size:" + Math.min(8, (p.h - 14) / (sp2[1].length * 0.6)).toFixed(1) + "px" }, sp2[1]));
+        } else g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(e.n) }, e.n));
+      }
       var ph = (p.h - 8) * (e.st + 1) / 11;
       g.appendChild(svgEl("rect", { x: p.x + 4, y: p.y + p.h - 4 - ph, width: 3, height: ph, rx: 1.5, class: "sp" }));
-      if (si.more) { g.appendChild(svgEl("rect", { x: p.x + p.w - 17, y: p.y + 3, width: 14, height: 11, rx: 3, class: "smb" })); g.appendChild(svgEl("text", { x: p.x + p.w - 10, y: p.y + 11.2, class: "smore", "text-anchor": "middle" }, "+" + si.more)); }
-      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + e.n + " · " + STAGES[e.st] + (si.more ? "\n같은 자리에 함께 있음: " + si.others.map(function (o) { return o.n; }).join(", ") : "") + (nx ? "\n다음 입고: " + nx.n + " (" + md(nx.inD) + ")" : "")));
+      if (nx) g.appendChild(svgEl("circle", { cx: p.x + p.w - 6, cy: p.y + p.h - 6, r: 3, class: "snx" }));   // ○ 다음 입고 예정 있음
+      g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · " + all.map(function (o) { return o.n + " · " + STAGES[o.st]; }).join("\n          ") + (nx ? "\n다음 입고: " + nx.n + " (" + md(nx.inD) + ")" : "")));
       g.addEventListener("click", function () { eqOpen(e.n, boxId === "bay2" ? { map: 1 } : null); });
     } else if (nx) {
-      g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn pre", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(nx.n) }, nx.n));
+      var sp3 = planSplit(nx.n);
+      if (sp3[1]) {
+        g.appendChild(svgEl("text", { x: cx - 5, y: cy, class: "sn pre", "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(-90 " + (cx - 5) + " " + cy + ")", style: fs(sp3[0]) }, sp3[0]));
+        g.appendChild(svgEl("text", { x: cx + 7, y: cy, class: "sn pre s2", "text-anchor": "middle", "dominant-baseline": "central", transform: "rotate(-90 " + (cx + 7) + " " + cy + ")", style: "font-size:" + Math.min(8, (p.h - 14) / (sp3[1].length * 0.6)).toFixed(1) + "px" }, sp3[1]));
+      } else g.appendChild(svgEl("text", { x: cx, y: cy, class: "sn pre", "text-anchor": "middle", "dominant-baseline": "central", transform: rot, style: fs(nx.n) }, nx.n));
       g.appendChild(svgEl("text", { x: cx, y: p.y + p.h + 12, class: "sdue", "text-anchor": "middle" }, nx.inD ? md(nx.inD).replace(/\(.\)/, "") + " 입고" : "입고 예정"));
       g.appendChild(svgEl("title", {}, "동탄 " + p.id + " · 비어 있음\n입고 예정: " + nx.n + (nx.inD ? " (" + md(nx.inD) + ")" : "")));
       g.addEventListener("click", function () { eqOpen(nx.n, boxId === "bay2" ? { map: 1 } : null); });
@@ -1716,9 +1741,9 @@ function drawPlan(boxId) {
     sv.appendChild(g);
   });
   var wrap = el("div", "planw"); wrap.appendChild(sv); box.appendChild(wrap);
-  var moreN = 0; Object.keys(SM).forEach(function (k) { if (SM[k].cur) moreN = Math.max(moreN, SM[k].more || 0); });
+  var moreN = 0, nxN = 0; Object.keys(SM).forEach(function (k) { if (SM[k].cur) { moreN = Math.max(moreN, SM[k].more || 0); if (SM[k].next) nxN++; } });
   var sm = el("div", "psum");
-  sm.innerHTML = "<span>CR4 <b>" + used + "</b> / " + PLAN.length + " 자리 사용</span><span>빈 자리 <b>" + (PLAN.length - used) + "</b></span>" + (moreN ? '<span class="pm"><i>+' + moreN + "</i> 같은 자리에 함께 들어와 있는 장비 (예: EFEM · PROCESS)</span>" : "") + "<span class=\"ph\">← 옆으로 밀어서 전체 보기</span>";
+  sm.innerHTML = "<span>CR4 <b>" + used + "</b> / " + PLAN.length + " 자리 사용</span><span>빈 자리 <b>" + (PLAN.length - used) + "</b></span>" + (moreN ? '<span class="pm"><i>' + (moreN + 1) + "대</i> 한 자리에 함께 있는 장비</span>" : "") + "<span class=\"ph\">← 옆으로 밀어서 전체 보기</span>";
   box.appendChild(sm);
 }
 
@@ -2011,6 +2036,7 @@ function drawDash() {
   drawPlan();
   var lg = $("legend"); lg.innerHTML = "";
   STAGES.forEach(function (s, i) { var sp = el("span"); var ii = el("i"); ii.style.background = SCOL[i]; sp.appendChild(ii); sp.appendChild(document.createTextNode(s)); lg.appendChild(sp); });
+  var lx0 = el("span", "lgx"); lx0.appendChild(el("i")); lx0.appendChild(document.createTextNode("다음 입고 예정 있음")); lg.appendChild(lx0);
   // 오늘
   var fill = function (id, list, ic, sub) { var w = $(id); w.innerHTML = ""; if (!list.length) { w.appendChild(el("div", "empty", "예정된 일정이 없습니다")); return; } list.forEach(function (e) { w.appendChild(tItem(ic, e.n, sub(e), e.n)); }); };
   fill("tin", D.eq.filter(function (e) { return e.inD === T; }), "IN", function (e) { return e.t + " · " + e.v; });
@@ -2830,21 +2856,24 @@ function drawShipStats(a, b) {
   // 오른쪽: 나인벨(A·B팀) · 업체별
   b.appendChild(el("span", "cap", "NineBell · Partners")); b.appendChild(el("h3", null, "나인벨 · 업체"));
   var g = function (o, k) { return (o && o[k]) || 0; };
-  var rows = [["나인벨", "A팀 + B팀", (T.A || 0) + (T.B || 0), g(S.ing, "A") + g(S.ing, "B"), g(S.plan, "A") + g(S.plan, "B"), g(S.pre, "A") + g(S.pre, "B"), "", "hd"],
-    ["A팀", "", T.A || 0, g(S.ing, "A"), g(S.plan, "A"), g(S.pre, "A"), SHC.A, "sb"],
-    ["B팀", "", T.B || 0, g(S.ing, "B"), g(S.plan, "B"), g(S.pre, "B"), SHC.B, "sb"],
-    ["업체", vens.join(" · ") || "-", shipVen(T, S), shipVen(S.ing, S), shipVen(S.plan, S), shipVen(S.pre, S), "", "hd"]];
-  vens.forEach(function (v) { rows.push([v, "", g(T, v), g(S.ing, v), g(S.plan, v), g(S.pre, v), SHC.V, "sb"]); });
+  // 열: 올해 출하 · 이번 달 출하(오늘까지) · 진행 중(FRAME 입고 ~ 출하 전) · 이달 예정(남은 출하) · 입고 예정
+  var M = cm[1] || {}, mNo = cm[0] ? +cm[0].slice(5, 7) : +String(S.today || "").slice(5, 7);
+  var rows = [["나인벨", "A팀 + B팀", (T.A || 0) + (T.B || 0), g(M, "A") + g(M, "B"), g(S.ing, "A") + g(S.ing, "B"), g(S.plan, "A") + g(S.plan, "B"), g(S.pre, "A") + g(S.pre, "B"), "", "hd"],
+    ["A팀", "", T.A || 0, g(M, "A"), g(S.ing, "A"), g(S.plan, "A"), g(S.pre, "A"), SHC.A, "sb"],
+    ["B팀", "", T.B || 0, g(M, "B"), g(S.ing, "B"), g(S.plan, "B"), g(S.pre, "B"), SHC.B, "sb"],
+    ["업체", vens.join(" · ") || "-", shipVen(T, S), shipVen(M, S), shipVen(S.ing, S), shipVen(S.plan, S), shipVen(S.pre, S), "", "hd"]];
+  vens.forEach(function (v) { rows.push([v, "", g(T, v), g(M, v), g(S.ing, v), g(S.plan, v), g(S.pre, v), SHC.V, "sb"]); });
   var tb = el("div", "shtb");
-  var hd = el("div", "shr shh"); ["", "올해 출하", "진행 중", "이달 예정", "입고 예정"].forEach(function (x) { hd.appendChild(el("span", null, x)); }); tb.appendChild(hd);
+  var hd = el("div", "shr shh"); ["", "올해 출하", mNo + "월 출하", "진행 중", "이달 예정", "입고 예정"].forEach(function (x, i) { hd.appendChild(el("span", i === 2 ? "cm" : null, x)); }); tb.appendChild(hd);
   rows.forEach(function (r) {
-    var d = el("div", "shr " + r[7]), n = el("span", "nm");
-    if (r[6]) { var i = el("i"); i.style.background = r[6]; n.appendChild(i); }
+    var d = el("div", "shr " + r[8]), n = el("span", "nm");
+    if (r[7]) { var i = el("i"); i.style.background = r[7]; n.appendChild(i); }
     n.appendChild(el("b", null, r[0])); if (r[1]) n.appendChild(el("small", null, r[1])); d.appendChild(n);
-    [2, 3, 4, 5].forEach(function (j) { d.appendChild(el("span", r[j] ? "" : "z", r[j] + "대")); });
+    [2, 3, 4, 5, 6].forEach(function (j) { d.appendChild(el("span", (r[j] ? "" : "z") + (j === 3 ? " cm" : ""), r[j] + "대")); });
     tb.appendChild(d);
   });
   b.appendChild(tb);
+  b.appendChild(el("p", "shnote", mNo + "월 출하 = 이번 달 1일부터 오늘까지 출하 · 진행 중 = FRAME 입고 후 출하 전 · 이달 예정 = 이번 달 남은 출하"));
   b.appendChild(el("p", "shnote", (S.built || S.today) + " 기준"));
   setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = (+u.dataset.h ? Math.max(3, +u.dataset.h) : 0) + "px"; }); [].forEach.call(a.querySelectorAll(".vsb u"), function (u) { u.style.width = u.dataset.w + "%"; }); countUp(bn); }, 60);
 }
@@ -3265,6 +3294,7 @@ function drawMap() {
   drawPlan("bay2");
   var lg = $("legend2"); lg.innerHTML = "";
   STAGES.forEach(function (s, i) { var sp = el("span"); var ii = el("i"); ii.style.background = SCOL[i]; sp.appendChild(ii); sp.appendChild(document.createTextNode(s)); lg.appendChild(sp); });
+  var lx = el("span", "lgx"); lx.appendChild(el("i")); lx.appendChild(document.createTextNode("다음 입고 예정 있음")); lg.appendChild(lx);
   var SM = slotMap();
   var cnt = function (r) { return PLAN.filter(function (p) { return p.id[0] === r && SM[p.id] && SM[p.id].cur; }).length; };
   var used = cnt("A") + cnt("B");
@@ -3276,7 +3306,8 @@ function drawMap() {
     var nxt = nx ? "<b>" + esc(nx.n) + "</b> · " + md(nx.inD) + (si.wait > 1 ? ' <span class="tag">외 ' + (si.wait - 1) + "대</span>" : "") : '<span style="color:var(--sub)">-</span>';
     if (e) {
       tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { map: 1 }); };
-      tr.innerHTML = "<td><b>" + esc(p.id) + "</b></td><td><b>" + esc(e.n) + "</b>" + (si.more ? '<small class="also">함께: ' + esc(si.others.map(function (o) { return o.n; }).join(", ")) + "</small>" : "") + "</td><td>" + esc(e.t) + '</td><td><span class="tag" style="color:' + SCOL[e.st] + ";background:color-mix(in srgb," + SCOL[e.st] + ' 16%,transparent)">' + esc(STAGES[e.st]) + "</span></td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + md(e.out) + "</td><td>" + nxt + "</td>";
+      var A2 = [e].concat(si.others || []), J = function (f) { return A2.map(f).join("<br>"); };   // 한 자리에 2대면 줄마다 한 대씩
+      tr.innerHTML = "<td><b>" + esc(p.id) + "</b>" + (A2.length > 1 ? ' <span class="tag">' + A2.length + "대</span>" : "") + "</td><td>" + J(function (o) { return "<b>" + esc(o.n) + "</b>"; }) + "</td><td>" + J(function (o) { return esc(o.t); }) + "</td><td>" + J(function (o) { return '<span class="tag" style="color:' + SCOL[o.st] + ";background:color-mix(in srgb," + SCOL[o.st] + ' 16%,transparent)">' + esc(STAGES[o.st]) + "</span>"; }) + "</td><td>" + J(function (o) { return esc([o.v, o.p].filter(Boolean).join(" · ") || "-"); }) + "</td><td>" + J(function (o) { return md(o.out); }) + "</td><td>" + (nx ? '<i class="nxo"></i>' : "") + nxt + "</td>";
     } else {
       tr.innerHTML = "<td><b>" + esc(p.id) + '</b></td><td colspan="5" style="color:var(--sub)">비어 있음</td><td>' + nxt + "</td>";
       if (nx) { tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(nx.n, { map: 1 }); }; }
