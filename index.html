@@ -1080,6 +1080,39 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 :root[data-theme="dark"] .syncw .wrap{color:#fbbf24}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .syncw .wrap{color:#fbbf24}}
 .syncw i{flex:none;width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:blink 1.6s infinite}
+/* 📤 검수 시트 업로드 카드 */
+.upc{padding:0;margin-top:16px}
+.uphd{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:14px 18px;flex-wrap:wrap;width:100%;padding:18px 22px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.uphd:focus-visible{outline:2px solid var(--ac);outline-offset:-2px;border-radius:var(--r)}
+.upt{min-width:0}.upt h3{margin:4px 0 2px}.upt .ds2{margin:0}
+.ups{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto}
+.upk{display:inline-flex;align-items:baseline;gap:7px;height:32px;padding:0 12px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--sub);align-items:center}
+.upk em{font-style:normal}.upk b{font-family:var(--mono);font-size:15px;color:var(--text)}
+.upk.r b{color:var(--warn)}.upk.b b{color:var(--ac)}.upk.g b{color:var(--ok)}.upk.z b{color:var(--sub);opacity:.6}
+.upn{flex-basis:100%;text-align:right;font-size:12.5px;font-weight:700;color:var(--sub);word-break:keep-all}
+.upchev{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);color:var(--sub);transition:transform .5s cubic-bezier(.2,.8,.2,1),background .25s,color .25s}
+.upchev svg{width:16px;height:16px}
+.uphd:hover .upchev{color:var(--text);background:var(--bg2)}
+.upc.on .upchev{transform:rotate(180deg);color:var(--ac);border-color:color-mix(in srgb,var(--ac) 45%,var(--line))}
+.upb{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s cubic-bezier(.2,.8,.2,1)}
+.upc.on .upb{grid-template-rows:1fr}
+.upi{min-height:0;overflow:hidden;padding:0 22px;opacity:0;filter:blur(8px);transform:translateY(-14px) scaleY(.96);transform-origin:top;transition:opacity .55s ease,filter .7s ease,transform .7s cubic-bezier(.2,.8,.2,1),padding .7s cubic-bezier(.2,.8,.2,1)}
+.upc.on .upi{opacity:1;filter:none;transform:none;padding:4px 22px 20px}
+.upg{border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+.upg+.upg{margin-top:14px}
+.upgh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:8px}.upgh b{font-size:14px}.upgh small{font-size:12px;color:var(--sub);font-weight:600}
+.upe{font-size:13px;color:var(--sub);font-weight:600;padding:10px 2px}
+.upr{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;border-radius:12px;cursor:pointer;border:1px solid transparent;opacity:0;transform:translateY(-8px);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1),background .2s,border-color .2s;transition-delay:calc(var(--i) * 35ms + 120ms),calc(var(--i) * 35ms + 120ms),0s,0s}
+.upc.on .upr{opacity:1;transform:none}
+.upr:hover{background:var(--bg2);border-color:var(--line)}
+.upr+.upr{margin-top:2px}
+.upm{flex:1;min-width:0;display:grid;gap:2px}.upm b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.upm small{font-size:12px;color:var(--sub);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.upd{display:grid;text-align:right;font-family:var(--mono);font-size:13px;font-weight:800;min-width:64px}.upd em{font-style:normal;font-family:inherit;font-size:10.5px;color:var(--sub);font-weight:700}
+.upq{flex:none;display:grid;place-items:center;min-width:44px;height:26px;padding:0 6px;border-radius:7px;font-size:11px;font-weight:900;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}
+.upq.qi{background:color-mix(in srgb,var(--amb) 18%,transparent);color:#b45309}
+:root[data-theme="dark"] .upq.qi{color:#fbbf24}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .upq.qi{color:#fbbf24}}
+.upr .tag{flex:none;min-width:74px}
+@media (max-width:640px){.uphd{padding:16px}.ups{margin-left:0;width:100%}.upn{text-align:left}.upchev{position:absolute;right:14px;top:16px}.upi,.upc.on .upi{padding-left:12px;padding-right:12px}.upr{flex-wrap:wrap;gap:8px 10px}.upm{flex-basis:calc(100% - 70px)}.upd{text-align:left;min-width:0;display:flex;gap:6px;align-items:baseline}}
 </style>
 </head>
 <body>
@@ -1109,7 +1142,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         <p class="lead">나인벨 동탄 사업장의 장비 · 공정 · 검수 · 출하를<br>한 화면에서 확인하고, 현장에서 바로 기록합니다.</p>
         <div class="hbtn">
           <button class="btn p" type="button" data-go="eq">장비 현황 보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
-          <button class="btn g" type="button" data-go="qc">검수 · 이력 기록</button>
+          <button class="btn g" type="button" data-go="mech">제조 현황 보기</button>
         </div>
         <div class="hstat" id="hstat"></div>
       </div>
@@ -1143,7 +1176,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <div class="shd rv"><div><span class="eyebrow">Schedule</span><h2 class="tt">오늘 · 이번 주 일정</h2></div><button class="more" type="button" data-go="ship">전체 일정 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
       <div class="g3">
         <div class="card rv" style="--d:0"><span class="cap">Today</span><h3 style="margin-top:6px">오늘 입고</h3><div class="tl" id="tin"></div></div>
-        <div class="card rv" style="--d:1"><span class="cap">Today</span><h3 style="margin-top:6px">검수 대기</h3><div class="tl" id="tqc"></div></div>
+        <div class="card rv" style="--d:1"><span class="cap">Today</span><h3 style="margin-top:6px">검수 시트 업로드</h3><div class="tl" id="tqc"></div></div>
         <div class="card rv" style="--d:2"><span class="cap">This week</span><h3 style="margin-top:6px">출하 예정</h3><div class="tl" id="tout"></div></div>
       </div>
     </div></section>
@@ -1188,9 +1221,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 검수 · 이력 ═════ -->
   <div class="view" id="v-qc"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Inspection</span><h2 class="tt">검수 · 이력</h2><p class="ds">1차 검수는 <b>1차 검수(DRY)일</b>, 2차 검수 · ISSUE는 <b>PACKING일</b>이 되면 대기에 올라오고, 기록하면 완료로 바뀝니다.</p></div>
-    <div class="g4" id="qkpi" style="margin-bottom:16px"></div>
-    <div class="g2" style="align-items:start">
+    <div class="vtop"><span class="eyebrow">History</span><h2 class="tt">ISSUE 이력</h2><p class="ds">제조 · 품질 · 입고 출하 탭에서 기록한 이슈를 최신 순으로 한 곳에서 봅니다. 검수 시트 업로드 현황은 제조 탭 기구(1차 검수) · FT(2차 검수 · ISSUE)에서 확인할 수 있습니다.</p></div>
+    <div class="g4" id="qkpi" style="margin-bottom:16px" hidden></div>
+    <div class="g2" style="align-items:start" hidden>
       <div class="card" id="qwc"><div class="ehd"><h3>검수 대기</h3><div class="chips" id="qwf"></div></div><div class="qwl" id="qtb"></div><p class="ds2" style="margin-top:10px">줄을 누르면 오른쪽 기록 칸에 장비와 구분이 채워집니다.</p></div>
       <div class="card lockc" id="qcard"><h3>이력 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" id="lkgo">로그인</button></div>
@@ -1203,7 +1236,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         </form>
       </div>
     </div>
-    <div class="card" style="margin-top:16px"><h3>최근 기록</h3><div class="iss" id="qlog"></div></div>
+    <div class="card"><h3>전체 이력</h3><div class="iss" id="qlog"></div></div>
   </div></div>
 
   <!-- ═════ 입고 · 출하 ═════ -->
@@ -1231,6 +1264,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="view" id="v-mech"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Mechanical</span><h2 class="tt">기구 · 조립</h2><p class="ds">FRAME 입고부터 MODULE · 1차 LEVEL · 1차 검수 · 제조완료까지 기구 조립 진행 현황입니다. 기구 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="mcx"></button></div>
     <div class="card eiss miss"><div class="ehd"><div><h3>기구 이슈</h3><p class="ds2" id="misub"></p></div><div class="ehr"><div class="chips" id="mif"></div><button class="wbtn" type="button" id="mwrite">이슈 기록</button></div></div><div class="iss" id="mlog" style="margin-top:6px"></div></div>
+    <div class="card upc" id="mup"></div>
     <div class="g4" id="mckpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>기구 조립 현황</h3><div class="chips" id="mwf"></div></div>
@@ -1255,6 +1289,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="view" id="v-ft"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="ftx"></button></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
+    <div class="card upc" id="fup"></div>
     <div class="g4" id="ftkpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>FT 현황</h3><div class="chips" id="fwf"></div></div>
@@ -1617,17 +1652,18 @@ function drawPlan(boxId) {
 }
 
 /* ── 탭 ── */
-var TABS = [
+var TABS0 = [
   ["notice", "공지사항", '<path d="M4 10v4a1 1 0 0 0 1 1h2l5 4V5L7 9H5a1 1 0 0 0-1 1z"/><path d="M16 9a4 4 0 0 1 0 6M19 6.5a8 8 0 0 1 0 11"/>', "공지"],
   ["dash", "대시보드", '<path d="M4 20V11"/><path d="M10 20V4"/><path d="M16 20v-6"/><path d="M21 20H3"/>'],
   ["eq", "장비", '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'],
-  ["qc", "검수 · 이력", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'],
+  ["qc_off", "검수 · 이력", '<path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9"/>'],
   ["ship", "입고 · 출하", '<path d="M3 7h11v10H3z"/><path d="M14 10h4l3 3v4h-7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>'],
   ["mfg", "제조", '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>'],
   ["qa", "품질", '<path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>'],
   ["etc", "자재 · 수입검사", '<path d="M3.5 7.5L12 3l8.5 4.5v9L12 21l-8.5-4.5z"/><path d="M3.5 7.5L12 12l8.5-4.5M12 12v9"/>'],
   ["map", "배치도", '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 8v4M12 8v4M16 8v4M10 15v2M14 15v2"/>']
 ];
+var TABS = TABS0.filter(function (t) { return t[0] !== "qc_off"; });   // 2026-11-06: 검수 · 이력 메뉴 빼고 기구 · FT 탭 '검수 시트' 카드로
 var cur = "dash";
 function buildNav() {
   TABS.forEach(function (t) {
@@ -1835,11 +1871,12 @@ function spark(vals) {
   return '<svg class="sp" viewBox="0 0 90 34" fill="none"><defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs><polyline points="' + s + '" stroke="url(#sg)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
+function qcPend(e) { return e.st < 10 && mDone(e, 7) && !mDone(e, 8); }   // QC 검수 대기: 제조완료 끝 · QC 아직 · 출하 전
 function isAct(e) { return e.st < 10 && !!e.inD && e.inD <= D.today; }   // 진행 중 = 입고됨 + 출하 전 (입고 예정 제외)
 function drawDash() {
   var T = D.today, act = D.eq.filter(isAct), c = stCount();
   var wk = D.eq.filter(function (e) { return e.out >= T && e.out <= addD(T, 6); }).length;
-  var qWait = D.eq.filter(function (e) { return e.q1 === "업로드 필요" || e.q2 === "업로드 필요" || e.qi === "업로드 필요"; }).length;
+  var qcW = D.eq.filter(qcPend).length;   // ✅ QC 검수 대기 = 제조완료 · QC 아직 · 출하 전
   var open = D.issues.filter(function (x) { return x.r !== "완료"; }).length;
   // 히어로 숫자
   var hs = $("hstat"); hs.innerHTML = "";
@@ -1847,7 +1884,7 @@ function drawDash() {
   [["공지사항", (D.notice || []).length, "건", false, function () { NF = "all"; go("notice"); }],
    ["진행 중 장비", act.length, "대", false, function () { QF = "act"; $("q").value = ""; go("eq"); }],
    ["이번 주 출하", wk, "대", false, function () { go("ship"); }],
-   ["검수 대기", qWait, "건", false, function () { go("qc"); }],
+   ["QC 검수", qcW, "건", false, function () { go("qa"); }],
    ["열린 ISSUE", open, "건", open > 0, function () { go("qc"); setTimeout(function () { try { $("qlog").scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "start" }); } catch (e) {} }, 350); }]].forEach(function (k) {
     var d = el("button", k[3] ? "r" : ""); d.type = "button"; d.onclick = k[4];
     d.appendChild(el("span", null, k[0] === "공지사항" && nPin ? "공지사항 · 필독 " + nPin : k[0])); var b = num(k[1], k[2]); d.appendChild(b); hs.appendChild(d); setTimeout(function () { countUp(b); }, 900);
@@ -1857,7 +1894,7 @@ function drawDash() {
   var news = [];
   D.eq.filter(function (e) { return e.inD === T; }).forEach(function (e) { news.push(["", "오늘 입고", e.n, e.t + " · " + e.v + " FRAME 입고"]); });
   D.eq.filter(function (e) { return e.out >= T && e.out <= addD(T, 3); }).sort(function (a, b) { return a.out < b.out ? -1 : 1; }).forEach(function (e) { var dd = Math.round((new Date(e.out) - new Date(T)) / 864e5); news.push(["o", dd ? "출하 D-" + dd : "오늘 출하", e.n, e.t + " · " + md(e.out)]); });
-  D.eq.filter(function (e) { return e.q1 === "업로드 필요" || e.q2 === "업로드 필요" || e.qi === "업로드 필요"; }).forEach(function (e) { news.push(["q", "검수 대기", e.n, qcWaitTxt(e) + " 대기"]); });
+  D.eq.filter(function (e) { return e.q1 === "업로드 필요" || e.q2 === "업로드 필요" || e.qi === "업로드 필요"; }).forEach(function (e) { news.push(["q", "시트 업로드", e.n, qcWaitTxt(e) + " 시트 업로드 필요"]); });
   D.issues.filter(function (x) { return x.r !== "완료"; }).forEach(function (x) { news.push(["x", "ISSUE", x.e, x.t.length > 26 ? x.t.slice(0, 26) + "…" : x.t]); });
   (D.notice || []).forEach(function (n) { news.push(["", "공지", "", n.t]); });
   var mq = $("mq"); mq.innerHTML = "";
@@ -1945,7 +1982,7 @@ function eqBuild(X, list, fname, q, tag) {
 }
 function drawEq() {
   var f = $("qf"); f.innerHTML = "";
-  var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급"], ["noloc", "자리 미배정"], ["qc", "검수 대기"]];
+  var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급"], ["noloc", "자리 미배정"], ["qc", "시트 업로드 필요"]];
   if (/^s\d+$/.test(QF)) opts.push([QF, STAGES[+QF.slice(1)]]);
   opts.forEach(function (o) { var b = el("button", "chip" + (QF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { QF = o[0]; drawEq(); }; f.appendChild(b); });
   [].forEach.call($("eqv").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === EQV); b.onclick = function () { EQV = b.dataset.v; sset("eqv", EQV); drawEq(); }; });
@@ -2030,10 +2067,77 @@ function qcOf(e) {
 }
 function qcWaitTxt(e) { return [e.q1 === "업로드 필요" ? "1차 검수" : "", e.q2 === "업로드 필요" ? "2차 검수" : "", e.qi === "업로드 필요" ? "ISSUE 정리" : ""].filter(Boolean).join(" · "); }
 function qcCalc() {   // 화면 곳곳(대시보드 · 장비 · 상세)이 쓰는 e.q1 · e.q2 · e.qi 채우기
+  var M = upMap(), V = function (raw) { var t = upSt(raw); return t === "need" ? "업로드 필요" : t === "done" ? "완료" : ""; };
   D.eq.forEach(function (e) {
     e.q1 = ""; e.q2 = ""; e.qi = ""; e.qc = qcOf(e);
+    var x = M && M[upK(e.n)];
+    if (x) { e.q1 = V(x[1]); e.q2 = V(x[2]); e.qi = V(x[3]); return; }   // 📤 장비_Log 검수 시트 상태 (B팀 시트 · 15분마다)
+    if (M) return;   // 시트 상태를 받았는데 그 장비가 없으면 빈칸
     e.qc.forEach(function (c) { var v = c.st === "wait" ? "업로드 필요" : c.st === "done" ? "완료" : ""; if (c.k === "1차 검수") e.q1 = v; else if (c.k === "2차 검수") e.q2 = v; else e.qi = v; });
   });
+}
+/* ── 📤 검수 시트 업로드 (장비_Log 1차검수 · 2차검수 · ISSUE · 동탄 장비만 · 동탄.gs가 15분마다 site_stats 'ship'에 같이 보냄) ──
+ *  기구 탭: 1차 검수 시트 (기준일 = 1차 검수(DRY)일) · FT 탭: 2차 검수 · ISSUE 시트 (기준일 = PACKING일)
+ *  접힌 상태: 업로드 필요 · 2주 내 예정 · 최근 완료 숫자 + 다음 예정 한 줄 → 누르면 장비별 상세가 녹아내리듯 펼쳐짐 */
+var UPO = { m: false, f: false };
+function upK(n) { return String(n || "").trim().replace(/\s+/g, " ").toUpperCase(); }
+function upMap() { var u = D.ship && D.ship.upl, m = {}; if (!u || !u.r) return null; u.r.forEach(function (x) { m[upK(x[0])] = x; }); return m; }
+function upSt(v) { v = String(v || "").trim(); return /업로드/.test(v) ? "need" : /^(완료|패스)/.test(v) ? "done" : /ROBOT/i.test(v) ? "na" : "pre"; }
+function upList(cols) {   // cols: [[구분, 시트 상태 칸(1~3), 기준일 공정 번호]]
+  var M = upMap(); if (!M) return null;
+  var T = D.today, d14 = addD(T, 13), old = addD(T, -14), out = [];
+  D.eq.forEach(function (e) {
+    var x = M[upK(e.n)]; if (!x) return;
+    cols.forEach(function (c) {
+      var raw = String(x[c[1]] || "").trim(), st = upSt(raw), due = sd(e, c[2])[0] || "";
+      if (st === "na") return;
+      var g = st === "need" ? "need" : st === "done" ? (due && due >= old && due <= T ? "done" : "") : (due && due <= d14 && e.st < 10 ? "pre" : "");
+      if (g) out.push({ e: e, k: c[0], s: c[3], raw: raw, st: g, due: due, op: x[4] || "" });
+    });
+  });
+  return out;
+}
+function upDday(due) { if (!due) return ""; var n = Math.round((new Date(due) - new Date(D.today)) / 864e5); return n === 0 ? "D-day" : n > 0 ? "D-" + n : "D+" + (-n); }
+function upCard(box, o) {
+  if (!box) return;
+  var L = upList(o.cols), open = UPO[o.key];
+  box.innerHTML = ""; box.className = "card upc" + (open ? " on" : "");
+  var hd = el("button", "uphd"); hd.type = "button"; hd.setAttribute("aria-expanded", open ? "true" : "false");
+  var tl = el("div", "upt"); tl.appendChild(el("span", "cap", "Sheet Upload")); tl.appendChild(el("h3", null, o.title)); tl.appendChild(el("p", "ds2", o.sub)); hd.appendChild(tl);
+  var sm = el("div", "ups"), need = [], pre = [], done = [];
+  if (!L) sm.appendChild(el("span", "upn", "시트 업로드 현황을 준비 중입니다"));
+  else {
+    need = L.filter(function (x) { return x.st === "need"; }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+    pre = L.filter(function (x) { return x.st === "pre"; }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
+    done = L.filter(function (x) { return x.st === "done"; }).sort(function (a, b) { return a.due > b.due ? -1 : 1; });
+    [["업로드 필요", need.length, "r"], ["2주 내 예정", pre.length, "b"], ["최근 완료", done.length, "g"]].forEach(function (k) { var c = el("span", "upk " + k[2] + (k[1] ? "" : " z")); c.appendChild(el("em", null, k[0])); var b = el("b", null, "0"); b.dataset.cnt = k[1]; c.appendChild(b); sm.appendChild(c); });
+    var nx = need[0] || pre[0];
+    if (nx) sm.appendChild(el("span", "upn", (nx.st === "need" ? "가장 오래된 " : "다음 ") + (nx.due ? md(nx.due).replace(/\(.\)/, "") + " " : "") + nx.e.n + (o.cols.length > 1 ? " · " + nx.s : "") + ((nx.st === "need" ? need.length : pre.length) > 1 ? " 외 " + ((nx.st === "need" ? need.length : pre.length) - 1) + "건" : "")));
+  }
+  hd.appendChild(sm);
+  hd.insertAdjacentHTML("beforeend", '<i class="upchev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></i>');
+  hd.onclick = function () { UPO[o.key] = !UPO[o.key]; box.classList.toggle("on", UPO[o.key]); hd.setAttribute("aria-expanded", UPO[o.key] ? "true" : "false"); };
+  box.appendChild(hd);
+  var bd = el("div", "upb"), inn = el("div", "upi"); bd.appendChild(inn); box.appendChild(bd);
+  if (!L) { inn.appendChild(el("div", "empty", "B팀 시트 장비_Log 상태가 다음 연동(15분 안)에 들어옵니다")); return; }
+  var k = 0;
+  [["업로드 필요", need, "기준일이 지나 시트 업로드가 필요한 장비입니다"], ["2주 내 예정", pre, "기준일이 되면 업로드 필요로 바뀝니다"], ["최근 완료", done, "최근 2주 안에 업로드를 마친 장비입니다"]].forEach(function (g) {
+    var sec = el("div", "upg"), h = el("div", "upgh"); h.appendChild(el("b", null, g[0] + " " + g[1].length)); h.appendChild(el("small", null, g[2])); sec.appendChild(h);
+    if (!g[1].length) sec.appendChild(el("div", "upe", g[0] === "업로드 필요" ? "업로드할 시트가 없습니다" : g[0] === "2주 내 예정" ? "2주 안에 예정된 시트가 없습니다" : "최근 완료한 시트가 없습니다"));
+    g[1].forEach(function (x) {
+      var e = x.e, r = el("button", "upr " + x.st); r.type = "button"; r.style.setProperty("--i", Math.min(k++, 14));
+      var dd = upDday(x.due), tg = x.st === "need" ? '<span class="tag r">' + (dd && dd.indexOf("D+") === 0 ? dd.replace("D+", "") + "일 지남" : "업로드 필요") + "</span>"
+        : x.st === "pre" ? (dd.indexOf("D+") === 0 ? '<span class="tag a">날짜 지남 · 대기</span>' : '<span class="tag b">예정 ' + (dd || "") + "</span>") : '<span class="tag g">' + esc(/패스/.test(x.raw) ? "패스" : "완료") + "</span>";
+      r.innerHTML = (o.cols.length > 1 ? '<span class="upq q' + (x.s === "ISSUE" ? "i" : "2") + '">' + esc(x.s) + "</span>" : "") +
+        '<span class="upm"><b>' + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><small>" + esc([e.loc, e.t, x.op || e.p].filter(Boolean).join(" · ") || "-") + "</small></span>" +
+        '<span class="upd"><em>' + esc(o.dl) + "</em>" + (x.due ? esc(md(x.due).replace(/\(.\)/, "")) : "미정") + "</span>" + tg;
+      r.onclick = function () { eqOpen(e.n); };
+      sec.appendChild(r);
+    });
+    inn.appendChild(sec);
+  });
+  inn.appendChild(el("p", "shnote", "B팀 시트 장비_Log 기준 · 15분마다 반영" + (D.ship.upl.at ? " · " + (function (t) { return isNaN(t) ? "" : ("0" + t.getHours()).slice(-2) + ":" + ("0" + t.getMinutes()).slice(-2) + " 반영"; })(new Date(D.ship.upl.at)) : "")));
+  [].forEach.call(box.querySelectorAll(".upk b[data-cnt]"), countUp);
 }
 function qcLabel(c) {
   if (!c) return "-";
@@ -2285,6 +2389,7 @@ function drawMech() {
   var mlogs = D.issues.filter(isMechLog), open = mlogs.filter(function (x) { return x.r !== "완료"; });
   kpiRow("mckpi", [["조립 중", ing.length, "대", false, function () { MWF = "ing"; drawMech(); goList("#mwf"); }, MWF === "ing"], ["일정 지연", late.length, "대", late.length > 0, function () { MWF = "late"; drawMech(); goList("#mwf"); }, MWF === "late"],
     ["자재 미입고", wait.length, "대", wait.length > 0, function () { goList("#mprep"); }], ["열린 기구 이슈", open.length, "건", open.length > 0, function () { MIF = "open"; drawMech(); goList(".miss"); }]]);
+  upCard($("mup"), { key: "m", title: "1차 검수 시트", sub: "1차 검수(DRY)일 기준 · 장비_Log 업로드 상태", dl: "1차 검수", cols: [["1차 검수", 1, 6, "1차"]] });
   xlBtn($("mcx"), "기구 엑셀 다운로드", function (X) { return mBuild(X, [["조립 중", ing.filter(function (x) { return x.w.k === "ing"; })], ["일정 지연", late], ["2주 내 입고", pre], ["최근 제조완료", done]], prep, mlogs); });
   // 조립 현황 표
   var f = $("mwf"); f.innerHTML = "";
@@ -2536,6 +2641,7 @@ function drawFt() {
   if (!FWF) FWF = run.length ? "run" : "ing";   // 처음엔 CYCLE TEST (없으면 제조 중)
   kpiRow("ftkpi", [["CYCLE TEST", run.length, "대", run.length > 0, function () { FWF = "run"; drawFt(); goList("#fwf"); }, FWF === "run"], ["제조 중 · 2주 내 완료", ing.length, "대", false, function () { FWF = "ing"; drawFt(); goList("#fwf"); }, FWF === "ing"],
     ["제조완료", ok.length, "대", false, function () { FWF = "ok"; drawFt(); goList("#fwf"); }, FWF === "ok"], ["FT ISSUE", fopen.length, "건", fopen.length > 0, function () { FIF = "open"; drawFt(); goList(".fiss"); }]]);
+  upCard($("fup"), { key: "f", title: "2차 검수 · ISSUE 시트", sub: "PACKING일 기준 · 장비_Log 업로드 상태", dl: "PACKING", cols: [["2차 검수", 2, 9, "2차"], ["ISSUE", 3, 9, "ISSUE"]] });
   var etc = all.filter(function (x) { return run.indexOf(x) < 0 && ing.indexOf(x) < 0 && ok.indexOf(x) < 0; });
   xlBtn($("ftx"), "FT 엑셀 다운로드", function (X) { return ftBuild(X, [["CYCLE TEST", run], ["제조 중 · 2주 내 완료", ing], ["제조완료", ok], ["제조 예정 · 2주 이후", etc]], flogs); });
   var f = $("fwf"); f.innerHTML = "";
