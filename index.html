@@ -1253,7 +1253,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 
   <!-- ═════ 제조 · FT ═════ -->
   <div class="view" id="v-ft"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div></div>
+    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="ftx"></button></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
     <div class="g4" id="ftkpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -1546,7 +1546,7 @@ function emptyData() { return liveData([], [], [], []); }
  */
 var PLAN = (function () {
   var s = [];
-  [355, 418, 481, 544, 607, 670, 733, 796, 859].forEach(function (x, i) { s.push({ id: "B" + (9 - i), x: x, y: 42.5, w: 42.5, h: 110 }); });
+  [390, 453, 516, 579, 642, 705, 768, 831, 894].forEach(function (x, i) { s.push({ id: "B" + (9 - i), x: x, y: 42.5, w: 42.5, h: 110 }); });
   [453, 516, 579, 642, 705, 768, 831, 894, 957].forEach(function (x, i) { s.push({ id: "A" + (9 - i), x: x, y: 206, w: 42.5, h: 109 }); });
   return s;
 })();
@@ -1581,7 +1581,7 @@ function drawPlan(boxId) {
   sv.appendChild(svgEl("text", { x: 392, y: 318, class: "rsub", "text-anchor": "middle" }, "CLEAN ROOM"));
   // 작업대 · 랙 · 받침선
   W(329, 16, 13.5, 115, "fix"); W(1014, 78, 12, 102, "fix"); W(1014, 224, 12, 116, "fix");
-  L(355, 165, 903, 165); W(901, 42.5, 17.5, 110, "fix");
+  L(390, 165, 938, 165);
   // 자리
   var used = 0;
   PLAN.forEach(function (p, k) {
@@ -2498,6 +2498,32 @@ function ftSelect(sel) {
   L.forEach(function (e) { var o = el("option", null, [e.loc, e.n, e.t].filter(Boolean).join(" · ")); o.value = e.n; sel.appendChild(o); });
   if (keep && L.some(function (e) { return e.n === keep; })) sel.value = keep;
 }
+function ftBuild(X, G, flogs) {
+  var T = D.today, fn = "동탄제조_FT현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : "-"; };
+  var da = function (e) { var q = acmP(e); return q[0] && q[0] !== "NA" ? q[0].slice(5).replace("-", "/") + (q[1] ? " ✓" : "") : "-"; };
+  var hv = function (v) { return Math.round(v * 10) / 10; };
+  var H1 = ["구분", "장비", "자리", "업체", "담당", "1차 검수", "제조완료", "DRY (h)", "FULL CYCLE (h)", "합계 (h)", "남은 시간 (h)", "QC", "ACM 검수", "PACKING", "출하", "상태", "긴급"], r1 = [], flat = [];
+  G.forEach(function (g) {
+    if (!g[1].length) return;
+    r1.push({ t: "band", v: [g[0] + " · " + g[1].length + "대"] });
+    g[1].forEach(function (x) {
+      var e = x.e, f = x.f, st = stTxt(x.m, f), left = f.r ? Math.max(0, hv(FT_NEED - f.tot)) : "";
+      var v = [g[0], e.n, e.loc || "-", e.v || "-", e.p || "-", d(e, 6), d(e, 7), f.r ? hv(f.dry) : "", f.r ? hv(f.full) : "", f.r ? hv(f.tot) : "미입력", left, d(e, 8), da(e), d(e, 9), d(e, 10), st, e.u ? "긴급" : ""];
+      flat.push(v);
+      r1.push({ v: v, c: { 1: { bold: true }, 9: { bold: true, color: !f.r ? XC.sub : f.ok ? XC.ok : XC.amb }, 10: left ? { color: XC.amb, bold: true } : undefined, 15: { bold: true, color: f.ok ? XC.ok : x.m.k === "done" ? XC.amb : XC.navy }, 16: { color: XC.warn, bold: true } } });
+    });
+  });
+  if (!r1.length) r1.push({ v: ["", "표시할 장비가 없습니다"].concat(H1.slice(2).map(function () { return ""; })), t: "pl" });
+  var runs = D.issues.filter(isFtRun);
+  var H2 = ["날짜", "장비", "구동 시간 기록", "작성"], r2 = runs.map(function (x) { var ok2 = /OK/.test(x.t); return { v: [x.d, x.e, x.t, x.w || "-"], c: { 1: { bold: true }, 2: { color: ok2 ? XC.ok : "FF0F172A", bold: ok2 } } }; });
+  var H3 = ["날짜", "장비", "구분", "상태", "내용", "작성"], r3 = flogs.map(function (x) { return { v: [x.d, x.e, String(x.k).replace(/^FT·?/, "") || "FT", x.r, x.t, x.w], c: { 1: { bold: true }, 3: { color: x.r === "완료" ? XC.ok : XC.amb, bold: true } } }; });
+  if (!X) return { fn: fn, csv: [H1].concat(flat) };
+  var wb = new X.Workbook(), sub = xlStamp() + " · FT OK = DRY + FULL CYCLE 합계 " + FT_NEED + "시간 · ✓ = 완료";
+  xlSheet(wb, "FT 현황", "동탄 제조 · FT 현황", sub, H1.map(function (h, j) { return { h: h, w: [20, 30, 7, 11, 10, 10, 10, 9, 13, 10, 12, 10, 10, 10, 10, 16, 7][j], c: j >= 5 || j === 2 }; }), r1, { land: true });
+  xlSheet(wb, "FT 구동 기록", "동탄 제조 · FT 구동 시간 기록", sub, H2.map(function (h, j) { return { h: h, w: [12, 24, 56, 10][j], c: j === 3 }; }), r2.length ? r2 : [{ v: ["", "기록된 구동 시간이 없습니다", "", ""], t: "pl" }]);
+  xlSheet(wb, "FT 이슈", "동탄 제조 · FT 이슈", sub, H3.map(function (h, j) { return { h: h, w: [12, 22, 12, 10, 60, 10][j], c: j === 3, wrap: j === 4 }; }), r3.length ? r3 : [{ v: ["", "기록된 FT 이슈가 없습니다", "", "", "", ""], t: "pl" }], { h: 30 });
+  return { wb: wb, fn: fn, msg: "FT 현황 엑셀을 내려받았습니다" };
+}
 function drawFt() {
   var T = D.today, d14 = addD(T, 14);
   var L = D.eq.filter(function (e) { return e.st < 10; }).map(function (e) { return { e: e, m: mfgOf(e), f: ftOf(e) }; }).filter(function (x) { return x.m.k !== "none" || x.f.r; });
@@ -2510,6 +2536,8 @@ function drawFt() {
   if (!FWF) FWF = run.length ? "run" : "ing";   // 처음엔 CYCLE TEST (없으면 제조 중)
   kpiRow("ftkpi", [["CYCLE TEST", run.length, "대", run.length > 0, function () { FWF = "run"; drawFt(); goList("#fwf"); }, FWF === "run"], ["제조 중 · 2주 내 완료", ing.length, "대", false, function () { FWF = "ing"; drawFt(); goList("#fwf"); }, FWF === "ing"],
     ["제조완료", ok.length, "대", false, function () { FWF = "ok"; drawFt(); goList("#fwf"); }, FWF === "ok"], ["FT ISSUE", fopen.length, "건", fopen.length > 0, function () { FIF = "open"; drawFt(); goList(".fiss"); }]]);
+  var etc = all.filter(function (x) { return run.indexOf(x) < 0 && ing.indexOf(x) < 0 && ok.indexOf(x) < 0; });
+  xlBtn($("ftx"), "FT 엑셀 다운로드", function (X) { return ftBuild(X, [["CYCLE TEST", run], ["제조 중 · 2주 내 완료", ing], ["제조완료", ok], ["제조 예정 · 2주 이후", etc]], flogs); });
   var f = $("fwf"); f.innerHTML = "";
   [["run", "CYCLE TEST " + run.length], ["ing", "제조 중 " + ing.length], ["ok", "제조완료 " + ok.length], ["all", "전체 " + all.length]].forEach(function (o) { var b = el("button", "chip" + (FWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { FWF = o[0]; drawFt(); }; f.appendChild(b); });
   var list = FWF === "ing" ? ing : FWF === "run" ? run : FWF === "ok" ? ok : all;
