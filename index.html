@@ -738,6 +738,7 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .tline i{position:relative;z-index:1;width:20px;height:20px;border-radius:50%;background:var(--card);border:2px solid var(--line)}
 .tline .d i{background:var(--ac);border-color:var(--ac)}
 .tline .c i{background:#fff;border:6px solid var(--ac2);box-shadow:0 0 0 6px color-mix(in srgb,var(--ac2) 20%,transparent)}
+.tline .c.nx i{background:var(--card);border:2px solid var(--ac2);box-shadow:none}
 .tline b{font-size:14px;font-weight:800}
 .tline span{font-size:12.5px;font-weight:700;color:var(--sub)}
 .tline .c b{color:var(--ac2)}
@@ -2065,7 +2066,8 @@ function eqOpen(n, opt) {
   opt = opt || {}; var same = DRN === n && $("dr").classList.contains("on"), keepY = same ? $("drp").scrollTop : 0; DRN = n; DRO = opt;
   var p = $("drp"); p.innerHTML = "";
   var ph = el("div", "ph"); var x = el("button", "x", "✕"); x.type = "button"; x.onclick = drClose; ph.appendChild(x);
-  ph.appendChild(el("span", "tag b", STAGES[e.st])); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, [e.t, e.v, e.p].filter(Boolean).join(" · ")));
+  var cd0 = e.st < 10 ? sd(e, e.st)[0] : "", fut = !!(cd0 && cd0 > D.today);   // 지금 공정 날짜가 아직 안 왔으면 '진행 중'이 아니라 '예정'
+  ph.appendChild(el("span", "tag b", STAGES[e.st] + (fut ? " 예정" : ""))); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, [e.t, e.v, e.p].filter(Boolean).join(" · ")));
   p.appendChild(ph);
   var bd = el("div", "bd");
   if (opt.row) bd.appendChild(drInsp(e, opt.row));   // 수입검사에서 누르면: 그 검사 건 + 이 장비 수입검사 현황 먼저
@@ -2077,10 +2079,10 @@ function eqOpen(n, opt) {
   var c = el("div", "card"), tl = el("div", "tline"); tl.style.marginTop = "10px";
   if (opt.ft || opt.qa) {   // FT · 품질 탭에서 열면 공정 진행은 접어 둠 (화살표로 펼치기)
     var fb = el("button", "fold"); fb.type = "button"; fb.innerHTML = '<span>공정 진행</span><small>' + esc(STAGES[e.st]) + '</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
-    tl.hidden = true; fb.onclick = function () { tl.hidden = !tl.hidden; fb.classList.toggle("on", !tl.hidden); };
+    tl.hidden = true; fb.querySelector("small").textContent = STAGES[e.st] + (fut ? " 예정" : ""); fb.onclick = function () { tl.hidden = !tl.hidden; fb.classList.toggle("on", !tl.hidden); };
     c.appendChild(fb);
   } else c.appendChild(el("h3", null, "공정 진행"));
-  STAGES.forEach(function (s, i) { var r = el("div", i < e.st ? "d" : i === e.st ? "c" : ""), dd = sd(e, i)[0]; r.appendChild(el("i")); r.appendChild(el("b", null, s)); r.appendChild(el("span", null, (dd ? md(dd) + (i <= e.st ? " · " : "") : "") + (i < e.st ? "완료" : i === e.st ? "진행 중" : dd ? "" : "-"))); tl.appendChild(r); });
+  STAGES.forEach(function (s, i) { var r = el("div", i < e.st ? "d" : i === e.st ? (fut ? "c nx" : "c") : ""), dd = sd(e, i)[0]; r.appendChild(el("i")); r.appendChild(el("b", null, s)); r.appendChild(el("span", null, (dd ? md(dd) + (i <= e.st ? " · " : "") : "") + (i < e.st ? "완료" : i === e.st ? (fut ? "예정" : "진행 중") : dd ? "" : "-"))); tl.appendChild(r); });
   c.appendChild(tl); bd.appendChild(c);
   var fc = opt.map || opt.eq ? null : drFt(e, opt); if (fc) bd.appendChild(fc);   // 배치도 · 장비 탭에선 FT · 품질 카드 없음
   var mc = opt.ft ? null : drMat(e); if (mc) bd.appendChild(mc);
