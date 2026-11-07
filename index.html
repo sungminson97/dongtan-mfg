@@ -2051,7 +2051,9 @@ function countUp(e) {
 function num(v, unit) { var b = el("b"); b.appendChild(document.createTextNode(isNaN(+v) ? String(v) : "0")); if (!isNaN(+v)) b.dataset.cnt = v; if (unit) b.appendChild(el("small", null, unit)); return b; }
 
 /* ── 그리기 ── */
-function draw() {
+// 다시 그릴 때마다 새로 만든 카드도 '나타남'에 등록 (안 하면 투명한 채로 남아 공정별 진행 아래 카드가 안 보였음)
+function draw() { drawAll(); try { reveal(); } catch (e) {} }
+function drawAll() {
   if (!D) return;
   try { qcCalc(); } catch (e) {}
   $("demob").style.display = D.demo ? "" : "none";
