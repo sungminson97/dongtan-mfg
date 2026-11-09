@@ -1361,8 +1361,8 @@ select.nin.npl{height:34px;font-size:12.5px}
 .nph{display:block;margin-top:3px;font-size:10.5px;font-weight:800;color:var(--sub);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:13px}
 .nph.ok{color:var(--ok)}.nph.w{color:#b45309}
 .c-act button{height:30px;padding:0 8px;border-radius:8px;font-size:12px;font-weight:800;white-space:nowrap}
-.nbw{display:grid;gap:4px}.nb2{display:flex;gap:4px}.nb2 button{flex:1}.nbw .nsv{width:100%}
-.nsh td.c-act{padding:6px}.ned{width:100%}
+.nbw{display:grid;gap:4px}.nb2{display:grid;gap:4px}.nbw button{width:100%;padding:0}
+.nsh td.c-act{padding:5px}
 .nsv{background:var(--grd);color:#fff}.nsv:disabled{opacity:.6}
 .ncc{border:1px solid var(--line);color:var(--sub);background:var(--card)}
 .ndl{color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:var(--card)}.ndl.arm{background:var(--warn);color:#fff}
@@ -1373,7 +1373,7 @@ select.nin.npl{height:34px;font-size:12.5px}
 .nsh tr.ndr.ed td.auto{background:color-mix(in srgb,var(--ac) 8%,var(--bg2))}
 .nst2{display:block;font-size:10.5px;font-weight:900;color:#b45309;font-family:inherit;white-space:nowrap}
 tr.ndr.ed .nst2{color:var(--ac)}
-.ned{height:30px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12.5px;font-weight:800}
+.ned{display:block;width:100%;height:30px;padding:0;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:800;white-space:nowrap;box-sizing:border-box}
 .ned:hover{border-color:var(--ac);color:var(--ac)}
 .nshw{-webkit-mask-image:none;mask-image:none}
 .nshw.nclfr{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 64px),transparent)}
@@ -1673,13 +1673,13 @@ tr.ndr.ed .nst2{color:var(--ac)}
 
   <!-- ═════ 1차 검수 부적합 관리대장 (제조) ═════ -->
   <div class="view" id="v-ncl"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Manufacturing</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 관리대장 그대로 기록합니다. '작성하기'를 누르면 표 맨 위에 입력 줄이 생기고, 발주 프로젝트 명을 고르면 출하 프로젝트 명 · TYPE · 출하월이 자동으로 채워집니다. 로그인한 분만 보고 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
+    <div class="vtop"><span class="eyebrow">Manufacturing</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 기록하고 관리합니다. 로그인한 분은 누구나 조회 · 엑셀 다운로드가 가능하며, 작성 · 수정은 제조 인원만 가능합니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
     <div id="nclw">
       <div class="card nclk" id="nclk"><b>로그인 후 볼 수 있습니다</b><span>1차 검수 부적합 관리대장은 로그인한 분만 보고 기록할 수 있습니다.</span><button type="button">로그인</button></div>
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
-          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2 nhelp nhp">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '수정 완료'<br>발주 프로젝트 명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p><p class="ds2 nhelp nhm">새 기록은 '작성하기' · 기록을 누르면 자세히 보거나 고칠 수 있습니다<br>장비명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p></div></div>
+          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2 nhelp nhp">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '완료'<br>발주 프로젝트 명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p><p class="ds2 nhelp nhm">새 기록은 '작성하기' · 기록을 누르면 자세히 보거나 고칠 수 있습니다<br>장비명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p></div></div>
           <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
@@ -1958,7 +1958,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-143533";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-144253";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -5687,7 +5687,7 @@ function drawNcl() {
   if (LIVE && !NCL.p && Date.now() - NCL.t > 60000) nclLoad(true).then(function () { if (cur === "ncl") nclRender(); });   // 1분 지났으면 조용히 새로
 }
 /* 관리대장 표 — 칸 순서 · 이름은 관리대장(시트)과 똑같이 */
-var NCLC = [["act", "", 112], ["no", "NO.", 46], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
+var NCLC = [["act", "", 54], ["no", "NO.", 46], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
   ["ship_name", "출하 프로젝트 명", 140, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 126, "txt"], ["pos", "위치", 110, "sel"],
   ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
   ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"]];
@@ -5804,7 +5804,7 @@ function nclDraftRow(d, noTxt) {
     if (k === "no") { td.innerHTML = d.x ? noTxt + '<small class="nst2">수정 중</small>' : '<small class="nst2">새 기록</small>'; }
     else if (k === "site") td.textContent = "동탄";
     else if (k === "act") {
-      var sv = el("button", "nsv", d.x ? "수정 완료" : "추가"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
+      var sv = el("button", "nsv", d.x ? "완료" : "추가"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
       var cc = el("button", "ncc", "취소"); cc.type = "button"; cc.onclick = function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); };
       var bw = el("div", "nbw"); bw.appendChild(sv); var b2 = el("div", "nb2"); b2.appendChild(cc);
       if (d.x) { var dl = el("button", "ndl", "삭제"); dl.type = "button"; dl.onclick = function () { nclDraftDel(d, dl); }; b2.appendChild(dl); }
@@ -5879,10 +5879,10 @@ function nclDraftSave(d, tr) {
   d.busy = 1; var sv = tr.querySelector(".nsv"); sv.disabled = true; sv.textContent = "저장 중…";
   nclPut(rec, d.x).then(function () {
     NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast(d.x ? "수정했습니다" : "추가했습니다"); nclRender();
-  }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = d.x ? "수정 완료" : "추가"; toast(er.message || "저장하지 못했습니다"); });
+  }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = d.x ? "완료" : "추가"; toast(er.message || "저장하지 못했습니다"); });
 }
 function nclDraftDel(d, b) {
-  if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
+  if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "확인"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
   b.disabled = true;
   nclDelete(d.x).then(function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast("기록을 삭제했습니다"); nclRender(); }, function (er) { b.disabled = false; toast(er.message || "삭제하지 못했습니다"); });
 }
