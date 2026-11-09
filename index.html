@@ -853,6 +853,15 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .lgmk span{color:var(--sub);font-weight:700}.lgmk b{color:var(--ac);font-weight:800;white-space:nowrap}
 .lgmk:hover{border-style:solid}
 .lk span{font-size:13px;color:var(--sub);font-weight:600}
+/* 🔒 로그인한 분만 보는 화면 (입고 · 출하 · 품질 · 대시보드 '출하 · 업체') — 보기 전용이면 안내만 */
+.vlock{display:none;border:1px solid var(--line);border-radius:20px;background:var(--card);padding:44px 24px;text-align:center}
+.vlock b{display:block;font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.vlock span{display:block;margin-top:8px;color:var(--sub);font-size:14px;font-weight:600;line-height:1.55;word-break:keep-all}
+.vlock button{margin-top:18px;height:44px;padding:0 26px;border-radius:999px;background:var(--grd);color:#fff;font-weight:800;font-size:14px}
+.view.vlk>.wrap>*:not(.vtop):not(.vlock){display:none!important}
+.view.vlk .vlock,.sec.vlk .vlock{display:block}
+.sec.vlk .g2,.sec.vlk .shd .more{display:none!important}
+.sec .vlock{margin-top:4px}
 .lk button{height:44px;padding:0 22px;border-radius:999px;background:var(--grd);color:#fff;font-weight:800;font-size:14px}
 .modal p{font-size:14px;color:var(--sub);margin:6px 0 16px;font-weight:600}
 .demo{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--amb) 18%,transparent);color:#b45309}
@@ -1542,8 +1551,9 @@ html.gate body>#lg{visibility:visible;z-index:210}
       </div>
     </div></section>
 
-    <section class="sec band"><div class="wrap">
+    <section class="sec band" id="dshs"><div class="wrap">
       <div class="shd rv"><div><span class="eyebrow">Output</span><h2 class="tt">출하 · 업체</h2></div><button class="more" type="button" data-go="ship">출하 실적 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></div>
+      <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>출하 실적과 업체별 현황은 로그인한 분만 볼 수 있습니다.</span><button type="button" class="vlkgo">로그인</button></div>
       <div class="g2">
         <div class="card rv" id="shA"></div>
         <div class="card rv" style="--d:1" id="shB"></div>
@@ -1603,6 +1613,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <!-- ═════ 입고 · 출하 ═════ -->
   <div class="view" id="v-ship"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">제조1팀 출하 실적과 향후 2주간 FRAME 입고 · 출하 일정입니다.</p></div>
+    <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>입고 · 출하 일정과 출하 실적은 로그인한 분만 볼 수 있습니다.<br>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" class="vlkgo">로그인</button></div>
     <div class="card eiss siss" style="margin-bottom:16px"><div class="ehd"><div><h3>입고 · 출하 이슈</h3><p class="ds2" id="sisub"></p></div><div class="ehr"><div class="chips" id="sif"></div><button class="wbtn" type="button" id="swrite">이슈 기록</button></div></div><div class="iss" id="silog" style="margin-top:6px"></div></div>
     <div class="g2" style="margin-bottom:16px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
     <div class="card scc" id="fscore" style="margin-bottom:16px"></div>
@@ -1684,6 +1695,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <!-- ═════ 품질 ═════ -->
   <div class="view" id="v-qa"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Quality</span><h2 class="tt">품질</h2><p class="ds">검수 · 제조완료 · FT · QC · ACM 검수 · PACKING · 출하까지 장비별 품질 현황과 이슈 이력입니다. FT에서 기록한 구동 시간이 그대로 반영됩니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button></div></div>
+    <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>품질 현황과 품질 이슈는 로그인한 분만 볼 수 있습니다.<br>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" class="vlkgo">로그인</button></div>
     <div class="card eiss qiss"><div class="ehd"><div><h3>품질 이슈</h3><p class="ds2" id="qisub"></p></div><div class="ehr"><div class="chips" id="qif"></div><button class="wbtn" type="button" id="qwrite">이슈 기록</button></div></div><div class="iss" id="qilog" style="margin-top:6px"></div></div>
     <div class="g4" id="qakpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -1709,6 +1721,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <!-- ═════ 부적합 처리 요청 ═════ -->
   <div class="view" id="v-nc"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Nonconformance</span><h2 class="tt">부적합 처리 요청</h2><p class="ds">불량 부품의 장비 · 품번 · 수량 · 불량 내용 · 귀책을 채우면 메시지가 완성됩니다. 복사해서 나인벨 앱 '부적합 처리요청' 방에 붙여넣어 주세요. 사업장은 동탄으로 고정되며, 요청자는 로그인한 이름으로 들어갑니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button></div></div>
+    <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>부적합 처리 요청은 로그인한 분만 볼 수 있습니다.<br>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" class="vlkgo">로그인</button></div>
     <div id="ncw"></div>
   </div></div>
 
@@ -2024,7 +2037,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-174455";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-202010";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2304,8 +2317,14 @@ function num(v, unit) { var b = el("b"); b.appendChild(document.createTextNode(i
 /* ── 그리기 ── */
 // 다시 그릴 때마다 새로 만든 카드도 '나타남'에 등록 (안 하면 투명한 채로 남아 공정별 진행 아래 카드가 안 보였음)
 function draw() { drawAll(); try { reveal(); } catch (e) {} }
+function vlock() {   // 🔒 보기 전용(로그인 안 함)이면 입고 · 출하 · 품질 · 대시보드 '출하 · 업체'는 안내만
+  var lk = !authName();
+  ["v-ship", "v-qa", "v-nc", "dshs"].forEach(function (id) { var x = $(id); if (x) x.classList.toggle("vlk", lk); });
+  return lk;
+}
 function drawAll() {
   if (!D) return;
+  if (vlock() && /^(ship|qa|nc)$/.test(cur)) { $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); return; }   // 잠긴 화면은 그리지 않음
   try { qcCalc(); } catch (e) {}
   $("demob").style.display = D.demo ? "" : "none";
   $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); syncUi();
@@ -4409,11 +4428,13 @@ function authUi() {
     }
   });
   [].forEach.call(document.querySelectorAll("[data-wrt]"), function (b) { b.textContent = n ? dname(n, ti) : "로그인 필요"; });   // 작성자 = 로그인한 이름 (입력 칸 없음)
-  if (typeof cur !== "undefined" && D && /^(ship|eq|elec|mech|ft|qa|nc|ncl)$/.test(cur)) try { draw(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
+  if (typeof cur !== "undefined" && D && /^(dash|ship|eq|elec|mech|ft|qa|nc|ncl)$/.test(cur)) try { draw(); } catch (e) {}
+  try { vlock(); } catch (e) {}   // 로그인/로그아웃하면 엑셀 버튼 바로 바뀜
 }
 $("bname").onclick = openLogin;
 $("lkgo").onclick = openLogin;
 [].forEach.call(document.querySelectorAll(".lkgo2"), function (b) { b.onclick = openLogin; });
+[].forEach.call(document.querySelectorAll(".vlkgo"), function (b) { b.onclick = function () { openLogin("로그인하면 입고 · 출하 · 품질 정보를 볼 수 있습니다"); }; });
 $("lgx").onclick = closeLogin;
 
 $("lg").onclick = function (e) { if (e.target === this) closeLogin(); };
