@@ -1392,6 +1392,7 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .nsh tr.nex td.c-no{font-style:normal;font-weight:900;color:#b45309}
 .nexb{display:inline-flex;align-items:center;justify-content:center;height:22px;padding:0 8px;border-radius:6px;background:color-mix(in srgb,#f59e0b 16%,transparent);color:#b45309;font-size:11px;font-weight:900;font-style:normal;white-space:nowrap}
 .nexm{opacity:.7;cursor:default}.nexm .nexb{margin-right:6px}
+td.auto .nin{font-size:12px;padding:0 6px;text-overflow:ellipsis}
 /* 장비 검색 고르기 */
 .eqp{position:relative;display:grid;gap:6px}
 .eqps{position:absolute!important;width:1px!important;height:1px!important;opacity:0;pointer-events:none;left:0;top:0}
@@ -1408,6 +1409,7 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .dvin{width:100%;height:54px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);text-align:center;font-size:18px;font-weight:800;outline:0;color:var(--text)}
 .dvin:focus{border-color:var(--ac)}
 .dvf .sbtn{width:100%}.dvf .sbtn:disabled{opacity:.5}
+html.gate body>#lg{visibility:visible;z-index:210}
 </style>
 </head>
 <body>
@@ -1983,7 +1985,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-145451";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-171322";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -5715,7 +5717,7 @@ function drawNcl() {
 }
 /* 관리대장 표 — 칸 순서 · 이름은 관리대장(시트)과 똑같이 */
 var NCLC = [["act", "", 54], ["no", "NO.", 46], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
-  ["ship_name", "출하 프로젝트 명", 140, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 126, "txt"], ["pos", "위치", 110, "sel"],
+  ["ship_name", "출하 프로젝트 명", 150, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 156, "txt"], ["pos", "위치", 110, "sel"],
   ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
   ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"]];
 var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
@@ -5787,7 +5789,7 @@ function nclRender() {
       if (k === "act") return '<td class="c-act">' + (nclCan(x) ? '<button type="button" class="ned">수정</button>' : "") + "</td>";
       if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
       if (k === "prj") return '<td class="c-prj"><button type="button" class="neqb">' + esc(v || "") + "</button></td>";
-      return '<td class="c-' + k + '">' + esc(v == null ? "" : v) + "</td>";
+      return '<td class="c-' + k + '"' + (k === "type" || k === "ship_name" || k === "body" ? ' title="' + esc(v == null ? "" : v) + '"' : "") + '>' + esc(v == null ? "" : v) + "</td>";
     }).join("");
     var eb = tr.querySelector(".ned"); if (eb) eb.onclick = function () { nclEdit(x); };
     tr.querySelector(".neqb").onclick = function () { nclEq(x.prj); };   // 수정은 '수정' 버튼으로만 (줄을 눌러도 안 바뀜)
@@ -5882,7 +5884,7 @@ function nclDraftIn(d, tr, k, inp) {
     ["ship_name", "type", "ship_month"].forEach(function (k2) {
       if (!a && !d.au[k2]) return;   // 못 찾으면: 직접 적은 칸은 그대로 · 자동으로 채웠던 칸만 비움
       d.v[k2] = a ? a[k2] : ""; if (a) d.au[k2] = 1; else delete d.au[k2];
-      var f = tr.querySelector('[data-k="' + k2 + '"]'); if (f) f.value = d.v[k2];
+      var f = tr.querySelector('[data-k="' + k2 + '"]'); if (f) { f.value = d.v[k2]; f.title = d.v[k2]; }
     });
     nclPh(tr.querySelector(".nph"), inp.value);
   }
@@ -6255,7 +6257,12 @@ function eqPick(sel) {
 
 /* ═════ 개발자 로그인: PIN 칸에 0000 → 확인 → 이름 + 비밀번호 (서버가 확인 · 사이트 코드엔 비밀번호 없음) ═════ */
 var DEV_PIN = "0000";
-$("dvno").onclick = function () { pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80); };
+function devGate() { return document.documentElement.classList.contains("gate"); }   // 입장 화면(보기 비밀번호)에서 0000을 넣은 경우
+function devOpen() { $("lg").classList.add("on"); lgStep(6); }
+$("dvno").onclick = function () {
+  if (devGate()) { closeLogin(); setTimeout(function () { try { $("gpw").focus(); } catch (e) {} }, 80); return; }
+  pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
+};
 $("dvback").onclick = $("dvno").onclick;
 $("dvyes").onclick = function () { $("dvn").value = ""; $("dvp").value = ""; $("dverr").textContent = ""; lgStep(7); setTimeout(function () { try { $("dvn").focus(); } catch (e) {} }, 80); };
 $("dvform").onsubmit = function (ev) {
@@ -6272,7 +6279,10 @@ $("dvform").onsubmit = function (ev) {
     sset("auth", JSON.stringify({ n: j.n, t: Date.now(), ti: j.title || "", dev: 1, roles: ["기구", "전장", "FT", "품질", "제조"] }));
     if (GATE.t) gateSave(GATE.t, true);
     $("dvp").value = "";
-    setTimeout(function () { authUi(); closeLogin(); toast("개발자님 환영합니다"); if (cur) draw(); }, 200);
+    if (devGate()) {   // 입장 화면 → 바로 들어가면서 개발자로 로그인
+      closeLogin(); gatePass(j.token || "");
+      setTimeout(function () { try { authUi(); toast("개발자님 환영합니다"); } catch (e) {} }, 700);
+    } else setTimeout(function () { authUi(); closeLogin(); toast("개발자님 환영합니다"); if (typeof cur !== "undefined" && cur) draw(); }, 200);
     setTimeout(function () { rolesFetch(j.n, pw); }, 400);
   }, function (e) { b.disabled = false; b.textContent = "확인"; er.textContent = e.message || "확인하지 못했습니다."; });
 };
@@ -6406,6 +6416,7 @@ function gatePass(t) {
 function gateTry() {
   var v = $("gpw").value.trim(), m = $("gmsg"), btn = $("ggo"), f = $("gform");
   if (!v) { m.className = "gmsg"; m.textContent = "비밀번호를 입력해 주세요."; try { $("gpw").focus(); } catch (e) {} return; }
+  if (v === DEV_PIN) { $("gpw").value = ""; m.className = "gmsg"; m.textContent = ""; try { $("gpw").blur(); } catch (e) {} devOpen(); return; }   // 🛠 0000 → 개발자 로그인
   if (btn.disabled) return;
   btn.disabled = true; m.className = "gmsg wait"; m.textContent = "확인 중입니다…";
   rpc("dt_gate_open", { pw: v }).then(function (j) {
