@@ -1387,6 +1387,11 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .nro2:not([hidden])+.nnew{margin-left:0}
 .nhelp{line-height:1.65}.nhm{display:none}
 @media (max-width:640px){.nhp{display:none}.nhm{display:block}}
+.nsh tr.nex td{background:repeating-linear-gradient(135deg,transparent 0 8px,color-mix(in srgb,var(--text) 3%,transparent) 8px 16px);color:var(--sub);font-style:italic}
+.nsh tr.nex td .npl{opacity:.7;font-style:normal}
+.nsh tr.nex td.c-no{font-style:normal;font-weight:900;color:#b45309}
+.nexb{display:inline-flex;align-items:center;justify-content:center;height:22px;padding:0 8px;border-radius:6px;background:color-mix(in srgb,#f59e0b 16%,transparent);color:#b45309;font-size:11px;font-weight:900;font-style:normal;white-space:nowrap}
+.nexm{opacity:.7;cursor:default}.nexm .nexb{margin-right:6px}
 /* 장비 검색 고르기 */
 .eqp{position:relative;display:grid;gap:6px}
 .eqps{position:absolute!important;width:1px!important;height:1px!important;opacity:0;pointer-events:none;left:0;top:0}
@@ -1399,6 +1404,10 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .eqpo:hover,.eqpo.hi{background:color-mix(in srgb,var(--ac) 10%,transparent)}
 .eqpo.on b{color:var(--ac)}
 .eqpn{padding:14px;text-align:center;font-size:13px;font-weight:700;color:var(--sub)}
+.dvf{display:grid;gap:10px;margin-top:6px}
+.dvin{width:100%;height:54px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);text-align:center;font-size:18px;font-weight:800;outline:0;color:var(--text)}
+.dvin:focus{border-color:var(--ac)}
+.dvf .sbtn{width:100%}.dvf .sbtn:disabled{opacity:.5}
 </style>
 </head>
 <body>
@@ -1800,6 +1809,22 @@ tr.ndr.ed .nst2{color:var(--ac)}
     <div class="perr" id="perr2"></div>
     <p class="uphelp" id="uphelp"></p>
   </div>
+  <div class="lgs" id="lg6" hidden>
+    <h5>개발자 로그인</h5>
+    <p>개발자님, 로그인하시겠습니까?</p>
+    <div class="cfb"><button class="lgl" id="dvno" type="button" style="margin:0">아니오</button><button class="sbtn" id="dvyes" type="button">예</button></div>
+  </div>
+  <div class="lgs" id="lg7" hidden>
+    <button class="lgback" id="dvback" type="button">‹ PIN으로 로그인</button>
+    <h5>개발자 로그인</h5>
+    <p>개발자 이름과 비밀번호를 입력해 주세요.</p>
+    <form id="dvform" class="dvf" autocomplete="off">
+      <input class="dvin" id="dvn" placeholder="이름" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="개발자 이름">
+      <input class="dvin" id="dvp" type="password" placeholder="비밀번호" autocomplete="new-password" aria-label="개발자 비밀번호">
+      <div class="perr" id="dverr"></div>
+      <button class="sbtn" id="dvok" type="submit">확인</button>
+    </form>
+  </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
     <button class="lgl" id="logout" type="button">로그아웃</button>
@@ -1958,7 +1983,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-144253";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-145451";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4087,7 +4112,7 @@ function rolesFetch(n, pin) {
     a.roles = j.roles || []; sset("auth", JSON.stringify(a)); authUi();
   }, function () {});   // 서버 준비 전이면 그냥 둠 (서버가 막지 않음)
 }
-function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
+function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
 /* 🔐 로그인: PIN 칸 하나
  *  · 개인 PIN → 서버가 누구인지 찾아서 이름 띄우고 바로 로그인
  *  · PIN 만들기 → 이름 → 본인 확인 → 개인 PIN 두 번 (공용 PIN 없음)
@@ -4098,7 +4123,7 @@ function openLogin(msg) {   // msg: 로그인 창 위에 보여 줄 안내 (예:
   var a = authGet(), last = sget("last") || "", lm = $("lgmsg");
   if (lm) { lm.textContent = typeof msg === "string" ? msg : ""; lm.hidden = typeof msg !== "string"; }
   $("lg").classList.add("on");
-  if (a) { $("mename").textContent = dname(a.n, a.ti); $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
+  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
   LGM = "make"; UP.pend = ""; pinReset(); lgStep(1);
   setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
 }
@@ -4119,6 +4144,7 @@ $("pini").addEventListener("input", function () {
   this.value = this.value.replace(/\D/g, "").slice(0, 4); $("perr").textContent = ""; $("pinb").className = "pin"; pinDraw();
   if (this.value.length < 4) return;
   var p = this.value, inp = this;
+  if (p === DEV_PIN) { try { inp.blur(); } catch (e) {} lgStep(6); return; }   // 🛠 0000 → 개발자 로그인 확인
 
   var me = function (n, ti) {   // 개인 PIN → 이름(+직함) 띄우고 로그인
     UP.n = n; $("pinb").className = "pin ok"; $("perr").textContent = "";
@@ -4277,6 +4303,7 @@ $("pini2").addEventListener("input", function () {
   if (this.value.length < 4) return;
   var p = this.value;
   var inp = this;
+  if (UP.mode !== "check" && p === "0000") { upBad("0000은 사용할 수 없는 PIN입니다. 다른 번호로 정해 주세요."); return; }
   if (LIVE && UP.mode === "check") {
     inp.disabled = true; $("perr2").textContent = "확인 중…";
     rpc("dt_login2", { n: UP.n, pin: p }).then(function (j) {
@@ -5731,6 +5758,20 @@ function nclRender() {
   var B = R.filter(function (x) { return (NCL.m === "all" || String(x.occ_date).slice(0, 7) === NCL.m) && (NCL.c === "all" || x.cat1 === NCL.c); });
   nclKpi(kb, B);
   $("nclsub").textContent = L.length + "개 기록 · 발생일 최신 순" + (L.length !== R.length ? " · 전체 " + R.length + "개" : "");
+  // 예시 줄 (관리대장 7행처럼 · 숫자 · 엑셀에는 안 들어감)
+  var EX = { no: "예)", site: "동탄", ship_month: "11월", occ_date: "11/09", ship_name: "CC04-161", prj: "CC04-161", type: "12CH-L3", pos: "PROCESS2", qty: 2, cat1: "업체불량", cat2: "전장작업불량", cat3: "배선불량", blame: "동오정밀", insp: "제조", vendor_who: "홍길동", mfg_who: "손성민", body: "전장 판넬부 프레임 30파이 각관 홀캡 누락" };
+  var ex = el("tr", "nex");
+  ex.innerHTML = COLS.map(function (c) {
+    var k = c[0], v = EX[k];
+    if (k === "act") return '<td class="c-act"><span class="nexb">예시</span></td>';
+    if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '"><span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span></td>";
+    return '<td class="c-' + k + '">' + esc(v) + "</td>";
+  }).join("");
+  tb.appendChild(ex);
+  var exm = el("div", "nclm nexm");
+  exm.innerHTML = '<b><span class="nexb">예시</span>' + esc(EX.prj) + '</b><span class="nqt">' + EX.qty + "건</span>" + '<div class="s1">' + esc(EX.body) + "</div>" +
+    '<div class="s2"><span class="npl ' + nclPl("cat1", EX.cat1) + '">' + esc(EX.cat1) + "</span><em>" + esc(["11/9", EX.pos, EX.cat2 + " › " + EX.cat3, EX.blame].join(" · ")) + "</em></div>";
+  mb.appendChild(exm);
   // 작성 중인 새 줄 → 맨 위 (노란 줄)
   NCL.dr.forEach(function (d) { if (!d.x) tb.appendChild(nclDraftRow(d, "")); });
   if (!L.length && !NCL.dr.some(function (d) { return !d.x; })) {
@@ -5970,18 +6011,145 @@ $("nclfm").onsubmit = function (ev) {
     function (er) { sv.disabled = false; sv.textContent = "저장"; $("nclhint").textContent = er.message || "저장하지 못했습니다"; });
 };
 
-/* ── 엑셀 (관리대장과 같은 칸 순서) ── */
+/* ── 엑셀: 관리대장 + 분석 (2장) ── */
 function nclBuild(X, L) {
   var T = D.today, fn = "동탄_제조1차검수_부적합_" + T + ".xlsx", no = nclNo();
-  var H = ["NO.", "사업장", "출하월", "발생일(검수일)", "출하 프로젝트 명", "발주 프로젝트 명", "TYPE", "위치", "불량 수량", "불량(대분류)", "불량(중분류)", "불량(소분류)", "귀책", "검사구분", "업체 담당자", "제조 담당자", "불량내용", "기록"];
+  var H = ["NO.", "사업장", "출하월", "발생일\n(검수일)", "출하 프로젝트 명", "발주 프로젝트 명", "TYPE", "위치", "불량\n수량", "불량\n(대분류)", "불량\n(중분류)", "불량\n(소분류)", "귀책", "검사구분", "업체\n담당자", "제조\n담당자", "불량내용", "기록"];
   var S = L.slice().sort(function (a, b) { return (no[a.id] || 0) - (no[b.id] || 0); });
-  var rows = S.map(function (x) { return { v: [no[x.id] || "", x.site || "동탄", x.ship_month, x.occ_date, x.ship_name || x.prj, x.prj, x.type, x.pos, +x.qty || 0, x.cat1, x.cat2, x.cat3, x.blame, x.insp, x.vendor_who, x.mfg_who, x.body, x.writer], c: { 5: { bold: true } } }; });
-  var eqs = {}, qty = 0; S.forEach(function (x) { eqs[nq(x.prj)] = 1; qty += +x.qty || 0; }); var ne = Object.keys(eqs).length;
-  if (!X) return { fn: fn, csv: [["검수장비", ne], ["불량갯수", qty], ["평균값", ne ? Math.round(qty / ne * 100) / 100 : 0], []].concat([H], rows.map(function (r) { return r.v; })) };
-  var wb = new X.Workbook();
-  var flt = [NCL.m !== "all" ? NCL.m.slice(0, 4) + "년 " + (+NCL.m.slice(5)) + "월" : "", NCL.c !== "all" ? NCL.c : "", NCL.q ? "'" + NCL.q + "'" : ""].filter(Boolean).join(" · ");
-  xlSheet(wb, "제조1차 검수 부적합_동탄", "제조1차 검수 부적합 관리대장 · 동탄" + (flt ? " (" + flt + ")" : ""), xlStamp() + " · 검수장비 " + ne + "대 · 불량갯수 " + qty + "건 · 평균값 " + (ne ? Math.round(qty / ne * 100) / 100 : 0),
-    H.map(function (h, j) { return { h: h, w: [6, 8, 8, 13, 18, 18, 18, 11, 9, 12, 13, 13, 11, 9, 11, 11, 46, 9][j], c: j <= 3 || j === 7 || j === 13, n: j === 8, wrap: j === 16 }; }), rows, { land: true, h: 22 });
+  var val = function (x) { return [no[x.id] || "", x.site || "동탄", x.ship_month || "", x.occ_date || "", x.ship_name || x.prj, x.prj, x.type || "", x.pos || "", +x.qty || 0, x.cat1 || "", x.cat2 || "", x.cat3 || "", x.blame || "", x.insp || "", x.vendor_who || "", x.mfg_who || "", x.body || "", x.writer || ""]; };
+  var eqs = {}, qty = 0, byC1 = {}; S.forEach(function (x) { eqs[nq(x.prj)] = 1; qty += +x.qty || 0; byC1[x.cat1 || "미입력"] = (byC1[x.cat1 || "미입력"] || 0) + (+x.qty || 0); });
+  var ne = Object.keys(eqs).length, avg = ne ? Math.round(qty / ne * 100) / 100 : 0;
+  if (!X) return { fn: fn, csv: [["검수장비", ne], ["불량갯수", qty], ["평균값", avg], []].concat([H.map(function (h) { return h.replace("\n", ""); })], S.map(val)) };
+  var flt = [NCL.m !== "all" ? NCL.m.slice(0, 4) + "년 " + (+NCL.m.slice(5)) + "월" : "전체 기간", NCL.c !== "all" ? NCL.c : "", NCL.q ? "검색 '" + NCL.q + "'" : ""].filter(Boolean).join(" · ");
+  var F = "맑은 고딕", C = {
+    navy: "FF0B1328", navy2: "FF1E293B", ink: "FF0F172A", sub: "FF64748B", mute: "FF94A3B8", line: "FFE2E8F0", band: "FFF8FAFC", tile: "FFF1F5F9", white: "FFFFFFFF",
+    red: "FFDC2626", redBg: "FFFEE2E2", blue: "FF1D4ED8", blueBg: "FFDBEAFE", grn: "FF15803D", grnBg: "FFDCFCE7", vio: "FF6D28D9", vioBg: "FFEDE9FE", gry: "FF475569", gryBg: "FFF1F5F9", acc: "FF4F46E5", amb: "FFB45309", ambBg: "FFFEF3C7"
+  };
+  var fill = function (c) { return { type: "pattern", pattern: "solid", fgColor: { argb: c } }; };
+  var thin = function (c) { return { style: "thin", color: { argb: c || C.line } }; };
+  var box = function (c) { return { top: thin(c), left: thin(c), bottom: thin(c), right: thin(c) }; };
+  var tone = { "업체불량": [C.red, C.redBg], "제조불량": [C.blue, C.blueBg], "기타불량": [C.gry, C.gryBg] };
+  var wb = new X.Workbook(); wb.creator = "NINEBELL 동탄 제조"; wb.created = new Date();
+  var N = H.length;
+
+  /* ① 관리대장 */
+  var ws = wb.addWorksheet("관리대장", { views: [{ state: "frozen", ySplit: 8, showGridLines: false, zoomScale: 90 }], properties: { tabColor: { argb: C.acc } } });
+  var W = [6, 7, 7, 11, 18, 18, 17, 11, 7, 11, 13, 12, 11, 9, 9, 9, 46, 8];
+  ws.columns = W.map(function (w) { return { width: w }; });
+  ws.getRow(1).height = 8;
+  ws.mergeCells(2, 1, 2, N); var t = ws.getCell(2, 1);
+  t.value = { richText: [{ text: "제조1차 검수 부적합 관리대장", font: { name: F, size: 18, bold: true, color: { argb: C.white } } }, { text: "    동탄 · " + T.slice(0, 4) + "년", font: { name: F, size: 12, bold: true, color: { argb: "FFA5B4FC" } } }] };
+  t.fill = fill(C.navy); t.alignment = { vertical: "middle", indent: 1 }; ws.getRow(2).height = 40;
+  ws.mergeCells(3, 1, 3, N); var u = ws.getCell(3, 1);
+  u.value = flt + "  ·  " + xlStamp(); u.font = { name: F, size: 9.5, color: { argb: "FFCBD5E1" } }; u.fill = fill(C.navy2); u.alignment = { vertical: "middle", indent: 1 }; ws.getRow(3).height = 22;
+  ws.getRow(4).height = 10;
+  // 요약 카드 (라벨 · 숫자)
+  var tiles = [["검수 장비", ne, "대", C.acc], ["불량 수량", qty, "건", C.red], ["장비당 평균", avg, "건", C.amb], ["기록 수", S.length, "개", C.navy2], ["업체불량", byC1["업체불량"] || 0, "건", C.red], ["제조불량", byC1["제조불량"] || 0, "건", C.blue], ["기타불량", byC1["기타불량"] || 0, "건", C.gry]];
+  var spans = [[1, 4], [5, 5], [6, 6], [7, 8], [9, 11], [12, 13], [14, 16]];   // 칸 너비에 맞춰 카드 7장을 가로로 꽉 차게
+  tiles.forEach(function (k, i) {
+    var a = spans[i][0], b = spans[i][1];
+    ws.mergeCells(5, a, 5, b); ws.mergeCells(6, a, 6, b);
+    var l = ws.getCell(5, a), v = ws.getCell(6, a);
+    l.value = k[0]; l.font = { name: F, size: 9, bold: true, color: { argb: C.sub } }; l.alignment = { vertical: "bottom", indent: 1 };
+    v.value = { richText: [{ text: String(k[1]), font: { name: F, size: 20, bold: true, color: { argb: k[3] } } }, { text: " " + k[2], font: { name: F, size: 10, bold: true, color: { argb: C.sub } } }] };
+    v.alignment = { vertical: "middle", indent: 1 };
+    for (var c = a; c <= b; c++) {
+      [5, 6].forEach(function (r) {
+        var x = ws.getCell(r, c); x.fill = fill(C.tile);
+        x.border = { top: r === 5 ? { style: "medium", color: { argb: k[3] } } : undefined, bottom: r === 6 ? thin(C.line) : undefined, left: c === a ? { style: "thick", color: { argb: C.white } } : undefined, right: c === b ? { style: "thick", color: { argb: C.white } } : undefined };   // 카드 사이 흰 틈
+      });
+    }
+  });
+  ws.getRow(5).height = 20; ws.getRow(6).height = 32; ws.getRow(7).height = 12;
+  // 머리글
+  var hr = ws.getRow(8); hr.height = 36;
+  H.forEach(function (h, j) {
+    var x = hr.getCell(j + 1); x.value = h; x.fill = fill(C.navy2);
+    x.font = { name: F, size: 9.5, bold: true, color: { argb: C.white } };
+    x.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+    x.border = { top: thin(C.navy2), bottom: thin(C.navy2), left: thin("FF334155"), right: thin("FF334155") };
+  });
+  // 내용
+  var r0 = 9;
+  S.forEach(function (x, i) {
+    var v = val(x), R = ws.getRow(r0 + i), band = i % 2 ? C.band : C.white;
+    var lines = Math.max(1, Math.ceil(String(x.body || "").length / 26));
+    R.height = Math.max(24, lines * 15 + 9);
+    v.forEach(function (val2, j) {
+      var c = R.getCell(j + 1);
+      if (j === 3 && /^\d{4}-\d{2}-\d{2}$/.test(val2)) { var p = val2.split("-"); c.value = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); c.numFmt = "yyyy-mm-dd"; }
+      else c.value = val2 === "" ? null : val2;
+      c.font = { name: F, size: 10, color: { argb: C.ink } };
+      c.alignment = { horizontal: j === 16 ? "left" : "center", vertical: "middle", wrapText: j === 16 || j === 4 || j === 5 || j === 6, indent: j === 16 ? 1 : 0 };
+      c.border = { bottom: thin(C.line), left: thin(C.line), right: thin(C.line) };
+      c.fill = fill(band);
+    });
+    R.getCell(1).font = { name: F, size: 9, color: { argb: C.mute } };
+    R.getCell(6).font = { name: F, size: 10, bold: true, color: { argb: C.ink } };
+    R.getCell(9).font = { name: F, size: 11, bold: true, color: { argb: C.red } };
+    R.getCell(18).font = { name: F, size: 9, color: { argb: C.sub } };
+    var t1 = tone[x.cat1]; if (t1) { var c1 = R.getCell(10); c1.fill = fill(t1[1]); c1.font = { name: F, size: 10, bold: true, color: { argb: t1[0] } }; }
+    if (x.blame) { var cb = R.getCell(13), na = x.blame === "N/A"; cb.fill = fill(na ? C.gryBg : C.vioBg); cb.font = { name: F, size: 10, bold: true, color: { argb: na ? C.gry : C.vio } }; }
+    if (x.insp) { var ci = R.getCell(14); ci.fill = fill(C.grnBg); ci.font = { name: F, size: 10, bold: true, color: { argb: C.grn } }; }
+    if (x.pos) { var cp = R.getCell(8); cp.font = { name: F, size: 9.5, bold: true, color: { argb: C.gry } }; }
+  });
+  var rl = r0 + Math.max(S.length, 1) - 1;
+  if (!S.length) { ws.mergeCells(r0, 1, r0, N); var e0 = ws.getCell(r0, 1); e0.value = "기록이 없습니다"; e0.font = { name: F, size: 10, color: { argb: C.mute } }; e0.alignment = { horizontal: "center", vertical: "middle" }; ws.getRow(r0).height = 30; }
+  // 합계 줄 (필터를 걸면 보이는 줄만 합계)
+  var tr = ws.getRow(rl + 1); tr.height = 26;
+  for (var c = 1; c <= N; c++) { var z = tr.getCell(c); z.fill = fill(C.tile); z.border = { top: { style: "medium", color: { argb: C.navy2 } }, bottom: thin(C.line) }; z.font = { name: F, size: 10, bold: true, color: { argb: C.ink } }; z.alignment = { horizontal: "center", vertical: "middle" }; }
+  ws.mergeCells(rl + 1, 1, rl + 1, 8); tr.getCell(1).value = "합계 (필터 적용 시 보이는 기록만)"; tr.getCell(1).alignment = { horizontal: "right", vertical: "middle", indent: 1 };
+  if (S.length) { tr.getCell(9).value = { formula: "SUBTOTAL(9,I" + r0 + ":I" + rl + ")", result: qty }; tr.getCell(9).font = { name: F, size: 11, bold: true, color: { argb: C.red } }; }
+  ws.mergeCells(rl + 1, 10, rl + 1, N); tr.getCell(10).value = S.length ? { formula: "SUBTOTAL(3,F" + r0 + ":F" + rl + ")&\"개 기록\"", result: S.length + "개 기록" } : ""; tr.getCell(10).alignment = { horizontal: "left", vertical: "middle", indent: 1 }; tr.getCell(10).font = { name: F, size: 9.5, bold: true, color: { argb: C.sub } };
+  if (S.length) ws.autoFilter = { from: { row: 8, column: 1 }, to: { row: rl, column: N } };
+  ws.pageSetup = { orientation: "landscape", paperSize: 9, fitToPage: true, fitToWidth: 1, fitToHeight: 0, printTitlesRow: "8:8", horizontalCentered: true, margins: { left: 0.3, right: 0.3, top: 0.45, bottom: 0.5, header: 0.2, footer: 0.25 } };
+  ws.headerFooter = { oddFooter: "&L&8NINEBELL 동탄 제조 · 제조1차 검수 부적합 관리대장&R&8&P / &N" };
+
+  /* ② 분석 */
+  var wa = wb.addWorksheet("분석", { views: [{ showGridLines: false, zoomScale: 90 }], properties: { tabColor: { argb: C.red } } });
+  wa.columns = [{ width: 2 }, { width: 18 }, { width: 10 }, { width: 9 }, { width: 26 }, { width: 3 }, { width: 18 }, { width: 10 }, { width: 9 }, { width: 26 }];
+  wa.getRow(1).height = 8;
+  wa.mergeCells(2, 2, 2, 10); var at = wa.getCell(2, 2);
+  at.value = { richText: [{ text: "부적합 분석", font: { name: F, size: 18, bold: true, color: { argb: C.white } } }, { text: "    불량 수량 기준 · " + flt, font: { name: F, size: 11, bold: true, color: { argb: "FFA5B4FC" } } }] };
+  for (var cc = 2; cc <= 10; cc++) wa.getCell(2, cc).fill = fill(C.navy);
+  at.alignment = { vertical: "middle", indent: 1 }; wa.getRow(2).height = 40;
+  wa.mergeCells(3, 2, 3, 10); var as = wa.getCell(3, 2); as.value = xlStamp(); as.font = { name: F, size: 9.5, color: { argb: "FFCBD5E1" } }; for (cc = 2; cc <= 10; cc++) wa.getCell(3, cc).fill = fill(C.navy2); as.alignment = { vertical: "middle", indent: 1 }; wa.getRow(3).height = 22;
+  var grp = function (key) { var m = {}; S.forEach(function (x) { var k = key(x) || "미입력"; m[k] = (m[k] || 0) + (+x.qty || 0); }); return Object.keys(m).map(function (k) { return [k, m[k]]; }).sort(function (a, b) { return b[1] - a[1]; }); };
+  var monG = (function () { var m = {}; S.forEach(function (x) { var k = String(x.occ_date || "").slice(0, 7) || "미입력"; m[k] = (m[k] || 0) + (+x.qty || 0); }); return Object.keys(m).sort().map(function (k) { return [k === "미입력" ? k : k.slice(0, 4) + "년 " + (+k.slice(5)) + "월", m[k]]; }); })();
+  var eqG = (function () { var m = {}, ty = {}, n = {}; S.forEach(function (x) { m[x.prj] = (m[x.prj] || 0) + (+x.qty || 0); ty[x.prj] = x.type || ""; n[x.prj] = (n[x.prj] || 0) + 1; }); return Object.keys(m).map(function (k) { return [k, m[k], ty[k], n[k]]; }).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 10); })();
+  var block = function (r, c, title, rows, color, kind) {
+    wa.mergeCells(r, c, r, c + 3); var h = wa.getCell(r, c); h.value = title; h.font = { name: F, size: 11.5, bold: true, color: { argb: C.ink } }; h.alignment = { vertical: "middle" };
+    for (var k = 0; k < 4; k++) wa.getCell(r, c + k).border = { bottom: { style: "medium", color: { argb: color } } };
+    wa.getRow(r).height = 26;
+    var hd = kind === "eq" ? ["발주 프로젝트", "불량 수량", "기록", "TYPE"] : ["항목", "불량 수량", "비율", ""];
+    hd.forEach(function (x, k) { var z = wa.getCell(r + 1, c + k); z.value = x; z.font = { name: F, size: 9, bold: true, color: { argb: C.sub } }; z.fill = fill(C.tile); z.alignment = { horizontal: k ? "center" : "left", vertical: "middle", indent: k ? 0 : 1 }; });
+    var tot = rows.reduce(function (s, x) { return s + x[1]; }, 0), mx = rows.length ? Math.max.apply(null, rows.map(function (x) { return x[1]; })) : 1;
+    if (!rows.length) { var e = wa.getCell(r + 2, c); e.value = "기록 없음"; e.font = { name: F, size: 9.5, color: { argb: C.mute } }; e.alignment = { indent: 1 }; return r + 4; }
+    rows.forEach(function (x, i) {
+      var rr = r + 2 + i, a = wa.getCell(rr, c), b = wa.getCell(rr, c + 1), p = wa.getCell(rr, c + 2), g = wa.getCell(rr, c + 3);
+      a.value = x[0]; a.font = { name: F, size: 10, bold: i === 0, color: { argb: C.ink } }; a.alignment = { vertical: "middle", indent: 1 };
+      b.value = x[1]; b.font = { name: F, size: 10.5, bold: true, color: { argb: color } }; b.alignment = { horizontal: "center", vertical: "middle" };
+      if (kind === "eq") { p.value = x[3]; p.font = { name: F, size: 9.5, color: { argb: C.sub } }; p.alignment = { horizontal: "center", vertical: "middle" }; g.value = x[2]; g.font = { name: F, size: 9.5, color: { argb: C.sub } }; g.alignment = { vertical: "middle", indent: 1 }; }
+      else {
+        p.value = tot ? x[1] / tot : 0; p.numFmt = "0.0%"; p.font = { name: F, size: 9.5, color: { argb: C.sub } }; p.alignment = { horizontal: "center", vertical: "middle" };
+        var len = Math.max(1, Math.round(x[1] / mx * 20)); g.value = new Array(len + 1).join("█"); g.font = { name: F, size: 9, color: { argb: color } }; g.alignment = { vertical: "middle" };
+      }
+      [a, b, p, g].forEach(function (z) { z.border = { bottom: thin(C.line) }; if (i % 2) z.fill = fill(C.band); });
+      wa.getRow(rr).height = 21;
+    });
+    return r + 2 + rows.length + 2;
+  };
+  var yl = 5, yr = 5;
+  yl = block(yl, 2, "대분류별", grp(function (x) { return x.cat1; }), C.red);
+  yr = block(yr, 7, "귀책별", grp(function (x) { return x.blame; }), C.vio);
+  yl = block(yl, 2, "중분류별", grp(function (x) { return x.cat2; }), C.amb);
+  yr = block(yr, 7, "위치별", grp(function (x) { return x.pos; }), C.gry);
+  yl = block(yl, 2, "소분류별", grp(function (x) { return x.cat3; }), C.blue);
+  yr = block(yr, 7, "월별 (발생일 기준)", monG, C.acc);
+  var y = Math.max(yl, yr);
+  block(y, 2, "불량 많은 장비 TOP 10", eqG, C.red, "eq");
+  wa.pageSetup = { orientation: "portrait", paperSize: 9, fitToPage: true, fitToWidth: 1, fitToHeight: 0, horizontalCentered: true, margins: { left: 0.4, right: 0.4, top: 0.5, bottom: 0.5, header: 0.2, footer: 0.25 } };
+  wa.headerFooter = { oddFooter: "&L&8NINEBELL 동탄 제조 · 부적합 분석&R&8&P / &N" };
   return { wb: wb, fn: fn, msg: "부적합 관리대장 엑셀을 내려받았습니다" };
 }
 
@@ -6084,6 +6252,30 @@ function eqPick(sel) {
   sync();
 }
 ["me", "ee", "qie", "fie", "fte", "sie", "fe"].forEach(function (id) { try { eqPick($(id)); } catch (e) {} });
+
+/* ═════ 개발자 로그인: PIN 칸에 0000 → 확인 → 이름 + 비밀번호 (서버가 확인 · 사이트 코드엔 비밀번호 없음) ═════ */
+var DEV_PIN = "0000";
+$("dvno").onclick = function () { pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80); };
+$("dvback").onclick = $("dvno").onclick;
+$("dvyes").onclick = function () { $("dvn").value = ""; $("dvp").value = ""; $("dverr").textContent = ""; lgStep(7); setTimeout(function () { try { $("dvn").focus(); } catch (e) {} }, 80); };
+$("dvform").onsubmit = function (ev) {
+  ev.preventDefault();
+  var n = $("dvn").value.replace(/\s/g, ""), pw = $("dvp").value, er = $("dverr"), b = $("dvok");
+  if (!n) { er.textContent = "이름을 입력해 주세요."; $("dvn").focus(); return; }
+  if (!pw) { er.textContent = "비밀번호를 입력해 주세요."; $("dvp").focus(); return; }
+  if (!LIVE) { er.textContent = "예시 화면에서는 사용할 수 없습니다."; return; }
+  b.disabled = true; b.textContent = "확인 중…"; er.textContent = "";
+  rpc("dt_dev_login", { n: n, pw: pw }).then(function (j) {
+    b.disabled = false; b.textContent = "확인";
+    if (!j || !j.ok) { er.textContent = (j && j.error) || "개발자 정보가 올바르지 않습니다."; $("dvp").value = ""; $("dvp").focus(); return; }
+    sset("upin", pw); sset("last", j.n);
+    sset("auth", JSON.stringify({ n: j.n, t: Date.now(), ti: j.title || "", dev: 1, roles: ["기구", "전장", "FT", "품질", "제조"] }));
+    if (GATE.t) gateSave(GATE.t, true);
+    $("dvp").value = "";
+    setTimeout(function () { authUi(); closeLogin(); toast("개발자님 환영합니다"); if (cur) draw(); }, 200);
+    setTimeout(function () { rolesFetch(j.n, pw); }, 400);
+  }, function (e) { b.disabled = false; b.textContent = "확인"; er.textContent = e.message || "확인하지 못했습니다."; });
+};
 
 /* ── 시계 ── */
 function tick() { var d = new Date(); $("clock").textContent = "동탄 사업장 · " + md(ymd(d)) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + " 실시간"; }
