@@ -1283,13 +1283,6 @@ html.gate,html.gate body{overflow:hidden}
 .ncltool .srch{height:44px;min-width:220px;box-shadow:none;background:var(--bg)}
 .ncltool .srch input{font-size:15px}
 .ncltool select{height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:14px;font-weight:800;color:var(--text);outline:0}
-#ncltbl td{vertical-align:top}
-#ncltbl tbody tr{cursor:pointer}
-#ncltbl .nno,.nclm .nno{font-family:var(--mono);font-size:12px;color:var(--sub);font-weight:700}
-#ncltbl .nq{font-family:var(--mono);font-weight:900;text-align:right}
-#ncltbl th.nq{text-align:right}
-#ncltbl .nbd{min-width:260px;max-width:420px;white-space:normal;line-height:1.5;font-weight:600}
-#ncltbl td small.also{white-space:nowrap}
 .nclm{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:13px 2px;border-top:1px solid var(--line);cursor:pointer}
 .nclm:first-child{border-top:0}
 .nclm>b{font-size:14.5px;font-weight:900;display:flex;gap:8px;align-items:baseline;min-width:0}
@@ -1321,6 +1314,59 @@ html.gate,html.gate body{overflow:hidden}
 #ncldel{height:46px;border-radius:12px;border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));color:var(--warn);font-size:14px;font-weight:800}
 #ncldel.arm{background:var(--warn);color:#fff;border-color:var(--warn)}
 @media (max-width:640px){#nclov{padding:0;place-items:end stretch}#nclov .box{width:100%;max-height:92vh;border-radius:22px 22px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}}
+#v-ncl .wrap{max-width:1680px}
+.nsheet{padding:22px 22px 14px}
+.nshd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.nst h3{display:block;word-break:keep-all;font-size:22px;font-weight:900;letter-spacing:-.03em}
+.nst h3 em{font-style:normal;color:var(--warn)}
+.nst p{margin-top:4px;font-size:13.5px;font-weight:800;color:var(--ac)}
+.nkb{display:grid;grid-template-columns:repeat(3,auto);border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:330px}
+.nkb .nku{grid-column:1/-1;padding:7px 12px;font-size:12px;font-weight:800;text-align:center;background:var(--bg2);border-bottom:1px solid var(--line)}
+.nkb>div:not(.nku){display:grid;gap:2px;padding:8px 14px;text-align:center;border-left:1px solid var(--line)}
+.nkb>div:nth-child(2){border-left:0}
+.nkb span{font-size:11.5px;font-weight:800;color:var(--sub)}.nkb b{font-size:20px;font-weight:900;font-family:var(--mono)}
+.nnew{margin-left:auto;height:44px;padding:0 22px;font-size:14px}
+.nsub{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--sub);margin-bottom:10px}
+.nleg{display:inline-flex;align-items:center;gap:6px}.nleg i{width:12px;height:12px;border-radius:3px;border:1px solid var(--line);margin-left:8px}
+.nleg i.y{background:color-mix(in srgb,#facc15 22%,var(--card))}.nleg i.a{background:var(--bg2)}
+.nshw{margin:0;padding:0 0 10px}
+.nsh{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;min-width:100%;font-size:13px}
+.nsh th{position:sticky;top:0;z-index:1;background:var(--bg2);color:var(--text);font-size:12px;font-weight:900;line-height:1.3;text-align:center;padding:8px 6px;border:1px solid var(--line);border-width:1px 1px 1px 0;white-space:nowrap}
+.nsh th:first-child,.nsh td:first-child{border-left-width:1px}
+.nsh td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);border-left:0 solid var(--line);padding:6px 8px;height:42px;text-align:center;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nsh td.c-body{text-align:left;white-space:normal;line-height:1.45}
+.nsh td.c-prj{font-weight:900}.nsh td.c-no{font-family:var(--mono);color:var(--sub);font-size:12px}
+.nsh td.c-qty{font-family:var(--mono);font-weight:900}
+.nsh.hasdr .c-act{position:sticky;right:0;background:var(--card);box-shadow:-8px 0 12px -10px rgba(0,0,0,.35)}
+.nsh th.c-act{background:var(--bg2);z-index:2}.nsh:not(.hasdr) th.c-act{border-left-width:0}
+.nsh tr.nrow:hover td{background:color-mix(in srgb,var(--ac) 5%,var(--card))}
+.nsh tr.nrow.can{cursor:pointer}
+.nhint{font-size:11.5px;color:var(--sub);opacity:0;transition:opacity .15s}
+.nsh tr.nrow:hover .nhint{opacity:1}
+.nsh td.nemp{padding:14px}
+.npl{display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 10px;border-radius:999px;background:var(--bg2);color:var(--text);font-size:12px;font-weight:800;white-space:nowrap}
+.npl.r{background:color-mix(in srgb,var(--warn) 16%,transparent);color:var(--warn)}
+.npl.b{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
+.npl.g{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.npl.v{background:color-mix(in srgb,var(--ac2) 14%,transparent);color:var(--ac2)}
+.nsh tr.ndr td{background:color-mix(in srgb,#facc15 20%,var(--card));padding:5px;overflow:visible;vertical-align:top}
+.nsh tr.ndr td.auto{background:color-mix(in srgb,#facc15 9%,var(--bg2))}
+.nsh tr.ndr td.c-no,.nsh tr.ndr td.c-site{vertical-align:middle;font-weight:900}
+.nsh tr.ndr td.c-act{background:color-mix(in srgb,#facc15 20%,var(--card));vertical-align:middle}
+.nin{display:block;width:100%;height:34px;padding:0 8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:13px;font-weight:700;text-align:center;outline:0;transition:border-color .15s,box-shadow .15s}
+.nin:focus{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 18%,transparent)}
+td.c-body .nin,td.c-prj .nin{text-align:left}
+td.auto .nin{background:var(--bg2)}
+select.nin{text-align-last:center;padding:0 4px;border-radius:999px;cursor:pointer}
+select.nin.npl{height:34px;font-size:12.5px}
+.nin.bad{border-color:var(--warn);box-shadow:0 0 0 3px color-mix(in srgb,var(--warn) 20%,transparent)}
+.nph{display:block;margin-top:3px;font-size:10.5px;font-weight:800;color:var(--sub);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:13px}
+.nph.ok{color:var(--ok)}.nph.w{color:#b45309}
+.c-act button{height:30px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:800;margin:0 2px}
+.nsv{background:var(--grd);color:#fff}.nsv:disabled{opacity:.6}
+.ncc{border:1px solid var(--line);color:var(--sub);background:var(--card)}
+.ndl{color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:var(--card)}.ndl.arm{background:var(--warn);color:#fff}
+@media (max-width:640px){.nsheet{padding:18px 16px 12px}.nst h3{font-size:18px}.nkb{min-width:0;width:100%}.nnew{margin-left:0;flex:1 1 100%}.nleg{display:none}}
 </style>
 </head>
 <body>
@@ -1505,7 +1551,7 @@ html.gate,html.gate body{overflow:hidden}
 
   <!-- ═════ 제조 · 기구 ═════ -->
   <div class="view" id="v-mech"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Mechanical</span><h2 class="tt">기구 · 조립</h2><p class="ds">FRAME 입고부터 MODULE · 1차 LEVEL · 1차 검수 · 제조완료까지 기구 조립 진행 현황입니다. 기구 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="mcx"></button></div>
+    <div class="vtop"><span class="eyebrow">Mechanical</span><h2 class="tt">기구 · 조립</h2><p class="ds">FRAME 입고부터 MODULE · 1차 LEVEL · 1차 검수 · 제조완료까지 기구 조립 진행 현황입니다. 기구 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="mcx"></button></div>
     <div class="card eiss miss"><div class="ehd"><div><h3>기구 이슈</h3><p class="ds2" id="misub"></p></div><div class="ehr"><div class="chips" id="mif"></div><button class="wbtn" type="button" id="mwrite">이슈 기록</button></div></div><div class="iss" id="mlog" style="margin-top:6px"></div></div>
     <div class="card upc" id="mup"></div>
     <div class="g4" id="mckpi" style="margin:16px 0"></div>
@@ -1530,7 +1576,7 @@ html.gate,html.gate body{overflow:hidden}
 
   <!-- ═════ 제조 · FT ═════ -->
   <div class="view" id="v-ft"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="ftx"></button></div>
+    <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="ftx"></button></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
     <div class="card upc" id="fup"></div>
     <div class="g4" id="ftkpi" style="margin:16px 0"></div>
@@ -1564,7 +1610,7 @@ html.gate,html.gate body{overflow:hidden}
 
   <!-- ═════ 품질 ═════ -->
   <div class="view" id="v-qa"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Quality</span><h2 class="tt">품질</h2><p class="ds">검수 · 제조완료 · FT · QC · ACM 검수 · PACKING · 출하까지 장비별 품질 현황과 이슈 이력입니다. FT에서 기록한 구동 시간이 그대로 반영됩니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button><button type="button" data-go="ncl">검수 부적합</button></div></div>
+    <div class="vtop"><span class="eyebrow">Quality</span><h2 class="tt">품질</h2><p class="ds">검수 · 제조완료 · FT · QC · ACM 검수 · PACKING · 출하까지 장비별 품질 현황과 이슈 이력입니다. FT에서 기록한 구동 시간이 그대로 반영됩니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button></div></div>
     <div class="card eiss qiss"><div class="ehd"><div><h3>품질 이슈</h3><p class="ds2" id="qisub"></p></div><div class="ehr"><div class="chips" id="qif"></div><button class="wbtn" type="button" id="qwrite">이슈 기록</button></div></div><div class="iss" id="qilog" style="margin-top:6px"></div></div>
     <div class="g4" id="qakpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -1585,27 +1631,27 @@ html.gate,html.gate body{overflow:hidden}
       </div>
     </div>
     <div class="card" style="margin-top:16px"><div class="ehd"><div><h3>부적합 처리 요청</h3><p class="ds2">불량 부품의 처리 요청 메시지를 만들어 나인벨 앱 '부적합 처리요청' 방에 붙여넣습니다</p></div><div class="ehr"><button class="wbtn" type="button" data-go="nc">요청 작성</button></div></div><div id="qanc" style="margin-top:12px"></div></div>
-    <div class="card" style="margin-top:16px"><div class="ehd"><div><h3>1차 검수 부적합 관리대장</h3><p class="ds2">제조 1차 검수에서 나온 부적합을 기록하고 엑셀로 내려받습니다 · 로그인한 분만 볼 수 있습니다</p></div><div class="ehr"><button class="wbtn" type="button" data-go="ncl">관리대장 열기</button></div></div></div>
   </div></div>
 
   <!-- ═════ 부적합 처리 요청 ═════ -->
   <div class="view" id="v-nc"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Nonconformance</span><h2 class="tt">부적합 처리 요청</h2><p class="ds">불량 부품의 장비 · 품번 · 수량 · 불량 내용 · 귀책을 채우면 메시지가 완성됩니다. 복사해서 나인벨 앱 '부적합 처리요청' 방에 붙여넣어 주세요. 사업장은 동탄으로 고정되며, 요청자는 로그인한 이름으로 들어갑니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button><button type="button" data-go="ncl">검수 부적합</button></div></div>
+    <div class="vtop"><span class="eyebrow">Nonconformance</span><h2 class="tt">부적합 처리 요청</h2><p class="ds">불량 부품의 장비 · 품번 · 수량 · 불량 내용 · 귀책을 채우면 메시지가 완성됩니다. 복사해서 나인벨 앱 '부적합 처리요청' 방에 붙여넣어 주세요. 사업장은 동탄으로 고정되며, 요청자는 로그인한 이름으로 들어갑니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button></div></div>
     <div id="ncw"></div>
   </div></div>
 
-  <!-- ═════ 1차 검수 부적합 관리대장 ═════ -->
+  <!-- ═════ 1차 검수 부적합 관리대장 (제조) ═════ -->
   <div class="view" id="v-ncl"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Inspection NC</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 기록하고 관리하는 관리대장입니다. 사업장은 동탄으로 고정되며, 로그인한 분만 보고 기록할 수 있습니다. 기록은 작성한 분과 관리자가 고칠 수 있습니다.</p><div class="seg msw"><button type="button" data-go="qa">품질 현황</button><button type="button" data-go="nc">부적합 처리 요청</button><button type="button" data-go="ncl">검수 부적합</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
+    <div class="vtop"><span class="eyebrow">Manufacturing</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 관리대장 그대로 기록합니다. '작성하기'를 누르면 표 맨 위에 입력 줄이 생기고, 발주 프로젝트 명을 고르면 출하 프로젝트 명 · TYPE · 출하월이 자동으로 채워집니다. 로그인한 분만 보고 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
     <div id="nclw">
       <div class="card nclk" id="nclk"><b>로그인 후 볼 수 있습니다</b><span>1차 검수 부적합 관리대장은 로그인한 분만 보고 기록할 수 있습니다.</span><button type="button">로그인</button></div>
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
-        <div class="card" style="padding-bottom:10px">
-          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2" id="nclsub"></p></div><div class="ehr"><button class="wbtn" type="button" id="nclnew">부적합 기록</button></div></div>
-          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div></div>
+        <div class="card nsheet">
+          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">'작성하기'를 누르면 표 맨 위에 입력 줄이 생깁니다 · 기록을 누르면 그 자리에서 수정합니다</p></div></div>
+          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
+          <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>입력 중인 줄<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
-          <div class="tbw ewd"><table class="tbl" id="ncltbl"><thead><tr><th>NO.</th><th>발생일</th><th>출하월</th><th>발주 프로젝트 · TYPE</th><th>위치</th><th class="nq">수량</th><th>불량 분류</th><th>귀책</th><th>업체 · 제조 담당</th><th>불량 내용</th></tr></thead><tbody id="ncltb"></tbody></table></div>
+          <div class="tbw ewd nshw"><table class="nsh" id="ncltbl"><thead></thead><tbody id="ncltb"></tbody></table></div>
         </div>
         <div class="g2" id="nclst" style="align-items:start;margin-top:16px"></div>
       </div>
@@ -1614,7 +1660,7 @@ html.gate,html.gate body{overflow:hidden}
 
   <!-- ═════ 전장 ═════ -->
   <div class="view" id="v-elec"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="elx"></button></div>
+    <div class="vtop"><span class="eyebrow">Electrical</span><h2 class="tt">전장 · FRAME 배선</h2><p class="ds">FRAME 배선 · I/O CHECK 현황과 전장 자재 준비 상태입니다. 전장 이슈는 로그인 후 기록할 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="elx"></button></div>
     <div class="card eiss"><div class="ehd"><div><h3>전장 이슈</h3><p class="ds2" id="eisub"></p></div><div class="ehr"><div class="chips" id="eif"></div><button class="wbtn" type="button" id="ewrite">이슈 기록</button></div></div><div class="iss" id="elog" style="margin-top:6px"></div></div>
     <div class="g4" id="ekpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
@@ -2082,7 +2128,7 @@ function buildNav() {
       a.className = "mfgb"; a.setAttribute("aria-haspopup", "true");
       a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
       var dm = el("div", "ddm"), di = el("div", "in"); dm.id = "mfgm"; dm.appendChild(di);
-      [["mech", "기구", "FRAME · MODULE · LEVEL · 조립"], ["elec", "전장", "FRAME 배선 · 하네스 · I/O CHECK"], ["ft", "FT (Final Test)", "Teaching · LEVEL · TEST · FULL CYCLE"]].forEach(function (m) {
+      [["mech", "기구", "FRAME · MODULE · LEVEL · 조립"], ["elec", "전장", "FRAME 배선 · 하네스 · I/O CHECK"], ["ncl", "1차 검수 부적합", "관리대장 작성 · 엑셀 다운로드"], ["ft", "FT (Final Test)", "Teaching · LEVEL · TEST · FULL CYCLE"]].forEach(function (m) {
         var x = el("button"); x.type = "button"; x.dataset.m = m[0]; x.appendChild(document.createTextNode(m[1])); x.appendChild(el("small", null, m[2]));
         x.onclick = function () { go(m[0]); try { x.blur(); a.blur(); } catch (e) {} }; di.appendChild(x);
       });
@@ -2092,7 +2138,7 @@ function buildNav() {
       a.className = "mfgb"; a.setAttribute("aria-haspopup", "true");
       a.insertAdjacentHTML("beforeend", '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>');
       var qm = el("div", "ddm"), qi = el("div", "in"); qm.id = "qadm"; qm.appendChild(qi);
-      [["qa", "품질 현황", "검수 · FT · QC · ACM · 출하 · 품질 이슈"], ["nc", "부적합 처리 요청", "장비 · 품번 · 불량 · 귀책 → 메시지 복사"], ["ncl", "1차 검수 부적합", "관리대장 · 기록 · 엑셀 다운로드"]].forEach(function (m) {
+      [["qa", "품질 현황", "검수 · FT · QC · ACM · 출하 · 품질 이슈"], ["nc", "부적합 처리 요청", "장비 · 품번 · 불량 · 귀책 → 메시지 복사"]].forEach(function (m) {
         var x = el("button"); x.type = "button"; x.dataset.m = m[0]; x.appendChild(document.createTextNode(m[1])); x.appendChild(el("small", null, m[2]));
         x.onclick = function () { go(m[0]); try { x.blur(); a.blur(); } catch (e) {} }; qi.appendChild(x);
       });
@@ -2114,11 +2160,11 @@ function pill() {
     mm.style.left = (mb.offsetLeft + mb.offsetWidth / 2) + "px"; [].forEach.call(mm.querySelectorAll("button"), function (b) { b.classList.toggle("cur", b.dataset.m === cur); });
   });
 }
-var MFG = /^(elec|ft)$/.test(sget("mfg") || "") ? sget("mfg") : "mech";   // 제조 → 마지막에 본 기구/전장
-function navKey(v) { return /^(mech|elec|ft)$/.test(v) ? "mfg" : /^(nc|ncl)$/.test(v) ? "qa" : v; }
+var MFG = /^(elec|ft|ncl)$/.test(sget("mfg") || "") ? sget("mfg") : "mech";   // 제조 → 마지막에 본 기구/전장
+function navKey(v) { return /^(mech|elec|ft|ncl)$/.test(v) ? "mfg" : v === "nc" ? "qa" : v; }
 function go(v, keep) {
   if (v === "mfg") v = MFG;
-  if (/^(mech|elec|ft)$/.test(v)) { MFG = v; sset("mfg", v); }
+  if (/^(mech|elec|ft|ncl)$/.test(v)) { MFG = v; sset("mfg", v); }
   cur = v;
   [].forEach.call(document.querySelectorAll(".msw button"), function (b) { b.classList.toggle("on", b.dataset.go === v); });
   [].forEach.call(document.querySelectorAll(".view"), function (x) { x.classList.toggle("on", x.id === "v-" + v); });
@@ -5601,8 +5647,20 @@ function drawNcl() {
   nclRender();
   if (LIVE && !NCL.p && Date.now() - NCL.t > 60000) nclLoad(true).then(function () { if (cur === "ncl") nclRender(); });   // 1분 지났으면 조용히 새로
 }
+/* 관리대장 표 — 칸 순서 · 이름은 관리대장(시트)과 똑같이 */
+var NCLC = [["no", "NO.", 42], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
+  ["ship_name", "출하 프로젝트 명", 140, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 126, "txt"], ["pos", "위치", 110, "sel"],
+  ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
+  ["insp", "검사구분", 80, "sel"], ["blame", "귀책", 96, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"], ["act", "", 128]];
+var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
+NCL.dr = []; NCL.dn = 0;
+function nclPl(k, v) {   // 드롭다운 값 색 (시트 칩처럼)
+  if (!v) return "";
+  var t = k === "cat1" ? (v === "업체불량" ? "r" : v === "제조불량" ? "b" : "") : k === "insp" ? "g" : k === "blame" ? (v === "N/A" ? "" : "v") : "";
+  return t;
+}
 function nclRender() {
-  var R = NCL.rows, kp = $("nclkpi"); kp.innerHTML = "";
+  var R = NCL.rows;
   var sel = $("nclm"), mons = {};
   (R || []).forEach(function (x) { mons[String(x.occ_date).slice(0, 7)] = 1; });
   if (NCL.m !== "all" && !mons[NCL.m]) NCL.m = "all";
@@ -5614,46 +5672,49 @@ function nclRender() {
     b.onclick = function () { NCL.c = o[0]; nclRender(); }; ch.appendChild(b);
   });
   if ($("nclq").value !== NCL.q) $("nclq").value = NCL.q;
-  var tb = $("ncltb"), mb = $("nclmb"); tb.innerHTML = ""; mb.innerHTML = "";
+  var tbl = $("ncltbl");
+  if (!tbl.dataset.hd) {   // 머리글 · 칸 너비 한 번만
+    tbl.dataset.hd = 1;
+    tbl.insertAdjacentHTML("afterbegin", "<colgroup>" + NCLC.map(function (c) { return '<col style="width:' + c[2] + 'px">'; }).join("") + "</colgroup>");
+    tbl.querySelector("thead").innerHTML = "<tr>" + NCLC.map(function (c) { return '<th class="c-' + c[0] + '">' + c[1] + "</th>"; }).join("") + "</tr>";
+  }
+  var tb = $("ncltb"), mb = $("nclmb"); tb.innerHTML = ""; mb.innerHTML = ""; tbl.classList.toggle("hasdr", NCL.dr.length > 0);
+  var kb = $("nclkpi");
   if (!R) {
     var msg = NCL.err || "불러오는 중입니다…";
-    $("nclsub").textContent = ""; tb.innerHTML = '<tr><td colspan="10"><div class="empty">' + esc(msg) + "</div></td></tr>"; mb.appendChild(el("div", "empty", msg));
-    [["검수 장비", "대"], ["불량 수량", "건"], ["장비당 평균", "건"], ["이번 달", "건"]].forEach(function (k) { var c = el("div", "card kpi"); c.appendChild(el("div", "k", k[0])); var v = el("div", "v", "-"); c.appendChild(v); kp.appendChild(c); });
-    $("nclst").innerHTML = ""; return;
+    nclKpi(kb, null);
+    tb.innerHTML = '<tr><td colspan="' + NCLC.length + '" class="nemp"><div class="empty">' + esc(msg) + "</div></td></tr>"; mb.appendChild(el("div", "empty", msg));
+    $("nclst").innerHTML = ""; $("nclsub").textContent = ""; return;
   }
   var L = nclList(), no = nclNo();
-  // 📊 요약 — 지금 고른 기간 · 분류 기준 (검색어는 목록에만)
   var B = R.filter(function (x) { return (NCL.m === "all" || String(x.occ_date).slice(0, 7) === NCL.m) && (NCL.c === "all" || x.cat1 === NCL.c); });
-  var eqs = {}, qty = 0; B.forEach(function (x) { eqs[nq(x.prj)] = 1; qty += +x.qty || 0; });
-  var ne = Object.keys(eqs).length, mon = D.today.slice(0, 7), mq = 0, mr = 0;
-  R.forEach(function (x) { if (String(x.occ_date).slice(0, 7) === mon) { mq += +x.qty || 0; mr++; } });
-  [["검수 장비", ne, "대", "부적합이 나온 발주 프로젝트 수"], ["불량 수량", qty, "건", B.length + "개 기록의 수량 합계"], ["장비당 평균", ne ? Math.round(qty / ne * 10) / 10 : 0, "건", "불량 수량 ÷ 검수 장비"], ["이번 달", mq, "건", (+mon.slice(5)) + "월 기록 " + mr + "개"]].forEach(function (k, i) {
-    var c = el("div", "card kpi" + (i === 0 ? " dark" : "")); c.appendChild(el("div", "k", k[0])); var v = el("div", "v", String(k[1])); v.appendChild(el("small", null, k[2])); c.appendChild(v); c.appendChild(el("div", "f", k[3])); kp.appendChild(c);
-  });
+  nclKpi(kb, B);
   $("nclsub").textContent = L.length + "개 기록 · 발생일 최신 순" + (L.length !== R.length ? " · 전체 " + R.length + "개" : "");
-  if (!L.length) {
-    var em = R.length ? "조건에 맞는 기록이 없습니다" : "아직 기록이 없습니다. 오른쪽 위 '부적합 기록'으로 첫 기록을 남겨 주세요.";
-    tb.innerHTML = '<tr><td colspan="10"><div class="empty">' + esc(em) + "</div></td></tr>"; mb.appendChild(el("div", "empty", em));
+  // 작성 중인 새 줄 → 맨 위 (노란 줄)
+  NCL.dr.forEach(function (d) { if (!d.x) tb.appendChild(nclDraftRow(d, "")); });
+  if (!L.length && !NCL.dr.some(function (d) { return !d.x; })) {
+    var em = R.length ? "조건에 맞는 기록이 없습니다" : "아직 기록이 없습니다. '작성하기'를 누르면 맨 위에 입력 줄이 생깁니다.";
+    tb.insertAdjacentHTML("beforeend", '<tr><td colspan="' + NCLC.length + '" class="nemp"><div class="empty">' + esc(em) + "</div></td></tr>"); mb.appendChild(el("div", "empty", R.length ? em : "아직 기록이 없습니다"));
   }
   L.forEach(function (x) {
-    var tr = el("tr"); tr.className = "nclr";
-    var cat = [x.cat1, x.cat2, x.cat3].filter(Boolean);
-    tr.innerHTML = '<td class="nno">' + (no[x.id] || "") + "</td><td>" + esc(md(x.occ_date)) + "</td><td>" + esc(x.ship_month || "-") + "</td>" +
-      "<td><b>" + esc(x.prj) + "</b>" + (x.ship_name && nq(x.ship_name) !== nq(x.prj) ? '<small class="also">출하 ' + esc(x.ship_name) + "</small>" : "") + '<small class="also">' + esc(x.type || "-") + "</small></td>" +
-      "<td>" + esc(x.pos || "-") + '</td><td class="nq">' + (+x.qty || 0) + "</td>" +
-      "<td>" + (cat.length ? '<span class="tag ' + nclTone(x.cat1) + '">' + esc(cat[0]) + "</span>" + (cat.length > 1 ? '<small class="also">' + esc(cat.slice(1).join(" › ")) + "</small>" : "") : "-") + "</td>" +
-      "<td>" + esc(x.blame || "-") + "</td><td>" + esc(x.vendor_who || "-") + '<small class="also">제조 ' + esc(x.mfg_who || "-") + "</small></td>" +
-      '<td class="nbd">' + esc(x.body) + "</td>";
-    tr.onclick = function () { nclOpen(x); }; tb.appendChild(tr);
+    var ed = NCL.dr.filter(function (d) { return d.x && d.x.id === x.id; })[0];
+    if (ed) { tb.appendChild(nclDraftRow(ed, no[x.id])); return; }
+    var tr = el("tr", "nrow" + (nclCan(x) ? " can" : ""));
+    tr.innerHTML = NCLC.map(function (c) {
+      var k = c[0], v = k === "no" ? no[x.id] || "" : k === "site" ? x.site || "동탄" : k === "occ_date" ? String(x.occ_date).slice(5).replace("-", "/") : k === "act" ? "" : x[k];
+      if (k === "act") return '<td class="c-act"><span class="nhint">' + (nclCan(x) ? "눌러서 수정" : "보기") + "</span></td>";
+      if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
+      return '<td class="c-' + k + '">' + esc(v == null ? "" : v) + "</td>";
+    }).join("");
+    tr.onclick = function () { nclEdit(x); }; tb.appendChild(tr);
     var d = el("div", "nclm");
     d.innerHTML = '<b><span class="nno">' + (no[x.id] || "") + "</span>" + esc(x.prj) + '</b><span class="nqt">' + (+x.qty || 0) + "건</span>" +
       '<div class="s1">' + esc(x.body) + "</div>" +
-      '<div class="s2">' + (x.cat1 ? '<span class="tag ' + nclTone(x.cat1) + '">' + esc(x.cat1) + "</span>" : "") + "<em>" + esc([md(x.occ_date), x.pos, [x.cat2, x.cat3].filter(Boolean).join(" › "), x.blame].filter(Boolean).join(" · ")) + "</em></div>";
+      '<div class="s2">' + (x.cat1 ? '<span class="npl ' + nclPl("cat1", x.cat1) + '">' + esc(x.cat1) + "</span>" : "") + "<em>" + esc([md(x.occ_date), x.pos, [x.cat2, x.cat3].filter(Boolean).join(" › "), x.blame].filter(Boolean).join(" · ")) + "</em></div>";
     d.onclick = function () { nclOpen(x); }; mb.appendChild(d);
   });
-  // 📊 분류 · 귀책 (수량 기준)
   var st = $("nclst"); st.innerHTML = "";
-  [["중분류별", "cat2", NCLO.c2], ["귀책별", "blame", NCLO.bl]].forEach(function (g) {
+  [["중분류별", "cat2"], ["귀책별", "blame"]].forEach(function (g) {
     var cnt = {}, tot = 0; B.forEach(function (x) { var k = x[g[1]] || "미입력"; cnt[k] = (cnt[k] || 0) + (+x.qty || 0); tot += +x.qty || 0; });
     var ks = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a]; }), mx = ks.length ? cnt[ks[0]] : 1;
     var c = el("div", "card"); c.appendChild(el("h3", null, "불량 수량 · " + g[0])); var w = el("div", "nclbars");
@@ -5662,10 +5723,129 @@ function nclRender() {
     c.appendChild(w); st.appendChild(c);
   });
 }
-function nclTone(c) { return c === "제조불량" ? "r" : c === "업체불량" ? "a" : "b"; }
+// 요약 카드 4개 — 지금 고른 기간 · 대분류 기준 (검색어는 목록에만)
+function nclKpi(kb, B) {
+  kb.innerHTML = "";
+  var eqs = {}, qty = 0, mon = D.today.slice(0, 7), mq = 0, mr = 0;
+  (B || []).forEach(function (x) { eqs[nq(x.prj)] = 1; qty += +x.qty || 0; });
+  (NCL.rows || []).forEach(function (x) { if (String(x.occ_date).slice(0, 7) === mon) { mq += +x.qty || 0; mr++; } });
+  var ne = Object.keys(eqs).length;
+  [["검수 장비", ne, "대", "부적합이 나온 발주 프로젝트 수"], ["불량 수량", qty, "건", (B ? B.length : 0) + "개 기록의 수량 합계"], ["장비당 평균", ne ? Math.round(qty / ne * 10) / 10 : 0, "건", "불량 수량 ÷ 검수 장비"], ["이번 달", mq, "건", (+mon.slice(5)) + "월 기록 " + mr + "개"]].forEach(function (k, i) {
+    var c = el("div", "card kpi" + (i === 0 ? " dark" : "")); c.appendChild(el("div", "k", k[0]));
+    var v = el("div", "v", B ? String(k[1]) : "-"); if (B) v.appendChild(el("small", null, k[2])); c.appendChild(v);
+    if (B) c.appendChild(el("div", "f", k[3])); kb.appendChild(c);
+  });
+}
+function nclMob() { return window.matchMedia && matchMedia("(max-width:640px)").matches; }
+// ✏ 작성하기: PC는 표 맨 위에 입력 줄 · 폰은 입력 창
+function nclNew() {
+  if (!authName()) { openLogin("1차 검수 부적합 기록은 로그인 후 이용할 수 있습니다"); return; }
+  if (nclMob()) { nclOpen(null); return; }
+  var d = { key: "n" + (++NCL.dn), x: null, au: {}, v: { site: "동탄", occ_date: D.today, qty: 1, insp: "제조", mfg_who: authName() } };
+  NCL.dr.unshift(d); nclRender(); var sw = document.querySelector("#v-ncl .nshw"); if (sw) sw.scrollLeft = 0; nclFocus(d, "prj");
+}
+function nclEdit(x) {
+  if (nclMob() || !nclCan(x)) { nclOpen(x); return; }
+  if (NCL.dr.some(function (d) { return d.x && d.x.id === x.id; })) return;
+  var v = {}; NCLF.forEach(function (k) { v[k] = x[k] == null ? "" : x[k]; });
+  var d = { key: "e" + x.id, x: x, au: {}, v: v }; NCL.dr.push(d); nclRender(); nclFocus(d, "body");
+}
+function nclFocus(d, k) { setTimeout(function () { var i = document.querySelector('#ncltb tr[data-key="' + d.key + '"] [data-k="' + k + '"]'); if (i) { try { i.focus({ preventScroll: k === "prj" }); if (i.select && k !== "prj") i.select(); } catch (e) {} } }, 30); }
+function nclDraftRow(d, noTxt) {
+  var tr = el("tr", "ndr" + (d.x ? " ed" : "")); tr.dataset.key = d.key;
+  NCLC.forEach(function (c) {
+    var k = c[0], td = el("td", "c-" + k), v = d.v[k] == null ? "" : d.v[k];
+    if (k === "no") td.textContent = d.x ? noTxt : "신규";
+    else if (k === "site") td.textContent = "동탄";
+    else if (k === "act") {
+      var sv = el("button", "nsv", "저장"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
+      var cc = el("button", "ncc", "취소"); cc.type = "button"; cc.onclick = function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); };
+      td.appendChild(sv); td.appendChild(cc);
+      if (d.x) { var dl = el("button", "ndl", "삭제"); dl.type = "button"; dl.onclick = function () { nclDraftDel(d, dl); }; td.appendChild(dl); }
+    } else {
+      var inp;
+      if (c[3] === "sel") { inp = el("select", "nin npl " + nclPl(k, v)); inp.innerHTML = '<option value=""></option>' + NCLS[k].map(function (o) { return "<option>" + esc(o) + "</option>"; }).join(""); inp.value = v; }
+      else { inp = el("input", "nin"); inp.type = c[3] === "date" ? "date" : c[3] === "num" ? "number" : "text"; if (c[3] === "num") { inp.min = 1; inp.max = 999; inp.inputMode = "numeric"; } if (c[3] === "prj") inp.setAttribute("list", "ncldl"); inp.value = v; inp.autocomplete = "off"; }
+      if (k === "ship_name" || k === "type") { td.classList.add("auto"); inp.placeholder = "자동"; }
+      if (k === "prj") inp.placeholder = "예) CC04-161";
+      if (k === "body") inp.placeholder = "불량 내용";
+      inp.dataset.k = k;
+      inp.addEventListener("input", function () { nclDraftIn(d, tr, k, inp); });
+      inp.addEventListener("change", function () { nclDraftIn(d, tr, k, inp); });
+      inp.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); nclDraftSave(d, tr); } else if (e.key === "Escape") { e.stopPropagation(); NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); } });
+      td.appendChild(inp);
+      if (k === "prj") { var h = el("small", "nph"); td.appendChild(h); nclPh(h, v); }
+    }
+    tr.appendChild(td);
+  });
+  if (!$("ncldl").options.length) $("ncldl").innerHTML = D.eq.map(function (e) { return e.n; }).sort().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
+  return tr;
+}
+function nclPh(h, v) { var e = nclEqOf(v); h.className = "nph" + (e ? " ok" : v ? " w" : ""); h.textContent = e ? [e.loc ? "동탄 " + e.loc : "", e.out ? "출하 " + md(e.out) : ""].filter(Boolean).join(" · ") || "등록 장비" : v ? "대시보드에 없는 장비" : ""; }
+function nclDraftIn(d, tr, k, inp) {
+  d.v[k] = inp.value; inp.classList.remove("bad"); delete d.au[k];
+  if (inp.tagName === "SELECT") inp.className = "nin npl " + nclPl(k, inp.value);
+  if (k === "prj") {
+    var e = nclEqOf(inp.value);
+    if (e) {
+      var outD = e.out || sd(e, 10)[0] || "";
+      [["type", e.t], ["ship_name", (e.ds && e.ds.sn) || e.n], ["ship_month", nclMon(outD)]].forEach(function (p) {
+        if (d.v[p[0]] && !d.au[p[0]]) return;
+        d.v[p[0]] = p[1] || ""; d.au[p[0]] = 1; var f = tr.querySelector('[data-k="' + p[0] + '"]'); if (f) f.value = d.v[p[0]];
+      });
+    }
+    nclPh(tr.querySelector(".nph"), inp.value);
+  }
+}
+function nclCheck(rec) {
+  var bad = [];
+  if (!rec.prj) bad.push(["prj", "발주 프로젝트 명을 입력해 주세요"]);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(rec.occ_date)) bad.push(["occ_date", "발생일을 입력해 주세요"]);
+  var q = +rec.qty; if (!(q >= 1 && q <= 999 && Math.floor(q) === q)) bad.push(["qty", "불량 수량은 1~999 사이 숫자로 입력해 주세요"]);
+  if (!rec.body) bad.push(["body", "불량 내용을 입력해 주세요"]);
+  return bad;
+}
+// 저장 (새 기록 · 수정 같이) → 성공하면 목록에 바로 반영
+function nclPut(rec, x) {
+  var me = authName(); var e = nclEqOf(rec.prj); if (e) rec.prj = e.n;   // 띄어쓰기 · 하이픈 달라도 대시보드 장비명으로 맞춤
+  if (!rec.ship_name) rec.ship_name = (e && e.ds && e.ds.sn) || rec.prj;
+  rec.qty = +rec.qty; if (x) rec.id = x.id;
+  var fin = function (row) {
+    NCL.rows = NCL.rows || [];
+    var i = -1; NCL.rows.forEach(function (r, k) { if (r.id === row.id) i = k; });
+    if (i >= 0) NCL.rows[i] = row; else NCL.rows.unshift(row);
+    nclSort(); return row;
+  };
+  if (!LIVE) return Promise.resolve(fin(Object.assign({ id: x ? x.id : -Date.now(), writer: me, created_at: new Date().toISOString(), updated_at: new Date().toISOString() }, x || {}, rec)));
+  return rpc("dt_ncl_save", { n: me, pin: sget("upin") || "", rec: rec }).then(function (j) {
+    if (j && j.ok && j.row) return fin(j.row);
+    throw new Error((j && j.error) || "저장하지 못했습니다");
+  });
+}
+function nclDraftSave(d, tr) {
+  if (d.busy) return;
+  var rec = {}; NCLF.forEach(function (k) { rec[k] = String(d.v[k] == null ? "" : d.v[k]).trim(); });
+  var bad = nclCheck(rec);
+  if (bad.length) { bad.forEach(function (b) { var f = tr.querySelector('[data-k="' + b[0] + '"]'); if (f) f.classList.add("bad"); }); toast(bad[0][1]); var f0 = tr.querySelector('[data-k="' + bad[0][0] + '"]'); if (f0) f0.focus(); return; }
+  d.busy = 1; var sv = tr.querySelector(".nsv"); sv.disabled = true; sv.textContent = "저장 중…";
+  nclPut(rec, d.x).then(function () {
+    NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast(d.x ? "수정했습니다" : "저장했습니다"); nclRender();
+  }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = "저장"; toast(er.message || "저장하지 못했습니다"); });
+}
+function nclDraftDel(d, b) {
+  if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한 번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
+  b.disabled = true;
+  nclDelete(d.x).then(function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast("기록을 삭제했습니다"); nclRender(); }, function (er) { b.disabled = false; toast(er.message || "삭제하지 못했습니다"); });
+}
+function nclDelete(x) {
+  var done = function () { NCL.rows = (NCL.rows || []).filter(function (r) { return r.id !== x.id; }); };
+  if (!LIVE || x.id < 0) { done(); return Promise.resolve(); }
+  return rpc("dt_ncl_del", { n: authName(), pin: sget("upin") || "", rid: x.id }).then(function (j) { if (j && j.ok) done(); else throw new Error((j && j.error) || "삭제하지 못했습니다"); });
+}
 $("nclm").onchange = function () { NCL.m = this.value; nclRender(); };
 $("nclq").oninput = function () { NCL.q = this.value; nclRender(); };
-$("nclnew").onclick = function () { nclOpen(null); };
+$("nclnew").onclick = nclNew;
+
 $("nclk").querySelector("button").onclick = function () { openLogin("1차 검수 부적합 관리대장은 로그인 후 볼 수 있습니다"); };
 
 /* ── 기록 창 (새 기록 · 고치기) ── */
@@ -5718,40 +5898,18 @@ $("ncldel").onclick = function () {
   var b = this, x = NCL.ed; if (!x) return;
   if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한 번 더 누르면 삭제됩니다"; clearTimeout(b._t); b._t = setTimeout(nclDelReset, 3500); return; }
   nclDelReset(); b.disabled = true;
-  var done = function () { NCL.rows = (NCL.rows || []).filter(function (r) { return r.id !== x.id; }); nclClose(); toast("기록을 삭제했습니다"); draw(); };
-  if (!LIVE || x.id < 0) { b.disabled = false; done(); return; }
-  rpc("dt_ncl_del", { n: authName(), pin: sget("upin") || "", rid: x.id }).then(function (j) {
-    b.disabled = false;
-    if (j && j.ok) done(); else toast((j && j.error) || "삭제하지 못했습니다");
-  }, function (e) { b.disabled = false; toast(e.message || "삭제하지 못했습니다"); });
+  nclDelete(x).then(function () { b.disabled = false; nclClose(); toast("기록을 삭제했습니다"); draw(); }, function (e) { b.disabled = false; toast(e.message || "삭제하지 못했습니다"); });
 };
 $("nclfm").onsubmit = function (ev) {
   ev.preventDefault();
-  var me = authName(); if (!me) { openLogin(); return; }
+  if (!authName()) { openLogin(); return; }
   var x = NCL.ed, rec = {}; NCLF.forEach(function (k) { var f = $(NCLI[k]); f.classList.remove("bad"); rec[k] = String(f.value || "").trim(); });
-  var bad = [];
-  if (!rec.prj) bad.push(["prj", "발주 프로젝트명을 입력해 주세요"]);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(rec.occ_date)) bad.push(["occ_date", "발생일을 입력해 주세요"]);
-  var q = +rec.qty; if (!(q >= 1 && q <= 999 && Math.floor(q) === q)) bad.push(["qty", "불량 수량은 1~999 사이 숫자로 입력해 주세요"]);
-  if (!rec.body) bad.push(["body", "불량 내용을 입력해 주세요"]);
+  var bad = nclCheck(rec);
   if (bad.length) { bad.forEach(function (b) { $(NCLI[b[0]]).classList.add("bad"); }); $("nclhint").textContent = bad[0][1]; try { $(NCLI[bad[0][0]]).focus(); } catch (e) {} return; }
   $("nclhint").textContent = "";
-  var e = nclEqOf(rec.prj); if (e) rec.prj = e.n;   // 띄어쓰기 · 하이픈 달라도 대시보드 장비명으로 맞춤
-  if (!rec.ship_name) rec.ship_name = (e && e.ds && e.ds.sn) || rec.prj;
-  rec.qty = q; if (x) rec.id = x.id;
   var sv = $("nclsv"); sv.disabled = true; sv.textContent = "저장 중…";
-  var fin = function (row) {
-    sv.disabled = false; sv.textContent = "저장";
-    NCL.rows = NCL.rows || [];
-    var i = -1; NCL.rows.forEach(function (r, k) { if (r.id === row.id) i = k; });
-    if (i >= 0) NCL.rows[i] = row; else NCL.rows.unshift(row);
-    nclSort(); nclClose(); toast(x ? "수정했습니다" : "저장했습니다"); draw();
-  };
-  if (!LIVE) { fin(Object.assign({ id: x ? x.id : -Date.now(), writer: me, created_at: new Date().toISOString() }, x || {}, rec)); return; }
-  rpc("dt_ncl_save", { n: me, pin: sget("upin") || "", rec: rec }).then(function (j) {
-    if (j && j.ok && j.row) fin(j.row);
-    else { sv.disabled = false; sv.textContent = "저장"; $("nclhint").textContent = (j && j.error) || "저장하지 못했습니다"; }
-  }, function (er) { sv.disabled = false; sv.textContent = "저장"; $("nclhint").textContent = er.message || "저장하지 못했습니다"; });
+  nclPut(rec, x).then(function () { sv.disabled = false; sv.textContent = "저장"; nclClose(); toast(x ? "수정했습니다" : "저장했습니다"); draw(); },
+    function (er) { sv.disabled = false; sv.textContent = "저장"; $("nclhint").textContent = er.message || "저장하지 못했습니다"; });
 };
 
 /* ── 엑셀 (관리대장과 같은 칸 순서) ── */
