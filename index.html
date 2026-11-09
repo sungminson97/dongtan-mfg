@@ -1337,10 +1337,10 @@ html.gate,html.gate body{overflow:hidden}
 .nsh td.c-body{text-align:left;white-space:normal;line-height:1.45}
 .nsh td.c-prj{font-weight:900}.nsh td.c-no{font-family:var(--mono);color:var(--sub);font-size:12px}
 .nsh td.c-qty{font-family:var(--mono);font-weight:900}
-.nsh.hasdr .c-act{position:sticky;right:0;background:var(--card);box-shadow:-8px 0 12px -10px rgba(0,0,0,.35)}
+.nsh .c-act{position:sticky;right:0;background:var(--card);box-shadow:-8px 0 12px -10px rgba(0,0,0,.35)}
 .nsh th.c-act{background:var(--bg2);z-index:2}.nsh:not(.hasdr) th.c-act{border-left-width:0}
 .nsh tr.nrow:hover td{background:color-mix(in srgb,var(--ac) 5%,var(--card))}
-.nsh tr.nrow.can{cursor:pointer}
+
 .nhint{font-size:11.5px;color:var(--sub);opacity:0;transition:opacity .15s}
 .nsh tr.nrow:hover .nhint{opacity:1}
 .nsh td.nemp{padding:14px}
@@ -1367,6 +1367,15 @@ select.nin.npl{height:34px;font-size:12.5px}
 .ncc{border:1px solid var(--line);color:var(--sub);background:var(--card)}
 .ndl{color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:var(--card)}.ndl.arm{background:var(--warn);color:#fff}
 @media (max-width:640px){.nsheet{padding:18px 16px 12px}.nst h3{font-size:18px}.nkb{min-width:0;width:100%}.nnew{margin-left:0;flex:1 1 100%}.nleg{display:none}}
+
+.nleg i.e{background:color-mix(in srgb,var(--ac) 22%,var(--card))}
+.nsh tr.ndr.ed td,.nsh tr.ndr.ed td.c-act{background:color-mix(in srgb,var(--ac) 16%,var(--card))}
+.nsh tr.ndr.ed td.auto{background:color-mix(in srgb,var(--ac) 8%,var(--bg2))}
+.nst2{display:block;font-size:10.5px;font-weight:900;color:#b45309;font-family:inherit;white-space:nowrap}
+tr.ndr.ed .nst2{color:var(--ac)}
+.ned{height:30px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12.5px;font-weight:800}
+.ned:hover{border-color:var(--ac);color:var(--ac)}
+.nsh tr.nrow:hover td.c-act{background:color-mix(in srgb,var(--ac) 5%,var(--card))}
 </style>
 </head>
 <body>
@@ -1647,9 +1656,9 @@ select.nin.npl{height:34px;font-size:12.5px}
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
-          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">'작성하기'를 누르면 표 맨 위에 입력 줄이 생깁니다 · 기록을 누르면 그 자리에서 수정합니다</p></div></div>
+          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 오른쪽 '수정' → 파란 줄에서 고치고 '수정 완료'</p></div></div>
           <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
-          <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>입력 중인 줄<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
+          <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
           <div class="tbw ewd nshw"><table class="nsh" id="ncltbl"><thead></thead><tbody id="ncltb"></tbody></table></div>
         </div>
@@ -1718,9 +1727,9 @@ select.nin.npl{height:34px;font-size:12.5px}
     <div class="nclh" id="nclph"></div>
     <div class="row"><label>출하 프로젝트 명<input id="nclsn" placeholder="자동 입력"></label><label>TYPE<input id="nclty" placeholder="자동 입력"></label></div>
     <div class="row"><label>출하월<select id="nclsm"></select></label><label>위치<select id="nclpos"></select></label></div>
-    <div class="row"><label>불량 수량<input id="nclqt" type="number" inputmode="numeric" min="1" max="999" step="1"></label><label>검사구분<select id="nclin"></select></label></div>
-    <div class="row"><label>불량 (대분류)<select id="nclc1"></select></label><label>불량 (중분류)<select id="nclc2"></select></label></div>
-    <div class="row"><label>불량 (소분류)<select id="nclc3"></select></label><label>귀책<select id="nclbl"></select></label></div>
+    <div class="row"><label>불량 수량<input id="nclqt" type="number" inputmode="numeric" min="1" max="999" step="1"></label><label>불량 (대분류)<select id="nclc1"></select></label></div>
+    <div class="row"><label>불량 (중분류)<select id="nclc2"></select></label><label>불량 (소분류)<select id="nclc3"></select></label></div>
+    <div class="row"><label>귀책<select id="nclbl"></select></label><label>검사구분<select id="nclin"></select></label></div>
     <div class="row"><label>업체 담당자<input id="nclvw" placeholder="예) 홍길동"></label><label>제조 담당자<input id="nclmw"></label></div>
     <label>불량 내용<textarea id="nclbd" placeholder="예) 전장 판넬부 프레임 30파이 각관 홀캡 누락"></textarea></label>
     <div class="nclerr" id="nclhint"></div>
@@ -5651,7 +5660,7 @@ function drawNcl() {
 var NCLC = [["no", "NO.", 42], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
   ["ship_name", "출하 프로젝트 명", 140, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 126, "txt"], ["pos", "위치", 110, "sel"],
   ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
-  ["insp", "검사구분", 80, "sel"], ["blame", "귀책", 96, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"], ["act", "", 128]];
+  ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"], ["act", "", 186]];
 var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
 NCL.dr = []; NCL.dn = 0;
 function nclPl(k, v) {   // 드롭다운 값 색 (시트 칩처럼)
@@ -5702,11 +5711,12 @@ function nclRender() {
     var tr = el("tr", "nrow" + (nclCan(x) ? " can" : ""));
     tr.innerHTML = NCLC.map(function (c) {
       var k = c[0], v = k === "no" ? no[x.id] || "" : k === "site" ? x.site || "동탄" : k === "occ_date" ? String(x.occ_date).slice(5).replace("-", "/") : k === "act" ? "" : x[k];
-      if (k === "act") return '<td class="c-act"><span class="nhint">' + (nclCan(x) ? "눌러서 수정" : "보기") + "</span></td>";
+      if (k === "act") return '<td class="c-act">' + (nclCan(x) ? '<button type="button" class="ned">수정</button>' : "") + "</td>";
       if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
       return '<td class="c-' + k + '">' + esc(v == null ? "" : v) + "</td>";
     }).join("");
-    tr.onclick = function () { nclEdit(x); }; tb.appendChild(tr);
+    var eb = tr.querySelector(".ned"); if (eb) eb.onclick = function () { nclEdit(x); };   // 수정은 '수정' 버튼으로만 (줄을 눌러도 안 바뀜)
+    tb.appendChild(tr);
     var d = el("div", "nclm");
     d.innerHTML = '<b><span class="nno">' + (no[x.id] || "") + "</span>" + esc(x.prj) + '</b><span class="nqt">' + (+x.qty || 0) + "건</span>" +
       '<div class="s1">' + esc(x.body) + "</div>" +
@@ -5748,17 +5758,17 @@ function nclEdit(x) {
   if (nclMob() || !nclCan(x)) { nclOpen(x); return; }
   if (NCL.dr.some(function (d) { return d.x && d.x.id === x.id; })) return;
   var v = {}; NCLF.forEach(function (k) { v[k] = x[k] == null ? "" : x[k]; });
-  var d = { key: "e" + x.id, x: x, au: {}, v: v }; NCL.dr.push(d); nclRender(); nclFocus(d, "body");
+  var d = { key: "e" + x.id, x: x, au: { ship_name: 1, type: 1, ship_month: 1 }, v: v }; NCL.dr.push(d); nclRender(); nclFocus(d, "body");
 }
 function nclFocus(d, k) { setTimeout(function () { var i = document.querySelector('#ncltb tr[data-key="' + d.key + '"] [data-k="' + k + '"]'); if (i) { try { i.focus({ preventScroll: k === "prj" }); if (i.select && k !== "prj") i.select(); } catch (e) {} } }, 30); }
 function nclDraftRow(d, noTxt) {
   var tr = el("tr", "ndr" + (d.x ? " ed" : "")); tr.dataset.key = d.key;
   NCLC.forEach(function (c) {
     var k = c[0], td = el("td", "c-" + k), v = d.v[k] == null ? "" : d.v[k];
-    if (k === "no") td.textContent = d.x ? noTxt : "신규";
+    if (k === "no") { td.innerHTML = d.x ? noTxt + '<small class="nst2">수정 중</small>' : '<small class="nst2">새 기록</small>'; }
     else if (k === "site") td.textContent = "동탄";
     else if (k === "act") {
-      var sv = el("button", "nsv", "저장"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
+      var sv = el("button", "nsv", d.x ? "수정 완료" : "추가"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
       var cc = el("button", "ncc", "취소"); cc.type = "button"; cc.onclick = function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); };
       td.appendChild(sv); td.appendChild(cc);
       if (d.x) { var dl = el("button", "ndl", "삭제"); dl.type = "button"; dl.onclick = function () { nclDraftDel(d, dl); }; td.appendChild(dl); }
@@ -5778,22 +5788,24 @@ function nclDraftRow(d, noTxt) {
     }
     tr.appendChild(td);
   });
-  if (!$("ncldl").options.length) $("ncldl").innerHTML = D.eq.map(function (e) { return e.n; }).sort().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
+  if ($("ncldl").options.length !== nclNames().length) $("ncldl").innerHTML = nclNames().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
   return tr;
 }
-function nclPh(h, v) { var e = nclEqOf(v); h.className = "nph" + (e ? " ok" : v ? " w" : ""); h.textContent = e ? [e.loc ? "동탄 " + e.loc : "", e.out ? "출하 " + md(e.out) : ""].filter(Boolean).join(" · ") || "등록 장비" : v ? "대시보드에 없는 장비" : ""; }
+function nclPh(h, v) {
+  var e = nclEqOf(v), a = e ? null : nclAuto(v);
+  h.className = "nph" + (e || a ? " ok" : v ? " w" : "");
+  h.textContent = e ? [e.loc ? "동탄 " + e.loc : "", e.out ? "출하 " + md(e.out) : ""].filter(Boolean).join(" · ") || "등록 장비" : a ? "예전 기록으로 자동 입력" : v ? "목록에 없는 장비 · 직접 입력" : "";
+}
 function nclDraftIn(d, tr, k, inp) {
   d.v[k] = inp.value; inp.classList.remove("bad"); delete d.au[k];
   if (inp.tagName === "SELECT") inp.className = "nin npl " + nclPl(k, inp.value);
   if (k === "prj") {
-    var e = nclEqOf(inp.value);
-    if (e) {
-      var outD = e.out || sd(e, 10)[0] || "";
-      [["type", e.t], ["ship_name", (e.ds && e.ds.sn) || e.n], ["ship_month", nclMon(outD)]].forEach(function (p) {
-        if (d.v[p[0]] && !d.au[p[0]]) return;
-        d.v[p[0]] = p[1] || ""; d.au[p[0]] = 1; var f = tr.querySelector('[data-k="' + p[0] + '"]'); if (f) f.value = d.v[p[0]];
-      });
-    }
+    var a = nclAuto(inp.value);   // 발주 프로젝트 명이 바뀌면 출하 프로젝트 명 · TYPE · 출하월은 항상 다시 채움
+    ["ship_name", "type", "ship_month"].forEach(function (k2) {
+      if (!a && !d.au[k2]) return;   // 못 찾으면: 직접 적은 칸은 그대로 · 자동으로 채웠던 칸만 비움
+      d.v[k2] = a ? a[k2] : ""; if (a) d.au[k2] = 1; else delete d.au[k2];
+      var f = tr.querySelector('[data-k="' + k2 + '"]'); if (f) f.value = d.v[k2];
+    });
     nclPh(tr.querySelector(".nph"), inp.value);
   }
 }
@@ -5829,8 +5841,8 @@ function nclDraftSave(d, tr) {
   if (bad.length) { bad.forEach(function (b) { var f = tr.querySelector('[data-k="' + b[0] + '"]'); if (f) f.classList.add("bad"); }); toast(bad[0][1]); var f0 = tr.querySelector('[data-k="' + bad[0][0] + '"]'); if (f0) f0.focus(); return; }
   d.busy = 1; var sv = tr.querySelector(".nsv"); sv.disabled = true; sv.textContent = "저장 중…";
   nclPut(rec, d.x).then(function () {
-    NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast(d.x ? "수정했습니다" : "저장했습니다"); nclRender();
-  }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = "저장"; toast(er.message || "저장하지 못했습니다"); });
+    NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast(d.x ? "수정했습니다" : "추가했습니다"); nclRender();
+  }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = d.x ? "수정 완료" : "추가"; toast(er.message || "저장하지 못했습니다"); });
 }
 function nclDraftDel(d, b) {
   if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한 번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
@@ -5856,14 +5868,22 @@ $("nclk").querySelector("button").onclick = function () { openLogin("1차 검수
 })();
 var NCLF = ["prj", "occ_date", "ship_name", "type", "ship_month", "pos", "qty", "insp", "cat1", "cat2", "cat3", "blame", "vendor_who", "mfg_who", "body"];
 var NCLI = { prj: "nclp", occ_date: "ncld", ship_name: "nclsn", type: "nclty", ship_month: "nclsm", pos: "nclpos", qty: "nclqt", insp: "nclin", cat1: "nclc1", cat2: "nclc2", cat3: "nclc3", blame: "nclbl", vendor_who: "nclvw", mfg_who: "nclmw", body: "nclbd" };
+function nclNames() { var m = {}; D.eq.forEach(function (e) { m[e.n] = 1; }); (NCL.rows || []).forEach(function (x) { if (x.prj) m[x.prj] = 1; }); return Object.keys(m).sort(); }
+function nclAuto(v) {
+  var e = nclEqOf(v);
+  if (e) return { ship_name: (e.ds && e.ds.sn) || e.n, type: e.t || "", ship_month: nclMon(e.out || sd(e, 10)[0] || "") };
+  var k = nq(v); if (!k) return null;
+  var r = (NCL.rows || []).filter(function (x) { return nq(x.prj) === k && (x.ship_name || x.type); })[0];   // 출하가 오래돼 대시보드에서 빠진 장비 → 예전 기록에서
+  return r ? { ship_name: r.ship_name || r.prj, type: r.type || "", ship_month: r.ship_month || "" } : null;
+}
 function nclEqOf(v) { var k = nq(v); if (!k) return null; return D.eq.filter(function (e) { return nq(e.n) === k; })[0] || null; }
 function nclOpen(x) {
   var me = authName(); if (!me) { openLogin("1차 검수 부적합 기록은 로그인 후 이용할 수 있습니다"); return; }
   NCL.ed = x; var can = nclCan(x);
-  $("ncldl").innerHTML = D.eq.map(function (e) { return e.n; }).sort().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
+  $("ncldl").innerHTML = nclNames().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
   $("nclft").textContent = x ? "부적합 기록 #" + (nclNo()[x.id] || "") : "부적합 기록";
   var v = x || { occ_date: D.today, qty: 1, insp: "제조", mfg_who: me };
-  NCLF.forEach(function (k) { var f = $(NCLI[k]); f.value = v[k] == null ? "" : v[k]; f.disabled = !can; f.classList.remove("bad"); delete f.dataset.auto; });
+  NCLF.forEach(function (k) { var f = $(NCLI[k]); f.value = v[k] == null ? "" : v[k]; f.disabled = !can; f.classList.remove("bad"); if (/^(ship_name|type|ship_month)$/.test(k)) f.dataset.auto = "1"; else delete f.dataset.auto; });
   $("nclwr").textContent = x ? dname(x.writer, "") + (x.updated_by && x.updated_by !== x.writer ? " · 수정 " + x.updated_by : "") : dname(me, authTitle());
   $("nclwrs").textContent = x ? "기록 " + kday(x.created_at) : "로그인한 이름으로 자동 기록";
   $("nclhint").textContent = ""; nclEqHint();
@@ -5882,14 +5902,15 @@ function nclEqHint() {
   h.className = "nclh"; h.textContent = "";
   if (!$("nclp").value.trim()) { h.textContent = "장비명 일부만 입력해도 목록에서 고를 수 있습니다"; return; }
   if (e) { h.className = "nclh ok"; h.textContent = [e.t, e.loc ? "동탄 " + e.loc : "", e.out ? "출하 " + md(e.out) : ""].filter(Boolean).join(" · "); }
+  else if (nclAuto($("nclp").value)) { h.className = "nclh ok"; h.textContent = "예전 기록으로 출하 프로젝트 명 · TYPE · 출하월을 채웠습니다"; }
   else { h.className = "nclh w"; h.textContent = "대시보드에 없는 장비입니다 · TYPE과 출하 정보를 직접 입력해 주세요"; }
 }
 $("nclp").addEventListener("input", function () {
-  var e = nclEqOf(this.value);
-  if (e) {
-    var sh = (e.ds && e.ds.sn) || e.n, outD = e.out || sd(e, 10)[0] || "";
-    [["nclty", e.t], ["nclsn", sh], ["nclsm", nclMon(outD)]].forEach(function (p) { var f = $(p[0]); if (!f.value || f.dataset.auto) { f.value = p[1] || ""; f.dataset.auto = "1"; } });
-  }
+  var a = nclAuto(this.value);
+  [["nclsn", "ship_name"], ["nclty", "type"], ["nclsm", "ship_month"]].forEach(function (p) {
+    var f = $(p[0]); if (!a && !f.dataset.auto) return;
+    f.value = a ? a[p[1]] : ""; if (a) f.dataset.auto = "1"; else delete f.dataset.auto;
+  });
   nclEqHint();
 });
 ["nclty", "nclsn", "nclsm"].forEach(function (id) { $(id).addEventListener("input", function () { delete this.dataset.auto; }); $(id).addEventListener("change", function () { delete this.dataset.auto; }); });
@@ -5915,15 +5936,15 @@ $("nclfm").onsubmit = function (ev) {
 /* ── 엑셀 (관리대장과 같은 칸 순서) ── */
 function nclBuild(X, L) {
   var T = D.today, fn = "동탄_제조1차검수_부적합_" + T + ".xlsx", no = nclNo();
-  var H = ["NO.", "사업장", "출하월", "발생일(검수일)", "출하 프로젝트 명", "발주 프로젝트 명", "TYPE", "위치", "불량 수량", "불량(대분류)", "불량(중분류)", "불량(소분류)", "검사구분", "귀책", "업체 담당자", "제조 담당자", "불량내용", "기록"];
+  var H = ["NO.", "사업장", "출하월", "발생일(검수일)", "출하 프로젝트 명", "발주 프로젝트 명", "TYPE", "위치", "불량 수량", "불량(대분류)", "불량(중분류)", "불량(소분류)", "귀책", "검사구분", "업체 담당자", "제조 담당자", "불량내용", "기록"];
   var S = L.slice().sort(function (a, b) { return (no[a.id] || 0) - (no[b.id] || 0); });
-  var rows = S.map(function (x) { return { v: [no[x.id] || "", x.site || "동탄", x.ship_month, x.occ_date, x.ship_name || x.prj, x.prj, x.type, x.pos, +x.qty || 0, x.cat1, x.cat2, x.cat3, x.insp, x.blame, x.vendor_who, x.mfg_who, x.body, x.writer], c: { 5: { bold: true } } }; });
+  var rows = S.map(function (x) { return { v: [no[x.id] || "", x.site || "동탄", x.ship_month, x.occ_date, x.ship_name || x.prj, x.prj, x.type, x.pos, +x.qty || 0, x.cat1, x.cat2, x.cat3, x.blame, x.insp, x.vendor_who, x.mfg_who, x.body, x.writer], c: { 5: { bold: true } } }; });
   var eqs = {}, qty = 0; S.forEach(function (x) { eqs[nq(x.prj)] = 1; qty += +x.qty || 0; }); var ne = Object.keys(eqs).length;
   if (!X) return { fn: fn, csv: [["검수장비", ne], ["불량갯수", qty], ["평균값", ne ? Math.round(qty / ne * 100) / 100 : 0], []].concat([H], rows.map(function (r) { return r.v; })) };
   var wb = new X.Workbook();
   var flt = [NCL.m !== "all" ? NCL.m.slice(0, 4) + "년 " + (+NCL.m.slice(5)) + "월" : "", NCL.c !== "all" ? NCL.c : "", NCL.q ? "'" + NCL.q + "'" : ""].filter(Boolean).join(" · ");
   xlSheet(wb, "제조1차 검수 부적합_동탄", "제조1차 검수 부적합 관리대장 · 동탄" + (flt ? " (" + flt + ")" : ""), xlStamp() + " · 검수장비 " + ne + "대 · 불량갯수 " + qty + "건 · 평균값 " + (ne ? Math.round(qty / ne * 100) / 100 : 0),
-    H.map(function (h, j) { return { h: h, w: [6, 8, 8, 13, 18, 18, 18, 11, 9, 12, 13, 13, 9, 11, 11, 11, 46, 9][j], c: j <= 3 || j === 7 || j === 12, n: j === 8, wrap: j === 16 }; }), rows, { land: true, h: 22 });
+    H.map(function (h, j) { return { h: h, w: [6, 8, 8, 13, 18, 18, 18, 11, 9, 12, 13, 13, 11, 9, 11, 11, 46, 9][j], c: j <= 3 || j === 7 || j === 13, n: j === 8, wrap: j === 16 }; }), rows, { land: true, h: 22 });
   return { wb: wb, fn: fn, msg: "부적합 관리대장 엑셀을 내려받았습니다" };
 }
 
