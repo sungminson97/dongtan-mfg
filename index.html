@@ -1385,6 +1385,20 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .nnew.off{background:var(--bg2);color:var(--sub);box-shadow:none}
 .nro2{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--sub)}
 .nro2:not([hidden])+.nnew{margin-left:0}
+.nhelp{line-height:1.65}.nhm{display:none}
+@media (max-width:640px){.nhp{display:none}.nhm{display:block}}
+/* 장비 검색 고르기 */
+.eqp{position:relative;display:grid;gap:6px}
+.eqps{position:absolute!important;width:1px!important;height:1px!important;opacity:0;pointer-events:none;left:0;top:0}
+.fm .eqp .eqpi{width:100%;padding-right:40px;background-image:linear-gradient(45deg,transparent 50%,var(--sub) 50%),linear-gradient(135deg,var(--sub) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 15px) 21px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.eqp.on .eqpi{border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 18%,transparent)}
+.eqpl{max-height:280px;overflow-y:auto;overscroll-behavior:contain;border:1px solid var(--line);border-radius:12px;background:var(--card);padding:6px;box-shadow:var(--sh)}
+.eqpg{padding:8px 10px 4px;font-size:11.5px;font-weight:800;color:var(--sub)}
+.eqpo{display:grid;width:100%;text-align:left;gap:2px;padding:9px 10px;border-radius:9px;color:var(--text)}
+.eqpo b{font-size:14px;font-weight:900}.eqpo small{font-size:12px;font-weight:700;color:var(--sub)}
+.eqpo:hover,.eqpo.hi{background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.eqpo.on b{color:var(--ac)}
+.eqpn{padding:14px;text-align:center;font-size:13px;font-weight:700;color:var(--sub)}
 </style>
 </head>
 <body>
@@ -1665,7 +1679,7 @@ tr.ndr.ed .nst2{color:var(--ac)}
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
-          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '수정 완료'</p></div></div>
+          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2 nhelp nhp">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '수정 완료'<br>발주 프로젝트 명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p><p class="ds2 nhelp nhm">새 기록은 '작성하기' · 기록을 누르면 자세히 보거나 고칠 수 있습니다<br>장비명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p></div></div>
           <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
@@ -1944,7 +1958,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-142958";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-143533";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -6008,6 +6022,68 @@ function nclShow(i) {
   if (l < w.scrollLeft) w.scrollLeft = Math.max(0, l - 40); else if (r > w.scrollLeft + w.clientWidth) w.scrollLeft = r - w.clientWidth + 64;
   var y = i.getBoundingClientRect(); if (y.top < 80 || y.bottom > innerHeight - 20) window.scrollBy(0, y.top - innerHeight / 2);
 }
+
+/* ═════ 장비 고르기: 검색해서 아래 목록에서 고르기 (기구 · 전장 · FT · 품질 · 입고출하 · 이력 기록) ═════
+ * 원래 <select>는 그대로 두고(저장 코드가 select 값을 읽음) 화면에서만 숨김 → 검색 칸 + 목록으로 고름 */
+var EQP_D = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, "value");
+function eqPick(sel) {
+  if (!sel || sel._eqp) return; sel._eqp = 1;
+  var w = el("div", "eqp"), inp = el("input", "eqpi"), ls = el("div", "eqpl"), act = -1, open = false;
+  inp.type = "text"; inp.autocomplete = "off"; inp.spellcheck = false; inp.placeholder = "장비명 · 자리 · TYPE으로 검색";
+  inp.setAttribute("role", "combobox"); ls.hidden = true;
+  sel.parentNode.insertBefore(w, sel); w.appendChild(inp); w.appendChild(ls); w.appendChild(sel); sel.classList.add("eqps");
+  // 보이는 글자: 장비명 · TYPE · (입고 예정일) · 자리 B4  — 원래 '자리 · 장비명 · TYPE' 순서라 자리를 모를 수 있어서 뒤로
+  function parts(o) {
+    var p = o.textContent.split(" · "), i = p.indexOf(o.value), bef = i >= 0 ? p.slice(0, i) : [], aft = i >= 0 ? p.slice(i + 1) : p.slice(1);
+    var loc = bef.filter(function (x) { return /^[A-Z]\d{1,2}$/.test(x) || x === "미배정"; }), oth = bef.filter(function (x) { return loc.indexOf(x) < 0; });
+    return { nm: o.value, sub: aft.concat(oth, loc.map(function (x) { return x === "미배정" ? "자리 미배정" : "자리 " + x; })) };
+  }
+  function lab(o) { if (!o) return ""; if (!o.value) return o.textContent; var q = parts(o); return [q.nm].concat(q.sub).join(" · "); }
+  function cur() { return sel.options[sel.selectedIndex] || null; }
+  function sync() {   // select 값 → 검색 칸 글자
+    var o = cur(); inp.disabled = sel.disabled;
+    if (document.activeElement !== inp || !open) inp.value = o && o.value ? lab(o) : "";
+    if (sel.disabled) inp.placeholder = o ? lab(o) : "고를 장비가 없습니다"; else inp.placeholder = "장비명 · 자리 · TYPE으로 검색";
+  }
+  Object.defineProperty(sel, "value", { configurable: true, get: function () { return EQP_D.get.call(this); }, set: function (v) { EQP_D.set.call(this, v); sync(); } });
+  new MutationObserver(function () { sync(); if (open) draw(); }).observe(sel, { childList: true, subtree: true, attributes: true, attributeFilter: ["disabled"] });
+  function items() {
+    var k = nq(open ? inp.value : ""), o = cur(), same = o && inp.value === lab(o);
+    return [].filter.call(sel.options, function (x) { return x.value && (!k || same || nq(x.textContent + " 자리" + lab(x)).indexOf(k) >= 0); });
+  }
+  function draw() {
+    var L = items(), g = null; ls.innerHTML = ""; act = Math.min(act, L.length - 1);
+    if (!L.length) { ls.appendChild(el("div", "eqpn", "검색 결과가 없습니다")); return; }
+    L.forEach(function (x, i) {
+      var gl = x.parentNode && x.parentNode.tagName === "OPTGROUP" ? x.parentNode.label : "";
+      if (gl && nq(inp.value) && !(cur() && inp.value === lab(cur()))) gl = gl.replace(/\s*\(\d+대\)$/, "");   // 검색 중엔 묶음 대수 빼기 (헷갈리지 않게)
+      if (gl !== g) { g = gl; if (gl) ls.appendChild(el("div", "eqpg", gl)); }
+      var b = el("button", "eqpo" + (x.value === sel.value ? " on" : "") + (i === act ? " hi" : "")); b.type = "button"; b.tabIndex = -1;
+      var q = parts(x);
+      b.appendChild(el("b", null, q.nm)); b.appendChild(el("small", null, q.sub.join(" · ")));
+      b.onmousedown = function (e) { e.preventDefault(); };   // 고르기 전에 칸이 닫히지 않게
+      b.onclick = function () { pick(x.value); };
+      ls.appendChild(b);
+    });
+    var h = ls.querySelector(".hi"); if (h) h.scrollIntoView({ block: "nearest" });
+  }
+  function show() { if (sel.disabled) return; open = true; ls.hidden = false; w.classList.add("on"); act = -1; draw(); }
+  function hide() { open = false; ls.hidden = true; w.classList.remove("on"); sync(); }
+  function pick(v) { EQP_D.set.call(sel, v); sel.dispatchEvent(new Event("change", { bubbles: true })); open = false; sync(); hide(); }
+  inp.addEventListener("focus", function () { show(); try { inp.select(); } catch (e) {} });
+  inp.addEventListener("input", function () { if (!open) show(); act = 0; draw(); });
+  inp.addEventListener("blur", function () { setTimeout(hide, 120); });
+  inp.addEventListener("keydown", function (e) {
+    if (!open && (e.key === "ArrowDown" || e.key === "Enter")) { show(); e.preventDefault(); return; }
+    var L = items();
+    if (e.key === "ArrowDown") { e.preventDefault(); act = Math.min(L.length - 1, act + 1); draw(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); act = Math.max(0, act - 1); draw(); }
+    else if (e.key === "Enter") { e.preventDefault(); var x = L[act >= 0 ? act : 0]; if (x) pick(x.value); }
+    else if (e.key === "Escape") { e.stopPropagation(); hide(); inp.blur(); }
+  });
+  sync();
+}
+["me", "ee", "qie", "fie", "fte", "sie", "fe"].forEach(function (id) { try { eqPick($(id)); } catch (e) {} });
 
 /* ── 시계 ── */
 function tick() { var d = new Date(); $("clock").textContent = "동탄 사업장 · " + md(ymd(d)) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + " 실시간"; }
