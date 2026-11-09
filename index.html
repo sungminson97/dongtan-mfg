@@ -391,21 +391,25 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .etbl .pst .pbar{flex:1;margin:0;max-width:90px}
 .etbl .pst em{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--sub)}
 .etbl td .dd{margin-left:8px}
-/* 긴급(PR.1) 공정 일정 펼치기 (2026-11-09) */
+/* 🔢 PR 필터 (2026-11-09) */
+.etbl th.thf .thw{display:flex;align-items:center;gap:12px}
+.prf{display:inline-flex;align-items:center;gap:7px;padding:5px 6px 5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);color:var(--sub);font:inherit;font-size:12px;font-weight:800;cursor:pointer;transition:border-color .2s,background .2s}
+.prf:hover{border-color:var(--sub)}
+.prf b{padding:2px 9px;border-radius:999px;background:var(--card);color:var(--text);font-size:12px;font-weight:800}
+.prf.on{border-color:var(--warn);color:var(--warn)}
+.prf.on b{background:var(--warn);color:#fff}
+.prf.on.p2{border-color:#f59e0b;color:#f59e0b}
+.prf.on.p2 b{background:#f59e0b}
+.prfbar{display:flex;margin:0 0 12px}
+.prfm{position:fixed;z-index:80;min-width:230px;padding:6px;border-radius:16px;background:var(--card);border:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.28);animation:fade .18s both}
+.prfm .it{display:grid;gap:2px;width:100%;padding:10px 12px;border:0;border-radius:11px;background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.prfm .it:hover{background:var(--bg2)}
+.prfm .it.on{background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.prfm .it b{font-size:13.5px;font-weight:800}
+.prfm .it span{font-size:11.5px;font-weight:700;color:var(--sub)}
 .etbl .rk{display:inline-grid;place-items:center;width:22px;height:22px;margin-right:10px;border-radius:50%;background:var(--warn);color:#fff;font-family:var(--mono);font-size:11.5px;font-weight:800;vertical-align:middle}
-.etbl tr.xo td{border-bottom:0;background:color-mix(in srgb,var(--text) 3%,transparent)}
-.etbl tr.xr td{white-space:normal;padding:2px 12px 16px;background:color-mix(in srgb,var(--text) 3%,transparent)}
-.estr{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.card .estr{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-.estr .s{display:inline-flex;align-items:baseline;gap:6px;padding:6px 10px;border-radius:10px;border:1px solid var(--line);font-size:12.5px;font-weight:700;color:var(--text);white-space:nowrap}
-.estr .s i{font-style:normal}
-.estr .s b{font-family:var(--mono);font-weight:800}
-.estr .s em{font-style:normal;font-size:11px;font-weight:800}
-.estr .s.d{opacity:.42}
-.estr .s.c{background:color-mix(in srgb,var(--c) 16%,transparent);border-color:var(--c);color:var(--c)}
-.estr .s.n{border-color:var(--c);color:var(--c)}
-.estr .more{margin-left:auto;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;font-size:12.5px;font-weight:800;cursor:pointer}
-.ehint{font-size:12.5px;font-weight:700;color:var(--sub);margin:0 2px 10px}
+.etbl .rk.p2{background:#f59e0b}
+.tag.p2{background:color-mix(in srgb,#f59e0b 16%,transparent);color:#f59e0b}
 /* 막대 */
 .bars{display:grid;gap:10px;margin-top:16px}
 .bars>div{display:grid;grid-template-columns:96px minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;font-weight:800}
@@ -1720,7 +1724,7 @@ function liveData(eq, lg, nt, mt) {
   var T = ymd(new Date());
   var E = (eq || []).map(function (x) {
     return { n: x.name, t: x.type || "", v: x.vendor || "", p: x.owner || "", loc: (x.loc || "").toUpperCase().trim(), st: Math.max(0, Math.min(10, +x.stage || 0)),
-      inD: x.in_date || "", out: x.out_date || "", q1: x.q1 || "", q2: x.q2 || "", u: !!x.urgent, ds: x.dates && typeof x.dates === "object" ? x.dates : {} };
+      inD: x.in_date || "", out: x.out_date || "", q1: x.q1 || "", q2: x.q2 || "", u: !!x.urgent, pr: x.dates && +x.dates.pr ? +x.dates.pr : (x.urgent ? 1 : 0), ds: x.dates && typeof x.dates === "object" ? x.dates : {} };
   });
   var months = [];   // 최근 6개월 출하(공정 '출하' + 출하일 기준)
   for (var i = 5; i >= 0; i--) { var d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i); var key = ymd(d).slice(0, 7); months.push([(d.getMonth() + 1) + "월", E.filter(function (e) { return e.st === 10 && e.out && e.out.slice(0, 7) === key; }).length]); }
@@ -2307,45 +2311,38 @@ function eqBuild(X, list, fname, q, tag) {
 }
 function drawEq() {
   var f = $("qf"); f.innerHTML = "";
-  var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급 · PR.1"], ["noloc", "자리 미배정"], ["qc", "시트 업로드 필요"]];
+  var opts = [["all", "전체"], ["act", "진행 중"], ["u", "긴급"], ["noloc", "자리 미배정"], ["qc", "시트 업로드 필요"]];
   if (/^s\d+$/.test(QF)) opts.push([QF, STAGES[+QF.slice(1)]]);
   opts.forEach(function (o) { var b = el("button", "chip" + (QF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { QF = o[0]; drawEq(); }; f.appendChild(b); });
   [].forEach.call($("eqv").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === EQV); b.onclick = function () { EQV = b.dataset.v; sset("eqv", EQV); drawEq(); }; });
   var mon = D.today.slice(0, 7), monL = (+mon.slice(5)) + "월";   // 이번 달 출하 장비만 (검색하면 전체에서)
   var k = nq($("q").value), list = D.eq.filter(function (e) {
     if (k && nq([e.n, e.t, e.v, e.p, e.loc].join(" ")).indexOf(k) < 0 && nq(e.n).indexOf(k) < 0) return false;
-    if (QF === "u") return e.u && (!!k || e.st < 10);   // 긴급(PR.1): 이번 달만이 아니라 출하 전 전부 (검색하면 출하 완료도)
-    if (!k && (e.out || "").slice(0, 7) !== mon) return false;
-    if (QF === "act") return isAct(e); if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요" || e.qi === "업로드 필요";
+    if (PRF) { if (e.pr !== PRF) return false; if (!k && e.st >= 10) return false; }   // 🔢 PR 필터: 이번 달만이 아니라 출하 전 전부
+    else if (!k && (e.out || "").slice(0, 7) !== mon) return false;
+    if (QF === "act") return isAct(e); if (QF === "u") return e.u; if (QF === "noloc") return !e.loc; if (QF === "qc") return e.q1 === "업로드 필요" || e.q2 === "업로드 필요" || e.qi === "업로드 필요";
     if (/^s\d+$/.test(QF)) return e.st === +QF.slice(1);
     return true;
   }).sort(function (a, b) { var x = a.out || "9999", y = b.out || "9999"; return x < y ? -1 : x > y ? 1 : (b.u ? 1 : 0) - (a.u ? 1 : 0); });   // 출하일 없는 장비는 맨 아래
-  var isU = QF === "u";
-  $("qcnt").textContent = (k ? "검색 결과 " : isU ? "긴급 · PR.1 출하 전 " : monL + " 출하 ") + list.length + "대";
-  var fname = (k ? "검색" : isU ? "출하 전" : monL + " 출하") + " · " + (opts.filter(function (o) { return o[0] === QF; })[0] || ["", "전체"])[1];
+  $("qcnt").textContent = (k ? "검색 결과 " : PRF ? "PR." + PRF + " 출하 전 " : monL + " 출하 ") + list.length + "대";
+  var fname = (k ? "검색" : PRF ? "PR." + PRF + " 출하 전" : monL + " 출하") + " · " + (opts.filter(function (o) { return o[0] === QF; })[0] || ["", "전체"])[1];
   xlBtn($("eqx"), "엑셀 다운로드", function (X) { return eqBuild(X, list, fname, $("q").value.trim(), k ? "검색" : monL); });
   var g = $("eqg"); g.innerHTML = "";
-  if (!list.length) { g.appendChild(el("div", "empty", k ? "검색 결과가 없습니다" : isU ? "출하 전 긴급(PR.1) 장비가 없습니다" : monL + " 출하 예정 장비가 없습니다")); return; }
-  if (isU) g.appendChild(el("div", "ehint", EQV === "tbl" ? "줄을 누르면 공정 일정이 펼쳐집니다" : "카드마다 공정 일정이 함께 보입니다 · 누르면 장비 상세"));
+  if (EQV !== "tbl") g.appendChild(prfBar());   // 카드 보기: 필터는 목록 위에
+  if (!list.length) { if (EQV === "tbl") g.appendChild(prfBar()); g.appendChild(el("div", "empty", k ? "검색 결과가 없습니다" : PRF ? (PRF > 1 && !D.eq.some(function (e) { return e.ds && e.ds.pr != null; }) ? "PR." + PRF + " 정보는 다음 자동 반영(15분) 뒤부터 보입니다" : "출하 전 PR." + PRF + " 장비가 없습니다") : monL + " 출하 예정 장비가 없습니다")); return; }
   if (EQV === "tbl") {
     var c0 = el("div", "card"); c0.style.padding = "8px 22px 22px";
     var w = el("div", "tbw"); w.style.margin = "0 -22px -22px";
-    var t = el("table", "tbl etbl"); t.innerHTML = "<thead><tr><th>장비</th><th>TYPE</th><th>현재 공정</th><th>자리</th><th>업체</th><th>담당</th><th>출하 예정</th></tr></thead>";
+    var t = el("table", "tbl etbl"); t.innerHTML = "<thead><tr><th class=\"thf\"></th><th>TYPE</th><th>현재 공정</th><th>자리</th><th>업체</th><th>담당</th><th>출하 예정</th></tr></thead>";
+    var th0 = el("div", "thw"); th0.appendChild(prfBtn()); th0.appendChild(el("span", null, "장비")); t.querySelector(".thf").appendChild(th0);   // 🔢 장비 왼쪽 필터
     var tb = el("tbody");
     list.forEach(function (e, ri) {
       var tr = el("tr"), dd = dday(e.out), pc = Math.round((e.st + 1) / 11 * 100);
-      tr.style.cursor = "pointer";
-      if (isU) {   // 긴급(PR.1): 누르면 바로 아래에 공정 일정 펼치기 (상세는 펼친 줄의 버튼으로)
-        var xr = el("tr", "xr"), xd = el("td"); xd.colSpan = 7; xd.appendChild(eqStrip(e, true)); xr.appendChild(xd);
-        var sync = function () { var on = !!EXO[e.n]; xr.hidden = !on; tr.classList.toggle("xo", on); };
-        tr.onclick = function () { EXO[e.n] = !EXO[e.n]; sync(); };
-        sync();
-      } else tr.onclick = function () { eqOpen(e.n, { eq: 1 }); };
-      tr.innerHTML = '<td>' + (isU ? '<span class="rk">' + (ri + 1) + "</span>" : "") + '<b style="font-family:var(--mono);font-size:15px">' + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</td><td>" + esc(e.t) +
+      tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { eq: 1 }); };
+      tr.innerHTML = '<td>' + (PRF ? '<span class="rk' + (PRF > 1 ? " p2" : "") + '">' + (ri + 1) + "</span>" : "") + '<b style="font-family:var(--mono);font-size:15px">' + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : e.pr > 1 ? ' <span class="tag p2">PR.' + e.pr + "</span>" : "") + "</td><td>" + esc(e.t) +
         '</td><td><div class="pst" style="--c:' + SCOL[e.st] + '"><span class="tag" style="color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent)">' + esc(STAGES[e.st]) + '</span><div class="pbar"><u style="width:' + pc + '%"></u></div><em>' + (e.st + 1) + "/11</em></div></td><td>" + (e.loc ? "<b>" + esc(e.loc) + "</b>" : '<span style="color:var(--sub)">미배정</span>') +
         "</td><td>" + esc(e.v) + "</td><td>" + esc(e.p) + "</td><td><b>" + md(e.out) + '</b><em class="dd ' + dd[1] + '">' + dd[0] + "</em></td>";
       tb.appendChild(tr);
-      if (isU) tb.appendChild(xr);
     });
     t.appendChild(tb); w.appendChild(t); c0.appendChild(w); g.appendChild(c0); return;
   }
@@ -2354,7 +2351,7 @@ function drawEq() {
     var c = el("button", "card eq2 tilt"); c.type = "button"; c.onclick = function () { eqOpen(e.n, { eq: 1 }); };
     c.style.setProperty("--c", SCOL[e.st]);
     c.style.animation = RM ? "" : "fade .5s " + Math.min(i, 12) * 35 + "ms both";
-    var h = el("div", "h"); h.appendChild(el("span", "nm", e.n)); if (e.u) h.appendChild(el("span", "tag r", "긴급")); c.appendChild(h);
+    var h = el("div", "h"); h.appendChild(el("span", "nm", e.n)); if (e.u) h.appendChild(el("span", "tag r", "긴급")); else if (e.pr > 1) h.appendChild(el("span", "tag p2", "PR." + e.pr)); c.appendChild(h);
     c.appendChild(el("div", "ty", e.t));
     var sg = el("div", "sg"), r = el("div", "r"), l = el("div"); l.appendChild(el("span", null, "현재 공정")); l.appendChild(el("b", null, STAGES[e.st])); r.appendChild(l); r.appendChild(el("span", "n", (e.st + 1) + " / 11")); sg.appendChild(r);
     var pb = el("div", "pbar"), u = el("u"); u.style.width = Math.round((e.st + 1) / 11 * 100) + "%"; pb.appendChild(u); sg.appendChild(pb);
@@ -2362,25 +2359,41 @@ function drawEq() {
     c.appendChild(sg);
     var kv = el("div", "kv3"); [["자리", e.loc || "미배정"], ["업체", e.v], ["담당", e.p]].forEach(function (x) { var d = el("div"); d.appendChild(el("span", null, x[0])); d.appendChild(el("b", null, x[1])); kv.appendChild(d); }); c.appendChild(kv);
     var dd = dday(e.out), ft = el("div", "ft2"); ft.appendChild(el("span", null, "출하 예정")); ft.appendChild(el("b", null, md(e.out))); ft.appendChild(el("em", "dd " + dd[1], dd[0])); c.appendChild(ft);
-    if (isU) c.appendChild(eqStrip(e, false));   // 긴급(PR.1): 카드에 공정 일정 같이
     gg.appendChild(c);
   });
 }
 $("q").oninput = function () { drawEq(); };
-/* 긴급(PR.1) 공정 일정 줄 (2026-11-09): 11개 공정 날짜 · 지난 공정 흐리게 · 지금 공정 색 · 다음 공정 테두리
- *  btn=true: 표에서 펼친 줄 → 끝에 '장비 상세' 버튼 */
-var EXO = {};
-function eqStrip(e, btn) {
-  var w = el("div", "estr"), cd0 = e.st < 10 ? sd(e, e.st)[0] : "", fut = !!(cd0 && cd0 > D.today);
-  STAGES.forEach(function (s, i) {
-    var d = sd(e, i)[0], cls = i < e.st ? " d" : i === e.st ? (fut ? " n" : " c") : i === e.st + 1 ? " n" : "";
-    var c = el("span", "s" + cls); c.style.setProperty("--c", SCOL[i]);
-    c.appendChild(el("i", null, s)); c.appendChild(el("b", null, d ? md(d).replace(/\(.\)/, "") : "-"));
-    if (i === e.st) c.appendChild(el("em", null, e.st >= 10 ? "완료" : fut ? "예정" : "진행 중"));
-    w.appendChild(c);
-  });
-  if (btn) { var b = el("button", "more", "장비 상세"); b.type = "button"; b.onclick = function (ev) { ev.stopPropagation(); eqOpen(e.n, { eq: 1 }); }; w.appendChild(b); }
-  return w;
+/* 🔢 PR 필터 (2026-11-09): 표에선 '장비' 머리글 왼쪽 · 카드 보기에선 목록 위
+ *  고르면 그 PR 값 장비를 이번 달만이 아니라 출하 전 전부 · 출하 빠른 순 (위 버튼 필터와 같이 걸림) */
+var PRF = 0;
+function prfCnt(n) { return D.eq.filter(function (e) { return e.pr === n && e.st < 10; }).length; }
+function prfBtn() {
+  var b = el("button", "prf" + (PRF ? " on" + (PRF > 1 ? " p2" : "") : "")); b.type = "button";
+  b.appendChild(el("span", null, "필터")); b.appendChild(el("b", null, PRF ? "PR." + PRF : "전체"));
+  b.onclick = function (ev) { ev.stopPropagation(); prfMenu(b); };
+  return b;
+}
+function prfBar() { var w = el("div", "prfbar"); w.appendChild(prfBtn()); return w; }
+function prfMenu(btn) {
+  var old = $("prfm"); if (old) { old.remove(); return; }
+  var vals = {}; D.eq.forEach(function (e) { if (e.pr > 0 && e.st < 10) vals[e.pr] = 1; }); vals[1] = 1; vals[2] = 1;
+  var m = el("div", "prfm"); m.id = "prfm";
+  var item = function (v, t, sub) {
+    var it = el("button", "it" + (PRF === v ? " on" : "")); it.type = "button";
+    it.appendChild(el("b", null, t)); if (sub) it.appendChild(el("span", null, sub));
+    it.onclick = function (ev) { ev.stopPropagation(); PRF = v; m.remove(); drawEq(); };
+    m.appendChild(it);
+  };
+  item(0, "전체", "이번 달 출하");
+  Object.keys(vals).map(Number).sort(function (a, b) { return a - b; }).forEach(function (v) { item(v, "PR." + v + (v === 1 ? " · 긴급" : ""), "출하 전 " + prfCnt(v) + "대 · 출하 빠른 순"); });
+  document.body.appendChild(m);
+  var r = btn.getBoundingClientRect(), w = m.offsetWidth;
+  m.style.top = (r.bottom + 8) + "px"; m.style.left = Math.max(12, Math.min(r.left, window.innerWidth - w - 12)) + "px";
+  setTimeout(function () {
+    var close = function (ev) { if (!m.contains(ev.target)) { m.remove(); document.removeEventListener("click", close, true); window.removeEventListener("scroll", close2, true); } };
+    var close2 = function () { m.remove(); document.removeEventListener("click", close, true); window.removeEventListener("scroll", close2, true); };
+    document.addEventListener("click", close, true); window.addEventListener("scroll", close2, true);
+  }, 0);
 }
 
 function kpiRow(id, arr) {
