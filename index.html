@@ -1380,6 +1380,11 @@ tr.ndr.ed .nst2{color:var(--ac)}
 .nshw.nclfl{-webkit-mask-image:linear-gradient(to right,transparent,#000 40px);mask-image:linear-gradient(to right,transparent,#000 40px)}
 .nshw.nclfr.nclfl{-webkit-mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 64px),transparent)}
 .nsheet{overflow:clip}
+.neqb{font:inherit;font-weight:900;color:inherit;padding:0;background:none;border:0;cursor:pointer;text-decoration:underline;text-decoration-color:color-mix(in srgb,var(--text) 25%,transparent);text-underline-offset:4px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.neqb:hover{color:var(--ac);text-decoration-color:var(--ac)}
+.nnew.off{background:var(--bg2);color:var(--sub);box-shadow:none}
+.nro2{margin-left:auto;font-size:12.5px;font-weight:800;color:var(--sub)}
+.nro2:not([hidden])+.nnew{margin-left:0}
 </style>
 </head>
 <body>
@@ -1661,7 +1666,7 @@ tr.ndr.ed .nst2{color:var(--ac)}
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
           <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '수정 완료'</p></div></div>
-          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
+          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
           <div class="tbw ewd nshw"><table class="nsh" id="ncltbl"><thead></thead><tbody id="ncltb"></tbody></table></div>
@@ -1939,6 +1944,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
+var VER_BUILD = "20261109-142958";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -1946,10 +1952,11 @@ function verCheck() {
   fetch(location.pathname + "?v=" + Date.now(), { cache: "no-store" }).then(function (r) {
     if (!r.ok) return "";
     var et = r.headers.get("etag");
-    return et ? "e:" + et : r.text().then(function (s) { return s.length > 1000 ? "h:" + verHash(s) : ""; });
+    return r.text().then(function (s) { var m = s.match(new RegExp('var VER_' + 'BUILD = "([^"]+)"')); return m ? "b:" + m[1] : et ? "e:" + et : s.length > 1000 ? "h:" + verHash(s) : ""; });
   }).then(function (t) {
     VER.busy = false;
     if (!t) return;
+    if (t.slice(0, 2) === "b:") { if (t !== "b:" + VER_BUILD) { VER.on = true; updBar(); } return; }   // 올라온 파일 빌드 번호 ≠ 지금 화면 → 안내
     if (VER.tag === null) { VER.tag = t; return; }   // 처음 본 버전 기억
     if (t !== VER.tag) { VER.on = true; updBar(); }
   }, function () { VER.busy = false; });
@@ -5612,7 +5619,12 @@ var NCLO = {
   bl: ["동오정밀", "시노드", "제조1팀", "N/A"]
 };
 var NCL = { rows: null, who: "", err: "", p: null, t: 0, m: "all", c: "all", q: "", ed: null };
-function nclCan(x) { var me = authName(); return !!me && (!x || x.writer === me || me === "손성민"); }
+var NCL_ROLE = "제조";   // 1차 검수 부적합 기록 · 수정: 제조 인원만 (명단은 서버 dt_roles)
+function nclWr() { return !!authName() && hasRole(NCL_ROLE); }
+function nclCan(x) { var me = authName(); return nclWr() && (!x || x.writer === me || me === "손성민"); }
+function nclNoRole() { toast("1차 검수 부적합은 제조 인원만 작성할 수 있습니다 · 보기는 가능합니다"); }
+// 장비명 누르면 공정 상황 (장비 상세)
+function nclEq(prj) { var e = nclEqOf(prj); if (e) eqOpen(e.n, { eq: 1 }); else toast("대시보드 장비 목록에 없는 장비입니다 (출하 후 시간이 지난 장비 등)"); }
 function nclMon(d) { return d ? +String(d).slice(5, 7) + "월" : ""; }
 function nclDemo() {
   var E = D.eq.slice(0, 3), T = D.today;
@@ -5685,18 +5697,20 @@ function nclRender() {
     b.onclick = function () { NCL.c = o[0]; nclRender(); }; ch.appendChild(b);
   });
   if ($("nclq").value !== NCL.q) $("nclq").value = NCL.q;
-  var tbl = $("ncltbl");
-  if (!tbl.dataset.hd) {   // 머리글 · 칸 너비 한 번만
-    tbl.dataset.hd = 1;
-    tbl.insertAdjacentHTML("afterbegin", "<colgroup>" + NCLC.map(function (c) { return '<col style="width:' + c[2] + 'px">'; }).join("") + "</colgroup>");
-    tbl.querySelector("thead").innerHTML = "<tr>" + NCLC.map(function (c) { return '<th class="c-' + c[0] + '">' + c[1] + "</th>"; }).join("") + "</tr>";
+  $("nclnew").classList.toggle("off", !nclWr()); $("nclro2").hidden = nclWr();
+  var tbl = $("ncltbl"), wr = nclWr(), COLS = wr ? NCLC : NCLC.slice(1);   // 제조 인원이 아니면 버튼 칸 없음
+  if (tbl.dataset.hd !== (wr ? "w" : "r")) {   // 머리글 · 칸 너비 (권한이 바뀔 때만 다시)
+    tbl.dataset.hd = wr ? "w" : "r";
+    var cg = tbl.querySelector("colgroup"); if (cg) cg.remove();
+    tbl.insertAdjacentHTML("afterbegin", "<colgroup>" + COLS.map(function (c) { return '<col style="width:' + c[2] + 'px">'; }).join("") + "</colgroup>");
+    tbl.querySelector("thead").innerHTML = "<tr>" + COLS.map(function (c) { return '<th class="c-' + c[0] + '">' + c[1] + "</th>"; }).join("") + "</tr>";
   }
   var tb = $("ncltb"), mb = $("nclmb"); tb.innerHTML = ""; mb.innerHTML = ""; tbl.classList.toggle("hasdr", NCL.dr.length > 0);
   var kb = $("nclkpi");
   if (!R) {
     var msg = NCL.err || "불러오는 중입니다…";
     nclKpi(kb, null);
-    tb.innerHTML = '<tr><td colspan="' + NCLC.length + '" class="nemp"><div class="empty">' + esc(msg) + "</div></td></tr>"; mb.appendChild(el("div", "empty", msg));
+    tb.innerHTML = '<tr><td colspan="' + COLS.length + '" class="nemp"><div class="empty">' + esc(msg) + "</div></td></tr>"; mb.appendChild(el("div", "empty", msg));
     $("nclst").innerHTML = ""; $("nclsub").textContent = ""; return;
   }
   var L = nclList(), no = nclNo();
@@ -5707,25 +5721,27 @@ function nclRender() {
   NCL.dr.forEach(function (d) { if (!d.x) tb.appendChild(nclDraftRow(d, "")); });
   if (!L.length && !NCL.dr.some(function (d) { return !d.x; })) {
     var em = R.length ? "조건에 맞는 기록이 없습니다" : "아직 기록이 없습니다. '작성하기'를 누르면 맨 위에 입력 줄이 생깁니다.";
-    tb.insertAdjacentHTML("beforeend", '<tr><td colspan="' + NCLC.length + '" class="nemp"><div class="empty">' + esc(em) + "</div></td></tr>"); mb.appendChild(el("div", "empty", R.length ? em : "아직 기록이 없습니다"));
+    tb.insertAdjacentHTML("beforeend", '<tr><td colspan="' + COLS.length + '" class="nemp"><div class="empty">' + esc(em) + "</div></td></tr>"); mb.appendChild(el("div", "empty", R.length ? em : "아직 기록이 없습니다"));
   }
   L.forEach(function (x) {
     var ed = NCL.dr.filter(function (d) { return d.x && d.x.id === x.id; })[0];
     if (ed) { tb.appendChild(nclDraftRow(ed, no[x.id])); return; }
     var tr = el("tr", "nrow" + (nclCan(x) ? " can" : ""));
-    tr.innerHTML = NCLC.map(function (c) {
+    tr.innerHTML = COLS.map(function (c) {
       var k = c[0], v = k === "no" ? no[x.id] || "" : k === "site" ? x.site || "동탄" : k === "occ_date" ? String(x.occ_date).slice(5).replace("-", "/") : k === "act" ? "" : x[k];
       if (k === "act") return '<td class="c-act">' + (nclCan(x) ? '<button type="button" class="ned">수정</button>' : "") + "</td>";
       if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
+      if (k === "prj") return '<td class="c-prj"><button type="button" class="neqb">' + esc(v || "") + "</button></td>";
       return '<td class="c-' + k + '">' + esc(v == null ? "" : v) + "</td>";
     }).join("");
-    var eb = tr.querySelector(".ned"); if (eb) eb.onclick = function () { nclEdit(x); };   // 수정은 '수정' 버튼으로만 (줄을 눌러도 안 바뀜)
+    var eb = tr.querySelector(".ned"); if (eb) eb.onclick = function () { nclEdit(x); };
+    tr.querySelector(".neqb").onclick = function () { nclEq(x.prj); };   // 수정은 '수정' 버튼으로만 (줄을 눌러도 안 바뀜)
     tb.appendChild(tr);
     var d = el("div", "nclm");
-    d.innerHTML = '<b><span class="nno">' + (no[x.id] || "") + "</span>" + esc(x.prj) + '</b><span class="nqt">' + (+x.qty || 0) + "건</span>" +
+    d.innerHTML = '<b><span class="nno">' + (no[x.id] || "") + '</span><span class="neqb">' + esc(x.prj) + '</span></b><span class="nqt">' + (+x.qty || 0) + "건</span>" +
       '<div class="s1">' + esc(x.body) + "</div>" +
       '<div class="s2">' + (x.cat1 ? '<span class="npl ' + nclPl("cat1", x.cat1) + '">' + esc(x.cat1) + "</span>" : "") + "<em>" + esc([md(x.occ_date), x.pos, [x.cat2, x.cat3].filter(Boolean).join(" › "), x.blame].filter(Boolean).join(" · ")) + "</em></div>";
-    d.onclick = function () { nclOpen(x); }; mb.appendChild(d);
+    d.onclick = function (ev) { if (ev.target.closest(".neqb")) { nclEq(x.prj); return; } nclOpen(x); }; mb.appendChild(d);
   });
   nclFade();
   var st = $("nclst"); st.innerHTML = "";
@@ -5755,6 +5771,7 @@ function nclMob() { return window.matchMedia && matchMedia("(max-width:640px)").
 // ✏ 작성하기: PC는 표 맨 위에 입력 줄 · 폰은 입력 창
 function nclNew() {
   if (!authName()) { openLogin("1차 검수 부적합 기록은 로그인 후 이용할 수 있습니다"); return; }
+  if (!nclWr()) { nclNoRole(); return; }
   if (nclMob()) { nclOpen(null); return; }
   var d = { key: "n" + (++NCL.dn), x: null, au: {}, v: { site: "동탄", occ_date: D.today, qty: 1, insp: "제조", mfg_who: authName() } };
   NCL.dr.unshift(d); nclRender(); var sw = document.querySelector("#v-ncl .nshw"); if (sw) sw.scrollLeft = 0; nclFocus(d, "prj");
@@ -5893,7 +5910,7 @@ function nclOpen(x) {
   $("nclwr").textContent = x ? dname(x.writer, "") + (x.updated_by && x.updated_by !== x.writer ? " · 수정 " + x.updated_by : "") : dname(me, authTitle());
   $("nclwrs").textContent = x ? "기록 " + kday(x.created_at) : "로그인한 이름으로 자동 기록";
   $("nclhint").textContent = ""; nclEqHint();
-  $("nclro").hidden = can; $("nclro").textContent = can ? "" : "기록한 분(" + x.writer + ")과 관리자만 고칠 수 있습니다.";
+  $("nclro").hidden = can; $("nclro").textContent = can ? "" : !nclWr() ? "보기 전용입니다 · 1차 검수 부적합은 제조 인원만 작성 · 수정할 수 있습니다." : "기록한 분(" + x.writer + ")과 관리자만 고칠 수 있습니다.";
   $("nclsv").hidden = !can; $("ncldel").hidden = !(x && can); nclDelReset();
   $("nclov").classList.add("on"); document.body.style.overflow = "hidden";
   $("nclsh").scrollTop = 0;
@@ -6017,6 +6034,7 @@ function startApp() {
   // 2026-11-06: 장비 상세창을 열어 둔 채여도 최신으로 바꿈 (상세창도 같은 장비로 다시 그림) · 다른 탭 갔다 오면 바로 확인
   //             → 팀원마다 보는 날짜가 달라지지 않게
   var lastChk = Date.now();
+  setTimeout(function () { try { verCheck(); } catch (eV) {} }, 20000);   // 🆕 열고 20초 뒤 한 번 (예전 파일이 캐시로 열렸으면 바로 안내)
   var chk = function () {
     if (document.hidden) return;
     lastChk = Date.now();
