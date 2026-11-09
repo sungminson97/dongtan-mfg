@@ -1410,6 +1410,36 @@ td.auto .nin{font-size:12px;padding:0 6px;text-overflow:ellipsis}
 .dvin:focus{border-color:var(--ac)}
 .dvf .sbtn{width:100%}.dvf .sbtn:disabled{opacity:.5}
 html.gate body>#lg{visibility:visible;z-index:210}
+#dvm .bk{position:absolute;inset:0}
+#dvm .dvbox{width:min(1180px,100%);max-height:calc(100vh - 40px);overflow-y:auto;padding:24px}
+.dvsum{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.dvsum span{padding:6px 12px;border-radius:999px;background:var(--bg);border:1px solid var(--line);font-size:12.5px;font-weight:800;color:var(--sub)}
+.dvsum span b{color:var(--text);margin-left:4px;font-family:var(--mono)}
+.dvtool{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.dvtool .srch{height:42px;min-width:200px;flex:1;box-shadow:none;background:var(--bg)}
+.dvaddf{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px;padding:12px;border-radius:12px;border:1px dashed var(--line)}
+.dvaddf input{height:40px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:0 12px;font-size:14px;font-weight:700;outline:0;width:160px}
+.dvaddf .sbtn{height:40px;padding:0 18px;width:auto}
+.dvah{font-size:12px;font-weight:700;color:var(--sub)}
+.dvw{margin:0;padding:0}
+.dvt td{vertical-align:middle;font-size:13px}
+.dvt td.dvn b{font-size:14px}
+.dvrl{display:flex;gap:4px;flex-wrap:nowrap}
+.dvrl button{height:26px;padding:0 8px;border-radius:7px;border:1px solid var(--line);background:transparent;color:var(--sub);font-size:11.5px;font-weight:800;white-space:nowrap}
+.dvrl button.on{background:color-mix(in srgb,var(--ac) 18%,transparent);border-color:color-mix(in srgb,var(--ac) 45%,var(--line));color:var(--ac)}
+.dvrl button:disabled{opacity:.5}
+.dvac{display:flex;gap:4px;flex-wrap:nowrap}
+.dvac button{height:28px;padding:0 9px;border-radius:7px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:11.5px;font-weight:800;white-space:nowrap}
+.dvac button.w{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--line))}
+.dvac button.arm{background:var(--warn);color:#fff;border-color:var(--warn)}
+.dvti{width:76px;height:28px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--text);padding:0 8px;font-size:12.5px;font-weight:700;outline:0}
+.dvti:focus{border-color:var(--ac)}
+.dvst{font-size:12px;font-weight:800}.dvst.ok{color:var(--ok)}.dvst.bad{color:var(--warn)}.dvst.mu{color:var(--sub)}
+.dvk{font-size:12px;color:var(--sub);font-weight:700;white-space:nowrap}
+.ntdel{margin-top:12px;height:30px;padding:0 12px;border-radius:8px;border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:transparent;color:var(--warn);font-size:12px;font-weight:800}
+.ntdel.arm{background:var(--warn);color:#fff;border-color:var(--warn)}
+@media (max-width:640px){#dvm{padding:0;place-items:end stretch}#dvm .dvbox{width:100%;max-height:94vh;border-radius:22px 22px 0 0;padding:20px 14px calc(20px + env(safe-area-inset-bottom))}}
+.dvaddf[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -1524,7 +1554,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
 
   <!-- ═════ 공지사항 ═════ -->
   <div class="view" id="v-notice"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Notice</span><h2 class="tt">공지사항</h2><p class="ds">동탄 사업장 공지 · 안내 사항입니다.</p></div>
+    <div class="vtop"><span class="eyebrow">Notice</span><h2 class="tt">공지사항</h2><p class="ds">동탄 제조 현장에서 함께 확인할 공지 · 안내 사항입니다.</p></div>
     <div class="tool"><div class="chips" id="nf"></div><button class="nbtn" id="nwrite" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>공지 작성</button></div>
     <div class="card nform" id="nform" hidden>
       <h3>공지 작성</h3>
@@ -1772,6 +1802,14 @@ html.gate body>#lg{visibility:visible;z-index:210}
   </form>
   <datalist id="ncldl"></datalist>
 </div></div>
+<div class="modal" id="dvm"><div class="bk"></div><div class="box dvbox">
+  <button class="mx" id="dvmx" type="button" aria-label="닫기">✕</button>
+  <h5>개발자 메뉴</h5>
+  <div class="dvsum" id="dvsum"></div>
+  <div class="dvtool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="dvq" placeholder="이름 · 직함 검색" autocomplete="off"></div><div class="chips" id="dvf"></div><button class="wbtn" id="dvadd" type="button">명단 추가</button></div>
+  <form class="dvaddf" id="dvaddf" hidden autocomplete="off"><input id="dvan" placeholder="이름 (한글 3글자)" maxlength="3"><input id="dvat" placeholder="직함 (예: 프로)" maxlength="10"><button class="sbtn" type="submit">추가</button><span class="dvah">명단에 넣으면 그 이름으로 PIN을 만들 수 있습니다</span></form>
+  <div class="tbw dvw"><table class="tbl dvt"><thead><tr><th>이름</th><th>직함</th><th>담당</th><th>마지막 로그인</th><th>PIN</th><th>상태</th><th>기록</th><th>관리</th></tr></thead><tbody id="dvtb"></tbody></table></div>
+</div></div>
 <div class="modal" id="lg"><div class="box">
   <button class="mx" id="lgx" type="button" aria-label="닫기">✕</button>
   <div class="lgs" id="lg1">
@@ -1829,6 +1867,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
+    <button class="lgl" id="dvmenu" type="button" hidden>개발자 메뉴</button>
     <button class="lgl" id="logout" type="button">로그아웃</button>
   </div>
 </div></div>
@@ -1985,7 +2024,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-171322";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261109-174455";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2598,6 +2637,7 @@ function kpiRow(id, arr) {
 // 장비 고르기 칸: 지금 동탄에 있는 장비(자리순) → 입고 예정(입고일순) → 출하 완료 · 자리 · 장비명 · TYPE
 function eqSelect(sel, firstList) {
   var keep = sel.value; sel.innerHTML = "";
+  var b0 = el("option", null, "장비를 골라 주세요"); b0.value = ""; sel.appendChild(b0);   // 처음엔 빈칸
   var locK = function (e) { var m = (e.loc || "").match(/^([A-Z])(\d+)$/); return m ? m[1] + ("0" + m[2]).slice(-2) : "Z" + (e.loc || ""); };
   var fl = firstList || [], src = D.eq.filter(function (e) { return fl.indexOf(e) < 0; });
   var inn = src.filter(function (e) { return isAct(e); }).sort(function (a, b) { return locK(a) < locK(b) ? -1 : 1; });
@@ -2762,6 +2802,7 @@ function drawQc() {
 $("qform").onsubmit = function (e) {
   e.preventDefault();
   var nm = authName(); if (!nm) { openLogin(); return; }
+  if (!$("fe").value) { toast("장비를 골라 주세요"); try { $("fe")._eqpi.focus(); } catch (eF) {} return; }
   var t = $("ft").value.trim(); if (!t) { $("ft").focus(); toast("내용을 입력해 주세요"); return; }
   var rec = { e: $("fe").value, k: $("fk").value, r: $("fr").value, t: t, d: D.today, w: nm, lv: $("fr").value === "완료" ? "ok" : $("fr").value === "NG" ? "hi" : "" };
   var done = function (row) { D.issues.unshift(row ? mapLog(row) : rec); $("ft").value = ""; qcCalc(); drawQc(); toast("저장되었습니다"); };
@@ -2900,6 +2941,7 @@ $("ewrite").onclick = function () { var f = $("ecard"); f.scrollIntoView({ behav
 $("eform").onsubmit = function (ev) {
   ev.preventDefault();
   var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("전장")) return;
+  if (!$("ee").value) { toast("장비를 골라 주세요"); try { $("ee")._eqpi.focus(); } catch (eF) {} return; }
   var t = $("et").value.trim(); if (!t) { $("et").focus(); toast("내용을 입력해 주세요"); return; }
   var kind = ("전장·" + $("ek").value).slice(0, 20), res = $("er").value;
   var rec = { e: $("ee").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
@@ -3036,6 +3078,7 @@ $("mwrite").onclick = function () { var f = $("mcard"); f.scrollIntoView({ behav
 $("mform").onsubmit = function (ev) {
   ev.preventDefault();
   var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("기구")) return;
+  if (!$("me").value) { toast("장비를 골라 주세요"); try { $("me")._eqpi.focus(); } catch (eF) {} return; }
   var t = $("mt").value.trim(); if (!t) { $("mt").focus(); toast("내용을 입력해 주세요"); return; }
   var kind = ("기구·" + $("mk").value).slice(0, 20), res = $("mr").value;
   var rec = { e: $("me").value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
@@ -3113,7 +3156,7 @@ function issForm(fid, eid, kid, rid, tid, pre, after, role) {
     ev.preventDefault();
     var nm = authName(); if (!nm) { openLogin(); return; } if (role && !roleOk(role)) return;
     var t = $(tid).value.trim(); if (!t) { $(tid).focus(); toast("내용을 입력해 주세요"); return; }
-    if (!$(eid).value) { toast("장비를 골라 주세요"); return; }
+    if (!$(eid).value) { toast("장비를 골라 주세요"); try { $(eid)._eqpi.focus(); } catch (eF) {} return; }
     var kind = (pre + "·" + $(kid).value).slice(0, 20), res = $(rid).value;
     var rec = { e: $(eid).value, k: kind, r: res, t: t, d: D.today, w: nm, lv: res === "완료" ? "ok" : "" };
     var done = function (row) { D.issues.unshift(row ? mapLog(row) : rec); $(tid).value = ""; after(res); toast("저장되었습니다"); };
@@ -3915,7 +3958,9 @@ function drawNotice() {
     var mt = el("span", "mt", md(n.d) + (n.w ? " · " + n.w : "")); mt.appendChild(el("i")); h.appendChild(mt);
     h.onclick = function () { NOPEN._first = 0; var on = !it.classList.contains("on"); it.classList.toggle("on", on); NOPEN[key] = on; };
     it.appendChild(h);
-    var b = el("div", "nbody"), b2 = el("div"); b2.appendChild(el("p", null, n.p)); b.appendChild(b2); it.appendChild(b);
+    var b = el("div", "nbody"), b2 = el("div"); b2.appendChild(el("p", null, n.p));
+    if (ntCanDel(n)) { var xd = el("button", "ntdel", "공지 삭제"); xd.type = "button"; xd.onclick = function () { ntDel(n, xd); }; b2.appendChild(xd); }   // 쓴 사람 · 개발자만
+    b.appendChild(b2); it.appendChild(b);
     w.appendChild(it);
   });
 }
@@ -4125,7 +4170,7 @@ function openLogin(msg) {   // msg: 로그인 창 위에 보여 줄 안내 (예:
   var a = authGet(), last = sget("last") || "", lm = $("lgmsg");
   if (lm) { lm.textContent = typeof msg === "string" ? msg : ""; lm.hidden = typeof msg !== "string"; }
   $("lg").classList.add("on");
-  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
+  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("dvmenu").hidden = !a.dev; $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
   LGM = "make"; UP.pend = ""; pinReset(); lgStep(1);
   setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
 }
@@ -6201,7 +6246,7 @@ function eqPick(sel) {
   var w = el("div", "eqp"), inp = el("input", "eqpi"), ls = el("div", "eqpl"), act = -1, open = false;
   inp.type = "text"; inp.autocomplete = "off"; inp.spellcheck = false; inp.placeholder = "장비명 · 자리 · TYPE으로 검색";
   inp.setAttribute("role", "combobox"); ls.hidden = true;
-  sel.parentNode.insertBefore(w, sel); w.appendChild(inp); w.appendChild(ls); w.appendChild(sel); sel.classList.add("eqps");
+  sel._eqpi = inp;   sel.parentNode.insertBefore(w, sel); w.appendChild(inp); w.appendChild(ls); w.appendChild(sel); sel.classList.add("eqps");
   // 보이는 글자: 장비명 · TYPE · (입고 예정일) · 자리 B4  — 원래 '자리 · 장비명 · TYPE' 순서라 자리를 모를 수 있어서 뒤로
   function parts(o) {
     var p = o.textContent.split(" · "), i = p.indexOf(o.value), bef = i >= 0 ? p.slice(0, i) : [], aft = i >= 0 ? p.slice(i + 1) : p.slice(1);
@@ -6286,6 +6331,109 @@ $("dvform").onsubmit = function (ev) {
     setTimeout(function () { rolesFetch(j.n, pw); }, 400);
   }, function (e) { b.disabled = false; b.textContent = "확인"; er.textContent = e.message || "확인하지 못했습니다."; });
 };
+
+/* ═════ 개발자 메뉴: 멤버 목록 · 담당 · 잠금 해제 · PIN 초기화 · 이름 명단 ═════ */
+var DVM = { rows: null, f: "pin", q: "", busy: 0, now: null };
+function dvArm(b, txt, fn) {   // 두 번 눌러야 실행
+  if (!b.classList.contains("arm")) { var o = b.textContent; b.classList.add("arm"); b.textContent = txt || "한 번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = o; }, 3500); return; }
+  clearTimeout(b._t); fn();
+}
+function dvCall(fn, args) { var a = authGet(); return rpc(fn, Object.assign({ n: a ? a.n : "", pin: sget("upin") || "" }, args || {})).then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || "실패했습니다"); return j; }); }
+function dvOpen() {
+  var a = authGet(); if (!a || !a.dev) { toast("개발자만 사용할 수 있습니다"); return; }
+  closeLogin(); $("dvm").classList.add("on"); document.body.style.overflow = "hidden";
+  $("dvtb").innerHTML = '<tr><td colspan="8"><div class="empty">불러오는 중입니다…</div></td></tr>'; $("dvsum").innerHTML = "";
+  dvLoad();
+}
+function dvClose() { $("dvm").classList.remove("on"); document.body.style.overflow = ""; }
+function dvLoad() {
+  if (!LIVE) { $("dvtb").innerHTML = '<tr><td colspan="8"><div class="empty">예시 화면에서는 사용할 수 없습니다</div></td></tr>'; return; }
+  dvCall("dt_dev_overview").then(function (j) { DVM.rows = j.members || []; DVM.now = j.now ? new Date(j.now) : new Date(); dvDraw(); },
+    function (e) { $("dvtb").innerHTML = '<tr><td colspan="8"><div class="empty">' + esc(e.message) + "</div></td></tr>"; });
+}
+function dvWhen(x) {
+  if (!x) return "-";
+  var d = new Date(x), now = DVM.now || new Date(), diff = (now - d) / 60000, hm = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+  if (diff < 1) return "방금"; if (diff < 60) return Math.floor(diff) + "분 전";
+  var k = kday(x); if (k === D.today) return "오늘 " + hm;
+  var days = Math.floor(diff / 1440); if (days < 7) return days + "일 전 · " + md(k).replace(/\(.\)/, "");
+  return md(k).replace(/\(.\)/, "");
+}
+function dvDraw() {
+  var R = DVM.rows || [], now = DVM.now || new Date(), k = nq(DVM.q);
+  var pinN = 0, today = 0, week = 0, lock = 0, roleN = 0;
+  R.forEach(function (m) {
+    if (m.pin) pinN++; if (m.last_login && kday(m.last_login) === D.today) today++; if (m.last_login && now - new Date(m.last_login) < 7 * 864e5) week++;
+    if (m.locked_until && new Date(m.locked_until) > now) lock++; if (m.roles && m.roles.length) roleN++;
+  });
+  $("dvsum").innerHTML = [["이름 명단", R.filter(function (m) { return m.roster; }).length], ["PIN 만든 사람", pinN], ["오늘 로그인", today], ["7일 안 로그인", week], ["담당 있는 사람", roleN], ["잠김", lock]].map(function (x) { return "<span>" + x[0] + "<b>" + x[1] + "</b></span>"; }).join("");
+  var f = $("dvf"); f.innerHTML = "";
+  [["pin", "PIN 만든 사람"], ["role", "담당 있는 사람"], ["lock", "잠김 · 틀림"], ["all", "전체 명단"]].forEach(function (o) { var b = el("button", "chip sm" + (DVM.f === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { DVM.f = o[0]; dvDraw(); }; f.appendChild(b); });
+  var L = R.filter(function (m) {
+    if (DVM.f === "pin" && !m.pin) return false;
+    if (DVM.f === "role" && !(m.roles && m.roles.length) && !m.dev) return false;
+    if (DVM.f === "lock" && !(m.fails > 0 || (m.locked_until && new Date(m.locked_until) > now))) return false;
+    if (k && nq(m.name + " " + m.title).indexOf(k) < 0) return false;
+    return true;
+  });
+  var tb = $("dvtb"); tb.innerHTML = "";
+  if (!L.length) { tb.innerHTML = '<tr><td colspan="8"><div class="empty">해당하는 사람이 없습니다</div></td></tr>'; return; }
+  L.slice(0, 300).forEach(function (m) {
+    var tr = el("tr");
+    var c1 = el("td", "dvn"); c1.appendChild(el("b", null, m.name)); if (m.dev) { var dt = el("span", "tag b", "개발자"); dt.style.marginLeft = "6px"; c1.appendChild(dt); } if (!m.roster) { var nr = el("span", "tag", "명단 밖"); nr.style.marginLeft = "6px"; c1.appendChild(nr); } tr.appendChild(c1);
+    // 직함: 칸에서 바로 고치고 Enter
+    var c2 = el("td"), ti = el("input", "dvti"); ti.value = m.title || ""; ti.placeholder = "-"; ti.maxLength = 10;
+    var saveT = function () { var v = ti.value.trim(); if (v === (m.title || "")) return; ti.disabled = true; dvCall("dt_dev_member", { who: m.name, act: m.roster ? "title" : "add", title: v }).then(function () { m.title = v; m.roster = true; ti.disabled = false; toast(m.name + " 직함을 '" + (v || "없음") + "'(으)로 바꿨습니다"); }, function (e) { ti.disabled = false; ti.value = m.title || ""; toast(e.message); }); };
+    ti.onkeydown = function (e) { if (e.key === "Enter") { e.preventDefault(); ti.blur(); } else if (e.key === "Escape") { ti.value = m.title || ""; ti.blur(); } }; ti.onblur = saveT;
+    c2.appendChild(ti); tr.appendChild(c2);
+    // 담당 켜기 / 끄기
+    var c3 = el("td"), rl = el("div", "dvrl");
+    ["기구", "전장", "FT", "품질", "제조"].forEach(function (r) {
+      var on = (m.roles || []).indexOf(r) >= 0, b = el("button", on ? "on" : "", r); b.type = "button"; if (m.dev) { b.disabled = true; b.className = "on"; b.title = "개발자는 모든 담당"; }
+      b.onclick = function () { b.disabled = true; dvCall("dt_dev_role", { who: m.name, role: r, onoff: !on }).then(function (j) { m.roles = j.roles || []; dvDraw(); toast(m.name + " · " + r + (on ? " 담당 해제" : " 담당 추가")); }, function (e) { b.disabled = false; toast(e.message); }); };
+      rl.appendChild(b);
+    });
+    c3.appendChild(rl); tr.appendChild(c3);
+    tr.appendChild(el("td", "dvk", dvWhen(m.last_login)));
+    tr.appendChild(el("td", "dvk", m.pin ? md(kday(m.created_at)).replace(/\(.\)/, "") + " 만듦" : "없음"));
+    var locked = m.locked_until && new Date(m.locked_until) > now;
+    tr.appendChild(el("td", null, "")).appendChild(el("span", "dvst " + (locked ? "bad" : m.fails ? "bad" : m.pin ? "ok" : "mu"), locked ? "잠김 · " + Math.ceil((new Date(m.locked_until) - now) / 60000) + "분" : m.fails ? m.fails + "회 틀림" : m.pin ? "정상" : "PIN 없음"));
+    tr.appendChild(el("td", "dvk", ["이슈 " + (m.logs || 0), "부적합 " + (m.ncl || 0), "공지 " + (m.notices || 0)].join(" · ")));
+    var c8 = el("td"), ac = el("div", "dvac");
+    var act = function (label, cls, armTxt, a, msg) {
+      var b = el("button", cls || "", label); b.type = "button";
+      b.onclick = function () { dvArm(b, armTxt, function () { b.disabled = true; dvCall("dt_dev_member", { who: m.name, act: a }).then(function () { toast(msg); dvLoad(); }, function (e) { b.disabled = false; toast(e.message); }); }); };
+      ac.appendChild(b);
+    };
+    if (locked || m.fails) act("잠금 해제", "", "해제할까요?", "unlock", m.name + " 잠금을 풀었습니다");
+    if (m.pin && !m.dev) act("PIN 초기화", "w", "초기화 확인", "reset", m.name + " PIN을 초기화했습니다 · 다시 만들 수 있습니다");
+    if (m.roster && !m.dev) act("명단 빼기", "w", "빼기 확인", "del", m.name + "을(를) 명단에서 뺐습니다");
+    c8.appendChild(ac); tr.appendChild(c8);
+    tb.appendChild(tr);
+  });
+}
+$("dvmx").onclick = dvClose; $("dvm").querySelector(".bk").onclick = dvClose;
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("dvm").classList.contains("on")) dvClose(); });
+$("dvq").oninput = function () { DVM.q = this.value; dvDraw(); };
+$("dvmenu").onclick = dvOpen;
+$("dvadd").onclick = function () { var f = $("dvaddf"); f.hidden = !f.hidden; if (!f.hidden) setTimeout(function () { try { $("dvan").focus(); } catch (e) {} }, 50); };
+$("dvaddf").onsubmit = function (ev) {
+  ev.preventDefault();
+  var nm = $("dvan").value.replace(/\s/g, ""), ti = $("dvat").value.trim();
+  if (!/^[가-힣]{3}$/.test(nm)) { toast("이름은 한글 3글자로 입력해 주세요"); $("dvan").focus(); return; }
+  dvCall("dt_dev_member", { who: nm, act: "add", title: ti }).then(function () { toast(nm + "을(를) 명단에 추가했습니다"); $("dvan").value = ""; $("dvat").value = ""; $("dvaddf").hidden = true; DVM.f = "all"; DVM.q = nm; $("dvq").value = nm; dvLoad(); }, function (e) { toast(e.message); });
+};
+
+/* ── 공지 삭제 (쓴 사람 본인 · 개발자) ── */
+function ntCanDel(n) { var a = authGet(); return !!a && (a.dev || n.w === a.n); }
+function ntDel(n, b) {
+  dvArm(b, "한 번 더 누르면 삭제됩니다", function () {
+    var done = function () { D.notice = (D.notice || []).filter(function (x) { return x !== n; }); drawNotice(); toast("공지를 삭제했습니다"); };
+    if (!LIVE || !n.id) { done(); return; }
+    b.disabled = true;
+    rpc("dt_del_notice", { n: authName(), pin: sget("upin") || "", nid: n.id }).then(function (j) { if (j && j.ok) done(); else { b.disabled = false; toast((j && j.error) || "삭제하지 못했습니다"); } }, function (e) { b.disabled = false; toast(e.message || "삭제하지 못했습니다"); });
+  });
+}
 
 /* ── 시계 ── */
 function tick() { var d = new Date(); $("clock").textContent = "동탄 사업장 · " + md(ymd(d)) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + " 실시간"; }
