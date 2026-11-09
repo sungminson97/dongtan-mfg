@@ -1337,8 +1337,6 @@ html.gate,html.gate body{overflow:hidden}
 .nsh td.c-body{text-align:left;white-space:normal;line-height:1.45}
 .nsh td.c-prj{font-weight:900}.nsh td.c-no{font-family:var(--mono);color:var(--sub);font-size:12px}
 .nsh td.c-qty{font-family:var(--mono);font-weight:900}
-.nsh .c-act{position:sticky;right:0;background:var(--card);box-shadow:-8px 0 12px -10px rgba(0,0,0,.35)}
-.nsh th.c-act{background:var(--bg2);z-index:2}.nsh:not(.hasdr) th.c-act{border-left-width:0}
 .nsh tr.nrow:hover td{background:color-mix(in srgb,var(--ac) 5%,var(--card))}
 
 .nhint{font-size:11.5px;color:var(--sub);opacity:0;transition:opacity .15s}
@@ -1362,7 +1360,9 @@ select.nin.npl{height:34px;font-size:12.5px}
 .nin.bad{border-color:var(--warn);box-shadow:0 0 0 3px color-mix(in srgb,var(--warn) 20%,transparent)}
 .nph{display:block;margin-top:3px;font-size:10.5px;font-weight:800;color:var(--sub);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:13px}
 .nph.ok{color:var(--ok)}.nph.w{color:#b45309}
-.c-act button{height:30px;padding:0 10px;border-radius:8px;font-size:12px;font-weight:800;margin:0 2px}
+.c-act button{height:30px;padding:0 8px;border-radius:8px;font-size:12px;font-weight:800;white-space:nowrap}
+.nbw{display:grid;gap:4px}.nb2{display:flex;gap:4px}.nb2 button{flex:1}.nbw .nsv{width:100%}
+.nsh td.c-act{padding:6px}.ned{width:100%}
 .nsv{background:var(--grd);color:#fff}.nsv:disabled{opacity:.6}
 .ncc{border:1px solid var(--line);color:var(--sub);background:var(--card)}
 .ndl{color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:var(--card)}.ndl.arm{background:var(--warn);color:#fff}
@@ -1375,7 +1375,11 @@ select.nin.npl{height:34px;font-size:12.5px}
 tr.ndr.ed .nst2{color:var(--ac)}
 .ned{height:30px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12.5px;font-weight:800}
 .ned:hover{border-color:var(--ac);color:var(--ac)}
-.nsh tr.nrow:hover td.c-act{background:color-mix(in srgb,var(--ac) 5%,var(--card))}
+.nshw{-webkit-mask-image:none;mask-image:none}
+.nshw.nclfr{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 64px),transparent)}
+.nshw.nclfl{-webkit-mask-image:linear-gradient(to right,transparent,#000 40px);mask-image:linear-gradient(to right,transparent,#000 40px)}
+.nshw.nclfr.nclfl{-webkit-mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 64px),transparent);mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 64px),transparent)}
+.nsheet{overflow:clip}
 </style>
 </head>
 <body>
@@ -1656,7 +1660,7 @@ tr.ndr.ed .nst2{color:var(--ac)}
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
-          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 오른쪽 '수정' → 파란 줄에서 고치고 '수정 완료'</p></div></div>
+          <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '수정 완료'</p></div></div>
           <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
@@ -5657,10 +5661,10 @@ function drawNcl() {
   if (LIVE && !NCL.p && Date.now() - NCL.t > 60000) nclLoad(true).then(function () { if (cur === "ncl") nclRender(); });   // 1분 지났으면 조용히 새로
 }
 /* 관리대장 표 — 칸 순서 · 이름은 관리대장(시트)과 똑같이 */
-var NCLC = [["no", "NO.", 42], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
+var NCLC = [["act", "", 112], ["no", "NO.", 46], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
   ["ship_name", "출하 프로젝트 명", 140, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 126, "txt"], ["pos", "위치", 110, "sel"],
   ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
-  ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"], ["act", "", 186]];
+  ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"]];
 var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
 NCL.dr = []; NCL.dn = 0;
 function nclPl(k, v) {   // 드롭다운 값 색 (시트 칩처럼)
@@ -5723,6 +5727,7 @@ function nclRender() {
       '<div class="s2">' + (x.cat1 ? '<span class="npl ' + nclPl("cat1", x.cat1) + '">' + esc(x.cat1) + "</span>" : "") + "<em>" + esc([md(x.occ_date), x.pos, [x.cat2, x.cat3].filter(Boolean).join(" › "), x.blame].filter(Boolean).join(" · ")) + "</em></div>";
     d.onclick = function () { nclOpen(x); }; mb.appendChild(d);
   });
+  nclFade();
   var st = $("nclst"); st.innerHTML = "";
   [["중분류별", "cat2"], ["귀책별", "blame"]].forEach(function (g) {
     var cnt = {}, tot = 0; B.forEach(function (x) { var k = x[g[1]] || "미입력"; cnt[k] = (cnt[k] || 0) + (+x.qty || 0); tot += +x.qty || 0; });
@@ -5760,7 +5765,7 @@ function nclEdit(x) {
   var v = {}; NCLF.forEach(function (k) { v[k] = x[k] == null ? "" : x[k]; });
   var d = { key: "e" + x.id, x: x, au: { ship_name: 1, type: 1, ship_month: 1 }, v: v }; NCL.dr.push(d); nclRender(); nclFocus(d, "body");
 }
-function nclFocus(d, k) { setTimeout(function () { var i = document.querySelector('#ncltb tr[data-key="' + d.key + '"] [data-k="' + k + '"]'); if (i) { try { i.focus({ preventScroll: k === "prj" }); if (i.select && k !== "prj") i.select(); } catch (e) {} } }, 30); }
+function nclFocus(d, k) { setTimeout(function () { var i = document.querySelector('#ncltb tr[data-key="' + d.key + '"] [data-k="' + k + '"]'); if (i) { try { i.focus({ preventScroll: true }); nclShow(i); if (i.select && k !== "prj") i.select(); } catch (e) {} } }, 30); }
 function nclDraftRow(d, noTxt) {
   var tr = el("tr", "ndr" + (d.x ? " ed" : "")); tr.dataset.key = d.key;
   NCLC.forEach(function (c) {
@@ -5770,8 +5775,9 @@ function nclDraftRow(d, noTxt) {
     else if (k === "act") {
       var sv = el("button", "nsv", d.x ? "수정 완료" : "추가"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
       var cc = el("button", "ncc", "취소"); cc.type = "button"; cc.onclick = function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); };
-      td.appendChild(sv); td.appendChild(cc);
-      if (d.x) { var dl = el("button", "ndl", "삭제"); dl.type = "button"; dl.onclick = function () { nclDraftDel(d, dl); }; td.appendChild(dl); }
+      var bw = el("div", "nbw"); bw.appendChild(sv); var b2 = el("div", "nb2"); b2.appendChild(cc);
+      if (d.x) { var dl = el("button", "ndl", "삭제"); dl.type = "button"; dl.onclick = function () { nclDraftDel(d, dl); }; b2.appendChild(dl); }
+      bw.appendChild(b2); td.appendChild(bw);
     } else {
       var inp;
       if (c[3] === "sel") { inp = el("select", "nin npl " + nclPl(k, v)); inp.innerHTML = '<option value=""></option>' + NCLS[k].map(function (o) { return "<option>" + esc(o) + "</option>"; }).join(""); inp.value = v; }
@@ -5845,7 +5851,7 @@ function nclDraftSave(d, tr) {
   }, function (er) { d.busy = 0; sv.disabled = false; sv.textContent = d.x ? "수정 완료" : "추가"; toast(er.message || "저장하지 못했습니다"); });
 }
 function nclDraftDel(d, b) {
-  if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한 번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
+  if (!b.classList.contains("arm")) { b.classList.add("arm"); b.textContent = "한번 더"; clearTimeout(b._t); b._t = setTimeout(function () { b.classList.remove("arm"); b.textContent = "삭제"; }, 3500); return; }
   b.disabled = true;
   nclDelete(d.x).then(function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); toast("기록을 삭제했습니다"); nclRender(); }, function (er) { b.disabled = false; toast(er.message || "삭제하지 못했습니다"); });
 }
@@ -5969,6 +5975,22 @@ function drNcl(e) {
 }
 $("nclfm").addEventListener("input", function (ev) { var t = ev.target; if (t.classList.contains("bad")) { t.classList.remove("bad"); if (!$("nclfm").querySelector(".bad")) $("nclhint").textContent = ""; } });
 $("nclfm").addEventListener("change", function (ev) { var t = ev.target; if (t.classList.contains("bad")) { t.classList.remove("bad"); if (!$("nclfm").querySelector(".bad")) $("nclhint").textContent = ""; } });
+
+// 표가 옆으로 더 있으면 오른쪽 끝을 흐리게 (잘린 느낌 대신 '더 있음' 표시)
+function nclFade() {
+  var w = document.querySelector("#v-ncl .nshw"); if (!w) return;
+  if (!w._f) { w._f = 1; w.addEventListener("scroll", nclFade, { passive: true }); window.addEventListener("resize", nclFade); }
+  w.classList.toggle("nclfr", w.scrollWidth - w.clientWidth - w.scrollLeft > 4);
+  w.classList.toggle("nclfl", w.scrollLeft > 4);
+}
+
+// 입력 칸이 표 밖이면 표만 옆으로 살짝 (화면 전체는 안 움직임)
+function nclShow(i) {
+  var w = document.querySelector("#v-ncl .nshw"), td = i.closest("td"); if (!w || !td) return;
+  var l = td.offsetLeft, r = l + td.offsetWidth;
+  if (l < w.scrollLeft) w.scrollLeft = Math.max(0, l - 40); else if (r > w.scrollLeft + w.clientWidth) w.scrollLeft = r - w.clientWidth + 64;
+  var y = i.getBoundingClientRect(); if (y.top < 80 || y.bottom > innerHeight - 20) window.scrollBy(0, y.top - innerHeight / 2);
+}
 
 /* ── 시계 ── */
 function tick() { var d = new Date(); $("clock").textContent = "동탄 사업장 · " + md(ymd(d)) + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + " 실시간"; }
