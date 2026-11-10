@@ -591,6 +591,14 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .moreb:hover{color:var(--text);border-color:var(--ac)}
 .eiss .ds2{margin-top:2px}
 .msrch{margin-top:12px;max-width:none}
+/* 2026-11-10: 장비명 / 품번 · 품목명 찾기 */
+.mmode{margin-top:14px}
+.mpinfo{font-size:12.5px;color:var(--sub);font-weight:700;margin:14px 2px 2px}
+.mgrp{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;padding:14px 4px 8px;cursor:pointer}
+.mgrp b{font-size:15px;font-weight:900}.mgrp i{font-style:normal;font-size:11.5px;font-weight:800;color:var(--sub);background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.mgrp small{font-size:12px;color:var(--sub);font-weight:700}.mgrp em{margin-left:auto;font-style:normal;font-size:12.5px;font-weight:800;color:var(--ac)}
+.mgrp:hover b{color:var(--ac)}.mgrp:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:8px}
+.mgrp+.mrow{border-top:1px solid var(--line)}
 .mtcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:14px}
 .mtc{display:grid;gap:5px;text-align:left;padding:14px 16px;border-radius:14px;border:1px solid var(--line);background:var(--bg);transition:border-color .2s}
 .mtc:hover{border-color:var(--ac)}
@@ -2038,7 +2046,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-100404";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-132546";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4006,7 +4014,7 @@ $("nfm").onsubmit = function (e) {
  * mat_tabs 한 줄 = 장비 하나 · rows = [납기, 상위품목, 상위품목명, 거래처, 품목, 품목명, 규격명, 발주, 입고, 3공장, 1공장]
  * site_stats 'insp' rows = [요청일, 긴급, 의뢰자, 프로젝트, TYPE, PART NO., Part Desc., 수량, 업체, 품목, 검사자, 검수완료일, Result, 완료, NG수량, 장비명]
  */
-var ETAB = "mat", MS = { list: null, ld: 0, err: "", q: "", prj: "", data: {}, f: "all", s: "", o: "due", lf: "all" }, IS = { d: null, ld: 0, err: "", f: "wait", q: "" };
+var ETAB = "mat", MS = { list: null, ld: 0, err: "", q: "", prj: "", data: {}, f: "all", s: "", o: "due", lf: "all", m: "eq", pq: "", pr: {}, pseq: 0 }, IS = { d: null, ld: 0, err: "", f: "wait", q: "" };
 try { ETAB = sget("etab") || "mat"; } catch (e) {}
 function mtN(x) { var n = parseFloat(String(x == null ? "" : x).replace(/,/g, "")); return isNaN(n) ? 0 : n; }
 function mtIsOut(r) { return /외주\s*조립/.test(r[6] || ""); }
@@ -4054,13 +4062,62 @@ function drawMat() {
     var setLf = function (f) { return function () { MS.lf = MS.lf === f ? "all" : f; drawEtc(); goList("#mlist"); }; };
     kpiRowEl(box, [["장비", L.length, "대", false, setLf("all"), MS.lf === "all"], ["미입고 품목", tw, "건", tw > 0, setLf("wait"), MS.lf === "wait"], ["미입고 있는 장비", L.filter(function (x) { return x.wait > 0; }).length, "대", false, setLf("wait"), false], ["전부 입고", L.filter(function (x) { return x.n && !x.wait; }).length, "대", false, setLf("done"), MS.lf === "done"]]);
     var c = el("div", "card"); c.id = "mlist"; box.appendChild(c);
-    var hd = el("div", "ehd"); hd.appendChild(el("h3", null, "장비 고르기")); var lch = el("div", "chips");
+    var hd = el("div", "ehd"); hd.appendChild(el("h3", null, MS.m === "pn" ? "품목 찾기" : "장비 고르기")); var lch = el("div", "chips");
     [["all", "전체"], ["wait", "미입고 있음"], ["done", "전부 입고"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.lf === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MS.lf = o[0]; drawEtc(); }; lch.appendChild(b); });
     hd.appendChild(lch); c.appendChild(hd);
     var sr = el("label", "srch msrch"); sr.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
-    var inp = el("input"); inp.placeholder = "장비명 찾기 (예: 156, HJ92, MISC)"; inp.value = MS.q; inp.autocomplete = "off"; sr.appendChild(inp); c.appendChild(sr);
-    var g = el("div", "mtcs"); c.appendChild(g);
+    // 🔎 2026-11-10: 찾는 방식 — 장비명 / 품번 · 품목명 (모든 장비에서)
+    var mm = el("div", "chips mmode");
+    [["eq", "장비명으로 찾기"], ["pn", "품번 · 품목명으로 찾기"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.m === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { if (MS.m === o[0]) return; MS.m = o[0]; drawEtc(); setTimeout(function () { var x = document.querySelector("#mlist .msrch input"); if (x) x.focus(); }, 30); }; mm.appendChild(b); });
+    c.insertBefore(mm, null);
+    var pnM = MS.m === "pn";
+    var inp = el("input"); inp.placeholder = pnM ? "품번 · 품목명 찾기 (예: 12P-F00P13, back cover)" : "장비명 찾기 (예: 156, HJ92, MISC)"; inp.value = pnM ? MS.pq : MS.q; inp.autocomplete = "off"; sr.appendChild(inp); c.appendChild(sr);
+    var g = el("div", pnM ? "mtw2" : "mtcs"); c.appendChild(g);
     if (MS.err) { g.appendChild(el("div", "empty", MS.err)); return; }
+    if (pnM) {
+      var pt = null;
+      var pshow = function () {
+        g.innerHTML = "";
+        var q = MS.pq.trim(), key = q.toUpperCase(), res = MS.pr[key];
+        if (q.replace(/\s/g, "").length < 2) { g.appendChild(el("div", "empty", "품번(3글자 이상)이나 품목명을 입력하면 모든 장비에서 찾아 드립니다")); return; }
+        if (!res) { g.appendChild(el("div", "empty", "찾는 중…")); return; }
+        if (res.err) { g.appendChild(el("div", "empty", res.err)); return; }
+        var L3 = res.rows.filter(function (x) { var lack = mtN(x.r[8]) < mtN(x.r[7]); return MS.lf === "wait" ? lack : MS.lf === "done" ? !lack : true; });
+        var grp = {}, order = [];
+        L3.forEach(function (x) { if (!grp[x.prj]) { grp[x.prj] = { eq: x.eq, prj: x.prj, rows: [] }; order.push(x.prj); } grp[x.prj].rows.push(x.r); });
+        g.appendChild(el("div", "mpinfo", L3.length ? "'" + q + "' " + L3.length + "건 · 장비 " + order.length + "대" + (res.rows.length >= 300 ? " · 300건까지만 보여 드립니다 (더 자세히 입력해 주세요)" : "") : "'" + q + "'" + (MS.lf === "all" ? " 품번 · 품목명이 없습니다" : " 조건에 맞는 품목이 없습니다")));
+        if (!L3.length) return;
+        var hr = el("div", "mrow mh"); hr.innerHTML = "<span>납기</span><span>품목 · 품목명</span><span>업체</span><span>발주</span><span>입고</span><span>3공장</span><span>1공장</span>"; g.appendChild(hr);
+        order.forEach(function (pk) {
+          var G = grp[pk], e = eqByName(G.eq), w = G.rows.filter(function (r) { return mtN(r[8]) < mtN(r[7]); }).length;
+          var gb = el("button", "mgrp"); gb.type = "button";
+          gb.appendChild(el("b", null, G.eq || pk)); if (e && e.loc) gb.appendChild(el("i", null, e.loc));
+          gb.appendChild(el("small", null, (e ? (isAct(e) ? "동탄 입고" : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") + " · " : "") + G.rows.length + "건" + (w ? " · 미입고 " + w + "건" : " · 전부 입고")));
+          gb.appendChild(el("em", null, "장비 자재 보기"));
+          gb.onclick = function () { matOpen(G.prj); MS.s = q; drawEtc(); };   // 그 장비 자재 화면 + 찾은 글자 그대로
+          g.appendChild(gb);
+          G.rows.forEach(function (r) {
+            var lack = mtN(r[8]) < mtN(r[7]), it = el("div", "mrow" + (lack ? " lack" : ""));
+            var qv = function (v, full) { return '<span class="q' + (full ? " full" : "") + '">' + esc(v === "" || v == null ? "-" : v) + "</span>"; };
+            it.innerHTML = '<span class="due">' + esc(mtDue2(r[0])) + '</span><span class="nm"><b>' + esc(r[4]) + "</b>" + esc(r[5] || "") + (r[2] || r[1] ? "<small>" + esc(r[2] || r[1]) + "</small>" : "") + (mtIsOut(r) ? ' <i class="tag">외주조립</i>' : "") + '</span><span class="vn">' + esc(r[3] || "-") + "</span>" +
+              qv(r[7]) + qv(r[8], !lack && mtN(r[7]) > 0) + qv(r[9], mtN(r[9]) >= mtN(r[7]) && mtN(r[7]) > 0) + qv(r[10], mtN(r[10]) >= mtN(r[7]) && mtN(r[7]) > 0);
+            g.appendChild(it);
+          });
+        });
+      };
+      var pfind = function () {
+        var q = MS.pq.trim(), key = q.toUpperCase();
+        if (q.replace(/\s/g, "").length < 2 || MS.pr[key]) { pshow(); return; }
+        if (!LIVE) { MS.pr[key] = { err: "예시 화면에서는 자재 데이터가 없습니다" }; pshow(); return; }
+        var my = ++MS.pseq; pshow();
+        rpc("dt_mat_find", { q: q }).then(function (j) { MS.pr[key] = { rows: Array.isArray(j) ? j : [] }; })
+          .catch(function (er) { MS.pr[key] = { err: /dt_mat_find|PGRST202|404/.test(er.message) ? "품번 찾기를 준비 중입니다" : "찾기 실패: " + er.message }; })
+          .then(function () { if (my === MS.pseq && MS.m === "pn" && MS.pq.trim().toUpperCase() === key && cur === "etc") pshow(); });
+      };
+      inp.oninput = function () { MS.pq = inp.value; clearTimeout(pt); pt = setTimeout(pfind, 350); if (!MS.pr[MS.pq.trim().toUpperCase()]) pshow(); };
+      pfind();
+      return;
+    }
     var paint = function () {
       g.innerHTML = "";
       var k = nq(MS.q), rank = function (x) { var e = eqByName(x.eq); return e ? (isAct(e) ? 0 : 1) : 2; };
