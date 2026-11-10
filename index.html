@@ -1761,16 +1761,16 @@ html.gate body>#lg{visibility:visible;z-index:210}
     <div class="g4" id="ekpi" style="margin:16px 0"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>FRAME 배선 현황</h3><div class="chips" id="ewf"></div></div>
-      <div class="ewm" id="ewm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>FRAME 입고</th><th>배선 완료</th><th>I/O CHECK</th><th>하네스</th><th>상태</th></tr></thead><tbody id="ewtb"></tbody></table></div>
+      <div class="ewm" id="ewm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>FRAME 입고</th><th>FRAME 배선 완료</th><th>I/O CHECK</th><th>하네스</th><th>상태</th></tr></thead><tbody id="ewtb"></tbody></table></div>
     </div>
     <div class="g2" style="align-items:start;margin-top:16px">
-      <div class="card"><h3>전장 자재 준비</h3><p class="ds2">배선 전 장비의 전장 E-BOM · 전장 발주 · 하네스 상태 (FRAME 입고 3주 이내)</p><div id="eprep"></div></div>
+      <div class="card"><h3>전장 자재 준비</h3><p class="ds2">FRAME 배선 전 장비의 전장 E-BOM · 전장 발주 · 하네스 상태 (FRAME 입고 3주 이내)</p><div id="eprep"></div></div>
       <div class="card lockc" id="ecard" data-role="전장"><h3>전장 이슈 기록</h3>
         <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 이름과 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
         <form class="fm" id="eform" style="margin-top:14px" autocomplete="off">
           <div class="wrt"><span>작성자</span><b data-wrt>로그인 필요</b><small>로그인한 이름으로 자동 기록 · 변경 불가</small></div>
           <label>장비<select id="ee"></select></label>
-          <div class="row"><label>구분<select id="ek"><option>배선</option><option>하네스</option><option>전장 자재</option><option>I/O CHECK</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="er"><option>진행 중</option><option>완료</option></select></label></div>
+          <div class="row"><label>구분<select id="ek"><option>FRAME 배선</option><option>하네스</option><option>전장 자재</option><option>I/O CHECK</option><option>도면 · 사양</option><option>기타</option></select></label><label>상태<select id="er"><option>진행 중</option><option>완료</option></select></label></div>
           <label>내용<textarea id="et" placeholder="예) 하네스 CN3 핀 배열 도면과 상이 → 업체 재제작 요청"></textarea></label>
           <button class="sbtn" type="submit">저장</button>
         </form>
@@ -1923,8 +1923,8 @@ function addD(s, n) { var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]
 function md(s) { if (!s) return "-"; var p = String(s).slice(0, 10).split("-"); return (+p[0] !== new Date().getFullYear() ? "'" + p[0].slice(2) + "." : "") + +p[1] + "/" + +p[2] + "(" + "일월화수목금토"[new Date(+p[0], +p[1] - 1, +p[2]).getDay()] + ")"; }   // 올해가 아니면 '27. 붙임
 var RM = false;   // 애니메이션 줄이기 설정과 상관없이 숫자 · 그래프 · 흐르는 글자 모두 움직임
 
-var STAGES = ["자재불출", "FRAME 입고", "배선", "MODULE", "I/O CHECK", "1차 LEVEL", "1차 검수", "제조완료", "QC", "PACKING", "출하"];
-var SCOL = ["#94a3b8", "#22d3ee", "#f59e0b", "#a78bfa", "#3b82f6", "#f472b6", "#e879f9", "#a3e635", "#fb7185", "#2dd4bf", "#22c55e"];   // 자재불출 회색 · 입고 청록 · 배선 주황 · MODULE 보라 · I/O 파랑 · LEVEL 분홍 · 1차검수 자주 · 제조완료 연두 · QC 장미 · PACKING 민트 · 출하 초록
+var STAGES = ["자재불출", "FRAME 입고", "FRAME 배선", "MODULE", "I/O CHECK", "1차 LEVEL", "1차 검수", "제조완료", "QC", "PACKING", "출하"];
+var SCOL = ["#94a3b8", "#22d3ee", "#f59e0b", "#a78bfa", "#3b82f6", "#f472b6", "#e879f9", "#a3e635", "#fb7185", "#2dd4bf", "#22c55e"];   // 자재불출 회색 · 입고 청록 · FRAME 배선 주황 · MODULE 보라 · I/O 파랑 · LEVEL 분홍 · 1차검수 자주 · 제조완료 연두 · QC 장미 · PACKING 민트 · 출하 초록
 
 /* ── 예시 데이터 (서버 붙기 전 화면 확인용) ── */
 function demoData() {
@@ -2047,7 +2047,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-175706";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-180755";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2349,8 +2349,9 @@ function eqOpen(n, opt) {
   var p = $("drp"); p.innerHTML = "";
   var ph = el("div", "ph"); var x = el("button", "x", "✕"); x.type = "button"; x.onclick = drClose; ph.appendChild(x);
   var cd0 = e.st < 10 ? sd(e, e.st)[0] : "", fut = !!(cd0 && cd0 > D.today);   // 지금 공정 날짜가 아직 안 왔으면 '진행 중'이 아니라 '예정'
-  // ✅ 2026-11-10: 지금 공정 날짜가 이미 지났으면(오늘 전) 그 공정은 '완료' → 다음 공정을 '예정'으로 (예: 11/9 MODULE · 오늘 11/10 → MODULE 완료 · I/O CHECK 예정)
-  var dc = e.st; if (e.st < 10 && cd0 && cd0 < D.today) { dc = e.st + 1; fut = true; }
+  // ✅ 2026-11-10: 공정 날짜 = 그 공정이 끝나는 날 → 날짜가 지난 공정은 '완료', 다음 공정은 그다음 날부터 '진행 중'
+  //    (예: FRAME 입고 10/27 · 배선 11/11 · 오늘 11/10 → FRAME 입고 완료 · 배선 진행 중) · FRAME 입고 전이면 다음 공정은 '예정' (장비가 아직 안 옴)
+  var dc = e.st; if (e.st < 10 && cd0 && cd0 < D.today) { dc = e.st + 1; fut = !(dc >= 2 && e.inD && e.inD <= D.today); }
   ph.appendChild(el("span", "tag b", STAGES[dc] + (fut ? " 예정" : ""))); ph.appendChild(el("h4", null, e.n)); ph.appendChild(el("p", null, [e.t, e.v, e.p].filter(Boolean).join(" · ")));
   p.appendChild(ph);
   var bd = el("div", "bd");
@@ -2564,7 +2565,7 @@ function dday(ymdS) { if (!ymdS) return ["미정", ""]; var n = Math.round((new 
 function eqBuild(X, list, fname, q, tag) {
   var T = D.today, fn = "동탄제조_장비현황_" + (tag ? tag + "_" : "") + T + ".xlsx";
   var dt = function (p) { return p && p[0] ? (p[0] === "NA" ? "해당 없음" : p[0].slice(5).replace("-", "/") + (p[1] ? " ✓" : "")) : "-"; };
-  var H = ["장비", "TYPE", "현재 공정", "자리", "업체", "담당", "FRAME 입고", "배선", "I/O CHECK", "1차 검수", "PACKING", "출하 예정", "D-Day", "하네스", "1차 검수 기록", "긴급"];
+  var H = ["장비", "TYPE", "현재 공정", "자리", "업체", "담당", "FRAME 입고", "FRAME 배선", "I/O CHECK", "1차 검수", "PACKING", "출하 예정", "D-Day", "하네스", "1차 검수 기록", "긴급"];
   var rows = list.map(function (e) {
     var dd = dday(e.out), q1 = (e.qc || []).filter(function (c) { return c.k === "1차 검수"; })[0], q2 = (e.qc || []).filter(function (c) { return c.k === "2차 검수"; })[0];
     return { v: [e.n, e.t, STAGES[e.st], e.loc || "미배정", e.v || "-", e.p || "-", dt(sd(e, 1)), dt(sd(e, 2)), dt(sd(e, 4)), dt(sd(e, 6)), dt(sd(e, 9)), e.out || "-", e.out ? dd[0] : "-", dt(dsx(e, "hn")), qcLabel(q1), e.u ? "긴급" : ""],
@@ -2676,7 +2677,7 @@ function eqSelect(sel, firstList) {
   var pre = src.filter(function (e) { return e.st < 10 && !isAct(e); }).sort(function (a, b) { var x = a.inD || "9999", y = b.inD || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
   var out = src.filter(function (e) { return e.st >= 10; });
   var grp = function (title, arr, lab) { if (!arr.length) return; var g = document.createElement("optgroup"); g.label = title + " (" + arr.length + "대)"; arr.forEach(function (e) { var o = el("option", null, lab(e)); o.value = e.n; g.appendChild(o); }); sel.appendChild(g); };
-  if (firstList && firstList.length) grp("배선 중 · 예정", firstList, function (e) { return (e.loc ? e.loc + " · " : "") + e.n + " · " + e.t; });
+  if (firstList && firstList.length) grp("FRAME 배선 중 · 예정", firstList, function (e) { return (e.loc ? e.loc + " · " : "") + e.n + " · " + e.t; });
   grp("동탄에 있는 장비", inn, function (e) { return (e.loc ? e.loc + " · " : "미배정 · ") + e.n + " · " + e.t; });
   grp("입고 예정", pre, function (e) { return (e.inD ? md(e.inD).replace(/\(.\)/, "") + " 입고 · " : "") + e.n + " · " + e.t; });
   grp("출하 완료", out, function (e) { return e.n + " · " + e.t; });
@@ -2853,7 +2854,7 @@ $("qform").onsubmit = function (e) {
 var EWF = "ing", EIF = "open", EMORE = false;
 function sd(e, i) { var s = (e.ds && e.ds.s) || []; return s[i] || ["", 0]; }
 function dsx(e, k) { return (e.ds && e.ds[k]) || ["", 0]; }
-function wireOf(e) {   // 배선 상태
+function wireOf(e) {   // FRAME 배선 상태
   var T = D.today, fi = sd(e, 1), wr = sd(e, 2), io = sd(e, 4);
   if (!fi[0] && !wr[0]) return null;
   if (wr[1]) return { k: "done", fi: fi, wr: wr, io: io };
@@ -2861,25 +2862,25 @@ function wireOf(e) {   // 배선 상태
   if (!inYet) return { k: "pre", fi: fi, wr: wr, io: io };
   return { k: wr[0] && wr[0] < T ? "late" : "ing", fi: fi, wr: wr, io: io };
 }
-function prepTag(p, need) {   // [날짜, 완료] → 태그 · need = 이 날짜까지 필요(배선 완료일)
+function prepTag(p, need) {   // [날짜, 완료] → 태그 · need = 이 날짜까지 필요(FRAME 배선 완료일)
   var T = D.today;
   if (p[0] === "NA") return '<span class="tag">해당 없음</span>';
   if (p[1]) return '<span class="tag g">완료</span>';
   if (!p[0]) return '<span class="tag">미정</span>';
   if (p[0] < T) return '<span class="tag r">' + esc(md(p[0]).replace(/\(.\)/, "")) + " 지연</span>";
-  if (need && p[0] > need) return '<span class="tag r" title="배선 완료 예정일보다 늦게 들어옵니다">' + esc(md(p[0]).replace(/\(.\)/, "")) + " · 배선 후</span>";
+  if (need && p[0] > need) return '<span class="tag r" title="FRAME 배선 완료 예정일보다 늦게 들어옵니다">' + esc(md(p[0]).replace(/\(.\)/, "")) + " · FRAME 배선 후</span>";
   return '<span class="tag a">' + esc(md(p[0]).replace(/\(.\)/, "")) + " 예정</span>";
 }
 function prepOk(p) { return p[0] === "NA" || !!p[1]; }
 function isElecLog(x) { return /^전장/.test(x.k || ""); }
 // 📥 전장 엑셀: 시트 3개 — FRAME 배선 현황 · 전장 자재 준비 · 전장 이슈
-function prepTxt(p, need) { var T = D.today; if (p[0] === "NA") return "해당 없음"; if (p[1]) return "완료"; if (!p[0]) return "미정"; var m = p[0].slice(5).replace("-", "/"); if (p[0] < T) return m + " 지연"; if (need && p[0] > need) return m + " · 배선 후"; return m + " 예정"; }
-function prepCol(t) { return /지연|배선 후/.test(t) ? { color: XC.warn, bold: true } : /예정/.test(t) ? { color: XC.amb, bold: true } : /완료/.test(t) ? { color: XC.ok, bold: true } : undefined; }
+function prepTxt(p, need) { var T = D.today; if (p[0] === "NA") return "해당 없음"; if (p[1]) return "완료"; if (!p[0]) return "미정"; var m = p[0].slice(5).replace("-", "/"); if (p[0] < T) return m + " 지연"; if (need && p[0] > need) return m + " · FRAME 배선 후"; return m + " 예정"; }
+function prepCol(t) { return /지연|FRAME 배선 후/.test(t) ? { color: XC.warn, bold: true } : /예정/.test(t) ? { color: XC.amb, bold: true } : /완료/.test(t) ? { color: XC.ok, bold: true } : undefined; }
 function elBuild(X, ing, late, pre, done, elogs) {
   var T = D.today, fn = "동탄제조_전장현황_" + T + ".xlsx", d = function (p) { return p && p[0] ? p[0].slice(5).replace("-", "/") + (p[1] ? " ✓" : "") : "-"; };
-  var st = function (w) { if (w.k === "done") return "배선 완료"; if (w.k === "pre") return "입고 대기"; var n = Math.round((new Date(w.wr[0] || T) - new Date(T)) / 864e5); return w.k === "late" ? "지연 " + (-n) + "일" : n === 0 ? "오늘 완료" : "D-" + n; };
-  var H1 = ["구분", "장비", "자리", "업체", "담당", "FRAME 입고", "배선 완료", "I/O CHECK", "하네스", "상태", "긴급"], r1 = [];
-  [["배선 중", ing.filter(function (x) { return x.w.k === "ing"; })], ["배선 지연", late], ["2주 내 예정", pre], ["최근 완료", done]].forEach(function (g) {
+  var st = function (w) { if (w.k === "done") return "FRAME 배선 완료"; if (w.k === "pre") return "입고 대기"; var n = Math.round((new Date(w.wr[0] || T) - new Date(T)) / 864e5); return w.k === "late" ? "지연 " + (-n) + "일" : n === 0 ? "오늘 완료" : "D-" + n; };
+  var H1 = ["구분", "장비", "자리", "업체", "담당", "FRAME 입고", "FRAME 배선 완료", "I/O CHECK", "하네스", "상태", "긴급"], r1 = [];
+  [["FRAME 배선 중", ing.filter(function (x) { return x.w.k === "ing"; })], ["FRAME 배선 지연", late], ["2주 내 예정", pre], ["최근 완료", done]].forEach(function (g) {
     r1.push({ t: "band", v: [g[0] + " · " + g[1].length + "대"] });
     g[1].slice().sort(function (a, b) { return (a.w.wr[0] || "9") < (b.w.wr[0] || "9") ? -1 : 1; }).forEach(function (x) {
       var e = x.e, w = x.w, hn = prepTxt(dsx(e, "hn"), w.wr[0]), s0 = st(w);
@@ -2887,7 +2888,7 @@ function elBuild(X, ing, late, pre, done, elogs) {
     });
   });
   var d21 = addD(T, 21), pr = D.eq.filter(function (e) { var w = wireOf(e); return w && w.k !== "done" && w.fi[0] && w.fi[0] <= d21; }).sort(function (a, b) { return sd(a, 1)[0] < sd(b, 1)[0] ? -1 : 1; });
-  var H2 = ["장비", "FRAME 입고", "업체", "전장 E-BOM", "전장 발주", "하네스", "배선 완료 예정"], r2 = pr.map(function (e) { var a = prepTxt(dsx(e, "eb")), b = prepTxt(dsx(e, "po")), c = prepTxt(dsx(e, "hn"), sd(e, 2)[0]); return { v: [e.n, d(sd(e, 1)), e.v || "-", a, b, c, d(sd(e, 2))], c: { 0: { bold: true }, 3: prepCol(a), 4: prepCol(b), 5: prepCol(c) } }; });
+  var H2 = ["장비", "FRAME 입고", "업체", "전장 E-BOM", "전장 발주", "하네스", "FRAME 배선 완료 예정"], r2 = pr.map(function (e) { var a = prepTxt(dsx(e, "eb")), b = prepTxt(dsx(e, "po")), c = prepTxt(dsx(e, "hn"), sd(e, 2)[0]); return { v: [e.n, d(sd(e, 1)), e.v || "-", a, b, c, d(sd(e, 2))], c: { 0: { bold: true }, 3: prepCol(a), 4: prepCol(b), 5: prepCol(c) } }; });
   var H3 = ["날짜", "장비", "구분", "상태", "내용", "작성"], r3 = elogs.map(function (x) { return { v: [x.d, x.e, String(x.k).replace(/^전장·/, ""), x.r, x.t, x.w], c: { 1: { bold: true }, 3: { color: x.r === "완료" ? XC.ok : XC.amb, bold: true } } }; });
   if (!X) return { fn: fn, csv: [H1].concat(r1.filter(function (r) { return r.t !== "band"; }).map(function (r) { return r.v; })) };
   var wb = new X.Workbook(), sub = xlStamp() + " · ✓ = 완료";
@@ -2904,19 +2905,19 @@ function drawElec() {
   var done = W.filter(function (x) { return x.w.k === "done" && x.w.wr[0] >= d7; });
   var needHn = D.eq.filter(function (e) { var w = wireOf(e); if (!w || w.k === "done") return false; var fi = w.fi[0]; return fi && fi <= d21 && !prepOk(dsx(e, "hn")); });
   var elogs = D.issues.filter(isElecLog), open = elogs.filter(function (x) { return x.r !== "완료"; });
-  kpiRow("ekpi", [["배선 중", ing.length, "대", false, function () { EWF = "ing"; drawElec(); goList("#ewf"); }, EWF === "ing"], ["배선 지연", late.length, "대", late.length > 0, function () { EWF = "late"; drawElec(); goList("#ewf"); }, EWF === "late"],
+  kpiRow("ekpi", [["FRAME 배선 중", ing.length, "대", false, function () { EWF = "ing"; drawElec(); goList("#ewf"); }, EWF === "ing"], ["FRAME 배선 지연", late.length, "대", late.length > 0, function () { EWF = "late"; drawElec(); goList("#ewf"); }, EWF === "late"],
     ["하네스 미완료", needHn.length, "대", needHn.length > 0, function () { goList("#eprep"); }], ["열린 전장 이슈", open.length, "건", open.length > 0, function () { EIF = "open"; drawElec(); goList(".eiss"); }]]);
   xlBtn($("elx"), "전장 엑셀 다운로드", function (X) { return elBuild(X, ing, late, pre, done, elogs); });
   // 배선 현황 표
   var f = $("ewf"); f.innerHTML = "";
-  [["ing", "배선 중 " + ing.length], ["late", "지연 " + late.length], ["pre", "2주 내 예정 " + pre.length], ["done", "최근 완료 " + done.length]].forEach(function (o) { var b = el("button", "chip" + (EWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { EWF = o[0]; drawElec(); }; f.appendChild(b); });
+  [["ing", "FRAME 배선 중 " + ing.length], ["late", "지연 " + late.length], ["pre", "2주 내 예정 " + pre.length], ["done", "최근 완료 " + done.length]].forEach(function (o) { var b = el("button", "chip" + (EWF === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { EWF = o[0]; drawElec(); }; f.appendChild(b); });
   var list = EWF === "ing" ? ing : EWF === "late" ? late : EWF === "pre" ? pre : done;
   list = list.slice().sort(function (a, b) { var x = (EWF === "done" ? b : a).w.wr[0] || "9999", y = (EWF === "done" ? a : b).w.wr[0] || "9999"; return x < y ? -1 : x > y ? 1 : 0; });
   var tb = $("ewtb"); tb.innerHTML = ""; var mw = $("ewm"); mw.innerHTML = "";
-  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", EWF === "ing" ? "지금 배선 중인 장비가 없습니다" : EWF === "late" ? "배선이 늦어진 장비가 없습니다" : EWF === "pre" ? "2주 안에 배선 예정인 장비가 없습니다" : "최근 7일 안에 배선을 마친 장비가 없습니다"); td0.colSpan = 8; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); }
+  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", EWF === "ing" ? "지금 FRAME 배선 중인 장비가 없습니다" : EWF === "late" ? "FRAME 배선이 늦어진 장비가 없습니다" : EWF === "pre" ? "2주 안에 FRAME 배선 예정인 장비가 없습니다" : "최근 7일 안에 FRAME 배선을 마친 장비가 없습니다"); td0.colSpan = 8; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); }
   list.forEach(function (x) {
     var e = x.e, w = x.w, tr = el("tr"), st;
-    if (w.k === "done") st = '<span class="tag g">배선 완료</span>';
+    if (w.k === "done") st = '<span class="tag g">FRAME 배선 완료</span>';
     else if (w.k === "pre") st = '<span class="tag">입고 대기</span>';
     else {
       var a0 = w.fi[0] || T, b0 = w.wr[0] || T, tot = Math.max(1, Math.round((new Date(b0) - new Date(a0)) / 864e5)), gone = Math.round((new Date(T) - new Date(a0)) / 864e5), pc = Math.max(4, Math.min(100, gone / tot * 100));
@@ -2927,7 +2928,7 @@ function drawElec() {
     tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
     var m = el("div"); m.onclick = function () { eqOpen(e.n); };
     var dm = function (lb, p) { return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (p[1] ? "✓" : "") + "</span>" : "-"); };
-    m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dm("입고", w.fi) + " · " + dm("배선", w.wr) + " · " + dm("I/O", w.io) + " · <em>하네스</em> " + prepTag(dsx(e, "hn"), w.wr[0]) + "</span>";
+    m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dm("입고", w.fi) + " · " + dm("FRAME 배선", w.wr) + " · " + dm("I/O", w.io) + " · <em>하네스</em> " + prepTag(dsx(e, "hn"), w.wr[0]) + "</span>";
     mw.appendChild(m);
     tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + '</td><td>' + (e.loc ? esc(e.loc) : '<span class="dim">-</span>') + "</td><td>" + esc([e.v, e.p].filter(Boolean).join(" · ") || "-") + "</td><td>" + dt(w.fi) + "</td><td>" + dt(w.wr) + "</td><td>" + dt(w.io) + "</td><td>" + prepTag(dsx(e, "hn"), w.wr[0]) + "</td><td>" + st + "</td>";
     tb.appendChild(tr);
