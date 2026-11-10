@@ -1335,6 +1335,7 @@ html.gate,html.gate body{overflow:hidden}
 .nkb>div:nth-child(2){border-left:0}
 .nkb span{font-size:11.5px;font-weight:800;color:var(--sub)}.nkb b{font-size:20px;font-weight:900;font-family:var(--mono)}
 .nnew{margin-left:auto;height:44px;padding:0 22px;font-size:14px}
+.nck{margin-left:auto;height:44px;padding:0 18px;font-size:14px;justify-content:center;text-decoration:none}.nck+.nnew{margin-left:0}
 .nsub{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--sub);margin-bottom:10px}
 .nleg{display:inline-flex;align-items:center;gap:6px}.nleg i{width:12px;height:12px;border-radius:3px;border:1px solid var(--line);margin-left:8px}
 .nleg i.y{background:color-mix(in srgb,#facc15 22%,var(--card))}.nleg i.a{background:var(--bg2)}
@@ -1375,7 +1376,7 @@ select.nin.npl{height:34px;font-size:12.5px}
 .nsv{background:var(--grd);color:#fff}.nsv:disabled{opacity:.6}
 .ncc{border:1px solid var(--line);color:var(--sub);background:var(--card)}
 .ndl{color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,var(--line));background:var(--card)}.ndl.arm{background:var(--warn);color:#fff}
-@media (max-width:640px){.nsheet{padding:18px 16px 12px}.nst h3{font-size:18px}.nkb{min-width:0;width:100%}.nnew{margin-left:0;flex:1 1 100%}.nleg{display:none}}
+@media (max-width:640px){.nsheet{padding:18px 16px 12px}.nst h3{font-size:18px}.nkb{min-width:0;width:100%}.nnew{margin-left:0;flex:1 1 100%}.nck{margin-left:0;flex:1 1 100%}.nleg{display:none}}
 
 .nleg i.e{background:color-mix(in srgb,var(--ac) 22%,var(--card))}
 .nsh tr.ndr.ed td,.nsh tr.ndr.ed td.c-act{background:color-mix(in srgb,var(--ac) 16%,var(--card))}
@@ -1727,14 +1728,14 @@ html.gate body>#lg{visibility:visible;z-index:210}
 
   <!-- ═════ 1차 검수 부적합 관리대장 (제조) ═════ -->
   <div class="view" id="v-ncl"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Manufacturing</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 기록하고 관리합니다. 로그인한 분은 누구나 조회 · 엑셀 다운로드가 가능하며, 작성 · 수정은 제조 인원만 가능합니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
+    <div class="vtop"><span class="eyebrow">Manufacturing</span><h2 class="tt">1차 검수 부적합</h2><p class="ds">제조 1차 검수에서 나온 부적합을 기록하고 관리합니다. 로그인한 분은 누구나 조회 · 엑셀 다운로드가 가능하며, 작성 · 수정은 제조 인원만 가능합니다. 인쇄용 1차 검수 시트도 이곳에서 내려받을 수 있습니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="nclx"></button></div>
     <div id="nclw">
       <div class="card nclk" id="nclk"><b>로그인 후 볼 수 있습니다</b><span>1차 검수 부적합 관리대장은 로그인한 분만 보고 기록할 수 있습니다.</span><button type="button">로그인</button></div>
       <div id="nclb" hidden>
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
           <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2 nhelp nhp">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '완료'<br>발주 프로젝트 명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p><p class="ds2 nhelp nhm">새 기록은 '작성하기' · 기록을 누르면 자세히 보거나 고칠 수 있습니다<br>장비명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p></div></div>
-          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
+          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><a class="xbtn lk nck" id="nclck" href="inspection_sheet.xlsx?v=2.0" download="동탄 1차 검수 시트 Rev2.0.xlsx">1차 검수 시트 (인쇄용)</a><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
           <div class="tbw ewd nshw"><table class="nsh" id="ncltbl"><thead></thead><tbody id="ncltb"></tbody></table></div>
@@ -2037,7 +2038,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261109-202010";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-091108";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
