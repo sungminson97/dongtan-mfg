@@ -1183,7 +1183,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .ups{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-left:auto}
 .upk{display:inline-flex;align-items:baseline;gap:7px;height:32px;padding:0 12px;border-radius:999px;background:var(--bg2);border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--sub);align-items:center}
 .upk em{font-style:normal}.upk b{font-family:var(--mono);font-size:15px;color:var(--text)}
-.upk.r b{color:var(--warn)}.upk.b b{color:var(--ac)}.upk.g b{color:var(--ok)}.upk.z b{color:var(--sub);opacity:.6}
+.upk.a b{color:#d97706}.upk.r b{color:var(--warn)}.upk.b b{color:var(--ac)}.upk.g b{color:var(--ok)}.upk.z b{color:var(--sub);opacity:.6}
 .upn{flex-basis:100%;text-align:right;font-size:12.5px;font-weight:700;color:var(--sub);word-break:keep-all}
 .upchev{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);color:var(--sub);transition:transform .5s cubic-bezier(.2,.8,.2,1),background .25s,color .25s}
 .upchev svg{width:16px;height:16px}
@@ -2038,7 +2038,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-092349";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-100404";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2712,6 +2712,7 @@ function upList(cols) {   // cols: [[구분, 시트 상태 칸(1~3), 기준일 �
       if (st === "na") return;
       var g = st === "need" ? "need" : st === "done" ? (due && due >= old && due <= T ? "done" : "") : (due && due <= d14 && e.st < 10 ? "pre" : "");
       if (g === "need") { var rq = upReq(e.n, 14 + c[1]); if (rq) { g = "ing"; } }   // 대시보드에서 완료를 눌렀고 시트 반영 기다리는 중
+      if (/A팀/.test(String(x[4] || ""))) return;   // A팀으로 넘긴 장비는 빼기
       if (g) out.push({ e: e, k: c[0], s: c[3], col: 14 + c[1], raw: raw, st: g, due: due, op: x[4] || "", rq: g === "ing" ? upReq(e.n, 14 + c[1]) : null });
     });
   });
@@ -2732,6 +2733,7 @@ function uplMark(x, o, btn) {
     .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); } add(); })
     .catch(function (er) { btn.disabled = false; btn.textContent = "완료"; btn.classList.remove("cf"); toast("완료 처리 실패: " + (/dt_upl_done|PGRST202|404/.test(er.message) ? "완료 처리 준비가 아직 안 되었습니다" : er.message)); });
 }
+function upNoOp(x) { return !String(x.op || "").trim(); }   // 👷 작업자(장비_Log) 비어 있음 — 표시만 (입력은 제조 담당자가)
 function upDday(due) { if (!due) return ""; var n = Math.round((new Date(due) - new Date(D.today)) / 864e5); return n === 0 ? "D-day" : n > 0 ? "D-" + n : "D+" + (-n); }
 function upCard(box, o) {
   if (!box) return;
@@ -2745,7 +2747,9 @@ function upCard(box, o) {
     need = L.filter(function (x) { return x.st === "need" || x.st === "ing"; }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
     pre = L.filter(function (x) { return x.st === "pre"; }).sort(function (a, b) { return a.due < b.due ? -1 : 1; });
     done = L.filter(function (x) { return x.st === "done"; }).sort(function (a, b) { return a.due > b.due ? -1 : 1; });
-    [["업로드 필요", need.length, "r"], ["2주 내 예정", pre.length, "b"], ["최근 완료", done.length, "g"]].forEach(function (k) { var c = el("span", "upk " + k[2] + (k[1] ? "" : " z")); c.appendChild(el("em", null, k[0])); var b = el("b", null, "0"); b.dataset.cnt = k[1]; c.appendChild(b); sm.appendChild(c); });
+    var nop = {}; need.concat(done).forEach(function (x) { if (upNoOp(x)) nop[upK(x.e.n)] = 1; });
+    var nopN = Object.keys(nop).length;
+    [["업로드 필요", need.length, "r"], ["2주 내 예정", pre.length, "b"], ["최근 완료", done.length, "g"]].concat(nopN ? [["작업자 미입력", nopN, "a"]] : []).forEach(function (k) { var c = el("span", "upk " + k[2] + (k[1] ? "" : " z")); c.appendChild(el("em", null, k[0])); var b = el("b", null, "0"); b.dataset.cnt = k[1]; c.appendChild(b); sm.appendChild(c); });
     var nx = need[0] || pre[0];
     if (nx) sm.appendChild(el("span", "upn", (nx.st === "need" ? "가장 오래된 " : "다음 ") + (nx.due ? md(nx.due).replace(/\(.\)/, "") + " " : "") + nx.e.n + (o.cols.length > 1 ? " · " + nx.s : "") + ((nx.st === "need" ? need.length : pre.length) > 1 ? " 외 " + ((nx.st === "need" ? need.length : pre.length) - 1) + "건" : "")));
   }
@@ -2756,7 +2760,7 @@ function upCard(box, o) {
   var bd = el("div", "upb"), inn = el("div", "upi"); bd.appendChild(inn); box.appendChild(bd);
   if (!L) { inn.appendChild(el("div", "empty", "시트 업로드 현황을 준비 중입니다")); return; }
   var k = 0;
-  [["업로드 필요", need, "기준일(" + o.dl + "일)이 지나 업로드가 필요한 장비입니다 · 업로드를 마쳤으면 [완료]를 눌러 주세요 (10분 안에 시트에 반영)"], ["2주 내 예정", pre, "기준일(" + o.dl + "일)이 되면 업로드 필요로 바뀝니다 · 2주 안에 " + o.dl + "일이 잡힌 장비입니다"], ["최근 완료", done, "최근 2주 안에 업로드를 마친 장비입니다"]].forEach(function (g) {
+  [["업로드 필요", need, "기준일(" + o.dl + "일)이 지나 서버 업로드가 필요한 장비입니다 · 완료 처리는 제조 담당자가 하며, 처리 후 15분 안에 이곳에 반영됩니다"], ["2주 내 예정", pre, "기준일(" + o.dl + "일)이 되면 업로드 필요로 바뀝니다 · 2주 안에 " + o.dl + "일이 잡힌 장비입니다"], ["최근 완료", done, "최근 2주 안에 업로드를 마친 장비입니다"]].forEach(function (g) {
     var sec = el("div", "upg"), h = el("div", "upgh"); h.appendChild(el("b", null, g[0] + " " + g[1].length)); h.appendChild(el("small", null, g[2])); sec.appendChild(h);
     if (!g[1].length) sec.appendChild(el("div", "upe", g[0] === "업로드 필요" ? "업로드할 시트가 없습니다" : g[0] === "2주 내 예정" ? "2주 안에 예정된 시트가 없습니다" : "최근 완료한 시트가 없습니다"));
     g[1].forEach(function (x) {
@@ -2764,15 +2768,12 @@ function upCard(box, o) {
       var dd = upDday(x.due), tg = x.st === "ing" ? '<span class="tag b">반영 대기</span>' : x.st === "need" ? '<span class="tag r">' + (dd && dd.indexOf("D+") === 0 ? dd.replace("D+", "") + "일 지남" : "업로드 필요") + "</span>"
         : x.st === "pre" ? (dd.indexOf("D+") === 0 ? '<span class="tag a">날짜 지남 · 대기</span>' : '<span class="tag b">예정 ' + (dd || "") + "</span>") : '<span class="tag g">' + esc(/패스/.test(x.raw) ? "패스" : "완료") + "</span>";
       r.innerHTML = (o.cols.length > 1 ? '<span class="upq q' + (x.s === "ISSUE" ? "i" : "2") + '">' + esc(x.s) + "</span>" : "") +
-        '<span class="upm"><b>' + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><small>" + esc([e.loc, e.t, x.op || e.p].filter(Boolean).join(" · ") || "-") + "</small></span>" +
+        '<span class="upm"><b>' + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + (x.st !== "pre" && upNoOp(x) ? ' <span class="tag a">작업자 미입력</span>' : "") + "</b><small>" + esc([e.loc, e.t, x.op ? "작업자 " + x.op : e.p ? "담당 " + e.p : ""].filter(Boolean).join(" · ") || "-") + "</small></span>" +
         '<span class="upd"><em>' + esc(o.dl) + "</em>" + (x.due ? esc(md(x.due).replace(/\(.\)/, "")) : "미정") + "</span>" + tg;
       r.onclick = function () { eqOpen(e.n); };
       r.onkeydown = function (ev) { if (ev.key === "Enter") eqOpen(e.n); };
-      if (x.st === "need") {   // 📤 업로드 마쳤으면 [완료] → 제조B 시트 장비_Log에도 '완료' (10분 안에)
-        var db = el("button", "upbtn", "완료"); db.type = "button"; db.title = "시트 업로드를 마쳤으면 눌러 주세요 (두 번 눌러 확정)";
-        db.onclick = function (ev) { ev.stopPropagation(); uplMark(x, o, db); };
-        r.appendChild(db);
-      } else if (x.st === "ing" && x.rq) {
+      // 📤 2026-11-10: 대시보드는 보기만 (완료 · 되돌리기 · 작업자 입력은 제조1-B 앱에서) → [완료] 버튼 없음
+      if (x.st === "ing" && x.rq) {
         r.appendChild(el("span", "upwho", (x.rq.w ? x.rq.w + " · " : "") + "시트 반영 중"));
       }
       sec.appendChild(r);
