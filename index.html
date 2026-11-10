@@ -2046,7 +2046,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-132546";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-142058";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2353,9 +2353,10 @@ function eqOpen(n, opt) {
   var bd = el("div", "bd");
   if (opt.row) bd.appendChild(drInsp(e, opt.row));   // 수입검사에서 누르면: 그 검사 건 + 이 장비 수입검사 현황 먼저
   var kv = el("div", "kv");
-  var KV = [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)], ["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"]];
-  if (opt.eq) KV = [KV[0], KV[1], ["1차 검수", sdTx(e, 6)], ["PACKING", sdTx(e, 9)], ["출하", sdTx(e, 10, e.out)], KV[2]];   // 장비 탭: 자리 · FRAME 입고 / 1차 검수 · PACKING / 출하 · 업체 · 담당
-  KV.forEach(function (k, ki) { var d = el("div"); if (ki === 2 && !opt.eq) d.style.gridColumn = "1 / -1"; d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
+  var vd = e.ds && Array.isArray(e.ds.vd) ? e.ds.vd : [], VD = [["가공업체", vd[0] || "-"], ["하네스업체", vd[1] || "-"]];   // 🏭 2026-11-10 가공 · 하네스 업체
+  var KV = [["자리", e.loc ? "동탄 " + e.loc + (e.st < 10 && (!e.inD || e.inD > D.today) ? " · 입고 예정" : "") : "미배정"], ["FRAME 입고", md(e.inD)]].concat(VD, [["업체 · 담당", [e.v, e.p].filter(Boolean).join(" · ") || "-"]]);
+  if (opt.eq) KV = [KV[0], KV[1], ["1차 검수", sdTx(e, 6)], ["PACKING", sdTx(e, 9)], ["출하", sdTx(e, 10, e.out)], KV[4], VD[0], VD[1]];   // 장비 탭: 자리 · FRAME 입고 / 1차 검수 · PACKING / 출하 · 업체 · 담당 / 가공 · 하네스
+  KV.forEach(function (k) { var d = el("div"); if (k[0] === "업체 · 담당" && !opt.eq) d.style.gridColumn = "1 / -1"; d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1])); kv.appendChild(d); });
   bd.appendChild(kv);
   var c = el("div", "card"), tl = el("div", "tline"); tl.style.marginTop = "10px";
   if (opt.ft || opt.qa) {   // FT · 품질 탭에서 열면 공정 진행은 접어 둠 (화살표로 펼치기)
