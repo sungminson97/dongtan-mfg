@@ -1735,7 +1735,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
         <div class="g4" id="nclkpi" style="margin-bottom:16px"></div>
         <div class="card nsheet">
           <div class="ehd"><div><h3>부적합 기록</h3><p class="ds2 nhelp nhp">새 기록은 '작성하기' → 맨 위 노란 줄을 채우고 '추가' · 고칠 기록은 왼쪽 '수정' → 파란 줄에서 고치고 '완료'<br>발주 프로젝트 명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p><p class="ds2 nhelp nhm">새 기록은 '작성하기' · 기록을 누르면 자세히 보거나 고칠 수 있습니다<br>장비명을 누르면 해당 장비의 공정 일정을 확인할 수 있습니다</p></div></div>
-          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><a class="xbtn lk nck" id="nclck" href="inspection_sheet.xlsx?v=2.0" download="동탄 1차 검수 시트 Rev2.0.xlsx">1차 검수 시트 (인쇄용)</a><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
+          <div class="ncltool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="nclq" placeholder="장비 · 내용 · 업체 · 담당자 검색" autocomplete="off"></div><select id="nclm" aria-label="발생 월"></select><div class="chips" id="nclc"></div><span class="nro2" id="nclro2" hidden>보기 전용 · 작성은 제조 인원만</span><a class="xbtn lk nck" id="nclck" href="inspection_sheet.xlsx?v=2.0b" download="NB_1st_Inspection_Dongtan_Sheet (Rev2.0)_ssm.xlsx">1차 검수 시트 (인쇄용)</a><button class="wbtn nnew" type="button" id="nclnew">작성하기</button></div>
           <div class="nsub"><span id="nclsub"></span><span class="nleg"><i class="y"></i>새 기록<i class="e"></i>수정 중<i class="a"></i>자동 입력 칸 · Enter 저장 · Esc 취소</span></div>
           <div id="nclmb"></div>
           <div class="tbw ewd nshw"><table class="nsh" id="ncltbl"><thead></thead><tbody id="ncltb"></tbody></table></div>
@@ -2038,7 +2038,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-091108";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-092349";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
