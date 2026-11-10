@@ -592,7 +592,8 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .eiss .ds2{margin-top:2px}
 .msrch{margin-top:12px;max-width:none}
 /* 2026-11-10: 장비명 / 품번 · 품목명 찾기 */
-.mmode{margin-top:14px}
+.mmode{margin-top:14px}.msite+.mmode{margin-top:8px}
+.mtc.done{opacity:.6}
 .mpinfo{font-size:12.5px;color:var(--sub);font-weight:700;margin:14px 2px 2px}
 .mgrp{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;padding:14px 4px 8px;cursor:pointer}
 .mgrp b{font-size:15px;font-weight:900}.mgrp i{font-style:normal;font-size:11.5px;font-weight:800;color:var(--sub);background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
@@ -2046,7 +2047,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-142058";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261110-154933";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4015,8 +4016,12 @@ $("nfm").onsubmit = function (e) {
  * mat_tabs 한 줄 = 장비 하나 · rows = [납기, 상위품목, 상위품목명, 거래처, 품목, 품목명, 규격명, 발주, 입고, 3공장, 1공장]
  * site_stats 'insp' rows = [요청일, 긴급, 의뢰자, 프로젝트, TYPE, PART NO., Part Desc., 수량, 업체, 품목, 검사자, 검수완료일, Result, 완료, NG수량, 장비명]
  */
-var ETAB = "mat", MS = { list: null, ld: 0, err: "", q: "", prj: "", data: {}, f: "all", s: "", o: "due", lf: "all", m: "eq", pq: "", pr: {}, pseq: 0 }, IS = { d: null, ld: 0, err: "", f: "wait", q: "" };
+var ETAB = "mat", MS = { list: null, ld: 0, err: "", q: "", prj: "", data: {}, f: "all", s: "", o: "due", lf: "all", m: "eq", pq: "", pr: {}, pseq: 0, site: "동탄" }, IS = { d: null, ld: 0, err: "", f: "wait", q: "" };
 try { ETAB = sget("etab") || "mat"; } catch (e) {}
+try { MS.site = sget("msite") || "동탄"; } catch (e) {}
+// 📦 2026-11-10: 자재는 모든 장비 (동탄 · 성남) · 사업장 고르기 — 동탄 = 예전처럼 동탄 장비 / 성남 / 전체 (사업장을 모르는 장비는 전체에서만)
+function mtSiteOk(x) { return MS.site === "전체" || (x.site || "") === MS.site; }
+function mtSpec(r, k) { return String(r[6] || "").indexOf(k) >= 0; }   // 규격명 (3공장) · (1공장)
 function mtN(x) { var n = parseFloat(String(x == null ? "" : x).replace(/,/g, "")); return isNaN(n) ? 0 : n; }
 function mtIsOut(r) { return /외주\s*조립/.test(r[6] || ""); }
 function mtDk2(s) { s = String(s || ""); var m = s.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); if (m) return m[1] + ("0" + m[2]).slice(-2) + ("0" + m[3]).slice(-2); m = s.match(/^(\d{1,2})\D(\d{1,2})$/); if (m) return D.today.slice(0, 4) + ("0" + m[1]).slice(-2) + ("0" + m[2]).slice(-2); return "99999999"; }
@@ -4025,7 +4030,8 @@ function matLoad(force) {
   if (!LIVE) { MS.list = []; MS.err = "예시 화면에서는 자재 데이터가 없습니다"; return Promise.resolve(); }
   if (MS.ld || (MS.list && !force && Date.now() - MS.t < 300000)) return Promise.resolve();
   MS.ld = 1;
-  return sbFetch("mat_tabs?select=prj,eq,n,wait,updated_at&order=eq.asc").then(function (r) { MS.list = r || []; MS.err = ""; MS.t = Date.now(); })
+  return sbFetch("mat_tabs?select=prj,eq,n,wait,site,out,updated_at&order=eq.asc").catch(function (e0) { if (/site|out|column|42703|PGRST/.test(e0.message)) return sbFetch("mat_tabs?select=prj,eq,n,wait,updated_at&order=eq.asc").then(function (r0) { (r0 || []).forEach(function (x) { x.site = "동탄"; }); return r0; }); throw e0; })
+    .then(function (r) { MS.list = r || []; MS.err = ""; MS.t = Date.now(); })
     .catch(function (e) { MS.err = /mat_tabs|relation|404|PGRST/.test(e.message) ? "자재 현황을 준비 중입니다" : "불러오기 실패: " + e.message; MS.list = MS.list || []; })
     .then(function () { MS.ld = 0; if (cur === "etc") drawEtc(); else if (cur === "mech") drawMech(); });
 }
@@ -4046,8 +4052,8 @@ function eqByName(n) { return D.eq.filter(function (e) { return e.n === n; })[0]
 function drawEtc() {
   [].forEach.call($("etab").querySelectorAll("button"), function (b) { b.classList.toggle("on", b.dataset.v === ETAB); b.onclick = function () { ETAB = b.dataset.v; sset("etab", ETAB); drawEtc(); }; });
   $("emat").hidden = ETAB !== "mat"; $("einsp").hidden = ETAB !== "insp";
-  var tw = 0; (MS.list || []).forEach(function (x) { tw += x.wait || 0; });
-  $("etm").textContent = MS.list ? (MS.err ? "준비 중" : MS.list.length + "대 · 미입고 " + tw + "건") : "불러오는 중";
+  var ML = (MS.list || []).filter(function (x) { return mtSiteOk(x) && !x.out; }), tw = 0; ML.forEach(function (x) { tw += x.wait || 0; });
+  $("etm").textContent = MS.list ? (MS.err ? "준비 중" : (MS.site === "전체" ? "" : MS.site + " ") + ML.length + "대 · 미입고 " + tw + "건") : "불러오는 중";
   $("etm").className = "cnt" + (tw ? " w" : "");
   var iw = IS.d ? (IS.d.rows || []).filter(function (x) { return !x[13]; }).length : 0;
   $("eti").textContent = IS.d ? "검사 대기 " + iw + "건" : IS.err ? "준비 중" : "불러오는 중";
@@ -4059,7 +4065,7 @@ function drawMat() {
   if (!MS.list && !MS.ld) { matLoad(false); }
   if (!MS.list) { box.appendChild(el("div", "card empty", "자재 현황을 불러오는 중…")); return; }
   if (!MS.prj) {
-    var L = MS.list, tw = 0; L.forEach(function (x) { tw += x.wait || 0; });
+    var LA = MS.list.filter(mtSiteOk), L = LA.filter(function (x) { return !x.out; }), tw = 0; L.forEach(function (x) { tw += x.wait || 0; });   // 숫자 = 출하 전만 · 목록엔 출하 완료도 (뒤쪽)
     var setLf = function (f) { return function () { MS.lf = MS.lf === f ? "all" : f; drawEtc(); goList("#mlist"); }; };
     kpiRowEl(box, [["장비", L.length, "대", false, setLf("all"), MS.lf === "all"], ["미입고 품목", tw, "건", tw > 0, setLf("wait"), MS.lf === "wait"], ["미입고 있는 장비", L.filter(function (x) { return x.wait > 0; }).length, "대", false, setLf("wait"), false], ["전부 입고", L.filter(function (x) { return x.n && !x.wait; }).length, "대", false, setLf("done"), MS.lf === "done"]]);
     var c = el("div", "card"); c.id = "mlist"; box.appendChild(c);
@@ -4068,6 +4074,9 @@ function drawMat() {
     hd.appendChild(lch); c.appendChild(hd);
     var sr = el("label", "srch msrch"); sr.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
     // 🔎 2026-11-10: 찾는 방식 — 장비명 / 품번 · 품목명 (모든 장비에서)
+    var sc = el("div", "chips mmode msite"), cntS = function (k) { return MS.list.filter(function (x) { return (k === "전체" || (x.site || "") === k) && !x.out; }).length; };
+    ["동탄", "성남", "전체"].forEach(function (k) { var b = el("button", "chip" + (MS.site === k ? " on" : ""), k + " " + cntS(k)); b.type = "button"; b.onclick = function () { if (MS.site === k) return; MS.site = k; sset("msite", k); drawEtc(); }; sc.appendChild(b); });
+    c.appendChild(sc);
     var mm = el("div", "chips mmode");
     [["eq", "장비명으로 찾기"], ["pn", "품번 · 품목명으로 찾기"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.m === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { if (MS.m === o[0]) return; MS.m = o[0]; drawEtc(); setTimeout(function () { var x = document.querySelector("#mlist .msrch input"); if (x) x.focus(); }, 30); }; mm.appendChild(b); });
     c.insertBefore(mm, null);
@@ -4083,17 +4092,17 @@ function drawMat() {
         if (q.replace(/\s/g, "").length < 2) { g.appendChild(el("div", "empty", "품번(3글자 이상)이나 품목명을 입력하면 모든 장비에서 찾아 드립니다")); return; }
         if (!res) { g.appendChild(el("div", "empty", "찾는 중…")); return; }
         if (res.err) { g.appendChild(el("div", "empty", res.err)); return; }
-        var L3 = res.rows.filter(function (x) { var lack = mtN(x.r[8]) < mtN(x.r[7]); return MS.lf === "wait" ? lack : MS.lf === "done" ? !lack : true; });
+        var L3 = res.rows.filter(function (x) { if (!mtSiteOk({ site: x.site == null ? "동탄" : x.site })) return false; var lack = mtN(x.r[8]) < mtN(x.r[7]); return MS.lf === "wait" ? lack : MS.lf === "done" ? !lack : true; });
         var grp = {}, order = [];
-        L3.forEach(function (x) { if (!grp[x.prj]) { grp[x.prj] = { eq: x.eq, prj: x.prj, rows: [] }; order.push(x.prj); } grp[x.prj].rows.push(x.r); });
-        g.appendChild(el("div", "mpinfo", L3.length ? "'" + q + "' " + L3.length + "건 · 장비 " + order.length + "대" + (res.rows.length >= 300 ? " · 300건까지만 보여 드립니다 (더 자세히 입력해 주세요)" : "") : "'" + q + "'" + (MS.lf === "all" ? " 품번 · 품목명이 없습니다" : " 조건에 맞는 품목이 없습니다")));
+        L3.forEach(function (x) { if (!grp[x.prj]) { grp[x.prj] = { eq: x.eq, prj: x.prj, site: x.site, out: x.out, rows: [] }; order.push(x.prj); } grp[x.prj].rows.push(x.r); });
+        g.appendChild(el("div", "mpinfo", L3.length ? "'" + q + "' " + L3.length + "건 · 장비 " + order.length + "대" + (res.rows.length >= 300 ? " · 300건까지만 보여 드립니다 (더 자세히 입력해 주세요)" : "") : "'" + q + "'" + (MS.lf === "all" ? (MS.site === "전체" ? " 품번 · 품목명이 없습니다" : " " + MS.site + " 장비에 없습니다 (사업장 '전체'로 찾아 보세요)") : " 조건에 맞는 품목이 없습니다")));
         if (!L3.length) return;
         var hr = el("div", "mrow mh"); hr.innerHTML = "<span>납기</span><span>품목 · 품목명</span><span>업체</span><span>발주</span><span>입고</span><span>3공장</span><span>1공장</span>"; g.appendChild(hr);
         order.forEach(function (pk) {
           var G = grp[pk], e = eqByName(G.eq), w = G.rows.filter(function (r) { return mtN(r[8]) < mtN(r[7]); }).length;
           var gb = el("button", "mgrp"); gb.type = "button";
           gb.appendChild(el("b", null, G.eq || pk)); if (e && e.loc) gb.appendChild(el("i", null, e.loc));
-          gb.appendChild(el("small", null, (e ? (isAct(e) ? "동탄 입고" : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") + " · " : "") + G.rows.length + "건" + (w ? " · 미입고 " + w + "건" : " · 전부 입고")));
+          gb.appendChild(el("small", null, (G.out ? (G.site ? G.site + " · " : "") + "출하 완료 · " : e ? (isAct(e) ? "동탄 입고" : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") + " · " : G.site ? G.site + " · " : "") + G.rows.length + "건" + (w ? " · 미입고 " + w + "건" : " · 전부 입고")));
           gb.appendChild(el("em", null, "장비 자재 보기"));
           gb.onclick = function () { matOpen(G.prj); MS.s = q; drawEtc(); };   // 그 장비 자재 화면 + 찾은 글자 그대로
           g.appendChild(gb);
@@ -4121,13 +4130,14 @@ function drawMat() {
     }
     var paint = function () {
       g.innerHTML = "";
-      var k = nq(MS.q), rank = function (x) { var e = eqByName(x.eq); return e ? (isAct(e) ? 0 : 1) : 2; };
-      var arr = L.filter(function (x) { if (MS.lf === "wait" && !x.wait) return false; if (MS.lf === "done" && !(x.n && !x.wait)) return false; return !k || nq(x.eq + " " + x.prj).indexOf(k) >= 0; }).sort(function (a, b) { var e1 = eqByName(a.eq), e2 = eqByName(b.eq); return rank(a) - rank(b) || ((e1 && e1.inD) || "9") < ((e2 && e2.inD) || "9") ? -1 : 1; });
+      var k = nq(MS.q), rank = function (x) { var e = eqByName(x.eq); return x.out ? 3 : e ? (isAct(e) ? 0 : 1) : 2; };
+      var arr = LA.filter(function (x) { if (MS.lf === "wait" && !x.wait) return false; if (MS.lf === "done" && !(x.n && !x.wait)) return false; return !k || nq(x.eq + " " + x.prj).indexOf(k) >= 0; }).sort(function (a, b) { var e1 = eqByName(a.eq), e2 = eqByName(b.eq); var ia = (e1 && e1.inD) || "9", ib = (e2 && e2.inD) || "9"; return (rank(a) - rank(b)) || (ia < ib ? -1 : ia > ib ? 1 : (a.eq < b.eq ? -1 : 1)); });   // 2026-11-10 정렬 고침 (출하 완료 · 사업장 미정은 뒤로)
       if (!arr.length) { g.appendChild(el("div", "empty", L.length ? "'" + MS.q + "' 장비가 없습니다" : "표시할 장비가 없습니다")); return; }
       arr.forEach(function (x) {
         var e = eqByName(x.eq), b = el("button", "mtc"); b.type = "button";
         var t = el("div", "mtct"); t.appendChild(el("b", null, x.eq)); if (e && e.loc) t.appendChild(el("i", null, e.loc)); b.appendChild(t);
-        b.appendChild(el("span", "s", e ? (isAct(e) ? "동탄 입고 · " + STAGES[e.st] : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") : ""));
+        b.appendChild(el("span", "s", x.out ? (x.site ? x.site + " · " : "") + "출하 완료" : e ? (isAct(e) ? "동탄 입고 · " + STAGES[e.st] : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") : (x.site || "사업장 미정") + " 장비"));
+        if (x.out) b.classList.add("done");
         b.appendChild(el("span", x.wait ? "w" : x.n ? "ok" : "s", !x.n ? "품목 없음" : (x.wait ? "미입고 " + x.wait + "건" : "전부 입고 ✓") + " · " + x.n + "품목"));
         b.onclick = function () { matOpen(x.prj); };
         g.appendChild(b);
@@ -4148,7 +4158,8 @@ function drawMat() {
   kpiRowEl(box, [["전체 품목", R.length, "건", false, setF("all"), MS.f === "all"], ["입고 완료", R.length - wN, "건", false, setF("done"), MS.f === "done"], ["미입고", wN, "건", wN > 0, setF("wait"), MS.f === "wait"], ["외주조립", oN, "건", false, setF("out"), MS.f === "out"]]);
   var c2 = el("div", "card"); c2.id = "mitems"; box.appendChild(c2);
   var tl = el("div", "ehd"), ch = el("div", "chips");
-  [["all", "전체"], ["wait", "미입고 " + wN], ["done", "입고 완료"], ["noout", "외주조립 빼고"], ["out", "외주조립만"]].forEach(function (o) { var b = el("button", "chip" + (MS.f === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MS.f = o[0]; drawEtc(); }; ch.appendChild(b); });
+  var n3 = R.filter(function (r) { return mtSpec(r, "3공장"); }).length, n1 = R.filter(function (r) { return mtSpec(r, "1공장"); }).length;
+  [["all", "전체"], ["wait", "미입고 " + wN], ["done", "입고 완료"]].concat(n3 ? [["f3", "3공장 불출 " + n3]] : [], n1 ? [["f1", "1공장 불출 " + n1]] : [], [["noout", "외주조립 빼고"], ["out", "외주조립만"]]).forEach(function (o) { var b = el("button", "chip" + (MS.f === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MS.f = o[0]; drawEtc(); }; ch.appendChild(b); });
   var so = el("div", "chips"); [["due", "납기순"], ["ven", "업체순"], ["pn", "품목순"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.o === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { MS.o = o[0]; drawEtc(); }; so.appendChild(b); });
   tl.appendChild(ch); tl.appendChild(so); c2.appendChild(tl);
   var sr2 = el("label", "srch msrch"); sr2.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>';
@@ -4162,6 +4173,8 @@ function drawMat() {
       if (MS.f === "done" && mtN(r[8]) < mtN(r[7])) return false;
       if (MS.f === "out" && !mtIsOut(r)) return false;
       if (MS.f === "noout" && mtIsOut(r)) return false;
+      if (MS.f === "f3" && !mtSpec(r, "3공장")) return false;   // 규격명 (3공장)
+      if (MS.f === "f1" && !mtSpec(r, "1공장")) return false;   // 규격명 (1공장)
       var t = (r[4] + " " + r[5] + " " + r[3] + " " + r[6]).toUpperCase();
       return ws.every(function (w) { return t.indexOf(w) >= 0; });
     });
