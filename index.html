@@ -1926,7 +1926,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
 
   <!-- ═════ PJ 전환 현황 (2026-11-11) ═════ -->
   <div class="view" id="v-pj"><div class="wrap">
-    <div class="vtop"><span class="eyebrow">Project Transfer</span><h2 class="tt">PJ 전환 현황</h2><p class="ds">프로젝트 전환으로 프레임 · 로봇 · 장비를 주고받는 관계와 전환 자재의 진행 현황입니다. 생산관리팀 자료를 15분마다 반영하며 보기 전용입니다.</p><div class="seg msw" id="pjsw"></div></div>
+    <div class="vtop"><span class="eyebrow">Project Transfer</span><h2 class="tt">PJ 전환 현황</h2><p class="ds">프로젝트 전환으로 프레임 · 로봇 · 장비를 주고받는 관계와 전환 자재의 진행 현황입니다.</p><div class="seg msw" id="pjsw"></div></div>
     <div class="g4" id="pjk"></div>
     <div id="pjd"></div>
     <p class="pjft" id="pjft"></p>
@@ -2379,7 +2379,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261111-172500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261111-174000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -7040,7 +7040,7 @@ $("gpw").addEventListener("input", function () {
 });
 
 /* ═════ PJ 전환 현황 (2026-11-11 · 대시보드 화면) ═════
- *  site_stats 'pj'(편집 로그 빼고) · 'pjlog' — 동탄.gs가 15분마다 생산관리팀 자료를 읽어 보냄 (바뀐 게 있을 때만)
+ *  site_stats 'pj'(편집 로그 빼고) · 'pjlog' — 동탄.gs가 5분마다 생산관리팀 자료를 읽어 보냄 (바뀐 게 있을 때만)
  *  관계도 · 진행 현황 · 제조 · 편집 로그 (보기 전용)
  */
 var PJ = { data: null, ld: false, err: "", sub: "map", mq: "", f: { p: "", k: "", st: "", q: "" }, lg: { f: "", q: "" }, lim: 60, open: {}, x: {}, ms: "ship" };
@@ -7076,7 +7076,7 @@ function drawPjD() {
   try { renderPj(); } catch (eR) {   // 그리다 오류가 나도 다른 화면 · 새로 받기는 계속
     try { $("pjd").innerHTML = ""; var c0 = el("div", "card"); c0.appendChild(el("div", "empty", "PJ 전환 화면을 그리지 못했습니다 · " + pjErr(eR))); $("pjd").appendChild(c0); } catch (e2) {}
   }
-  if (!PJ.ld && (!PJ.at0 || Date.now() - PJ.at0 > 5 * 60000)) loadPj(false);   // 5분 안에 받은 건 그대로
+  if (!PJ.ld && (!PJ.at0 || Date.now() - PJ.at0 > 60000)) loadPj(false);   // 1분 안에 받은 건 그대로
 }
 
 /* ── 공통 조각 ── */
@@ -7167,7 +7167,7 @@ function renderPj() {
   if (kp.children[0]) kp.children[0].appendChild(el("div", "f", "공여 장비 후속 " + (D.follow || []).length + "건"));
   var pc = pjPC(); box.classList.toggle("pc", pc);
   if (PJ.sub === "map") (pc ? (PJ.mv === "tbl" ? pjMapT : pjDiag) : pjMap)(box); else if (PJ.sub === "st") (pc ? pjStatusT : pjStatus)(box); else if (PJ.sub === "mfg") (pc ? pjMfgT : pjMfg)(box); else pjLog(box);
-  ft.textContent = "생산관리팀 자료 기준" + (D.at ? " · " + D.at + " 반영" : "") + " · 15분마다 갱신되며 보기 전용입니다." + (PJ.ld ? " 새로 확인하는 중입니다…" : "") + (PJ.err ? " (" + PJ.err + ")" : "");
+  ft.textContent = "생산관리팀 자료 기준" + (D.at ? " · " + D.at + " 반영" : "") + (PJ.ld ? " 새로 확인하는 중입니다…" : "") + (PJ.err ? " (" + PJ.err + ")" : "");
 }
 
 /* ① 관계도: 공여 → 수신 → 후속 */
@@ -7481,6 +7481,21 @@ function pjLog(box) {
   }
   paint();
 }
+
+/* PJ 탭을 보고 있으면 2분마다 조용히 최신으로 (자료 한 줄만 받음 · 바뀐 게 없으면 화면 그대로) */
+setInterval(function () {
+  try {
+    if (typeof cur === "undefined" || cur !== "pj" || document.hidden || PJ.ld) return;
+    var ae = document.activeElement; if (ae && /^(INPUT|SELECT|TEXTAREA)$/.test(ae.tagName)) return;
+    var t0 = PJ.data && PJ.data.t;
+    pjdGet("pj").then(function (r) {
+      PJ.at0 = Date.now();
+      if (!r || !r.items || (t0 && r.t === t0)) return;
+      var y = window.pageYOffset; PJ.data = r; PJ.err = ""; try { cset("pj", r); } catch (e) {}
+      if (cur === "pj") { renderPj(); window.scrollTo(0, y); }
+    }).catch(function () {});
+  } catch (e) {}
+}, 120000);
 
 /* ── PC 화면 (900px 이상): 촘촘한 표 · 프로젝트별 묶음 (휴대폰은 위의 목록 화면) ── */
 PJ.gc = {}; PJ.gm = {}; PJ.gt = {}; PJ.mf = "";
