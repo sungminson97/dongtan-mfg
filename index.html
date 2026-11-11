@@ -613,6 +613,7 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 .mrow{display:grid;grid-template-columns:56px minmax(0,2.4fr) minmax(0,1fr) repeat(4,48px);gap:8px;align-items:center;padding:10px 4px;border-top:1px solid var(--line);font-size:13px;font-weight:700}
 .mrow.mh{border-top:0;font-size:12px;color:var(--sub);position:sticky;top:calc(var(--hdr) + env(safe-area-inset-top));background:var(--card);z-index:1}
 .mrow .nm b{display:block;font-size:13.5px;font-weight:900}.mrow .nm small{display:block;font-size:11.5px;color:var(--sub);font-weight:600}
+.mrow .nm .mpo{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:4px}.mrow .nm .mpo em{font-style:normal}.mrow .nm .mpo .tp{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--text)}.mrow .nm .mpo .po{font-size:10.5px;font-weight:800;color:var(--sub);background:color-mix(in srgb,var(--sub) 16%,transparent);padding:2px 7px;border-radius:6px;white-space:nowrap}
 .mrow .nm{font-weight:600;color:var(--sub);min-width:0;overflow-wrap:anywhere}.mrow .nm b{color:var(--text)}
 .mrow .vn{font-size:12.5px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mrow .q{text-align:center;font-weight:800}.mrow .q.full{color:var(--ok)}
@@ -2047,7 +2048,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261110-180755";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261111-112000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4112,7 +4113,7 @@ function drawMat() {
           G.rows.forEach(function (r) {
             var lack = mtN(r[8]) < mtN(r[7]), it = el("div", "mrow" + (lack ? " lack" : ""));
             var qv = function (v, full) { return '<span class="q' + (full ? " full" : "") + '">' + esc(v === "" || v == null ? "-" : v) + "</span>"; };
-            it.innerHTML = '<span class="due">' + esc(mtDue2(r[0])) + '</span><span class="nm"><b>' + esc(r[4]) + "</b>" + esc(r[5] || "") + (r[2] || r[1] ? "<small>" + esc(r[2] || r[1]) + "</small>" : "") + (mtIsOut(r) ? ' <i class="tag">외주조립</i>' : "") + '</span><span class="vn">' + esc(r[3] || "-") + "</span>" +
+            it.innerHTML = '<span class="due">' + esc(mtDue2(r[0])) + '</span><span class="nm"><b>' + esc(r[4]) + "</b>" + esc(r[5] || "") + (r[2] || r[1] ? "<small>" + esc(r[2] || r[1]) + "</small>" : "") + mtPo(r) + (mtIsOut(r) ? ' <i class="tag">외주조립</i>' : "") + '</span><span class="vn">' + esc(r[3] || "-") + "</span>" +
               qv(r[7]) + qv(r[8], !lack && mtN(r[7]) > 0) + qv(r[9], mtN(r[9]) >= mtN(r[7]) && mtN(r[7]) > 0) + qv(r[10], mtN(r[10]) >= mtN(r[7]) && mtN(r[7]) > 0);
             g.appendChild(it);
           });
@@ -4178,7 +4179,7 @@ function drawMat() {
       if (MS.f === "noout" && mtIsOut(r)) return false;
       if (MS.f === "f3" && !mtSpec(r, "3공장")) return false;   // 규격명 (3공장)
       if (MS.f === "f1" && !mtSpec(r, "1공장")) return false;   // 규격명 (1공장)
-      var t = (r[4] + " " + r[5] + " " + r[3] + " " + r[6]).toUpperCase();
+      var t = (r[4] + " " + r[5] + " " + r[3] + " " + r[6] + " " + (r[11] || "") + " " + (r[13] || "")).toUpperCase();   // 발주번호 · 상위품목으로도
       return ws.every(function (w) { return t.indexOf(w) >= 0; });
     });
     var key = { due: function (r) { return mtDk2(r[0]) + "|" + r[3] + "|" + r[4]; }, ven: function (r) { return (r[3] || "힣") + "|" + mtDk2(r[0]) + "|" + r[4]; }, pn: function (r) { return String(r[4]).toUpperCase(); } }[MS.o];
@@ -4188,7 +4189,7 @@ function drawMat() {
     L2.slice(0, 500).forEach(function (r) {
       var lack = mtN(r[8]) < mtN(r[7]), it = el("div", "mrow" + (lack ? " lack" : ""));
       var q = function (v, full) { return '<span class="q' + (full ? " full" : "") + '">' + esc(v === "" ? "-" : v) + "</span>"; };
-      it.innerHTML = '<span class="due">' + esc(mtDue2(r[0])) + '</span><span class="nm"><b>' + esc(r[4]) + "</b>" + esc(r[5] || "") + (r[2] || r[1] ? "<small>" + esc(r[2] || r[1]) + "</small>" : "") + (mtIsOut(r) ? ' <i class="tag">외주조립</i>' : "") + '</span><span class="vn">' + esc(r[3] || "-") + "</span>" +
+      it.innerHTML = '<span class="due">' + esc(mtDue2(r[0])) + '</span><span class="nm"><b>' + esc(r[4]) + "</b>" + esc(r[5] || "") + (r[2] || r[1] ? "<small>" + esc(r[2] || r[1]) + "</small>" : "") + mtPo(r) + (mtIsOut(r) ? ' <i class="tag">외주조립</i>' : "") + '</span><span class="vn">' + esc(r[3] || "-") + "</span>" +
         q(r[7]) + q(r[8], !lack && mtN(r[7]) > 0) + q(r[9], mtN(r[9]) >= mtN(r[7]) && mtN(r[7]) > 0) + q(r[10], mtN(r[10]) >= mtN(r[7]) && mtN(r[7]) > 0);
       wrap.appendChild(it);
     });
@@ -4196,6 +4197,12 @@ function drawMat() {
   };
   si.oninput = function () { MS.s = si.value; paint2(); };
   paint2();
+}
+// 🧾 2026-11-11 상위품목(예: HJ92-249-EFEM-011) · 구매발주번호 — 자재팀 현황판처럼
+function mtPo(r) {
+  var tp = String(r[13] || "").trim(), po = String(r[11] || "").trim();
+  if (!tp && !po) return "";
+  return '<span class="mpo">' + (tp ? '<em class="tp">' + esc(tp) + "</em>" : "") + (po ? '<em class="po">' + esc(po) + "</em>" : "") + "</span>";
 }
 function drawInsp() {
   var box = $("einsp"); box.innerHTML = "";
