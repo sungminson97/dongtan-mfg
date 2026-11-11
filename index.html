@@ -2379,7 +2379,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261111-174000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261111-175000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -7591,7 +7591,7 @@ function pjStatusT(box) {
       });
       if (!L.length) return;
       tot += L.length;
-      var gv0 = PJ.gc[p.c], op = gv0 === false || (gv0 === undefined && !!(PJ.f.p || PJ.f.k || PJ.f.st || ws.length)), lt = its.filter(pjLate).length, gh = el("tr", "pjgh");
+      var gv0 = PJ.gc[p.c], op = gv0 === false || (gv0 === undefined && !!ws.length), lt = its.filter(pjLate).length, gh = el("tr", "pjgh");
       var td = el("td"); td.colSpan = H.length;
       td.innerHTML = '<div class="in">' + pjTgl(op) + (p.s ? '<span class="pjsite' + (p.s === "동탄" ? "" : " o") + '">' + esc(p.s) + "</span>" : "") + "<b>" + esc(pjNm(p.r)) + '</b><span class="pjcd">' + esc(p.c) + "</span>" + pjCaseOf(p) + '<span class="pjshp">출하 ' + (o.sh ? esc(pjMd(o.sh)) + ' <em class="pjdd' + (pjDday(o.sh) < 0 ? "" : pjDday(o.sh) <= 14 ? " s" : "") + '">' + (pjDday(o.sh) < 0 ? "지남" : pjDtxt(pjDday(o.sh))) + "</em>" : "-") + "</span>" + pjKcnt(its) + pjMiniBar(its) + (lt ? '<span class="pjst r">납기 지남 ' + lt + "</span>" : "") + (L.length < its.length ? '<span class="pjflt">' + L.length + "건 표시</span>" : "") + "</div>";
       gh.appendChild(td); gh.onclick = function () { PJ.gc[p.c] = op; paint(); };
@@ -7641,13 +7641,13 @@ function pjMfgT(box) {
       }).sort(function (a, b) { return PJ_CLO[pjCls(a)] - PJ_CLO[pjCls(b)]; });
       if ((PJ.mf || ws.length) && !L.length) return;
       any = true;
-      var gv1 = PJ.gm[p.c], op = gv1 === false || (gv1 === undefined && !!(PJ.mf || ws.length)), n = function (k) { return its.filter(function (r) { return k === "late" ? pjLate(r) : pjCls(r) === k; }).length; };
+      var gv1 = PJ.gm[p.c], op = gv1 === false || (gv1 === undefined && !!ws.length), n = function (k) { return its.filter(function (r) { return k === "late" ? pjLate(r) : pjCls(r) === k; }).length; };
       var dons = []; if (p.d) p.d.replace(/\([^)]*\)/g, function (m) { return m.replace(/\+/g, "\u0001"); }).split(/\s*\+\s*/).forEach(function (s0) { var sh = pjShort(s0.replace(/\u0001/g, "+")); if (sh) dons.push(sh); });
       var nb = function (k, cls) { var v = n(k); return v ? '<button type="button" class="pjcb ' + cls + (PJ.mf === k ? " on" : "") + '" data-k="' + k + '">' + PJ_CLN[k] + " <b>" + v + "</b></button>" : ""; };
       var gh = el("tr", "pjgh"), td = el("td"); td.colSpan = H.length;
       td.innerHTML = '<div class="in">' + pjTgl(op) + (p.s ? '<span class="pjsite' + (p.s === "동탄" ? "" : " o") + '">' + esc(p.s) + "</span>" : "") + "<b>" + esc(pjNm(p.r)) + "</b>" + pjCaseOf(p) + '<span class="pjshp">출하 ' + (o.sh ? esc(pjMd(o.sh)) + ' <em class="pjdd' + (pjDday(o.sh) < 0 ? "" : pjDday(o.sh) <= 14 ? " s" : "") + '">' + (pjDday(o.sh) < 0 ? "지남" : pjDtxt(pjDday(o.sh))) + "</em>" : "-") + "</span>" + (dons.length ? '<span class="pjdon">공여 ' + esc(dons.join(" · ")) + "</span>" : "") + (its.length ? nb("in", "a") + nb("out", "b") + nb("oth", "") + (n("late") ? '<button type="button" class="pjcb r' + (PJ.mf === "late" ? " on" : "") + '" data-k="late">납기 지남 <b>' + n("late") + "</b></button>" : "") + pjMiniBar(its) : '<span class="dim">자재 변동 없음</span>') + "</div>";
       gh.appendChild(td);
-      gh.onclick = function (ev) { var b = ev.target.closest(".pjcb"); if (b) { ev.stopPropagation(); var k = b.getAttribute("data-k"); PJ.mf = PJ.mf === k ? "" : k; PJ.gm[p.c] = false; renderPj(); return; } PJ.gm[p.c] = op; paint(); };
+      gh.onclick = function (ev) { var b = ev.target.closest(".pjcb"); if (b) { ev.stopPropagation(); var k = b.getAttribute("data-k"); PJ.mf = PJ.mf === k ? "" : k; PJ.gm[p.c] = !PJ.mf ? PJ.gm[p.c] : false; renderPj(); return; } PJ.gm[p.c] = op; paint(); };
       tb.appendChild(gh);
       if (!op) return;
       L.forEach(function (r) {
