@@ -2379,7 +2379,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261111-171000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261111-172500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -7038,21 +7038,6 @@ $("gpw").addEventListener("input", function () {
   $("gmsg").textContent = ""; $("gform").classList.remove("bad");
   // 다 입력해도 바로 넘어가지 않음 → LOG IN 버튼 (또는 Enter)
 });
-(function gateBoot() {
-  if (!LIVE || !/^https?:$/.test(location.protocol)) { document.documentElement.classList.remove("gate"); startApp(); return; }   // 파일로 연 미리보기
-  var had = !!GATE.t;
-  if (had) startApp();   // 전에 통과한 기기: 바로 시작 (뒤에서 확인)
-  rpc("dt_gate_check", { t: GATE.t }).then(function (j) {
-    if (!j || j.on === false) { if (!had) gatePass(""); return; }   // 비밀번호를 아직 안 정함 → 그냥 열림
-    if (j.ok) { if (!had) gatePass(GATE.t); return; }
-    gateForget(); GATE.t = "";
-    gateShow(j.len);   // 비밀번호가 바뀌었거나 처음 → 입장 화면
-  }, function (e) {
-    if (/dt_gate_check|PGRST202|404|Could not find/.test(e.message || "")) { if (!had) gatePass(""); return; }   // 서버에 아직 입장 기능 없음 → 예전처럼
-    if (!had) gateShow();   // 인터넷 문제 · 처음 기기 → 입장 화면 (다시 시도 가능)
-  });
-})();
-try { document.fonts.ready.then(pill); } catch (e) {}
 
 /* ═════ PJ 전환 현황 (2026-11-11 · 대시보드 화면) ═════
  *  site_stats 'pj'(편집 로그 빼고) · 'pjlog' — 동탄.gs가 15분마다 생산관리팀 자료를 읽어 보냄 (바뀐 게 있을 때만)
@@ -7088,7 +7073,9 @@ function loadPjLog() {
 }
 function drawPjD() {
   if (!PJ.data) { try { var c = cget("pj"); if (c && c.items) PJ.data = c; } catch (e) {} }
-  renderPj();
+  try { renderPj(); } catch (eR) {   // 그리다 오류가 나도 다른 화면 · 새로 받기는 계속
+    try { $("pjd").innerHTML = ""; var c0 = el("div", "card"); c0.appendChild(el("div", "empty", "PJ 전환 화면을 그리지 못했습니다 · " + pjErr(eR))); $("pjd").appendChild(c0); } catch (e2) {}
+  }
   if (!PJ.ld && (!PJ.at0 || Date.now() - PJ.at0 > 5 * 60000)) loadPj(false);   // 5분 안에 받은 건 그대로
 }
 
@@ -8009,6 +7996,21 @@ function pjAfter(f) {   // 후속 문구: '로봇만 출하' / 'CK71-165 EFEM �
   return { t: t, extra: parts.filter(Boolean) };
 }
 
+(function gateBoot() {
+  if (!LIVE || !/^https?:$/.test(location.protocol)) { document.documentElement.classList.remove("gate"); startApp(); return; }   // 파일로 연 미리보기
+  var had = !!GATE.t;
+  if (had) startApp();   // 전에 통과한 기기: 바로 시작 (뒤에서 확인)
+  rpc("dt_gate_check", { t: GATE.t }).then(function (j) {
+    if (!j || j.on === false) { if (!had) gatePass(""); return; }   // 비밀번호를 아직 안 정함 → 그냥 열림
+    if (j.ok) { if (!had) gatePass(GATE.t); return; }
+    gateForget(); GATE.t = "";
+    gateShow(j.len);   // 비밀번호가 바뀌었거나 처음 → 입장 화면
+  }, function (e) {
+    if (/dt_gate_check|PGRST202|404|Could not find/.test(e.message || "")) { if (!had) gatePass(""); return; }   // 서버에 아직 입장 기능 없음 → 예전처럼
+    if (!had) gateShow();   // 인터넷 문제 · 처음 기기 → 입장 화면 (다시 시도 가능)
+  });
+})();
+try { document.fonts.ready.then(pill); } catch (e) {}
 </script>
 </body>
 </html>
