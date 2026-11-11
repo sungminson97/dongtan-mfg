@@ -1732,6 +1732,57 @@ html.gate body>#lg{visibility:visible;z-index:210}
 #v-pj .pjmt td.don{white-space:normal;min-width:240px;max-width:340px}
 #v-pj .pjmt td.don .gv{display:block;font-size:12px;color:var(--sub);font-weight:500}
 #v-pj .pjmt td.don .ln+.ln{margin-top:7px}
+/* ── 관계도 그림 (PC) ── */
+#v-pj .pjdtop{margin:0 0 2px;justify-content:space-between}
+#v-pj .pjdtop .srch.pjq{background:var(--card);flex:0 1 420px;height:40px;border-radius:10px}
+#v-pj .pjdc2{padding:0}
+#v-pj .pjdh{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:16px;align-items:center;width:100%;padding:18px 22px;text-align:left}
+#v-pj .pjdh .no{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--text);color:var(--bg);font-family:var(--mono);font-size:14px;font-weight:800}
+#v-pj .pjdh .t1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+#v-pj .pjdh .t1 b{font-size:16.5px;font-weight:800;letter-spacing:-.02em}
+#v-pj .pjdh .t1 em{font-style:normal;font-size:12px;font-weight:700;color:var(--sub)}
+#v-pj .pjdh small{display:block;margin-top:4px;font-size:12.5px;line-height:1.55;color:var(--sub);font-weight:500}
+#v-pj .pjdh .sm{display:flex;align-items:center;gap:14px;font-size:12.5px;font-weight:600;color:var(--sub)}
+#v-pj .pjdh:hover .t1 b{color:var(--ac)}
+#v-pj .pjdcv{--pjln:color-mix(in srgb,var(--text) 45%,var(--card));--pjred:var(--warn);position:relative;padding:14px 28px 26px;border-top:1px solid var(--line);overflow-x:auto}
+#v-pj .pjdsvg{position:absolute;left:0;top:0;pointer-events:none;overflow:visible}
+#v-pj .pjdr{position:relative;display:grid;grid-template-columns:minmax(190px,250px) minmax(190px,1fr) minmax(240px,300px) minmax(130px,.55fr) minmax(240px,320px);align-items:center;padding:30px 0 22px;min-width:1040px}
+#v-pj .pjdr+.pjdr,#v-pj .pjdsame+.pjdr,#v-pj .pjdr+.pjdsame,#v-pj .pjdsame+.pjdsame{border-top:1px dashed color-mix(in srgb,var(--line) 70%,transparent)}
+#v-pj .pjdsame{position:relative;padding:34px 0 8px}
+#v-pj .pjdsame .pjdr{padding:22px 0 18px}
+#v-pj .pjdsame .pjdr+.pjdr{border-top:0}
+#v-pj .pjdcol{position:relative;display:grid;gap:40px;align-content:center;min-width:0;z-index:1}
+#v-pj .pjdcol.f{gap:14px}
+#v-pj .pjdw{position:relative}
+#v-pj .pjdb{position:relative;display:grid;gap:3px;justify-items:center;text-align:center;padding:11px 14px;border-radius:8px;border:1.5px solid color-mix(in srgb,var(--text) 40%,var(--line));background:var(--card);font-size:14.5px;font-weight:700;letter-spacing:-.01em;line-height:1.35;overflow-wrap:anywhere}
+#v-pj .pjdb.dn{font-family:var(--mono);font-size:14px;font-weight:600}
+#v-pj .pjdb.dn.cand{border-style:dashed;border-color:color-mix(in srgb,var(--warn) 55%,var(--line))}
+#v-pj .pjdb.rc{padding:12px 16px 13px;border-color:var(--ac);background:color-mix(in srgb,var(--ac) 9%,var(--card));box-shadow:0 10px 26px -18px color-mix(in srgb,var(--ac) 80%,transparent)}
+#v-pj button.pjdb.rc{cursor:pointer;width:100%;transition:transform .15s,box-shadow .15s}
+#v-pj button.pjdb.rc:hover{transform:translateY(-2px);box-shadow:0 14px 30px -16px color-mix(in srgb,var(--ac) 90%,transparent)}
+#v-pj .pjdb.rc b{font-size:15px;font-weight:800}
+#v-pj .pjdb span{font-size:13px;font-weight:600;color:color-mix(in srgb,var(--text) 78%,var(--sub))}
+#v-pj .pjdb span.mo{font-size:12.5px;color:var(--text);font-weight:700}
+#v-pj .pjdb .site{position:absolute;top:-10px;right:10px;height:19px;padding:0 7px;border-radius:5px;background:var(--amb);color:#fff!important;font-size:11px!important;font-weight:800!important;line-height:19px}
+#v-pj .pjdb .pg{display:flex;align-items:center;gap:7px;margin-top:4px;font-family:var(--mono);font-size:12px!important;font-weight:700!important}
+#v-pj .pjdb .pg i{display:block;width:70px;height:5px;border-radius:5px;background:color-mix(in srgb,var(--text) 12%,transparent);overflow:hidden}
+#v-pj .pjdb .pg u{display:block;height:100%;background:var(--ok);border-radius:5px}
+#v-pj .pjdb .pg em{font-style:normal;color:var(--warn)}
+#v-pj .pjdb.rc.stop{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 7%,var(--card));box-shadow:none}
+#v-pj .pjdb.fl{border-style:dashed;border-color:color-mix(in srgb,var(--text) 35%,var(--line));background:color-mix(in srgb,var(--text) 4%,var(--card));font-size:14px}
+#v-pj .pjdb.fl b{font-weight:700}
+#v-pj .pjdb.fl.ex{border-color:color-mix(in srgb,var(--amb) 60%,var(--line));background:color-mix(in srgb,var(--amb) 6%,var(--card))}
+#v-pj .pjdb.hit{outline:3px solid color-mix(in srgb,var(--amb) 70%,transparent);outline-offset:2px}
+#v-pj .pjdmo{position:absolute;left:calc(100% + 10px);bottom:calc(50% + 13px);display:grid;gap:1px;width:max-content;max-width:300px;font-size:11.5px;font-weight:600;line-height:1.4;color:color-mix(in srgb,var(--text) 80%,var(--sub));white-space:nowrap;z-index:2}
+#v-pj .pjdmo div{overflow:hidden;text-overflow:ellipsis}
+#v-pj .pjdfm{display:grid;gap:3px;font-size:11.5px;font-weight:600;color:var(--sub);text-align:center}
+#v-pj .pjdlb{position:absolute;transform:translate(-50%,-50%);z-index:2;padding:1px 6px;background:var(--card);font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;line-height:1.35}
+#v-pj .pjdlb.f{font-size:12.5px;color:var(--sub)}
+#v-pj .pjdlb.w{color:var(--warn)}
+#v-pj .pjdst{position:absolute;transform:translateX(-50%);z-index:2;padding:0 8px;background:var(--card);font-size:13px;font-weight:700;color:var(--warn);white-space:nowrap}
+#v-pj .pjdrest{display:grid;gap:5px;margin-top:14px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line);font-size:12.5px;line-height:1.6;font-weight:600;white-space:pre-wrap}
+#v-pj .pjdrest .lb{font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--sub)}
+#v-pj .pjx.allc thead{display:none}
 </style>
 </head>
 <body>
@@ -7128,7 +7179,7 @@ function renderPj() {
   if (kp.children[3]) kp.children[3].appendChild(el("div", "f", late ? "납기일이 지난 미완료 품목" : "모두 일정 안에 있습니다"));
   if (kp.children[0]) kp.children[0].appendChild(el("div", "f", "공여 장비 후속 " + (D.follow || []).length + "건"));
   var pc = pjPC(); box.classList.toggle("pc", pc);
-  if (PJ.sub === "map") (pc && PJ.mv !== "flow" ? pjMapT : pjMap)(box); else if (PJ.sub === "st") (pc ? pjStatusT : pjStatus)(box); else if (PJ.sub === "mfg") (pc ? pjMfgT : pjMfg)(box); else pjLog(box);
+  if (PJ.sub === "map") (pc ? (PJ.mv === "tbl" ? pjMapT : pjDiag) : pjMap)(box); else if (PJ.sub === "st") (pc ? pjStatusT : pjStatus)(box); else if (PJ.sub === "mfg") (pc ? pjMfgT : pjMfg)(box); else pjLog(box);
   ft.textContent = "생산관리팀 자료 기준" + (D.at ? " · " + D.at + " 반영" : "") + " · 15분마다 갱신되며 보기 전용입니다." + (PJ.ld ? " 새로 확인하는 중입니다…" : "") + (PJ.err ? " (" + PJ.err + ")" : "");
 }
 
@@ -7138,7 +7189,6 @@ function pjMap(box) {
   var tool = el("div", "pjtool"); box.appendChild(tool);
   pjSrch(tool, PJ.mq, "장비 번호로 찾기 (예: ZJ90-124)", function (v) { PJ.mq = v; paint(); });
   var all = el("button", "chip", "모두 펼치기"); all.type = "button"; tool.appendChild(all);
-  if (pjPC()) pjMapView(tool);
   all.onclick = function () { var o = PJ_CASES.every(function (c) { return PJ.open[c[0]]; }); PJ_CASES.forEach(function (c) { PJ.open[c[0]] = !o; }); paint(); };
   var lst = el("div", "pjcs"); box.appendChild(lst);
   var hitT = function (t) { return key && pjNorm(t).indexOf(key) >= 0; };
@@ -7447,7 +7497,6 @@ function pjLog(box) {
 
 /* ── PC 화면 (900px 이상): 촘촘한 표 · 프로젝트별 묶음 (휴대폰은 위의 목록 화면) ── */
 PJ.gc = {}; PJ.gm = {}; PJ.gt = {}; PJ.mf = "";
-try { PJ.mv = sget("pjmv") === "flow" ? "flow" : "tbl"; } catch (e) { PJ.mv = "tbl"; }
 function pjPC() { try { return window.matchMedia("(min-width:900px)").matches; } catch (e) { return true; } }
 (function () {
   var last = null, tm = 0;
@@ -7497,7 +7546,7 @@ function pjHeadR(card, title, sub) {   // 카드 머리 오른쪽 칸
 }
 function pjFold(r, map, keys) {
   var b = el("button", "chip"); b.type = "button";
-  var allC = keys.length && keys.every(function (k) { return map[k]; });
+  var allC = keys.length && keys.every(function (k) { return map[k] !== false; });
   b.textContent = allC ? "모두 펼치기" : "모두 접기";
   b.onclick = function () { keys.forEach(function (k) { map[k] = !allC; }); renderPj(); };
   r.appendChild(b);
@@ -7540,7 +7589,7 @@ function pjStatusT(box) {
       });
       if (!L.length) return;
       tot += L.length;
-      var op = !PJ.gc[p.c], lt = its.filter(pjLate).length, gh = el("tr", "pjgh");
+      var gv0 = PJ.gc[p.c], op = gv0 === false || (gv0 === undefined && !!(PJ.f.p || PJ.f.k || PJ.f.st || ws.length)), lt = its.filter(pjLate).length, gh = el("tr", "pjgh");
       var td = el("td"); td.colSpan = H.length;
       td.innerHTML = '<div class="in">' + pjTgl(op) + (p.s ? '<span class="pjsite' + (p.s === "동탄" ? "" : " o") + '">' + esc(p.s) + "</span>" : "") + "<b>" + esc(pjNm(p.r)) + '</b><span class="pjcd">' + esc(p.c) + "</span>" + pjCaseOf(p) + '<span class="pjshp">출하 ' + (o.sh ? esc(pjMd(o.sh)) + ' <em class="pjdd' + (pjDday(o.sh) < 0 ? "" : pjDday(o.sh) <= 14 ? " s" : "") + '">' + (pjDday(o.sh) < 0 ? "지남" : pjDtxt(pjDday(o.sh))) + "</em>" : "-") + "</span>" + pjKcnt(its) + pjMiniBar(its) + (lt ? '<span class="pjst r">납기 지남 ' + lt + "</span>" : "") + (L.length < its.length ? '<span class="pjflt">' + L.length + "건 표시</span>" : "") + "</div>";
       gh.appendChild(td); gh.onclick = function () { PJ.gc[p.c] = op; paint(); };
@@ -7557,6 +7606,7 @@ function pjStatusT(box) {
     });
     if (!tot) { var t0 = el("tr"), d0 = el("td", "pjempty", "해당하는 품목이 없습니다"); d0.colSpan = H.length; t0.appendChild(d0); tb.appendChild(t0); }
     cnt.textContent = "품목 " + tot + "건";
+    tb.parentNode.classList.toggle("allc", !tb.querySelector("tr.pjr"));
   }
   paint();
 }
@@ -7589,7 +7639,7 @@ function pjMfgT(box) {
       }).sort(function (a, b) { return PJ_CLO[pjCls(a)] - PJ_CLO[pjCls(b)]; });
       if ((PJ.mf || ws.length) && !L.length) return;
       any = true;
-      var op = !PJ.gm[p.c], n = function (k) { return its.filter(function (r) { return k === "late" ? pjLate(r) : pjCls(r) === k; }).length; };
+      var gv1 = PJ.gm[p.c], op = gv1 === false || (gv1 === undefined && !!(PJ.mf || ws.length)), n = function (k) { return its.filter(function (r) { return k === "late" ? pjLate(r) : pjCls(r) === k; }).length; };
       var dons = []; if (p.d) p.d.replace(/\([^)]*\)/g, function (m) { return m.replace(/\+/g, "\u0001"); }).split(/\s*\+\s*/).forEach(function (s0) { var sh = pjShort(s0.replace(/\u0001/g, "+")); if (sh) dons.push(sh); });
       var nb = function (k, cls) { var v = n(k); return v ? '<button type="button" class="pjcb ' + cls + (PJ.mf === k ? " on" : "") + '" data-k="' + k + '">' + PJ_CLN[k] + " <b>" + v + "</b></button>" : ""; };
       var gh = el("tr", "pjgh"), td = el("td"); td.colSpan = H.length;
@@ -7607,6 +7657,7 @@ function pjMfgT(box) {
       });
     });
     if (!any) { var t0 = el("tr"), d0 = el("td", "pjempty", "해당하는 품목이 없습니다"); d0.colSpan = H.length; t0.appendChild(d0); tb.appendChild(t0); }
+    tb.parentNode.classList.toggle("allc", !tb.querySelector("tr.pjr"));
   }
   paint();
   var F = D.follow || [];
@@ -7628,15 +7679,6 @@ function pjFindM(M, kind, name, used) {
   Object.keys(M).forEach(function (k) { if (k.indexOf(kind + "|") === 0 && pjSame(k.slice(kind.length + 1), name)) out = out.concat(M[k]); });
   return out.filter(function (n) { return used.indexOf(n) < 0; });
 }
-function pjMapView(box) {   // 표 / 흐름도 전환
-  var s = el("div", "seg pjsrt");
-  [["tbl", "표"], ["flow", "흐름도"]].forEach(function (o) {
-    var b = el("button", PJ.mv === o[0] ? "on" : "", o[1]); b.type = "button";
-    b.onclick = function () { PJ.mv = o[0]; sset("pjmv", o[0]); renderPj(); };
-    s.appendChild(b);
-  });
-  box.appendChild(s);
-}
 function pjMapT(box) {
   var G = pjGroups(), q = PJ.mq.trim(), key = q ? pjNorm(q).trim() : "";
   var hitT = function (t) { return !!key && pjNorm(t).indexOf(key) >= 0; };
@@ -7651,7 +7693,7 @@ function pjMapT(box) {
   function paint() {
     tb.innerHTML = ""; var any = false;
     PJ_CASES.forEach(function (cs, ci) {
-      var M = pjMemos(cs[0]), used = [], L = G[cs[0]], op = !!key || !PJ.gt[cs[0]], rows = [];
+      var M = pjMemos(cs[0]), used = [], L = G[cs[0]], op = !!key || PJ.gt[cs[0]] === false, rows = [];
       var base = function (x) { return x.sw ? "" : pjNorm(pjNm(x.r).replace(/\s*(EFEM|PROCESS)\s*$/i, "")).trim(); };
       var done = {};
       L.forEach(function (x, i) {
@@ -7705,9 +7747,177 @@ function pjMapT(box) {
       if (rest.length && !key) { var tr2 = el("tr", "pjr pjrest2"), d2 = el("td"); d2.colSpan = H.length; d2.innerHTML = '<span class="lb">메모</span>' + rest.map(function (n) { return '<div class="mm">' + esc(n.t) + "</div>"; }).join(""); tr2.appendChild(d2); tb.appendChild(tr2); }
     });
     if (!any) { var t0 = el("tr"), d0 = el("td", "pjempty", "'" + q + "' 장비는 PJ 전환 대상이 아닙니다"); d0.colSpan = H.length; t0.appendChild(d0); tb.appendChild(t0); }
+    tb.parentNode.classList.toggle("allc", !tb.querySelector("tr.pjr"));
   }
   paint();
 }
+
+/* ① 관계도 (PC 그림): 원래 웹앱 관계도처럼 공여 ─내준 것→ 수신 ┈후속┈▶ 후속 · 메모는 선 위에 */
+try { PJ.mv = sget("pjmv") === "tbl" ? "tbl" : "dia"; } catch (e) { PJ.mv = "dia"; }
+PJ.gd = {};
+function pjMapView(box) {
+  var s = el("div", "seg pjsrt");
+  [["dia", "관계도"], ["tbl", "표"]].forEach(function (o) {
+    var b = el("button", PJ.mv === o[0] ? "on" : "", o[1]); b.type = "button";
+    b.onclick = function () { PJ.mv = o[0]; sset("pjmv", o[0]); renderPj(); };
+    s.appendChild(b);
+  });
+  box.appendChild(s);
+}
+function pjDons(x) {
+  var stop = !!x.sw;
+  var dons = stop ? [{ n: x.sw.dn, gv: x.sw.nt || "" }] : x.fol.map(function (f) { return { n: pjShort(f.d), gv: f.gv }; });
+  if (!stop && x.p && x.p.d) x.p.d.replace(/\([^)]*\)/g, function (m) { return m.replace(/\+/g, "\u0001"); }).split(/\s*\+\s*/).forEach(function (s) {
+    s = s.replace(/\u0001/g, "+"); var sh = pjShort(s);
+    if (sh && !dons.some(function (d) { return pjSame(d.n, sh); })) { var m = s.match(/\(([^)]+)\)\s*$/); dons.push({ n: sh, gv: m ? m[1] : "" }); }
+  });
+  return dons;
+}
+function pjDiag(box) {
+  var G = pjGroups(), q = PJ.mq.trim(), key = q ? pjNorm(q).trim() : "";
+  var hitT = function (t) { return !!key && pjNorm(t).indexOf(key) >= 0; };
+  var top = el("div", "pjtool pjdtop"); box.appendChild(top);
+  pjSrch(top, PJ.mq, "장비 번호로 찾기 (예: ZJ90-124)", function (v) { PJ.mq = v; paint(); });
+  var rt = el("div", "pjhr"); top.appendChild(rt); pjMapView(rt);
+  pjFold(rt, PJ.gd, PJ_CASES.map(function (x) { return x[0]; }));
+  var lst = el("div", "pjcs"); box.appendChild(lst);
+  function row(x, M, used) {
+    var stop = !!x.sw, dons = pjDons(x), rn = stop ? x.r : pjNm(x.r), hit = false;
+    var r = el("div", "pjdr" + (stop ? " stop" : ""));
+    var cD = el("div", "pjdcol d"), cR = el("div", "pjdcol r"), cF = el("div", "pjdcol f");
+    dons.forEach(function (d) {
+      var w = el("div", "pjdw"), b = el("div", "pjdb dn" + (stop ? " cand" : "") + (hitT(d.n) ? " hit" : ""), d.n);
+      if (hitT(d.n)) hit = true;
+      b.setAttribute("data-gv", d.gv || "");
+      w.appendChild(b);
+      var mm = pjFindM(M, "d", d.n, used);
+      if (mm.length) { var mo = el("div", "pjdmo"); mm.forEach(function (n) { used.push(n); mo.appendChild(el("div", null, n.t)); }); w.appendChild(mo); }
+      cD.appendChild(w);
+    });
+    var rb = el(x.code ? "button" : "div", "pjdb rc" + (stop ? " stop" : "") + (hitT(x.r) ? " hit" : "")); if (x.code) rb.type = "button";
+    if (hitT(x.r)) hit = true;
+    rb.appendChild(el("b", null, rn));
+    pjFindM(M, "r", rn, used).forEach(function (n) { used.push(n); rb.appendChild(el("span", "mo", n.t)); });
+    if (stop) rb.appendChild(el("span", null, x.sw.ac || ""));
+    else if (x.code) {
+      var its = pjItems(x.code).filter(function (i) { return PJ_SER.indexOf(i.k) >= 0; }), by = {};
+      its.forEach(function (i) { by[i.k] = (by[i.k] || 0) + 1; });
+      if (its.length) {
+        rb.appendChild(el("span", null, PJ_SER.filter(function (k) { return by[k]; }).map(function (k) { return k + " " + by[k]; }).join(" · ")));
+        var ok = its.filter(pjDone).length, lt = its.filter(pjLate).length;
+        var pg = el("span", "pg"); pg.innerHTML = "<i><u style=\"width:" + Math.max(4, ok / its.length * 100) + "%\"></u></i>완료 " + ok + " / " + its.length + (lt ? ' <em>납기 지남 ' + lt + "</em>" : "");
+        rb.appendChild(pg);
+      } else rb.appendChild(el("span", null, "자재 변동 없음"));
+      rb.title = "진행 현황에서 품목 보기";
+      rb.onclick = function () { PJ.sub = "st"; sset("pjsub", "st"); PJ.f = { p: x.code, k: "", st: "", q: "" }; renderPj(); goList("#pjd"); };
+    } else if (x.cs !== "m4") rb.appendChild(el("span", null, x.cs === "m1" ? "추가발주 없음" : "자재 변동 없음"));
+    if (x.site && x.site !== "동탄") rb.insertAdjacentHTML("afterbegin", '<span class="site">' + esc(x.site) + "</span>");
+    cR.appendChild(rb);
+    if (stop) {
+      var fb0 = el("div", "pjdb fl"); fb0.appendChild(el("b", null, pjShort(x.sw.dn))); fb0.appendChild(el("span", null, /협의/.test(x.sw.nt) ? "협의 결과에 따름" : "기존 일정 유지"));
+      fb0.setAttribute("data-lb", "공여 후보"); cF.appendChild(fb0);
+    } else {
+      var F = [], ex = [];
+      x.fol.forEach(function (f) {
+        var a = pjAfter(f), z = F.filter(function (y) { return y.t === a.t; })[0];
+        if (z) z.d.push(pjShort(f.d)); else F.push({ t: a.t, d: [pjShort(f.d)] });
+        a.extra.forEach(function (e) { if (ex.indexOf(e) < 0) ex.push(e); });
+      });
+      F.forEach(function (z) {
+        var fb = el("div", "pjdb fl" + (z.d.some(hitT) ? " hit" : "")); fb.appendChild(el("b", null, z.d.join(" · "))); fb.appendChild(el("span", null, z.t));
+        if (z.d.some(hitT)) hit = true;
+        fb.setAttribute("data-lb", "후속"); cF.appendChild(fb);
+      });
+      ex.forEach(function (e) {
+        var m = e.match(/^(.+?)에\s+(.+)$/), fb = el("div", "pjdb fl ex");
+        if (m) { fb.appendChild(el("b", null, m[1])); fb.appendChild(el("span", null, m[2])); } else fb.appendChild(el("span", null, e));
+        fb.setAttribute("data-lb", /일정/.test(e) ? "일정 조정" : "참고"); cF.appendChild(fb);
+      });
+      var fm = pjFindM(M, "f", rn, used);
+      if (fm.length) { var mo2 = el("div", "pjdfm"); fm.forEach(function (n) { used.push(n); mo2.appendChild(el("div", null, n.t)); }); cF.appendChild(mo2); }
+    }
+    [cD, el("div", "pjdgap"), cR, el("div", "pjdgap"), cF].forEach(function (c) { r.appendChild(c); });
+    r._hit = hit || (key && x.fol.some(function (f) { return hitT(f.d); }));
+    return r;
+  }
+  function paint() {
+    lst.innerHTML = ""; var any = false;
+    PJ_CASES.forEach(function (cs, ci) {
+      var M = pjMemos(cs[0]), used = [], L = G[cs[0]], op = !!key || PJ.gd[cs[0]] === false;
+      var card = el("div", "card pjdc2" + (op ? " open" : ""));
+      var h = el("button", "pjdh"); h.type = "button";
+      var cIts = []; L.forEach(function (x) { if (x.code) cIts = cIts.concat(pjItems(x.code)); });
+      h.innerHTML = '<span class="no">' + (ci + 1) + '</span><span class="tx"><span class="t1"><b>' + esc(cs[2]) + "</b>" + (cs[4] ? '<em>' + esc(cs[4]) + "</em>" : "") + '</span><small>' + esc(cs[3]) + '</small></span><span class="sm"><span class="pjkc">' + (cs[0] === "m5" ? "대상 " : "수신 ") + L.length + "건</span>" + (cIts.length ? pjMiniBar(cIts) : "") + '<span class="pjtg">' + (op ? "−" : "+") + "</span></span>";
+      h.onclick = function () { if (key) return; PJ.gd[cs[0]] = op; paint(); };
+      card.appendChild(h);
+      var cv = el("div", "pjdcv"), shown = 0, dn = {};
+      var base = function (x) { return x.sw ? "" : pjNorm(pjNm(x.r).replace(/\s*(EFEM|PROCESS)\s*$/i, "")).trim(); };
+      L.forEach(function (x, i) {
+        if (dn[i]) return;
+        var b = base(x), sib = b ? L.map(function (y, j) { return base(y) === b ? j : -1; }).filter(function (j) { return j >= 0; }) : [i];
+        var rs = sib.map(function (j) { dn[j] = 1; return row(L[j], M, used); });
+        if (key && !rs.some(function (r) { return r._hit; })) return;
+        if (sib.length > 1) { var sm = el("div", "pjdsame"); sm.setAttribute("data-t", "같은 프로젝트 · " + pjNm(L[sib[0]].r).replace(/\s*(EFEM|PROCESS)\s*$/i, "")); rs.forEach(function (r) { sm.appendChild(r); }); cv.appendChild(sm); }
+        else cv.appendChild(rs[0]);
+        shown++;
+      });
+      if (key && !shown) return;
+      any = true;
+      if (!L.length) cv.appendChild(el("div", "empty", "해당 프로젝트가 없습니다"));
+      var rest = (PJ.data.notes || []).filter(function (n) { return n.c === cs[0] && used.indexOf(n) < 0; });
+      if (rest.length && !key) { var me = el("div", "pjdrest"); me.appendChild(el("span", "lb", "메모")); rest.forEach(function (n) { me.appendChild(el("div", null, n.t)); }); cv.appendChild(me); }
+      if (op) card.appendChild(cv);
+      lst.appendChild(card);
+    });
+    if (key && !any) lst.appendChild(el("div", "card")).appendChild(el("div", "empty", "'" + q + "' 장비는 PJ 전환 대상이 아닙니다"));
+    pjDraw();
+  }
+  paint();
+}
+/* 선 그리기: 상자 자리를 재서 SVG로 (화면 크기가 바뀌면 다시) */
+function pjDraw() {
+  if (typeof requestAnimationFrame !== "function") return;
+  requestAnimationFrame(function () {
+    [].forEach.call(document.querySelectorAll("#pjd .pjdcv"), function (cv) {
+      [].forEach.call(cv.querySelectorAll(".pjdsvg,.pjdlb,.pjdst"), function (n) { n.remove(); });
+      var C = cv.getBoundingClientRect(); if (!C.width) return;
+      var cs = getComputedStyle(cv), col = cs.getPropertyValue("--pjln").trim() || "#8a8f98", red = cs.getPropertyValue("--pjred").trim() || "#e5484d";
+      var W = cv.scrollWidth, H = cv.scrollHeight, P = [];
+      var R = function (e) { var b = e.getBoundingClientRect(); return { l: b.left - C.left, r: b.right - C.left, t: b.top - C.top, b: b.bottom - C.top, y: (b.top + b.bottom) / 2 - C.top, x: (b.left + b.right) / 2 - C.left }; };
+      var lab = function (x, y, t, cls) { var d = el("div", "pjdlb" + (cls ? " " + cls : ""), t); d.style.left = x + "px"; d.style.top = y + "px"; cv.appendChild(d); };
+      var curve = function (x1, y1, x2, y2, dash, flat) {
+        var xa = x1 + (x2 - x1) * flat, k = (x2 - xa) * 0.55;
+        P.push('<path d="M' + x1 + " " + y1 + " L" + xa + " " + y1 + " C" + (xa + k) + " " + y1 + " " + (x2 - k) + " " + y2 + " " + (x2 - 9) + " " + y2 + '"' + (dash ? ' stroke-dasharray="' + dash + '"' : "") + ' marker-end="url(#pjah)"/>');
+        return xa;
+      };
+      [].forEach.call(cv.querySelectorAll(".pjdr"), function (row) {
+        var rc = row.querySelector(".pjdb.rc"); if (!rc) return; var r = R(rc), stop = row.classList.contains("stop");
+        [].forEach.call(row.querySelectorAll(".pjdb.dn"), function (db) {
+          var d = R(db), xa = curve(d.r, d.y, r.l, r.y, stop ? "5 5" : "", 0.5);
+          var gv = db.getAttribute("data-gv"); if (gv) lab((d.r + xa) / 2 + 4, d.y, gv, stop ? "w" : "");
+        });
+        var fs = row.querySelectorAll(".pjdb.fl");
+        [].forEach.call(fs, function (fb) {
+          var f = R(fb), xa = curve(r.r, r.y, f.l, f.y, "3 5", 0.42);
+          lab((r.r + xa) / 2 + 2, r.y, fb.getAttribute("data-lb") || "후속", "f");
+        });
+      });
+      [].forEach.call(cv.querySelectorAll(".pjdsame"), function (sm) {
+        var rs = sm.querySelectorAll(".pjdb.rc"); if (!rs.length) return;
+        var a = null; [].forEach.call(rs, function (e) { var b = R(e); a = a ? { l: Math.min(a.l, b.l), r: Math.max(a.r, b.r), t: Math.min(a.t, b.t), b: Math.max(a.b, b.b) } : b; });
+        var s0 = R(sm), x0 = a.l - 22, x1 = a.r + 22, y0 = s0.t + 8, y1 = s0.b - 8;
+        P.push('<rect x="' + x0 + '" y="' + y0 + '" width="' + (x1 - x0) + '" height="' + (y1 - y0) + '" rx="6" fill="none" stroke="' + red + '" stroke-width="1.6" stroke-dasharray="7 5" class="sm"/>');
+        var t = el("div", "pjdst", sm.getAttribute("data-t")); t.style.left = ((x0 + x1) / 2) + "px"; t.style.top = (y0 + 10) + "px"; cv.appendChild(t);
+      });
+      var svg = '<svg class="pjdsvg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + " " + H + '"><defs><marker id="pjah" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M0 0L10 5L0 10z" fill="' + col + '"/></marker></defs><g fill="none" stroke="' + col + '" stroke-width="1.6">' + P.join("") + "</g></svg>";
+      cv.insertAdjacentHTML("afterbegin", svg);
+    });
+  });
+}
+(function () {
+  var tm = 0;
+  window.addEventListener("resize", function () { clearTimeout(tm); tm = setTimeout(function () { if (typeof cur !== "undefined" && cur === "pj" && PJ.sub === "map") pjDraw(); }, 120); });
+})();
 var PJ_CASES = [
   ["m1", "①", "로봇만 출하하던 장비가 타 장비 프레임 사용", "공여 프레임에서 바뀌거나 새로 필요한 파트는 추가발주 · 빠지는 기존 파트는 폐기 · 공여 장비는 후속으로 로봇만 출하 (수신 장비 원재료로 대체)", "프레임 변환"],
   ["m2", "②", "대체 장비 사용", "사양이 다른 파트는 이미 발주한 자재를 선입고 · 발주 없는 파트만 추가발주 · End-Effector 관련은 자재창고 불출 · 떼어낸 공여 파트는 공여 프로젝트로 회수 · 공여 장비는 수신 장비 원재료로 대체 생산", "프레임 · 장비 통째 사용"],
