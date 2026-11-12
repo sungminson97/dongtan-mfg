@@ -631,6 +631,8 @@ svg.plan{display:block;width:100%;min-width:640px;height:auto;font-family:var(--
 @media (max-width:640px){.srcs{gap:10px}.srcs button{padding:16px 14px}.srcs b{font-size:16px}.srcs .sub{font-size:11.5px}.srcs .ar{display:none}.srcs .k{font-size:10px}.mrow{grid-template-columns:44px minmax(0,1fr) repeat(4,34px);gap:5px;font-size:12px}.mrow .vn{display:none}.mrow.mh span:nth-child(3){display:none}.mrow .nm b{font-size:12.5px}}
 /* 전장 */
 .g2>*,.g4>*{min-width:0}
+.g4.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1000px){.g4.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4.g5>:first-child{grid-column:1/-1}}
 .fm select,.fm input,.fm textarea{width:100%;min-width:0;max-width:100%}
 .ehd{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .ehd .chip{height:32px;padding:0 12px;font-size:12.5px}
@@ -2262,7 +2264,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <!-- ═════ 배치도 ═════ -->
   <div class="view" id="v-map"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Bay Map</span><h2 class="tt">동탄 CR4 배치도</h2></div>
-    <div class="g4" id="mkpi" style="margin-bottom:16px"></div>
+    <div class="g4 g5" id="mkpi" style="margin-bottom:16px"></div>
     <div class="card mapw"><div id="bay2"></div><div class="legend" id="legend2"></div></div>
     <div class="card" style="margin-top:16px"><h3>자리별 현황</h3><div class="tbw" style="margin-top:12px"><table class="tbl"><thead><tr><th>자리</th><th>장비</th><th>TYPE</th><th>공정</th><th>업체 · 담당</th><th>출하 예정</th><th>다음 입고</th></tr></thead><tbody id="maptb"></tbody></table></div></div>
   </div></div>
@@ -2518,7 +2520,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-194500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-200000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4615,7 +4617,8 @@ function drawMap() {
   var SM = slotMap();
   var cnt = function (r) { return PLAN.filter(function (p) { return p.id[0] === r && SM[p.id] && SM[p.id].cur; }).length; };
   var used = cnt("A") + cnt("B");
-  kpiRow("mkpi", [["사용 중인 자리", used, "/ " + PLAN.length], ["빈 자리", PLAN.length - used, "자리"], ["B줄 사용", cnt("B"), "/ 9"], ["A줄 사용", cnt("A"), "/ 9"]]);
+  var eqN = PLAN.reduce(function (n, p) { var x = SM[p.id]; return n + (x && x.cur ? 1 + (x.more || 0) : 0); }, 0);   // ✅ 2026-11-12 진행 중 장비 (한 자리 2대도 2대로)
+  kpiRow("mkpi", [["진행 중 장비", eqN, "대"], ["사용 중인 자리", used, "/ " + PLAN.length], ["빈 자리", PLAN.length - used, "자리"], ["B줄 사용", cnt("B"), "/ 9"], ["A줄 사용", cnt("A"), "/ 9"]]);
   var tb = $("maptb"); tb.innerHTML = "";
   var order = PLAN.slice().sort(function (a, b) { return a.id[0] !== b.id[0] ? (a.id[0] < b.id[0] ? -1 : 1) : (+a.id.slice(1)) - (+b.id.slice(1)); });
   order.forEach(function (p) {
