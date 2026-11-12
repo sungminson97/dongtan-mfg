@@ -786,6 +786,9 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 
 /* 알림 · 이름 */
 /* 📋 자재 · 수입검사 PC 표 (2026-11-12) */
+.back2.mback{height:42px;padding:0 20px;border-radius:999px;font-size:14px;font-weight:900;color:var(--text);background:color-mix(in srgb,var(--ac) 20%,var(--card));border:1.5px solid color-mix(in srgb,var(--ac) 75%,var(--line));margin-bottom:18px;box-shadow:0 8px 22px -12px rgba(0,0,0,.6),0 0 0 3px color-mix(in srgb,var(--ac) 12%,transparent);transition:background .2s,border-color .2s,transform .15s}
+.back2.mback:hover{background:color-mix(in srgb,var(--ac) 32%,var(--card));border-color:var(--ac)}
+.back2.mback:active{transform:scale(.97)}
 .xhd{align-items:center;flex-wrap:nowrap;gap:14px}
 .xhd h3{flex:none}
 .xhd .xsr{flex:1;max-width:620px;margin:0 0 0 auto}
@@ -907,7 +910,8 @@ button.ftprw:hover,.ftprw.on{background:color-mix(in srgb,var(--tc) 9%,transpare
 .ftpc{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 10px;border-radius:999px;border:1px solid var(--line);font-size:12.5px}
 .ftpc small{font-size:11px;font-weight:700;color:var(--sub)}
 .ftpc button{height:22px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:800;color:var(--sub);background:var(--bg2)}
-.ftpc button:hover{color:var(--warn)}
+.ftpc button:hover{color:var(--text)}
+.ftpc button:last-child:hover{color:var(--warn)}
 @media (max-width:900px){.ftpg{grid-template-columns:1fr}}
 @media (max-width:520px){.ftprw{grid-template-columns:18px 64px minmax(0,1fr) 44px 52px;gap:7px;font-size:13px}.ftprw .pn em{display:none}.ftpi{grid-template-columns:72px minmax(0,1fr);}.ftpi .tag{grid-column:2;justify-self:start}}
 .totop{position:fixed;right:max(20px,calc((100vw - 1240px) / 2 - 76px));bottom:calc(24px + env(safe-area-inset-bottom));z-index:55;height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 88%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);color:var(--text);font:inherit;font-size:13px;font-weight:800;letter-spacing:-.01em;cursor:pointer;box-shadow:0 10px 28px -12px rgba(0,0,0,.55);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s,border-color .2s,color .2s}
@@ -2512,7 +2516,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-190000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-193000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3899,6 +3903,7 @@ function ftpForm(box) {
     var ls = el("div", "ftpal"); ls.appendChild(el("span", "lb", "추가한 이름"));
     mine.forEach(function (x) {
       var c = el("span", "ftpc"); c.appendChild(el("b", null, x.n)); c.appendChild(el("small", null, x.t === "A" ? "A팀" : "B팀"));
+      var ot = x.t === "A" ? "B" : "A", sw = el("button", null, ot + "팀으로"); sw.type = "button"; sw.onclick = function () { ftpSave(x.n, ot, false, box, true); }; c.appendChild(sw);   // 팀을 잘못 골랐을 때 바로 옮기기
       var d = el("button", null, "빼기"); d.type = "button"; d.onclick = function () { ftpSave(x.n, x.t, true, box); }; c.appendChild(d); ls.appendChild(c);
     });
     f.appendChild(ls);
@@ -3913,15 +3918,16 @@ function ftpForm(box) {
   };
   return f;
 }
-function ftpSave(n, t, del, box) {
+function ftpSave(n, t, del, box, mv) {
   var nm = authName();
   if (!nm) { toast("로그인 후 " + (del ? "뺄" : "추가할") + " 수 있습니다"); return; }
-  if (!LIVE) { if (del) FTP.add = (FTP.add || []).filter(function (x) { return x.n !== n; }); else (FTP.add = FTP.add || []).push({ n: n, t: t, by: nm }); drawFtPeople(box); toast(del ? n + " 님을 명단에서 뺐습니다" : n + " 님을 " + t + "팀 명단에 추가했습니다"); return; }
+  var msg = del ? n + " 님을 명단에서 뺐습니다" : mv ? n + " 님을 " + t + "팀으로 옮겼습니다" : n + " 님을 " + t + "팀 명단에 추가했습니다";
+  if (!LIVE) { FTP.add = (FTP.add || []).filter(function (x) { return x.n !== n; }); if (!del) FTP.add.push({ n: n, t: t, by: nm }); drawFtPeople(box); toast(msg); return; }
   if (FTP.busy) return; FTP.busy = true;
   rpc("dt_ft_roster_set", { n: nm, pin: sget("upin") || "", p_name: n, p_team: t, p_del: !!del })
     .then(function (j) {
       if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); }
-      return ftpLoad(true).then(function () { drawFtPeople(box); toast(del ? n + " 님을 명단에서 뺐습니다" : n + " 님을 " + t + "팀 명단에 추가했습니다"); });
+      return ftpLoad(true).then(function () { drawFtPeople(box); toast(msg); });
     })
     .catch(function (er) { toast("저장 실패: " + er.message); })
     .then(function () { FTP.busy = false; });
@@ -4946,7 +4952,7 @@ function drawMat() {
     return;
   }
   // 장비 하나
-  var bk = el("button", "back2", "‹ 장비 목록"); bk.type = "button"; bk.onclick = function () { MS.prj = ""; drawEtc(); }; box.appendChild(bk);
+  var bk = el("button", "back2 mback", "장비 목록으로"); bk.type = "button"; bk.onclick = function () { MS.prj = ""; drawEtc(); }; box.appendChild(bk);
   var meta = (MS.list || []).filter(function (x) { return x.prj === MS.prj; })[0] || { eq: MS.prj }, d = MS.data[MS.prj];
   if (!d) { box.appendChild(el("div", "card empty", meta.eq + " 자재 불러오는 중…")); return; }
   if (d.err) { box.appendChild(el("div", "card empty", d.err)); return; }
