@@ -1994,6 +1994,10 @@ html.gate body>#lg{visibility:visible;z-index:210}
 #v-pj .pjdrest{display:grid;gap:5px;margin-top:14px;padding:12px 14px;border-radius:10px;border:1px dashed var(--line);font-size:12.5px;line-height:1.6;font-weight:600;white-space:pre-wrap}
 #v-pj .pjdrest .lb{font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--sub)}
 #v-pj .pjx.allc thead{display:none}
+
+/* 2026-11-13 작업자별 FT 실적: 명단 외 · 이름 없음 줄 */
+.ftprw.x{border-top:1px dashed var(--line);margin-top:4px}
+.ftprw.x .pn b{color:var(--sub);font-weight:700}
 </style>
 </head>
 <body>
@@ -2607,7 +2611,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-221500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261113-074000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4055,6 +4059,13 @@ function ftpData() {
       out[t].push({ n: n, t: t, s: s, g: g, add: ftpAdded(n) });
     });
     out[t].sort(function (a, b) { return b.s.length - a.s.length || b.g.length - a.g.length || (a.n < b.n ? -1 : 1); });
+    // 2026-11-13: 팀 합계는 장비통계와 같은 기준 (장비에 적힌 팀 A팀 · B팀) · 팀 명단 이름이 없는 장비는 '명단 외 · 이름 없음'으로
+    var tS = shipped.filter(function (x) { return x[3] === t; }), tG = ing ? ing.filter(function (x) { return x[5] === t; }) : [];
+    var hit = function (raw) { return R[t].some(function (n) { return ftpHas(raw, n); }); };
+    var xs = tS.filter(function (x) { return !hit(x[6] || x[4]); }).sort(function (a, b) { return a[0] > b[0] ? -1 : a[0] < b[0] ? 1 : 0; });
+    var xg = tG.filter(function (x) { return !hit(x[2]); });
+    if (xs.length || xg.length) out[t].push({ n: "명단 외", t: t, s: xs, g: xg, extra: true });
+    out.tot = out.tot || {}; out.tot[t] = { s: tS.length, g: tG.length, p: R[t].length };
   });
   var all = R.A.concat(R.B);
   out.miss = shipped.filter(function (x) { return (x[3] === "A" || x[3] === "B") && !all.some(function (n) { return ftpHas(x[6] || x[4], n); }); }).length;
@@ -4067,7 +4078,7 @@ function drawFtPeople(box) {
   var S = D.ship, hd = el("div", "ftph"), tl = el("div");
   tl.appendChild(el("span", "cap", "FT · " + (S && S.year ? S.year : D.today.slice(0, 4))));
   tl.appendChild(el("h3", null, "작업자별 FT 실적"));
-  tl.appendChild(el("p", "ds2", "1/1 ~ 오늘 출하 완료 · 진행 중 = FRAME 입고 후 출하 전 · 제조1팀 담당자 기준"));
+  tl.appendChild(el("p", "ds2", "1/1 ~ 오늘 출하 완료 · 진행 중 = FRAME 입고 후 출하 전 · 팀 합계는 장비통계와 같은 기준"));
   hd.appendChild(tl);
   var rt = el("div", "ftpr");
   var ab = el("button", "wbtn ftpab" + (FTP.form ? " on" : ""), FTP.form ? "닫기" : "명단 추가하기"); ab.type = "button";
@@ -4076,21 +4087,20 @@ function drawFtPeople(box) {
   if (FTP.form) box.appendChild(ftpForm(box));
   if (!S || !S.list) { box.appendChild(el("div", "empty", "출하 실적을 준비 중입니다")); return; }
   var Dt = ftpData(), mx = 1;
-  ["A", "B"].forEach(function (t) { Dt[t].forEach(function (p) { mx = Math.max(mx, p.s.length + p.g.length); }); });
+  ["A", "B"].forEach(function (t) { Dt[t].forEach(function (p) { if (!p.extra) mx = Math.max(mx, p.s.length + p.g.length); }); });
   var g = el("div", "ftpg");
   [["B", "B팀"], ["A", "A팀"]].forEach(function (o) {
-    var t = o[0], L = Dt[t], sN = 0, gN = 0, seen = {}, seenG = {};
-    L.forEach(function (p) { p.s.forEach(function (x) { if (!seen[x[1]]) { seen[x[1]] = 1; sN++; } }); p.g.forEach(function (x) { if (!seenG[x[0]]) { seenG[x[0]] = 1; gN++; } }); });
+    var t = o[0], L = Dt[t], sN = Dt.tot[t].s, gN = Dt.tot[t].g;   // 장비통계와 같은 팀 합계
     var pn = el("div", "ftpt"); pn.style.setProperty("--tc", SHC[t]);
-    var ph = el("div", "ftpth"), nm = el("div", "nm"); nm.appendChild(el("i")); nm.appendChild(el("b", null, o[1])); nm.appendChild(el("small", null, L.length + "명")); ph.appendChild(nm);
+    var ph = el("div", "ftpth"), nm = el("div", "nm"); nm.appendChild(el("i")); nm.appendChild(el("b", null, o[1])); nm.appendChild(el("small", null, Dt.tot[t].p + "명")); ph.appendChild(nm);
     var sm = el("div", "sm"); sm.innerHTML = "출하 <b>" + sN + "</b>대" + (Dt.ingOk ? " · 진행 중 <b>" + gN + "</b>대" : ""); ph.appendChild(sm); pn.appendChild(ph);
     var hr = el("div", "ftprw hh"); ["", "이름", "", "출하", "진행 중"].forEach(function (h) { hr.appendChild(el("span", null, h)); }); pn.appendChild(hr);
     L.forEach(function (p, i) {
       var k = t + "|" + p.n, on = FTP.open === k;
-      var r = el("button", "ftprw" + (on ? " on" : "") + (!p.s.length && !p.g.length ? " z" : "")); r.type = "button"; r.setAttribute("aria-expanded", on ? "true" : "false");
-      r.appendChild(el("span", "rk", p.s.length ? String(i + 1) : "-"));
+      var r = el("button", "ftprw" + (on ? " on" : "") + (!p.s.length && !p.g.length ? " z" : "") + (p.extra ? " x" : "")); r.type = "button"; r.setAttribute("aria-expanded", on ? "true" : "false");
+      r.appendChild(el("span", "rk", p.s.length && !p.extra ? String(i + 1) : "-"));
       var nb = el("span", "pn"); nb.appendChild(el("b", null, p.n)); if (p.add) nb.appendChild(el("em", null, "추가")); r.appendChild(nb);
-      var br = el("span", "bar"), us = el("u", "s"), ug = el("u", "g"); us.dataset.w = p.s.length / mx * 100; ug.dataset.w = p.g.length / mx * 100; br.appendChild(us); br.appendChild(ug); r.appendChild(br);
+      var br = el("span", "bar"), us = el("u", "s"), ug = el("u", "g"); us.dataset.w = p.extra ? 0 : p.s.length / mx * 100; ug.dataset.w = p.extra ? 0 : p.g.length / mx * 100; br.appendChild(us); br.appendChild(ug); r.appendChild(br);
       r.appendChild(el("span", "v" + (p.s.length ? "" : " zz"), p.s.length + "대"));
       r.appendChild(el("span", "v g" + (p.g.length ? "" : " zz"), Dt.ingOk ? p.g.length + "대" : "-"));
       r.onclick = function () { FTP.open = on ? "" : k; drawFtPeople(box); };
@@ -4100,7 +4110,7 @@ function drawFtPeople(box) {
     g.appendChild(pn);
   });
   box.appendChild(g);
-  var nt = el("p", "shnote ftpnote", "제조1팀 담당자에 이름이 있는 장비를 셉니다 (업체와 함께 적힌 장비 포함 · 담당이 여러 명이면 각자 1대) · 이름 없이 업체만 적힌 장비는 세지 않습니다" + (Dt.miss ? " · 명단에 없는 담당의 A · B팀 출하 " + Dt.miss + "대" : "") + (Dt.ingOk ? "" : " · 진행 중 대수는 다음 자동 반영 후 표시됩니다"));
+  var nt = el("p", "shnote ftpnote", "팀 합계는 장비통계와 같이 장비에 적힌 팀(A팀 · B팀)으로 셉니다 · 작업자별 순위는 제조1팀 담당자에 적힌 이름으로 세며, 담당이 여러 명이면 각자 1대입니다 · 팀 명단에 없는 이름이거나 이름 없이 팀만 적힌 장비는 '명단 외'에 모았습니다" + (Dt.ingOk ? "" : " · 진행 중 대수는 다음 자동 반영 후 표시됩니다"));
   box.appendChild(nt);
   requestAnimationFrame(function () { box.querySelectorAll(".ftprw .bar u").forEach(function (u) { u.style.width = u.dataset.w + "%"; }); });
 }
@@ -4119,7 +4129,7 @@ function ftpDetail(p, ingOk, box) {
   };
   if (ingOk) w.appendChild(sec("진행 중", p.g.length, p.g.map(function (x) {
     var dd = x[4] ? Math.round((new Date(x[4]) - new Date(D.today)) / 864e5) : null;
-    return it(x[3] ? "입고 " + md(x[3]) : "입고 -", x[0], x[1], x[4] ? "출하 " + md(x[4]).replace(/\(.\)$/, "") + (dd != null ? (dd === 0 ? " · D-day" : dd > 0 ? " · D-" + dd : " · D+" + -dd) : "") : "출하일 미정", dd != null && dd <= 3 ? "b" : "", x[5]);
+    return it(x[3] ? "입고 " + md(x[3]) : "입고 -", x[0], x[1] + (p.extra ? " · 담당: " + (x[2] || "비어 있음") : ""), x[4] ? "출하 " + md(x[4]).replace(/\(.\)$/, "") + (dd != null ? (dd === 0 ? " · D-day" : dd > 0 ? " · D-" + dd : " · D+" + -dd) : "") : "출하일 미정", dd != null && dd <= 3 ? "b" : "", x[5]);
   })));
   // 출하: 월별로 묶어서
   var byM = {}, ms = [];
@@ -4130,7 +4140,7 @@ function ftpDetail(p, ingOk, box) {
     var mg = el("div", "ftpm");
     ms.forEach(function (k) {
       var b = el("div", "ftpmg"); var h = el("div", "ftpmh"); h.appendChild(el("b", null, +k.slice(5, 7) + "월")); h.appendChild(el("span", null, byM[k].length + "대")); b.appendChild(h);
-      var l = el("div", "ftpl"); byM[k].forEach(function (x) { l.appendChild(it(md(x[0]), x[1], x[2], "", "", x[3])); }); b.appendChild(l); mg.appendChild(b);
+      var l = el("div", "ftpl"); byM[k].forEach(function (x) { l.appendChild(it(md(x[0]), x[1], x[2] + (p.extra ? " · 담당: " + (x[6] || "비어 있음") : ""), "", "", x[3])); }); b.appendChild(l); mg.appendChild(b);
     });
     ss.appendChild(mg);
   }
