@@ -868,6 +868,9 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .frb i{display:block;height:100%;border-radius:99px;background:var(--ac);transition:width .6s}
 .frb i.ok{background:var(--ok)}
 .frt2{font-variant-numeric:tabular-nums}
+/* 🆕 2026-11-12 방금 바뀐 구동 기록 (다른 화면 · 제조1-B 앱에서 입력) → 잠깐 강조 */
+@keyframes frNew{0%,35%{background:color-mix(in srgb,var(--ac) 20%,transparent)}100%{background:transparent}}
+#frtb tr.frnew td,#frm>div.frnew{animation:frNew 3.2s ease-out}
 .frl{color:var(--warn);font-variant-numeric:tabular-nums}
 .frmb .frb{width:100%;max-width:260px;margin:4px 0 2px}
 .frmb .frt2{display:none}
@@ -2552,7 +2555,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-212000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-213000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3806,7 +3809,13 @@ function drFt(e, opt) {
 // FT 기록 장비: 1차 검수를 마친(또는 날짜가 지난) 장비 중 출하 전 · 제조완료 빠른 순
 function ftAfter1(e) { var p = sd(e, 6); return e.st < 10 && (mDone(e, 6) || (p[0] && p[0] <= D.today)); }
 // ✅ 2026-11-12 ROBOT 구동 현황: FT 구동 시간을 입력한 장비만 (DRY · FULL CYCLE · 합계 · 남은 시간)
-var FRF = "ing";
+var FRF = "ing", FTSEEN = null;
+function ftFresh() {   // 구동 기록 지문 비교 → { 장비: 1 } (바뀐 것만)
+  var now = {}, out = {};
+  Object.keys(D.ft || {}).forEach(function (k) { var r = D.ft[k]; now[k] = [r.dry, r.full, r.c ? 1 : 0, r.w].join("|"); });
+  if (FTSEEN) Object.keys(now).forEach(function (k) { if (FTSEEN[k] !== now[k]) out[k] = 1; });
+  FTSEEN = now; return out;
+}
 function drawFtRun() {
   var L = D.eq.filter(function (e) { return !!ftRec(e); }).map(function (e) { return { e: e, f: ftOf(e) }; });
   var ing = L.filter(function (x) { return !x.f.ok && x.e.st < 10; }), ok = L.filter(function (x) { return x.f.ok && x.e.st < 10; }), out = L.filter(function (x) { return x.e.st >= 10; });
@@ -3816,6 +3825,8 @@ function drawFtRun() {
   var list = FRF === "ing" ? ing : FRF === "ok" ? ok : FRF === "out" ? out : L;
   list = list.slice().sort(function (a, b) { return (a.f.ok - b.f.ok) || (b.f.r.at || "").localeCompare(a.f.r.at || "") || a.e.n.localeCompare(b.e.n); });
   var tb = $("frtb"), mw = $("frm"); tb.innerHTML = ""; mw.innerHTML = "";
+  var fresh = ftFresh();   // 🆕 지난번 그린 뒤 바뀐 장비 (처음 그릴 땐 없음)
+  try { var fe0 = $("fte").value, ae0 = document.activeElement; if (fe0 && fresh[fe0] && !(ae0 && /^(ftd|ftf|ftcr)$/.test(ae0.id))) ftFill(); } catch (eFf) {}   // 고른 장비 기록이 다른 곳에서 바뀌면 입력 칸도 새 값으로
   if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", L.length ? "해당하는 장비가 없습니다" : "아직 구동 시간을 입력한 장비가 없습니다"); td0.colSpan = 9; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); return; }
   var bar = function (x) { var p = Math.min(100, x.f.tot / FT_NEED * 100); return '<div class="frb"><i style="width:' + p + '%" class="' + (x.f.cond ? "cd" : x.f.ok ? "ok" : "") + '"></i></div><b class="frt2">' + hf(x.f.tot) + "</b>"; };
   var st = function (x) { return x.e.st >= 10 ? '<span class="tag">출하</span>' + (x.f.cond ? ' <span class="tag cdk">조건부</span>' : "") : x.f.cond ? '<span class="tag cdk" title="' + esc(x.f.r.cr || "") + '">조건부 OK</span>' : x.f.ok ? '<span class="tag g">OK</span>' : '<span class="tag a">진행</span>'; };
@@ -3823,10 +3834,10 @@ function drawFtRun() {
   var why = function (x) { return x.f.cond ? '<div class="frw">' + esc("사유: " + (x.f.r.cr || "-") + (x.f.r.cb ? " · " + x.f.r.cb : "") + (x.f.r.ca ? " · " + md(x.f.r.ca).replace(/\(.\)/, "") : "")) + "</div>" : ""; };
   var when = function (x) { return esc((x.f.r.at ? md(x.f.r.at).replace(/\(.\)/, "") : "-") + (x.f.r.w ? " · " + x.f.r.w : "")); };
   list.forEach(function (x) {
-    var e = x.e, tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { qa: 1 }); };
+    var e = x.e, tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { qa: 1 }); }; if (fresh[e.n]) tr.className = "frnew";
     tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + why(x) + "</td><td>" + (e.v || e.p ? esc([e.v, e.p].filter(Boolean).join(" · ")) : '<span class="dim">-</span>') + '</td><td class="dim">' + esc(e.t || "-") + '</td><td class="r"><b>' + hf(x.f.dry) + '</b></td><td class="r"><b>' + hf(x.f.full) + "</b></td><td>" + bar(x) + '</td><td class="r">' + rest(x) + "</td><td>" + st(x) + '</td><td class="dim">' + when(x) + "</td>";
     tb.appendChild(tr);
-    var m = el("div"); m.onclick = function () { eqOpen(e.n, { qa: 1 }); };
+    var m = el("div", fresh[e.n] ? "frnew" : null); m.onclick = function () { eqOpen(e.n, { qa: 1 }); };
     m.innerHTML = "<b>" + esc(e.n) + "</b><span>" + st(x) + '</span><span class="s1">DRY ' + hf(x.f.dry) + " · FULL CYCLE " + hf(x.f.full) + " · 합계 " + hf(x.f.tot) + (x.f.cond ? " · 미달 " + hf(Math.max(0, FT_NEED - x.f.tot)) : x.f.ok ? "" : " · " + hf(Math.max(0, FT_NEED - x.f.tot)) + " 남음") + "</span>" + (x.f.cond ? '<span class="s1">' + why(x) + "</span>" : "") + '<span class="s1 frmb">' + bar(x) + '</span><span class="s2">' + esc([e.v, e.p, e.t].filter(Boolean).join(" · ")) + ([e.v, e.p, e.t].some(Boolean) ? " · " : "") + when(x) + "</span>";
     mw.appendChild(m);
   });
@@ -7468,17 +7479,19 @@ function startApp() {
   //             → 팀원마다 보는 날짜가 달라지지 않게
   var lastChk = Date.now();
   setTimeout(function () { try { verCheck(); } catch (eV) {} }, 20000);   // 🆕 열고 20초 뒤 한 번 (예전 파일이 캐시로 열렸으면 바로 안내)
-  var chk = function () {
+  var chk = function (light) {
     if (document.hidden) return;
-    lastChk = Date.now();
-    try { verCheck(); } catch (eV) {}   // 🆕 새 버전 올라왔는지 (사이트 파일 머리만)
-    try { gateRecheck(); } catch (eG) {}   // 🔒 켜 둔 화면도 보기 비밀번호가 새로 생기거나 바뀌면 → 입장 화면
+    if (light !== true) {   // ⚡ FT 화면 빠른 확인(10초)은 바뀜 확인 값만 물어봄
+      lastChk = Date.now();
+      try { verCheck(); } catch (eV) {}   // 🆕 새 버전 올라왔는지 (사이트 파일 머리만)
+      try { gateRecheck(); } catch (eG) {}   // 🔒 켜 둔 화면도 보기 비밀번호가 새로 생기거나 바뀌면 → 입장 화면
+    }
     if (!LIVE) return;
     var full = function () { fetchAll().then(function (x) {
       if (dataSig(x.d) === dataSig(D)) { sigSet(x.sig); PEND = null; updBar(); try { $("upd").textContent = updTxt(); syncUi(); } catch (e) {} return; }
       var chg = updDiff(D, x.d);
       if (!chg.length && !PEND) {   // 일정은 그대로 · 이슈 · 공지 · 기록만 바뀜 → 예전처럼 조용히 반영 (입력 중 · 창 열림이면 다음에)
-        var ae = document.activeElement, busy = $("dr").classList.contains("on") || $("lg").classList.contains("on") || (ae && /^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName));
+        var ae = document.activeElement, busy = $("dr").classList.contains("on") || $("lg").classList.contains("on") || (ae && (/^(INPUT|TEXTAREA)$/.test(ae.tagName) || (ae.tagName === "SELECT" && cur !== "ft")));   // FT 화면은 장비를 골라 둔 채(선택 칸)여도 반영 · 고른 장비는 그대로 남음
         if (busy) return;
         var y = window.pageYOffset; applyData(x); draw(); window.scrollTo(0, y); return;
       }
@@ -7494,6 +7507,8 @@ function startApp() {
     }, full);
   };
   setInterval(chk, 180000);
+  // ⚡ 2026-11-12 FT 화면을 보고 있을 때만 10초마다 바뀜 확인 (약 40바이트) → 제조1-B 앱에서 입력한 구동 시간이 10초 안에 보임
+  setInterval(function () { if (cur === "ft" && !document.hidden) chk(true); }, 10000);
   setTimeout(function () { try { verCheck(); } catch (e) {} }, 4000);   // 🆕 처음 연 버전 기억
   document.addEventListener("visibilitychange", function () { if (!document.hidden && Date.now() - lastChk > 30000) chk(); });   // 다른 탭 · 앱 갔다 오면 바로 확인
 }
