@@ -859,6 +859,10 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .ftcdl small{font-size:12px;font-weight:600;color:var(--sub);line-height:1.45}
 .ftcd #ftcr{height:40px}
 .ftcd #ftcr:disabled{opacity:.45}
+.ftdel{justify-self:center;height:34px;padding:0 14px;margin-top:-2px;border-radius:999px;background:transparent;border:1px solid transparent;color:var(--sub);font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.ftdel[hidden]{display:none}
+.ftdel:hover{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 40%,var(--line));background:color-mix(in srgb,var(--warn) 7%,transparent)}
+.ftdel:disabled{opacity:.5}
 .frt th.r,.frt td.r{text-align:right}
 .frb{display:inline-block;vertical-align:middle;width:110px;height:7px;border-radius:99px;background:var(--bg2);overflow:hidden;margin-right:8px}
 .frb i{display:block;height:100%;border-radius:99px;background:var(--ac);transition:width .6s}
@@ -2182,6 +2186,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
           <div class="ftsum" id="ftsum"></div>
           <div class="ftcd" id="ftcdw" hidden><label class="ftcdl"><input type="checkbox" id="ftcd"><span><b>48h 미달 진행 (긴급)</b><small>48시간을 못 채웠지만 일정상 다음 공정으로 진행합니다 · 상태가 '조건부 OK'로 표시됩니다</small></span></label><input id="ftcr" maxlength="60" placeholder="사유 (예: 고객 출하 일정 긴급 · 팀장 승인)"></div>
           <button class="sbtn" type="submit">저장</button>
+          <button class="ftdel" id="ftdel" type="button" hidden>이 장비 구동 기록 삭제</button>
         </form>
       </div>
       <div class="card lockc" id="ficard" data-role="FT"><h3>FT 이슈 기록</h3><div class="ftnote">⚠ 1차 검수를 마친 장비만 표시되며, 출하 후에는 목록에서 사라집니다. 이슈는 발생한 날 바로 기록해 주세요.</div>
@@ -2197,7 +2202,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
     </div>
     <div class="card frun" id="frun" style="margin-top:16px">
       <div class="ehd"><div><h3>ROBOT 구동 현황</h3><p class="ds2" id="frsub">FT 구동 시간을 입력한 장비 · DRY · FULL CYCLE 합계 48시간이면 OK</p></div><div class="chips" id="frf"></div></div>
-      <div class="ewm" id="frm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl frt"><thead><tr><th>장비</th><th>TYPE</th><th class="r">DRY</th><th class="r">FULL CYCLE</th><th>합계 / 48h</th><th class="r">남은 시간</th><th>상태</th><th>최근 입력</th></tr></thead><tbody id="frtb"></tbody></table></div>
+      <div class="ewm" id="frm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl frt"><thead><tr><th>장비</th><th>업체 · 담당</th><th>TYPE</th><th class="r">DRY</th><th class="r">FULL CYCLE</th><th>합계 / 48h</th><th class="r">남은 시간</th><th>상태</th><th>최근 입력</th></tr></thead><tbody id="frtb"></tbody></table></div>
     </div>
   </div></div>
 
@@ -2547,7 +2552,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-210000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-212000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3728,12 +3733,26 @@ function ftPreview() {
   var d = ftNum("ftd"), f = ftNum("ftf"), t = Math.round((d + f) * 10) / 10, ok = t >= FT_NEED, b = $("ftsum");
   var e = D && D.eq.filter(function (x) { return x.n === $("fte").value; })[0], r = e && ftRec(e);
   b.className = "ftsum" + (ok ? " ok" : "");
+  var dl = $("ftdel"); if (dl) dl.hidden = !r;   // 🗑 저장된 기록이 있는 장비만
   var cw = $("ftcdw"); if (cw) { cw.hidden = ok || !$("fte").value; $("ftcr").disabled = !$("ftcd").checked; cw.classList.toggle("on", $("ftcd").checked && !ok); }
   b.innerHTML = '<div class="r"><span>합계</span><b>' + hf(t) + " / " + FT_NEED + "h · " + (ok ? '<span class="tag g">OK</span>' : $("ftcd").checked && $("fte").value ? '<span class="tag cdk">조건부 OK · 미달 ' + hf(FT_NEED - t) + "</span>" : '<span class="tag a">' + hf(FT_NEED - t) + " 부족</span>") + '</b></div><div class="drbar"><u style="width:' + Math.min(100, t / FT_NEED * 100) + '%"></u></div>' +
     "<p>" + (d < 24 && f > 24 && ok ? "DRY " + hf(24 - d) + " 부족분을 FULL CYCLE로 채워 합계 48시간을 달성했습니다." : d > 24 && f < 24 && ok ? "FULL CYCLE " + hf(24 - f) + " 부족분을 DRY로 채워 합계 48시간을 달성했습니다." : ok ? "DRY · FULL CYCLE 합계 48시간을 달성했습니다." : "DRY · FULL CYCLE 각 24시간 기준 · 합계 48시간이 되면 OK입니다.") +
     (r ? "<br>마지막 저장: DRY " + hf(r.dry) + " · FULL CYCLE " + hf(r.full) + (r.w ? " · 작성 " + esc(r.w) : "") + (r.at ? " · " + esc(md(r.at)) : "") : "") + "</p>";
 }
 function ftFill() { var e = D.eq.filter(function (x) { return x.n === $("fte").value; })[0], r = e && ftRec(e); $("ftd").value = r ? r.dry : ""; $("ftf").value = r ? r.full : ""; $("ftcd").checked = !!(r && r.c); $("ftcr").value = r && r.cr || ""; ftPreview(); }
+// 🗑 2026-11-12 구동 기록 삭제 (잘못 입력한 장비 등) — FT 담당자만 · 한 번 더 확인
+$("ftdel").addEventListener("click", function () {
+  var nm = authName(); if (!nm) { openLogin(); return; } if (!roleOk("FT")) return;
+  var eq = $("fte").value, r = (D.ft || {})[eq]; if (!eq || !r) return;
+  if (!confirm(eq + " 구동 기록(DRY " + hf(r.dry) + " · FULL CYCLE " + hf(r.full) + (r.c ? " · 조건부 OK" : "") + ")을 삭제할까요?\n삭제하면 '미입력'으로 돌아갑니다.")) return;
+  var fin = function (lg) { delete D.ft[eq]; D.issues.unshift(lg ? mapLog(lg) : { e: eq, k: "FT·구동기록삭제", r: "완료", t: "구동 기록 삭제 · DRY " + hf(r.dry) + " · FULL CYCLE " + hf(r.full), d: D.today, w: nm, lv: "ok" }); ftFill(); draw(); toast(eq + " 구동 기록을 삭제했습니다"); };
+  if (!LIVE) { fin(); return; }
+  var b = $("ftdel"); b.disabled = true; b.textContent = "삭제 중…";
+  rpc("dt_ft_del", { n: nm, pin: sget("upin") || "", eq_name: eq })
+    .then(function (j) { if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "삭제 실패"); } fin(j.log); })
+    .catch(function (er) { toast("삭제 실패: " + (/dt_ft_del|PGRST202|404/.test(er.message) ? "삭제 준비가 아직 안 되었습니다" : er.message)); })
+    .then(function () { b.disabled = false; b.textContent = "이 장비 구동 기록 삭제"; });
+});
 $("ftcd").addEventListener("change", function () { ftPreview(); if ($("ftcd").checked) setTimeout(function () { $("ftcr").focus(); }, 30); });
 $("fte").addEventListener("change", ftFill); $("ftd").addEventListener("input", ftPreview); $("ftf").addEventListener("input", ftPreview);
 $("ftfm").onsubmit = function (ev) {
@@ -3797,7 +3816,7 @@ function drawFtRun() {
   var list = FRF === "ing" ? ing : FRF === "ok" ? ok : FRF === "out" ? out : L;
   list = list.slice().sort(function (a, b) { return (a.f.ok - b.f.ok) || (b.f.r.at || "").localeCompare(a.f.r.at || "") || a.e.n.localeCompare(b.e.n); });
   var tb = $("frtb"), mw = $("frm"); tb.innerHTML = ""; mw.innerHTML = "";
-  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", L.length ? "해당하는 장비가 없습니다" : "아직 구동 시간을 입력한 장비가 없습니다"); td0.colSpan = 8; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); return; }
+  if (!list.length) { var tr0 = el("tr"), td0 = el("td", "dim", L.length ? "해당하는 장비가 없습니다" : "아직 구동 시간을 입력한 장비가 없습니다"); td0.colSpan = 9; tr0.appendChild(td0); tb.appendChild(tr0); mw.appendChild(el("div", "empty", td0.textContent)); return; }
   var bar = function (x) { var p = Math.min(100, x.f.tot / FT_NEED * 100); return '<div class="frb"><i style="width:' + p + '%" class="' + (x.f.cond ? "cd" : x.f.ok ? "ok" : "") + '"></i></div><b class="frt2">' + hf(x.f.tot) + "</b>"; };
   var st = function (x) { return x.e.st >= 10 ? '<span class="tag">출하</span>' + (x.f.cond ? ' <span class="tag cdk">조건부</span>' : "") : x.f.cond ? '<span class="tag cdk" title="' + esc(x.f.r.cr || "") + '">조건부 OK</span>' : x.f.ok ? '<span class="tag g">OK</span>' : '<span class="tag a">진행</span>'; };
   var rest = function (x) { return x.f.cond ? '<b class="frc">미달 ' + hf(Math.max(0, FT_NEED - x.f.tot)) + "</b>" : x.f.ok ? '<span class="dim">-</span>' : '<b class="frl">' + hf(Math.max(0, FT_NEED - x.f.tot)) + "</b>"; };
@@ -3805,10 +3824,10 @@ function drawFtRun() {
   var when = function (x) { return esc((x.f.r.at ? md(x.f.r.at).replace(/\(.\)/, "") : "-") + (x.f.r.w ? " · " + x.f.r.w : "")); };
   list.forEach(function (x) {
     var e = x.e, tr = el("tr"); tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n, { qa: 1 }); };
-    tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + why(x) + '</td><td class="dim">' + esc(e.t || "-") + '</td><td class="r"><b>' + hf(x.f.dry) + '</b></td><td class="r"><b>' + hf(x.f.full) + "</b></td><td>" + bar(x) + '</td><td class="r">' + rest(x) + "</td><td>" + st(x) + '</td><td class="dim">' + when(x) + "</td>";
+    tr.innerHTML = "<td><b>" + esc(e.n) + "</b>" + (e.u ? ' <span class="tag r">긴급</span>' : "") + why(x) + "</td><td>" + (e.v || e.p ? esc([e.v, e.p].filter(Boolean).join(" · ")) : '<span class="dim">-</span>') + '</td><td class="dim">' + esc(e.t || "-") + '</td><td class="r"><b>' + hf(x.f.dry) + '</b></td><td class="r"><b>' + hf(x.f.full) + "</b></td><td>" + bar(x) + '</td><td class="r">' + rest(x) + "</td><td>" + st(x) + '</td><td class="dim">' + when(x) + "</td>";
     tb.appendChild(tr);
     var m = el("div"); m.onclick = function () { eqOpen(e.n, { qa: 1 }); };
-    m.innerHTML = "<b>" + esc(e.n) + "</b><span>" + st(x) + '</span><span class="s1">DRY ' + hf(x.f.dry) + " · FULL CYCLE " + hf(x.f.full) + " · 합계 " + hf(x.f.tot) + (x.f.cond ? " · 미달 " + hf(Math.max(0, FT_NEED - x.f.tot)) : x.f.ok ? "" : " · " + hf(Math.max(0, FT_NEED - x.f.tot)) + " 남음") + "</span>" + (x.f.cond ? '<span class="s1">' + why(x) + "</span>" : "") + '<span class="s1 frmb">' + bar(x) + '</span><span class="s2">' + esc(e.t || "") + (e.t ? " · " : "") + when(x) + "</span>";
+    m.innerHTML = "<b>" + esc(e.n) + "</b><span>" + st(x) + '</span><span class="s1">DRY ' + hf(x.f.dry) + " · FULL CYCLE " + hf(x.f.full) + " · 합계 " + hf(x.f.tot) + (x.f.cond ? " · 미달 " + hf(Math.max(0, FT_NEED - x.f.tot)) : x.f.ok ? "" : " · " + hf(Math.max(0, FT_NEED - x.f.tot)) + " 남음") + "</span>" + (x.f.cond ? '<span class="s1">' + why(x) + "</span>" : "") + '<span class="s1 frmb">' + bar(x) + '</span><span class="s2">' + esc([e.v, e.p, e.t].filter(Boolean).join(" · ")) + ([e.v, e.p, e.t].some(Boolean) ? " · " : "") + when(x) + "</span>";
     mw.appendChild(m);
   });
 }
