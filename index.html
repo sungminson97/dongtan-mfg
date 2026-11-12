@@ -785,6 +785,76 @@ nav.top .ddm button.cur{background:color-mix(in srgb,var(--ac) 12%,transparent);
 .sbtn:active{transform:scale(.98)}
 
 /* 알림 · 이름 */
+/* 👷 작업자별 FT 실적 (2026-11-12) */
+.ftp{margin-bottom:16px}
+.ftph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.ftph h3{margin-top:4px}
+.ftpr{display:flex;align-items:center;gap:8px}
+.ftpab.on{background:transparent;color:var(--text);box-shadow:inset 0 0 0 1px var(--line)}
+.ftpg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:16px;align-items:start}
+.ftpt{border:1px solid var(--line);border-radius:14px;padding:14px 12px 6px;background:color-mix(in srgb,var(--bg2) 35%,transparent)}
+.ftpth{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 4px 10px;flex-wrap:wrap}
+.ftpth .nm{display:flex;align-items:center;gap:8px}
+.ftpth .nm i{width:9px;height:9px;border-radius:3px;background:var(--tc)}
+.ftpth .nm b{font-size:16px;font-weight:900;letter-spacing:-.02em}
+.ftpth .nm small{font-size:12px;font-weight:700;color:var(--sub)}
+.ftpth .sm{font-size:12.5px;font-weight:700;color:var(--sub)}
+.ftpth .sm b{color:var(--text);font-weight:900;font-size:14px;margin:0 1px}
+.ftprw{display:grid;grid-template-columns:24px 76px minmax(0,1fr) 56px 64px;gap:10px;align-items:center;width:100%;padding:11px 6px;border-top:1px solid var(--line);border-radius:0;text-align:left;font-size:13.5px;font-weight:800;color:var(--text);background:transparent;transition:background .2s}
+button.ftprw{cursor:pointer}
+button.ftprw:hover,.ftprw.on{background:color-mix(in srgb,var(--tc) 9%,transparent);border-radius:10px;border-top-color:transparent}
+.ftprw.on+.ftpd{border-top:0}
+.ftprw.hh{border-top:0;padding-top:0;padding-bottom:6px;font-size:11.5px;font-weight:700;color:var(--sub)}
+.ftprw.hh span:nth-child(n+4),.ftprw .v{text-align:right}
+.ftprw .rk{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--sub);text-align:center}
+.ftprw .pn{display:flex;align-items:center;gap:5px;min-width:0}
+.ftprw .pn b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ftprw .pn em{flex:none;font-style:normal;font-size:10.5px;font-weight:800;padding:2px 5px;border-radius:5px;color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,transparent)}
+.ftprw .bar{display:flex;height:8px;border-radius:99px;background:var(--bg2);overflow:hidden}
+.ftprw .bar u{display:block;height:100%;width:0;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.ftprw .bar u.s{background:var(--tc)}
+.ftprw .bar u.g{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--tc) 70%,transparent) 0 3px,color-mix(in srgb,var(--tc) 22%,transparent) 3px 6px)}
+.ftprw .v{font-size:14px;font-weight:900;font-variant-numeric:tabular-nums}
+.ftprw .v.g{color:var(--tc)}
+.ftprw .v.zz{color:var(--sub);opacity:.5;font-weight:700}
+.ftprw.z .pn b{color:var(--sub)}
+.ftpd{display:grid;gap:14px;padding:10px 6px 14px;animation:drIn .3s ease both}
+.ftpsh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.ftpsh b{font-size:13px;font-weight:900}
+.ftpsh span{font-size:12px;font-weight:700;color:var(--sub)}
+.ftpl{display:grid}
+.ftpi{display:grid;grid-template-columns:86px minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px;border-radius:8px;font-size:13px}
+.ftpi+.ftpi{border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+.ftpi.lk{cursor:pointer}
+.ftpi.lk:hover{background:var(--bg2)}
+.ftpi .d{font-family:var(--mono);font-size:11.5px;font-weight:700;color:var(--sub);white-space:nowrap}
+.ftpi .m{display:flex;align-items:baseline;gap:7px;min-width:0;flex-wrap:wrap}
+.ftpi .m b{font-weight:800}
+.ftpi .m small{font-size:11.5px;font-weight:700;color:var(--sub)}
+.ftpi .m em{font-style:normal;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;color:var(--sub);border:1px solid var(--line)}
+.ftpi .tag{margin:0;height:24px;font-size:11.5px}
+.ftpm{display:grid;gap:10px;max-height:380px;overflow:auto;padding-right:2px}
+.ftpmh{display:flex;align-items:baseline;gap:6px;padding:4px 8px;font-size:12px;font-weight:800;color:var(--sub)}
+.ftpmh b{color:var(--text);font-size:12.5px}
+.ftpe{font-size:12.5px;font-weight:600;color:var(--sub);padding:6px 8px}
+.ftpnote{margin-top:12px}
+.ftpf{margin-top:14px;padding:14px;border:1px dashed var(--line);border-radius:14px;display:grid;gap:10px;animation:drIn .3s ease both}
+.ftpft{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ftpft b{font-size:14px;font-weight:900}
+.ftpft span{font-size:12.5px;font-weight:600;color:var(--sub)}
+.ftpfr{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ftpfr input{flex:1 1 180px;min-width:0;height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-size:14.5px;font-weight:700;outline:0;transition:border-color .2s}
+.ftpfr input:focus{border-color:var(--ac)}
+.ftpseg{margin-left:0}
+.ftpsb{height:42px;padding:0 20px;border-radius:12px}
+.ftpal{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ftpal .lb{font-size:12px;font-weight:700;color:var(--sub);margin-right:2px}
+.ftpc{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 10px;border-radius:999px;border:1px solid var(--line);font-size:12.5px}
+.ftpc small{font-size:11px;font-weight:700;color:var(--sub)}
+.ftpc button{height:22px;padding:0 8px;border-radius:999px;font-size:11.5px;font-weight:800;color:var(--sub);background:var(--bg2)}
+.ftpc button:hover{color:var(--warn)}
+@media (max-width:900px){.ftpg{grid-template-columns:1fr}}
+@media (max-width:520px){.ftprw{grid-template-columns:18px 64px minmax(0,1fr) 44px 52px;gap:7px;font-size:13px}.ftprw .pn em{display:none}.ftpi{grid-template-columns:72px minmax(0,1fr);}.ftpi .tag{grid-column:2;justify-self:start}}
 .totop{position:fixed;right:max(20px,calc((100vw - 1240px) / 2 - 76px));bottom:calc(24px + env(safe-area-inset-bottom));z-index:55;height:42px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:color-mix(in srgb,var(--card) 88%,transparent);-webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);color:var(--text);font:inherit;font-size:13px;font-weight:800;letter-spacing:-.01em;cursor:pointer;box-shadow:0 10px 28px -12px rgba(0,0,0,.55);opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s,border-color .2s,color .2s}
 .totop.on{opacity:1;transform:none;pointer-events:auto}
 .totop:hover{border-color:var(--ac);color:var(--ac)}
@@ -2012,6 +2082,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
     <div class="card upc" id="fup"></div>
     <div class="g4" id="ftkpi" style="margin:16px 0"></div>
+    <div class="card ftp" id="ftp"></div>
     <div class="card" style="padding-bottom:10px">
       <div class="ehd"><h3>FT 현황</h3><div class="chips" id="fwf"></div></div>
       <div class="ewm" id="fwm"></div><div class="tbw ewd" style="margin-top:10px"><table class="tbl etbl ewt"><thead><tr><th>장비</th><th>자리</th><th>업체 · 담당</th><th>제조완료</th><th>DRY+FULL CYCLE</th><th>QC</th><th>ACM 검수</th><th>PACKING</th><th>출하</th><th>상태</th></tr></thead><tbody id="fwtb"></tbody></table></div>
@@ -2386,7 +2457,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-170000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-180000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3637,6 +3708,169 @@ function ftBuild(X, G, flogs) {
   xlSheet(wb, "FT 이슈", "동탄 제조 · FT 이슈", sub, H3.map(function (h, j) { return { h: h, w: [12, 22, 12, 10, 60, 10][j], c: j === 3, wrap: j === 4 }; }), r3.length ? r3 : [{ v: ["", "기록된 FT 이슈가 없습니다", "", "", "", ""], t: "pl" }], { h: 30 });
   return { wb: wb, fn: fn, msg: "FT 현황 엑셀을 내려받았습니다" };
 }
+/* ── 👷 작업자별 FT 실적 (2026-11-12) ──
+ * 기준: Backlog_raw '제조1팀 담당자'에 이름이 들어 있는 장비
+ *  · 출하 = 올해 1/1 ~ 오늘 출하 완료 (D.ship.list 중 출하됨)
+ *  · 진행 중 = FRAME 입고 후 아직 출하 전 (D.ship.ftw · 동탄.gs가 만들어 줌)
+ *  · 한 장비에 담당이 여러 명이면 각자 1대씩 · 명단에 없는 이름 · 업체만 적힌 장비는 세지 않음
+ * 명단: 기본 명단 + '명단 추가하기'로 넣은 이름 (Supabase dt_ft_roster · 로그인한 분만 추가)
+ */
+var FTR0 = { B: ["고현우", "나영훈", "손성민", "박제민"], A: ["김은수", "김병준", "나동현", "김호성", "박민철", "엄경준"] };
+var FTP = { add: null, ld: false, err: "", open: "", form: false, team: "B", busy: false };
+function ftpLoad(force) {
+  if (!LIVE) { FTP.add = FTP.add || []; return Promise.resolve(); }
+  if (FTP.ld || (FTP.add && !force)) return Promise.resolve();
+  FTP.ld = true;
+  return rpc("dt_ft_roster_get", {}).then(function (j) { FTP.add = Array.isArray(j) ? j : []; FTP.err = ""; }, function (e) { FTP.add = FTP.add || []; FTP.err = e.message || "명단을 불러오지 못했습니다"; })
+    .then(function () { FTP.ld = false; });
+}
+function ftpRoster() {
+  var r = { B: FTR0.B.slice(), A: FTR0.A.slice() }, ex = {};
+  r.A.concat(r.B).forEach(function (n) { ex[n] = 1; });
+  (FTP.add || []).forEach(function (x) { if (!x || !x.n || ex[x.n] || !r[x.t]) return; r[x.t].push(x.n); ex[x.n] = 1; });
+  return r;
+}
+function ftpAdded(n) { return (FTP.add || []).some(function (x) { return x.n === n; }) && FTR0.A.concat(FTR0.B).indexOf(n) < 0; }
+function ftpHas(raw, n) { return String(raw || "").replace(/\s+/g, "").indexOf(n.replace(/\s+/g, "")) >= 0; }
+function ftpData() {
+  var S = D.ship, T = D.today, y = (S && S.year ? String(S.year) : T.slice(0, 4)) + "-01-01";
+  var shipped = ((S && S.list) || []).filter(function (x) { return x[5] && x[0] >= y && x[0] <= T; });
+  var ing = S && Array.isArray(S.ftw) ? S.ftw : null;   // [장비, TYPE, 담당자 원래 글자, FRAME 입고일, 출하 예정일, 팀/업체]
+  var R = ftpRoster(), out = { A: [], B: [], y: y, ingOk: !!ing, miss: 0 };
+  ["B", "A"].forEach(function (t) {
+    R[t].forEach(function (n) {
+      var s = shipped.filter(function (x) { return ftpHas(x[6] || x[4], n); }).sort(function (a, b) { return a[0] > b[0] ? -1 : a[0] < b[0] ? 1 : 0; });
+      var g = ing ? ing.filter(function (x) { return ftpHas(x[2], n); }).sort(function (a, b) { var p = a[4] || "9999", q = b[4] || "9999"; return p < q ? -1 : p > q ? 1 : 0; }) : [];
+      out[t].push({ n: n, t: t, s: s, g: g, add: ftpAdded(n) });
+    });
+    out[t].sort(function (a, b) { return b.s.length - a.s.length || b.g.length - a.g.length || (a.n < b.n ? -1 : 1); });
+  });
+  var all = R.A.concat(R.B);
+  out.miss = shipped.filter(function (x) { return (x[3] === "A" || x[3] === "B") && !all.some(function (n) { return ftpHas(x[6] || x[4], n); }); }).length;
+  return out;
+}
+function drawFtPeople(box) {
+  if (!box) return;
+  if (FTP.add === null && !FTP.ld) ftpLoad().then(function () { if (cur === "ft") drawFtPeople($("ftp")); });
+  box.innerHTML = "";
+  var S = D.ship, hd = el("div", "ftph"), tl = el("div");
+  tl.appendChild(el("span", "cap", "FT · " + (S && S.year ? S.year : D.today.slice(0, 4))));
+  tl.appendChild(el("h3", null, "작업자별 FT 실적"));
+  tl.appendChild(el("p", "ds2", "1/1 ~ 오늘 출하 완료 · 진행 중 = FRAME 입고 후 출하 전 · 제조1팀 담당자 기준"));
+  hd.appendChild(tl);
+  var rt = el("div", "ftpr");
+  var ab = el("button", "wbtn ftpab" + (FTP.form ? " on" : ""), FTP.form ? "닫기" : "명단 추가하기"); ab.type = "button";
+  ab.onclick = function () { FTP.form = !FTP.form; drawFtPeople(box); if (FTP.form) setTimeout(function () { try { $("ftpn").focus({ preventScroll: true }); } catch (e) {} }, 60); };
+  rt.appendChild(ab); hd.appendChild(rt); box.appendChild(hd);
+  if (FTP.form) box.appendChild(ftpForm(box));
+  if (!S || !S.list) { box.appendChild(el("div", "empty", "출하 실적을 준비 중입니다")); return; }
+  var Dt = ftpData(), mx = 1;
+  ["A", "B"].forEach(function (t) { Dt[t].forEach(function (p) { mx = Math.max(mx, p.s.length + p.g.length); }); });
+  var g = el("div", "ftpg");
+  [["B", "B팀"], ["A", "A팀"]].forEach(function (o) {
+    var t = o[0], L = Dt[t], sN = 0, gN = 0, seen = {}, seenG = {};
+    L.forEach(function (p) { p.s.forEach(function (x) { if (!seen[x[1]]) { seen[x[1]] = 1; sN++; } }); p.g.forEach(function (x) { if (!seenG[x[0]]) { seenG[x[0]] = 1; gN++; } }); });
+    var pn = el("div", "ftpt"); pn.style.setProperty("--tc", SHC[t]);
+    var ph = el("div", "ftpth"), nm = el("div", "nm"); nm.appendChild(el("i")); nm.appendChild(el("b", null, o[1])); nm.appendChild(el("small", null, L.length + "명")); ph.appendChild(nm);
+    var sm = el("div", "sm"); sm.innerHTML = "출하 <b>" + sN + "</b>대" + (Dt.ingOk ? " · 진행 중 <b>" + gN + "</b>대" : ""); ph.appendChild(sm); pn.appendChild(ph);
+    var hr = el("div", "ftprw hh"); ["", "이름", "", "출하", "진행 중"].forEach(function (h) { hr.appendChild(el("span", null, h)); }); pn.appendChild(hr);
+    L.forEach(function (p, i) {
+      var k = t + "|" + p.n, on = FTP.open === k;
+      var r = el("button", "ftprw" + (on ? " on" : "") + (!p.s.length && !p.g.length ? " z" : "")); r.type = "button"; r.setAttribute("aria-expanded", on ? "true" : "false");
+      r.appendChild(el("span", "rk", p.s.length ? String(i + 1) : "-"));
+      var nb = el("span", "pn"); nb.appendChild(el("b", null, p.n)); if (p.add) nb.appendChild(el("em", null, "추가")); r.appendChild(nb);
+      var br = el("span", "bar"), us = el("u", "s"), ug = el("u", "g"); us.dataset.w = p.s.length / mx * 100; ug.dataset.w = p.g.length / mx * 100; br.appendChild(us); br.appendChild(ug); r.appendChild(br);
+      r.appendChild(el("span", "v" + (p.s.length ? "" : " zz"), p.s.length + "대"));
+      r.appendChild(el("span", "v g" + (p.g.length ? "" : " zz"), Dt.ingOk ? p.g.length + "대" : "-"));
+      r.onclick = function () { FTP.open = on ? "" : k; drawFtPeople(box); };
+      pn.appendChild(r);
+      if (on) pn.appendChild(ftpDetail(p, Dt.ingOk, box));
+    });
+    g.appendChild(pn);
+  });
+  box.appendChild(g);
+  var nt = el("p", "shnote ftpnote", "제조1팀 담당자에 이름이 있는 장비를 셉니다 (업체와 함께 적힌 장비 포함 · 담당이 여러 명이면 각자 1대) · 이름 없이 업체만 적힌 장비는 세지 않습니다" + (Dt.miss ? " · 명단에 없는 담당의 A · B팀 출하 " + Dt.miss + "대" : "") + (Dt.ingOk ? "" : " · 진행 중 대수는 다음 자동 반영 후 표시됩니다"));
+  box.appendChild(nt);
+  requestAnimationFrame(function () { box.querySelectorAll(".ftprw .bar u").forEach(function (u) { u.style.width = u.dataset.w + "%"; }); });
+}
+function ftpDetail(p, ingOk, box) {
+  var w = el("div", "ftpd");
+  var sec = function (title, n, rows) {
+    var s = el("div", "ftps"); var h = el("div", "ftpsh"); h.appendChild(el("b", null, title)); h.appendChild(el("span", null, n + "대")); s.appendChild(h);
+    if (!rows.length) { s.appendChild(el("div", "ftpe", title === "진행 중" ? "진행 중인 장비가 없습니다" : "올해 출하한 장비가 없습니다")); return s; }
+    var l = el("div", "ftpl"); rows.forEach(function (r) { l.appendChild(r); }); s.appendChild(l); return s;
+  };
+  var it = function (d, n, t, tg, tc, vk) {
+    var r = el("div", "ftpi"); r.appendChild(el("span", "d", d)); var m = el("span", "m"); m.appendChild(el("b", null, n)); if (t) m.appendChild(el("small", null, t)); if (vk && vk !== "A" && vk !== "B") m.appendChild(el("em", null, vk)); r.appendChild(m);
+    if (tg) r.appendChild(el("span", "tag" + (tc ? " " + tc : ""), tg));
+    if ((D.eq || []).some(function (e) { return e.n === n; })) { r.classList.add("lk"); r.onclick = function () { eqOpen(n); }; }
+    return r;
+  };
+  if (ingOk) w.appendChild(sec("진행 중", p.g.length, p.g.map(function (x) {
+    var dd = x[4] ? Math.round((new Date(x[4]) - new Date(D.today)) / 864e5) : null;
+    return it(x[3] ? "입고 " + md(x[3]) : "입고 -", x[0], x[1], x[4] ? "출하 " + md(x[4]).replace(/\(.\)$/, "") + (dd != null ? (dd === 0 ? " · D-day" : dd > 0 ? " · D-" + dd : " · D+" + -dd) : "") : "출하일 미정", dd != null && dd <= 3 ? "b" : "", x[5]);
+  })));
+  // 출하: 월별로 묶어서
+  var byM = {}, ms = [];
+  p.s.forEach(function (x) { var k = x[0].slice(0, 7); if (!byM[k]) { byM[k] = []; ms.push(k); } byM[k].push(x); });
+  var ss = sec("출하 완료", p.s.length, []);
+  if (p.s.length) {
+    ss.removeChild(ss.lastChild);
+    var mg = el("div", "ftpm");
+    ms.forEach(function (k) {
+      var b = el("div", "ftpmg"); var h = el("div", "ftpmh"); h.appendChild(el("b", null, +k.slice(5, 7) + "월")); h.appendChild(el("span", null, byM[k].length + "대")); b.appendChild(h);
+      var l = el("div", "ftpl"); byM[k].forEach(function (x) { l.appendChild(it(md(x[0]), x[1], x[2], "", "", x[3])); }); b.appendChild(l); mg.appendChild(b);
+    });
+    ss.appendChild(mg);
+  }
+  w.appendChild(ss);
+  return w;
+}
+function ftpForm(box) {
+  var f = el("form", "ftpf"); f.autocomplete = "off";
+  var top = el("div", "ftpft");
+  top.appendChild(el("b", null, "명단 추가"));
+  top.appendChild(el("span", null, authName() ? "추가한 이름은 모든 화면에 함께 반영됩니다" : "로그인한 분만 추가할 수 있습니다"));
+  f.appendChild(top);
+  var row = el("div", "ftpfr");
+  var ip = el("input"); ip.id = "ftpn"; ip.placeholder = "이름 (예: 홍길동)"; ip.maxLength = 10; ip.setAttribute("enterkeyhint", "done"); row.appendChild(ip);
+  var sg = el("div", "seg ftpseg");
+  [["B", "B팀"], ["A", "A팀"]].forEach(function (o) { var b = el("button", FTP.team === o[0] ? "on" : "", o[1]); b.type = "button"; b.onclick = function () { FTP.team = o[0]; sg.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); }); }; sg.appendChild(b); });
+  row.appendChild(sg);
+  var sb = el("button", "wbtn ftpsb", "추가"); sb.type = "submit"; row.appendChild(sb);
+  f.appendChild(row);
+  var mine = (FTP.add || []).filter(function (x) { return ftpAdded(x.n); });
+  if (mine.length) {
+    var ls = el("div", "ftpal"); ls.appendChild(el("span", "lb", "추가한 이름"));
+    mine.forEach(function (x) {
+      var c = el("span", "ftpc"); c.appendChild(el("b", null, x.n)); c.appendChild(el("small", null, x.t === "A" ? "A팀" : "B팀"));
+      var d = el("button", null, "빼기"); d.type = "button"; d.onclick = function () { ftpSave(x.n, x.t, true, box); }; c.appendChild(d); ls.appendChild(c);
+    });
+    f.appendChild(ls);
+  }
+  f.onsubmit = function (ev) {
+    ev.preventDefault();
+    var n = ip.value.replace(/\s+/g, " ").trim();
+    if (!n) { ip.focus(); toast("이름을 입력해 주세요"); return; }
+    if (!/^[가-힣A-Za-z ]{2,10}$/.test(n)) { ip.focus(); toast("이름은 한글 · 영문 2~10자로 입력해 주세요"); return; }
+    var R = ftpRoster(); if (R.A.concat(R.B).indexOf(n) >= 0) { toast("이미 명단에 있는 이름입니다"); return; }
+    ftpSave(n, FTP.team, false, box);
+  };
+  return f;
+}
+function ftpSave(n, t, del, box) {
+  var nm = authName();
+  if (!nm) { toast("로그인 후 " + (del ? "뺄" : "추가할") + " 수 있습니다"); return; }
+  if (!LIVE) { if (del) FTP.add = (FTP.add || []).filter(function (x) { return x.n !== n; }); else (FTP.add = FTP.add || []).push({ n: n, t: t, by: nm }); drawFtPeople(box); toast(del ? n + " 님을 명단에서 뺐습니다" : n + " 님을 " + t + "팀 명단에 추가했습니다"); return; }
+  if (FTP.busy) return; FTP.busy = true;
+  rpc("dt_ft_roster_set", { n: nm, pin: sget("upin") || "", p_name: n, p_team: t, p_del: !!del })
+    .then(function (j) {
+      if (!j || !j.ok) { if (j && j.auth) authLost(j.error); throw new Error((j && j.error) || "저장 실패"); }
+      return ftpLoad(true).then(function () { drawFtPeople(box); toast(del ? n + " 님을 명단에서 뺐습니다" : n + " 님을 " + t + "팀 명단에 추가했습니다"); });
+    })
+    .catch(function (er) { toast("저장 실패: " + er.message); })
+    .then(function () { FTP.busy = false; });
+}
 function drawFt() {
   var T = D.today, d14 = addD(T, 14);
   var L = D.eq.filter(function (e) { return e.st < 10; }).map(function (e) { return { e: e, m: mfgOf(e), f: ftOf(e) }; }).filter(function (x) { return x.m.k !== "none" || x.f.r; });
@@ -3649,6 +3883,7 @@ function drawFt() {
   if (!FWF) FWF = run.length ? "run" : "ing";   // 처음엔 CYCLE TEST (없으면 제조 중)
   kpiRow("ftkpi", [["CYCLE TEST", run.length, "대", run.length > 0, function () { FWF = "run"; drawFt(); goList("#fwf"); }, FWF === "run"], ["제조 중 · 2주 내 완료", ing.length, "대", false, function () { FWF = "ing"; drawFt(); goList("#fwf"); }, FWF === "ing"],
     ["제조완료", ok.length, "대", false, function () { FWF = "ok"; drawFt(); goList("#fwf"); }, FWF === "ok"], ["FT ISSUE", fopen.length, "건", fopen.length > 0, function () { FIF = "open"; drawFt(); goList(".fiss"); }]]);
+  try { drawFtPeople($("ftp")); } catch (eFp) { console.warn("ftp", eFp); }   // 👷 작업자별 FT 실적
   upCard($("fup"), { key: "f", title: "2차 검수 · ISSUE 시트", sub: "PACKING일 기준 · 업로드 현황", dl: "PACKING", cols: [["2차 검수", 2, 9, "2차"], ["ISSUE", 3, 9, "ISSUE"]] });
   var etc = all.filter(function (x) { return run.indexOf(x) < 0 && ing.indexOf(x) < 0 && ok.indexOf(x) < 0; });
   xlBtn($("ftx"), "FT 엑셀 다운로드", function (X) { return ftBuild(X, [["CYCLE TEST", run], ["제조 중 · 2주 내 완료", ing], ["제조완료", ok], ["제조 예정 · 2주 이후", etc]], flogs); });
