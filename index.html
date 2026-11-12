@@ -2379,7 +2379,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-100000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-151500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3755,16 +3755,18 @@ function drawShipStats(a, b) {
   var g = function (o, k) { return (o && o[k]) || 0; };
   // 열: 올해 출하 · 이번 달 출하(오늘까지) · 진행 중(FRAME 입고 ~ 출하 전) · 이달 예정(남은 출하) · 입고 예정
   var M = cm[1] || {}, mNo = cm[0] ? +cm[0].slice(5, 7) : +String(S.today || "").slice(5, 7);
-  var rows = [["나인벨", "A팀 + B팀", (T.A || 0) + (T.B || 0), g(M, "A") + g(M, "B"), g(S.ing, "A") + g(S.ing, "B"), g(S.plan, "A") + g(S.plan, "B"), g(S.pre, "A") + g(S.pre, "B"), "", "hd"],
-    ["A팀", "", T.A || 0, g(M, "A"), g(S.ing, "A"), g(S.plan, "A"), g(S.pre, "A"), SHC.A, "sb"],
-    ["B팀", "", T.B || 0, g(M, "B"), g(S.ing, "B"), g(S.plan, "B"), g(S.pre, "B"), SHC.B, "sb"],
-    ["업체", vens.join(" · ") || "-", shipVen(T, S), shipVen(M, S), shipVen(S.ing, S), shipVen(S.plan, S), shipVen(S.pre, S), "", "hd"]];
-  vens.forEach(function (v) { rows.push([v, "", g(T, v), g(M, v), g(S.ing, v), g(S.plan, v), g(S.pre, v), SHC.V, "sb"]); });
+  // ✅ 2026-11-12: 출하 예정 = 이번 달 전체 (1일 ~ 말일) = 이번 달 이미 출하 + 내일부터 말일까지 남은 예정
+  var pm = function (k) { return g(M, k) + g(S.plan, k); };
+  var rows = [["나인벨", "A팀 + B팀", (T.A || 0) + (T.B || 0), g(M, "A") + g(M, "B"), g(S.ing, "A") + g(S.ing, "B"), pm("A") + pm("B"), g(S.pre, "A") + g(S.pre, "B"), "", "hd"],
+    ["A팀", "", T.A || 0, g(M, "A"), g(S.ing, "A"), pm("A"), g(S.pre, "A"), SHC.A, "sb"],
+    ["B팀", "", T.B || 0, g(M, "B"), g(S.ing, "B"), pm("B"), g(S.pre, "B"), SHC.B, "sb"],
+    ["업체", vens.join(" · ") || "-", shipVen(T, S), shipVen(M, S), shipVen(S.ing, S), shipVen(M, S) + shipVen(S.plan, S), shipVen(S.pre, S), "", "hd"]];
+  vens.forEach(function (v) { rows.push([v, "", g(T, v), g(M, v), g(S.ing, v), pm(v), g(S.pre, v), SHC.V, "sb"]); });
   var tb = el("div", "shtb");
   var td0 = String(S.today || D.today), dM = +td0.slice(5, 7), dD = +td0.slice(8, 10), eM = new Date(+td0.slice(0, 4), dM, 0).getDate(), nx1 = addD(td0, 1);
   var rng = function (a, b) { return a + " ~ " + b; }, tmrw = +nx1.slice(5, 7) === dM ? rng(dM + "/" + (+nx1.slice(8, 10)), dM + "/" + eM) : "없음";
   var hd = el("div", "shr shh");
-  [["", ""], ["올해 출하", "1/1 ~ 오늘"], [mNo + "월 출하", dM + "/1 ~ 오늘"], ["진행 중", "입고 후 출하 전"], ["출하 예정", tmrw], ["입고 예정", tmrw]].forEach(function (x, i) {
+  [["", ""], ["올해 출하", "1/1 ~ 오늘"], [mNo + "월 출하", dM + "/1 ~ 오늘"], ["진행 중", "입고 후 출하 전"], ["출하 예정", dM + "/1 ~ " + dM + "/" + eM], ["입고 예정", tmrw]].forEach(function (x, i) {
     var h = el("span", i === 2 ? "cm" : null); if (x[0]) { h.appendChild(el("b", null, x[0])); h.appendChild(el("small", null, x[1])); } hd.appendChild(h);
   });
   tb.appendChild(hd);
@@ -3776,7 +3778,7 @@ function drawShipStats(a, b) {
     tb.appendChild(d);
   });
   b.appendChild(tb);
-  b.appendChild(el("p", "shnote", "오늘 = " + dM + "/" + dD + " · 진행 중 = FRAME 입고 후 아직 출하 전 · 출하 예정 · 입고 예정 = 내일부터 이번 달 말일까지 (FRAME 입고 기준)"));
+  b.appendChild(el("p", "shnote", "오늘 = " + dM + "/" + dD + " · 진행 중 = FRAME 입고 후 아직 출하 전 · 출하 예정 = 이번 달 1일부터 말일까지 (출하 완료 포함) · 입고 예정 = 내일부터 이번 달 말일까지 (FRAME 입고 기준)"));
   b.appendChild(el("p", "shnote", (S.built || S.today) + " 기준"));
   setTimeout(function () { [].forEach.call(a.querySelectorAll(".stk u"), function (u) { u.style.height = (+u.dataset.h ? Math.max(3, +u.dataset.h) : 0) + "px"; }); [].forEach.call(a.querySelectorAll(".vsb u"), function (u) { u.style.width = u.dataset.w + "%"; }); countUp(bn); }, 60);
 }
