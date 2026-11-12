@@ -1005,6 +1005,7 @@ button.ftprw:hover,.ftprw.on{background:color-mix(in srgb,var(--tc) 9%,transpare
 .vlock button{margin-top:18px;height:44px;padding:0 26px;border-radius:999px;background:var(--grd);color:#fff;font-weight:800;font-size:14px}
 .view.vlk>.wrap>*:not(.vtop):not(.vlock){display:none!important}
 .view.vlk .vlock,.sec.vlk .vlock{display:block}
+.view.vlk .vtop .vx{display:none!important}
 .sec.vlk .g2,.sec.vlk .shd .more{display:none!important}
 .sec .vlock{margin-top:4px}
 .lk button{height:44px;padding:0 22px;border-radius:999px;background:var(--grd);color:#fff;font-weight:800;font-size:14px}
@@ -2138,6 +2139,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <!-- ═════ 제조 · FT ═════ -->
   <div class="view" id="v-ft"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Final Test</span><h2 class="tt">FT (Final Test)</h2><p class="ds">1차 검수(DRY) 이후 FULL CYCLE 구동 시간과 QC · ACM 검수 · PACKING · 출하 일정입니다. 구동 시간 합계가 48시간이 되면 OK이며, 기록은 품질 탭에 함께 반영됩니다.</p><div class="seg msw"><button type="button" data-go="mech">기구</button><button type="button" data-go="elec">전장</button><button type="button" data-go="ncl">1차 검수 부적합</button><button type="button" data-go="ft">FT</button></div><button class="xbtn vx" type="button" id="ftx"></button></div>
+    <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>FT 구동 시간 · 일정과 작업자별 실적은 로그인한 분만 볼 수 있습니다.<br>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" class="vlkgo">로그인</button></div>
     <div class="card eiss fiss"><div class="ehd"><div><h3>FT 이슈</h3><p class="ds2" id="fisub"></p></div><div class="ehr"><div class="chips" id="fif"></div><button class="wbtn" type="button" id="fwrite">이슈 기록</button></div></div><div class="iss" id="flog" style="margin-top:6px"></div></div>
     <div class="card upc" id="fup"></div>
     <div class="g4" id="ftkpi" style="margin:16px 0"></div>
@@ -2516,7 +2518,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-193000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-194500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -2806,12 +2808,12 @@ function num(v, unit) { var b = el("b"); b.appendChild(document.createTextNode(i
 function draw() { drawAll(); try { reveal(); } catch (e) {} }
 function vlock() {   // 🔒 보기 전용(로그인 안 함)이면 입고 · 출하 · 품질 · 대시보드 '출하 · 업체'는 안내만
   var lk = !authName();
-  ["v-ship", "v-qa", "v-nc", "dshs"].forEach(function (id) { var x = $(id); if (x) x.classList.toggle("vlk", lk); });
+  ["v-ship", "v-qa", "v-nc", "v-ft", "dshs"].forEach(function (id) { var x = $(id); if (x) x.classList.toggle("vlk", lk); });   // 🔒 2026-11-12 FT도 로그인한 분만
   return lk;
 }
 function drawAll() {
   if (!D) return;
-  if (vlock() && /^(ship|qa|nc)$/.test(cur)) { $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); return; }   // 잠긴 화면은 그리지 않음
+  if (vlock() && /^(ship|qa|nc|ft)$/.test(cur)) { $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); return; }   // 잠긴 화면은 그리지 않음
   try { qcCalc(); } catch (e) {}
   $("demob").style.display = D.demo ? "" : "none";
   $("upd").textContent = (D.demo ? "예시 데이터 · " : "") + (D.demo ? D.updated + " 기준" : updTxt()); syncUi();
@@ -4861,6 +4863,7 @@ function isTable(wrap, L, redraw) {
 }
 function drawMat() {
   var box = $("emat"); box.innerHTML = "";
+  MS.m = "eq";   // ✅ 2026-11-12: 첫 화면은 장비명으로만 찾기 → 장비를 고른 다음 그 안에서 품번 · 품목명 찾기 (모든 장비 품번 찾기는 뺌)
   if (!MS.list && !MS.ld) { matLoad(false); }
   if (!MS.list) { box.appendChild(el("div", "card empty", "자재 현황을 불러오는 중…")); return; }
   if (!MS.prj) {
@@ -4878,7 +4881,7 @@ function drawMat() {
     c.appendChild(sc);
     var mm = el("div", "chips mmode");
     [["eq", "장비명으로 찾기"], ["pn", "품번 · 품목명으로 찾기"]].forEach(function (o) { var b = el("button", "chip sm" + (MS.m === o[0] ? " on" : ""), o[1]); b.type = "button"; b.onclick = function () { if (MS.m === o[0]) return; MS.m = o[0]; drawEtc(); setTimeout(function () { var x = document.querySelector("#mlist .msrch input"); if (x) x.focus(); }, 30); }; mm.appendChild(b); });
-    c.insertBefore(mm, null);
+    // (장비명 / 품번 찾는 방식 버튼은 2026-11-12에 뺌)
     var pnM = MS.m === "pn";
     var inp = el("input"); inp.placeholder = pnM ? "품번 · 품목명 찾기 (예: 12P-F00P13, back cover)" : "장비명 찾기 (예: 156, HJ92, MISC)"; inp.value = pnM ? MS.pq : MS.q; inp.autocomplete = "off"; sr.appendChild(inp); c.appendChild(sr);
     var g = el("div", pnM ? "mtw2" : "mtcs"); c.appendChild(g);
@@ -4942,7 +4945,7 @@ function drawMat() {
         var t = el("div", "mtct"); t.appendChild(el("b", null, x.eq)); if (e && e.loc) t.appendChild(el("i", null, e.loc)); b.appendChild(t);
         b.appendChild(el("span", "s", x.out ? (x.site ? x.site + " · " : "") + "출하 완료" : e ? (isAct(e) ? "동탄 입고 · " + STAGES[e.st] : e.inD ? md(e.inD) + " 입고 예정" : "입고일 미정") : (x.site || "사업장 미정") + " 장비"));
         if (x.out) b.classList.add("done");
-        b.appendChild(el("span", x.wait ? "w" : x.n ? "ok" : "s", !x.n ? "품목 없음" : (x.wait ? "미입고 " + x.wait + "건" : "전부 입고 ✓") + " · " + x.n + "품목"));
+        b.appendChild(el("span", x.wait ? "w" : x.n ? "ok" : "s", !x.n ? "품목 없음" : (x.wait ? "미입고 " + x.wait + "건" : "전부 입고") + " · " + x.n + "품목"));
         b.onclick = function () { matOpen(x.prj); };
         g.appendChild(b);
       });
@@ -5313,7 +5316,7 @@ function authUi() {
 $("bname").onclick = openLogin;
 $("lkgo").onclick = openLogin;
 [].forEach.call(document.querySelectorAll(".lkgo2"), function (b) { b.onclick = openLogin; });
-[].forEach.call(document.querySelectorAll(".vlkgo"), function (b) { b.onclick = function () { openLogin("로그인하면 입고 · 출하 · 품질 정보를 볼 수 있습니다"); }; });
+[].forEach.call(document.querySelectorAll(".vlkgo"), function (b) { b.onclick = function () { openLogin("로그인하면 입고 · 출하 · FT · 품질 정보를 볼 수 있습니다"); }; });
 $("lgx").onclick = closeLogin;
 
 $("lg").onclick = function (e) { if (e.target === this) closeLogin(); };
