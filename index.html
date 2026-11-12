@@ -249,6 +249,8 @@ section.sec.band.join{padding-top:0}
 /* 오늘 */
 .tl{display:grid;gap:0;margin-top:10px}
 .ti{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 8px;margin:0 -8px;border-radius:10px;border-bottom:1px solid var(--line);transition:background .2s}
+.ti.tfl{animation:tfl 2.2s ease both}
+@keyframes tfl{0%,35%{background:color-mix(in srgb,var(--ac) 18%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 55%,transparent)}100%{background:transparent;box-shadow:none}}
 .ti:last-child{border-bottom:0}
 .ti:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
 .ti>.tag{display:inline-flex;align-items:center;justify-content:center;align-self:center;margin:0;height:28px;padding:0 12px;line-height:1;font-size:12px}
@@ -1956,12 +1958,12 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <div class="view" id="v-ship"><div class="wrap">
     <div class="vtop"><span class="eyebrow">Schedule</span><h2 class="tt">입고 · 출하 일정</h2><p class="ds">제조1팀 출하 실적과 향후 2주간 FRAME 입고 · 출하 일정입니다.</p></div>
     <div class="vlock"><b>로그인 후 확인할 수 있습니다</b><span>입고 · 출하 일정과 출하 실적은 로그인한 분만 볼 수 있습니다.<br>오른쪽 위 로그인에서 이름과 개인 PIN을 입력해 주세요.</span><button type="button" class="vlkgo">로그인</button></div>
+    <div class="g4" id="fkpi" style="margin-bottom:16px"></div>
     <div class="card eiss siss" style="margin-bottom:16px"><div class="ehd"><div><h3>입고 · 출하 이슈</h3><p class="ds2" id="sisub"></p></div><div class="ehr"><div class="chips" id="sif"></div><button class="wbtn" type="button" id="swrite">이슈 기록</button></div></div><div class="iss" id="silog" style="margin-top:6px"></div></div>
     <div class="g2" style="margin-bottom:16px"><div class="card" id="fshA"></div><div class="card" id="fshB"></div></div>
     <div class="card scc" id="fscore" style="margin-bottom:16px"></div>
     <div class="card" id="srep" style="margin-bottom:28px"></div>
     <h3 class="subt">향후 2주 일정</h3>
-    <div class="g4" id="fkpi" style="margin-bottom:16px"></div>
     <div id="fcal" style="display:grid;gap:12px"></div>
     <div class="card lockc" id="sicard" style="margin-top:20px;max-width:640px"><h3>입고 · 출하 이슈 기록</h3><p class="ds2">로그인하면 누구나 기록할 수 있습니다</p>
       <div class="lk"><b>로그인 후 기록할 수 있습니다</b><span>오른쪽 위 로그인에서 개인 PIN을 입력해 주세요.</span><button type="button" class="lkgo2">로그인</button></div>
@@ -2379,7 +2381,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261112-151500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261112-153500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -4269,16 +4271,24 @@ function drawShip() {
   drawShipReport();
   var T = D.today, end = addD(T, 13);
   var inn = D.eq.filter(function (e) { return e.inD >= T && e.inD <= end; }), out = D.eq.filter(function (e) { return e.out >= T && e.out <= end; });
-  kpiRow("fkpi", [["2주 입고", inn.length, "대"], ["2주 출하", out.length, "대"], ["오늘 출하", out.filter(function (e) { return e.out === T; }).length, "대"], ["내일 출하", out.filter(function (e) { return e.out === addD(T, 1); }).length, "대"]]);
+  // ✅ 2026-11-12: 숫자를 누르면 아래 '향후 2주 일정'으로 내려가서 그 장비를 잠깐 밝게 표시 (오늘 입고 · 오늘 출하 → 오늘 칸)
+  var fGo = function (k, d, none) { return function () {
+    var c = d ? $("fday-" + d) : $("fcal"); if (!c) { toast(none); return; }
+    var y = c.getBoundingClientRect().top + window.pageYOffset - 130; window.scrollTo({ top: y, behavior: RM ? "auto" : "smooth" });
+    setTimeout(function () { (d ? c : $("fcal")).querySelectorAll('.ti[data-k="' + k + '"]').forEach(function (x) { x.classList.remove("tfl"); void x.offsetWidth; x.classList.add("tfl"); }); }, RM ? 0 : 420);
+  }; };
+  var tIn = inn.filter(function (e) { return e.inD === T; }).length, tOut = out.filter(function (e) { return e.out === T; }).length;
+  kpiRow("fkpi", [["오늘 입고", tIn, "대", false, fGo("in", tIn ? T : "", "오늘 FRAME 입고 장비가 없습니다")], ["오늘 출하", tOut, "대", false, fGo("out", tOut ? T : "", "오늘 출하 장비가 없습니다")],
+    ["2주 입고", inn.length, "대", false, fGo("in", "", "")], ["2주 출하", out.length, "대", false, fGo("out", "", "")]]);
   var w = $("fcal"); w.innerHTML = "";
   for (var i = 0; i < 14; i++) {
     var d = addD(T, i), a = inn.filter(function (e) { return e.inD === d; }), b = out.filter(function (e) { return e.out === d; });
     if (!a.length && !b.length) continue;
-    var c = el("div", "card rv in"); c.style.animation = RM ? "" : "fade .5s " + Math.min(i, 10) * 40 + "ms both";
+    var c = el("div", "card rv in"); c.id = "fday-" + d; c.style.animation = RM ? "" : "fade .5s " + Math.min(i, 10) * 40 + "ms both";
     var h = el("h3", null, md(d)); if (i === 0) h.appendChild(el("span", "tag b", "오늘")); c.appendChild(h);
     var l = el("div", "tl");
-    a.forEach(function (e) { l.appendChild(tItem("IN", e.n, "FRAME 입고 · " + e.t + " · " + e.v, e.n)); });
-    b.forEach(function (e) { l.appendChild(tItem("OUT", e.n, "출하 · " + e.t + " · " + e.v, e.n)); });
+    a.forEach(function (e) { var x = tItem("IN", e.n, "FRAME 입고 · " + e.t + " · " + e.v, e.n); x.dataset.k = "in"; l.appendChild(x); });
+    b.forEach(function (e) { var x = tItem("OUT", e.n, "출하 · " + e.t + " · " + e.v, e.n); x.dataset.k = "out"; l.appendChild(x); });
     c.appendChild(l); w.appendChild(c);
   }
   if (!w.children.length) w.appendChild(el("div", "empty", "향후 2주간 입고 · 출하 일정이 없습니다"));
