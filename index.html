@@ -2010,9 +2010,13 @@ html.gate body>#lg{visibility:visible;z-index:210}
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
-html.xm{--grd0:linear-gradient(120deg,#2f6fed 0%,#5b7cff 50%,#8a6bff 100%);--grd:linear-gradient(120deg,#b3202e 0%,#d23c3f 48%,#d99a2b 100%);--xr:#e2484a;--xg:#e9b44c;--xe:#2fa36b}
+html.xm{--grd0:linear-gradient(120deg,#2f6fed 0%,#5b7cff 50%,#8a6bff 100%);--grd:linear-gradient(120deg,#8c1a2a 0%,#b52638 52%,#d0443f 100%);--xr:#e2484a;--xg:#e9b44c;--xe:#2fa36b}
 html.xm .bars i u,html.xm .drbar u,html.xm .srt td.bar u,html.xm .mchart .on u,html.xm .nbr u{background:var(--grd0)}
-html.xm .st.hot .dot{box-shadow:0 10px 24px -8px rgba(210,60,63,.75)}
+html.xm .st.hot .dot{box-shadow:0 10px 24px -8px rgba(181,38,56,.75)}
+html.xm .kpi.dark{background:radial-gradient(120% 140% at 100% 0%,rgba(233,180,76,.2),transparent 55%),linear-gradient(140deg,#5e0f1d 0%,#8d1a2b 55%,#4a0c17 100%);border:1px solid rgba(233,180,76,.32);box-shadow:inset 0 1px 0 rgba(255,236,190,.12)}
+html.xm .kpi.dark .k{color:#f1d39a}
+html.xm .kpi.dark .f b{color:#ffe7b5}
+html.xm .kpi.dark .sp stop{stop-color:#f2c46b}
 html.xm .hero{background:#0a0b12}
 html.xm .hero::after{background:radial-gradient(1100px 560px at 78% 26%,rgba(210,60,63,.26),transparent 60%),radial-gradient(760px 480px at 8% 92%,rgba(47,163,107,.2),transparent 60%),radial-gradient(520px 320px at 50% 0%,rgba(233,180,76,.12),transparent 70%),linear-gradient(180deg,transparent 70%,#070b16)}
 html.xm .hero h1 .gr{background:linear-gradient(90deg,#ffd98a,#ff8a7a 34%,#ffffff 52%,#9fe3bf 72%,#ffd98a 100%);-webkit-background-clip:text;background-clip:text;background-size:200% 100%}
@@ -2025,6 +2029,7 @@ html.xm .xmtag::before{content:"";width:6px;height:6px;border-radius:50%;backgro
 @media (max-width:640px){html.xm .xmtag{margin:10px 0 0;letter-spacing:.14em}}
 /* 눈 (첫 화면 안에서만) */
 #xsnow{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#xsnowp{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none}
 /* 전구 줄 (첫 화면 위) */
 #xlite{position:absolute;left:0;right:0;top:calc(var(--hdr) + env(safe-area-inset-top) - 6px);height:56px;z-index:0;pointer-events:none;opacity:0;animation:fade 1.2s .2s forwards}
 #xlite svg{display:block;width:100%;height:100%;overflow:visible}
@@ -8837,42 +8842,53 @@ try { document.fonts.ready.then(pill); } catch (e) {}
   }
   drawLite();
 
-  // ── 눈: 첫 화면 캔버스 하나 · 30fps · 화면에 보일 때만 ──
+  // ── 눈: ① 첫 화면(배경 위) ② 페이지 전체(카드 뒤 배경에만 · 글자 · 카드를 가리지 않음) ──
+  //    둘 다 초당 30번 · 다른 탭이거나 안 보이면 멈춤 · 저사양은 개수 줄임
   if (RMx) return;
-  var cv = document.createElement("canvas"); cv.id = "xsnow"; hero.insertBefore(cv, hero.querySelector(".wrap"));
-  var cx = cv.getContext("2d"), W = 0, H = 0, dpr = 1, F = [], vis = true, raf = 0, last = 0, wind = 0;
-  function size() {
-    W = hero.clientWidth; H = hero.clientHeight; dpr = Math.min(1.5, window.devicePixelRatio || 1);
-    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var n = Math.round(Math.min(110, Math.max(36, W * H / 16000)) * ((navigator.hardwareConcurrency || 4) <= 4 ? .6 : 1));
-    while (F.length < n) F.push(mk(true)); F.length = n;
-  }
-  function mk(any) {
-    var z = Math.random();   // 깊이: 가까울수록 크고 빠르고 진하게
-    return { x: Math.random() * W, y: any ? Math.random() * H : -10, r: .8 + z * 2.4, v: 18 + z * 46, a: .25 + z * .6, s: Math.random() * 6.28, w: .6 + Math.random() * 1.2 };
-  }
-  function frame(t) {
-    raf = 0; if (!vis || document.hidden) return;
-    var dt = last ? Math.min(.05, (t - last) / 1000) : .016;
-    if (t - last < 30) { raf = requestAnimationFrame(frame); return; }   // 30fps 정도로
-    last = t; wind = Math.sin(t / 5200) * 12;
-    cx.clearRect(0, 0, W, H);
-    cx.fillStyle = "#fff";
-    for (var i = 0; i < F.length; i++) {
-      var f = F[i]; f.y += f.v * dt; f.s += f.w * dt; f.x += (Math.sin(f.s) * 10 + wind) * dt * (f.r / 2);
-      if (f.y > H + 6) { F[i] = mk(false); continue; }
-      if (f.x < -6) f.x = W + 6; else if (f.x > W + 6) f.x = -6;
-      cx.globalAlpha = f.a * (f.y > H * .78 ? Math.max(0, (H - f.y) / (H * .22)) : 1);   // 아래쪽에서 부드럽게 사라짐
-      cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.2832); cx.fill();
+  var LOW = (navigator.hardwareConcurrency || 4) <= 4;
+  function Snow(cv, host, dens, max, fixed) {
+    var cx = cv.getContext("2d"), W = 0, H = 0, F = [], on = true, raf = 0, last = 0, col = "#fff", amul = 1;
+    function mk(any) { var z = Math.random(); return { x: Math.random() * W, y: any ? Math.random() * H : -10, r: .7 + z * (fixed ? 2.2 : 2.4), v: 16 + z * 44, a: .22 + z * .58, s: Math.random() * 6.28, w: .5 + Math.random() * 1.2 }; }
+    function tone() {   // 밝은 화면이면 눈을 옅은 남청색으로 (흰 바탕에서도 보이게)
+      if (!fixed) return;
+      try { var m = getComputedStyle(document.body).backgroundColor.match(/\d+/g), L = m ? (+m[0] * .3 + +m[1] * .59 + +m[2] * .11) : 0; col = L > 140 ? "#7f97b8" : "#ffffff"; amul = L > 140 ? .75 : .8; } catch (e) {}
     }
-    cx.globalAlpha = 1;
-    raf = requestAnimationFrame(frame);
+    function size() {
+      W = fixed ? window.innerWidth : host.clientWidth; H = fixed ? window.innerHeight : host.clientHeight;
+      var dpr = Math.min(fixed ? 1.25 : 1.5, window.devicePixelRatio || 1);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.round(Math.min(max, Math.max(28, W * H / dens)) * (LOW ? .6 : 1));
+      while (F.length < n) F.push(mk(true)); F.length = n; tone();
+    }
+    function frame(t) {
+      raf = 0; if (!on || document.hidden) return;
+      if (last && t - last < 30) { raf = requestAnimationFrame(frame); return; }
+      var dt = last ? Math.min(.05, (t - last) / 1000) : .016; last = t;
+      var wind = Math.sin(t / 5200) * 12;
+      cx.clearRect(0, 0, W, H); cx.fillStyle = col;
+      for (var i = 0; i < F.length; i++) {
+        var f = F[i]; f.y += f.v * dt; f.s += f.w * dt; f.x += (Math.sin(f.s) * 10 + wind) * dt * (f.r / 2);
+        if (f.y > H + 6) { F[i] = mk(false); continue; }
+        if (f.x < -6) f.x = W + 6; else if (f.x > W + 6) f.x = -6;
+        cx.globalAlpha = f.a * amul * (!fixed && f.y > H * .78 ? Math.max(0, (H - f.y) / (H * .22)) : 1);
+        cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.2832); cx.fill();
+      }
+      cx.globalAlpha = 1; raf = requestAnimationFrame(frame);
+    }
+    function go() { if (!raf && on && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } }
+    size(); go();
+    return { size: size, tone: tone, set: function (v) { on = v; if (!v) cx.clearRect(0, 0, W, H); go(); }, go: go };
   }
-  function go() { if (!raf && vis && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } }
-  size(); go();
-  var rt = 0; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { size(); drawLite(); }, 200); });
-  document.addEventListener("visibilitychange", go);
-  try { new IntersectionObserver(function (es) { vis = es[0].isIntersecting; go(); }, { threshold: 0 }).observe(hero); } catch (e) {}
+  var hc = document.createElement("canvas"); hc.id = "xsnow"; hero.insertBefore(hc, hero.querySelector(".wrap"));
+  var pc = document.createElement("canvas"); pc.id = "xsnowp"; document.body.appendChild(pc);
+  var HS = Snow(hc, hero, 16000, 110, false), PS = Snow(pc, null, 18000, 100, true);
+  var rt = 0; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { HS.size(); PS.size(); drawLite(); }, 200); });
+  document.addEventListener("visibilitychange", function () { HS.go(); PS.go(); });
+  // 첫 화면이 보일 때만 첫 화면 눈 · 첫 화면이 화면을 거의 다 덮으면 페이지 눈은 쉼
+  try { new IntersectionObserver(function (es) { var e = es[0]; HS.set(e.isIntersecting); PS.set(e.intersectionRatio < .9 || !e.isIntersecting); }, { threshold: [0, .9] }).observe(hero); } catch (e) {}
+  // 밝게 · 어둡게 바꾸면 눈 색도
+  try { new MutationObserver(function () { PS.tone(); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "class"] }); } catch (e) {}
+  try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { PS.tone(); }); } catch (e) {}
 })();
 </script>
 </body>
