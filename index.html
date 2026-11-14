@@ -2174,6 +2174,25 @@ select.rqin option{background:var(--card);color:var(--text)}
 .c-new{color:#e2e8f0;background:rgba(148,163,184,.18)}.c-notice{color:#f9a8d4;background:rgba(236,72,153,.15)}
 @media (max-width:640px){#ntm{place-items:end center;padding:0}#ntm .ntbox{width:100%;max-height:88vh;border-radius:22px 22px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}}
 
+/* 2026-11-14 연결 끊김 안전장치 (빨간 띠 · 마지막으로 받은 내용 그대로 · 자동으로 다시 연결) */
+.netw{position:sticky;top:var(--hdr);z-index:41;background:color-mix(in srgb,#ef4444 16%,var(--bg));border-bottom:1px solid color-mix(in srgb,#ef4444 45%,transparent);backdrop-filter:blur(6px)}
+.netw[hidden]{display:none!important}
+.netw .wrap{display:flex;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px}
+.netw i{flex:none;width:9px;height:9px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 0 rgba(239,68,68,.6);animation:netp 1.8s infinite}
+@keyframes netp{0%{box-shadow:0 0 0 0 rgba(239,68,68,.55)}70%{box-shadow:0 0 0 9px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
+.netw span{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px}
+.netw b{font-size:13.5px;font-weight:900;color:#fca5a5}
+.netw em{font-style:normal;font-size:12.5px;font-weight:700;color:color-mix(in srgb,#fecaca 75%,var(--sub))}
+.netw button{flex:none;height:30px;padding:0 13px;border-radius:999px;border:1px solid color-mix(in srgb,#ef4444 55%,transparent);font-size:12.5px;font-weight:800;color:#fecaca;background:transparent}
+.netw button:hover{background:rgba(239,68,68,.14)}
+.netw button:disabled{opacity:.55}
+.netw.ok{background:color-mix(in srgb,#22c55e 16%,var(--bg));border-bottom-color:color-mix(in srgb,#22c55e 45%,transparent)}
+.netw.ok i{background:#22c55e;animation:none}
+.netw.ok b{color:#86efac}
+.netw.ok button{display:none}
+body.netdown .syncw{display:none!important}
+@media (prefers-reduced-motion:reduce){.netw i{animation:none}}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2285,6 +2304,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
 
 <main>
 <div class="syncw" id="syncw" hidden><div class="wrap"><i></i><span></span></div></div>
+<div class="netw" id="netw" hidden role="status" aria-live="polite"><div class="wrap"><i></i><span><b id="netb"></b><em id="nete"></em></span><button type="button" id="netgo">다시 연결</button></div></div>
 <div class="updw" id="updw" hidden><div class="wrap"><i></i><span class="ut"></span><button type="button" id="updgo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>새로고침</button></div></div>
   <!-- ═════ 대시보드 ═════ -->
   <div class="view on" id="v-dash">
@@ -2832,8 +2852,8 @@ function sbFetch(path, opt) {
   var h = { apikey: SB_KEY, Accept: "application/json" }; if (opt.body) h["Content-Type"] = "application/json";
   if (GATE.t) h["x-dt-gate"] = GATE.t;   // 🔒 보기 비밀번호를 통과한 화면 표시 (서버가 이걸 보고 자료를 줌)
   return fetch(SB_URL + "/rest/v1/" + path, { method: opt.method || "GET", headers: h, body: opt.body ? JSON.stringify(opt.body) : undefined, signal: ctl ? ctl.signal : undefined })
-    .then(function (r) { clearTimeout(tm); return r.text().then(function (t) { var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {} if (!r.ok) throw new Error((j && (j.message || j.hint)) || ("서버 오류 " + r.status)); return j; }); },
-          function (e) { clearTimeout(tm); throw new Error(e && e.name === "AbortError" ? "서버 응답이 늦습니다. 잠시 후 다시 시도해 주세요." : "인터넷 연결을 확인해 주세요."); });
+    .then(function (r) { clearTimeout(tm); try { if (r.status >= 500) netFail(); else netOk(); } catch (eN) {} return r.text().then(function (t) { var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {} if (!r.ok) throw new Error((j && (j.message || j.hint)) || ("서버 오류 " + r.status)); return j; }); },
+          function (e) { clearTimeout(tm); try { netFail(); } catch (eN) {} throw new Error(e && e.name === "AbortError" ? "서버 응답이 늦습니다. 잠시 후 다시 시도해 주세요." : "인터넷 연결을 확인해 주세요."); });
 }
 function rpc(fn, args) { return sbFetch("rpc/" + fn, { method: "POST", body: args || {} }); }
 function kday(ts) { if (!ts) return ""; var d = new Date(ts); return isNaN(d) ? String(ts).slice(0, 10) : ymd(d); }   // 시각 → 한국 날짜
@@ -2916,7 +2936,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-192500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-195500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -9394,9 +9414,52 @@ $("ntreq").onclick = function () { ntClose(); admOpen(); };
 setInterval(function () { if (!document.hidden) ntLoad(); }, 180000);
 document.addEventListener("visibilitychange", function () { if (!document.hidden) ntLoad(); });
 
+
+/* ═══ 2026-11-14 연결 끊김 안전장치 ═══
+ *  서버 요청이 2번 연달아 실패하거나 인터넷이 끊기면 → 위에 빨간 띠
+ *  화면은 마지막으로 받은 내용 그대로 (지워지지 않음) · 15초마다 조용히 다시 연결 시도
+ *  다시 연결되면 초록 띠 '다시 연결되었습니다' → 최신 내용으로 바꾸고 3초 뒤 사라짐 */
+var NET = { fail: 0, down: false, since: 0, tm: 0, busy: false };
+function netFail() {
+  NET.fail++;
+  if (!NET.down && (NET.fail >= 2 || navigator.onLine === false)) netShow();
+  else if (!NET.down && NET.fail === 1) { clearTimeout(NET.t1); NET.t1 = setTimeout(netPing, 4000); }   // 한 번 실패 → 4초 뒤 확인
+}
+function netOk() { NET.fail = 0; clearTimeout(NET.t1); if (NET.down) netBack(); }
+function netShow() {
+  NET.down = true; NET.since = Date.now(); document.body.classList.add("netdown");
+  var w = $("netw"); w.classList.remove("ok"); w.hidden = false; netText();
+  clearInterval(NET.tm); NET.tm = setInterval(function () { netText(); if (!document.hidden) netPing(); }, 15000);
+}
+function netText() {
+  if (!NET.down) return;
+  var off = navigator.onLine === false, base = "";
+  try { base = updTxt(); } catch (e) {}
+  $("netb").textContent = off ? "인터넷 연결이 끊겼습니다" : "서버와 연결이 원활하지 않습니다";
+  $("nete").textContent = (base ? "지금 보이는 내용은 " + base + "입니다 · " : "") + "연결되면 자동으로 최신 내용으로 바뀝니다";
+}
+function netPing() {
+  if (NET.busy || !LIVE) return; NET.busy = true; var b = $("netgo"); if (NET.down) { b.disabled = true; b.textContent = "연결 중…"; }
+  rpc("dt_sig", {}).then(function () {}, function () {}).then(function () { NET.busy = false; b.disabled = false; b.textContent = "다시 연결"; });
+}
+function netBack() {
+  NET.down = false; clearInterval(NET.tm); document.body.classList.remove("netdown");
+  var w = $("netw"); w.classList.add("ok"); $("netb").textContent = "다시 연결되었습니다"; $("nete").textContent = "최신 내용으로 바꾸는 중입니다";
+  var done = function (t) { $("nete").textContent = t; setTimeout(function () { if (!NET.down) { w.hidden = true; w.classList.remove("ok"); } }, 3000); };
+  try {
+    if (typeof startApp !== "undefined" && startApp.on && typeof load === "function") {
+      var y = window.pageYOffset;
+      load(true).then(function () { draw(); window.scrollTo(0, y); done("최신 내용으로 바뀌었습니다"); }, function () { done("잠시 후 다시 확인합니다"); });
+    } else done("");
+  } catch (e) { done(""); }
+}
+$("netgo").onclick = netPing;
+window.addEventListener("offline", function () { if (!NET.down) netShow(); else netText(); });
+window.addEventListener("online", function () { netText(); setTimeout(netPing, 800); });
+
 /* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
 var REV = [
-  ["1.9", "2026-11-14", ["로그인하면 이름 왼쪽에 새 알림 수가 표시됩니다", "1차 검수 부적합 · PJ 전환 · 기구 · FT · QC · 출하 일정 변경, 신규 장비, 공지를 알림으로 확인할 수 있습니다"]],
+  ["1.9", "2026-11-14", ["로그인하면 이름 왼쪽에 새 알림 수가 표시됩니다", "1차 검수 부적합 · PJ 전환 · 기구 · FT · QC · 출하 일정 변경, 신규 장비, 공지를 알림으로 확인할 수 있습니다", "인터넷이나 서버 연결이 끊기면 화면 위에 안내가 뜨고, 다시 연결되면 자동으로 최신 내용으로 바뀝니다"]],
   ["1.8", "2026-11-14", ["명단에 없는 이름은 PIN 만들기 화면에서 관리자에게 등록 요청을 보낼 수 있습니다", "PIN을 잊으셨을 때 본인 확인 질문으로 직접 새 PIN을 정할 수 있습니다", "PIN을 만들 때 본인 확인 질문을 함께 정합니다 · 답은 암호화되어 저장됩니다"]],
   ["1.7", "2026-11-14", ["1차 검수 부적합에 사업장(동탄 · 성남)과 제조 검수자 항목을 추가했습니다", "귀책 업체별로 색을 구분해 시노드 · 동오정밀을 한눈에 볼 수 있습니다", "1차 검수 시트(인쇄용)를 개정했습니다 · 제조 담당자(EFEM · PRO) 서명 칸, 제조 확인 칸", "자재 · 수입검사 표가 넓은 화면에서 좌우 스크롤 없이 한 번에 보입니다", "출하 카드를 숫자 위주로 간결하게 정리했습니다", "푸터에 개정 이력을 추가했습니다"]],
   ["1.6", "2026-11-12", ["자재는 장비를 먼저 고른 뒤 그 안에서 품번 · 품목명으로 찾도록 바꿨습니다", "PC는 표, 휴대폰은 카드로 보기 편하게 정리했습니다"]],
