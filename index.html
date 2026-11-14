@@ -2006,7 +2006,52 @@ html.gate body>#lg{visibility:visible;z-index:210}
 
 /* 2026-11-14 기록 창 빈 칸 */
 .nclsp{visibility:hidden}
+
+/* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
+ * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
+ * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
+html.xm{--grd0:linear-gradient(120deg,#2f6fed 0%,#5b7cff 50%,#8a6bff 100%);--grd:linear-gradient(120deg,#b3202e 0%,#d23c3f 48%,#d99a2b 100%);--xr:#e2484a;--xg:#e9b44c;--xe:#2fa36b}
+html.xm .bars i u,html.xm .drbar u,html.xm .srt td.bar u,html.xm .mchart .on u,html.xm .nbr u{background:var(--grd0)}
+html.xm .st.hot .dot{box-shadow:0 10px 24px -8px rgba(210,60,63,.75)}
+html.xm .hero{background:#0a0b12}
+html.xm .hero::after{background:radial-gradient(1100px 560px at 78% 26%,rgba(210,60,63,.26),transparent 60%),radial-gradient(760px 480px at 8% 92%,rgba(47,163,107,.2),transparent 60%),radial-gradient(520px 320px at 50% 0%,rgba(233,180,76,.12),transparent 70%),linear-gradient(180deg,transparent 70%,#070b16)}
+html.xm .hero h1 .gr{background:linear-gradient(90deg,#ffd98a,#ff8a7a 34%,#ffffff 52%,#9fe3bf 72%,#ffd98a 100%);-webkit-background-clip:text;background-clip:text;background-size:200% 100%}
+html.xm .glow{background:radial-gradient(closest-side,rgba(233,180,76,.16),transparent)}
+html.xm .live i{background:#e9b44c;animation:xpulse 1.8s infinite}
+@keyframes xpulse{0%{box-shadow:0 0 0 0 rgba(233,180,76,.7)}70%{box-shadow:0 0 0 10px rgba(233,180,76,0)}100%{box-shadow:0 0 0 0 rgba(233,180,76,0)}}
+.xmtag{display:none}
+html.xm .xmtag{display:inline-flex;align-items:center;gap:10px;margin-left:10px;padding:7px 14px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.2em;color:#f6d79a;background:linear-gradient(90deg,rgba(179,32,46,.28),rgba(217,154,43,.18));border:1px solid rgba(233,180,76,.32);vertical-align:middle;opacity:0;animation:fade .9s .3s forwards}
+html.xm .xmtag::before{content:"";width:6px;height:6px;border-radius:50%;background:#e9b44c;box-shadow:0 0 10px 2px rgba(233,180,76,.65)}
+@media (max-width:640px){html.xm .xmtag{margin:10px 0 0;letter-spacing:.14em}}
+/* 눈 (첫 화면 안에서만) */
+#xsnow{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+/* 전구 줄 (첫 화면 위) */
+#xlite{position:absolute;left:0;right:0;top:calc(var(--hdr) + env(safe-area-inset-top) - 6px);height:56px;z-index:0;pointer-events:none;opacity:0;animation:fade 1.2s .2s forwards}
+#xlite svg{display:block;width:100%;height:100%;overflow:visible}
+#xlite .wr{fill:none;stroke:rgba(255,255,255,.18);stroke-width:1.2}
+#xlite .bb{transform-box:fill-box;transform-origin:center}
+#xlite .gl{opacity:.32}
+#xlite .t1{animation:xtw 2.6s ease-in-out infinite}
+#xlite .t2{animation:xtw 2.6s .87s ease-in-out infinite}
+#xlite .t3{animation:xtw 2.6s 1.73s ease-in-out infinite}
+@keyframes xtw{0%,100%{opacity:1}50%{opacity:.35}}
+html.xm header.solid{box-shadow:inset 0 -1px 0 rgba(210,60,63,.18)}
+html.xm footer .xmf{display:inline}
+.xmf{display:none;margin-left:10px;color:#c9a14a}
+html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58,.16)}
+@media (max-width:640px){html.xm .hero .wrap{padding-top:calc(var(--hdr) + 40px)}#xlite{top:calc(var(--hdr) + env(safe-area-inset-top) - 12px);height:40px}}
+@media (prefers-reduced-motion:reduce){#xlite .t1,#xlite .t2,#xlite .t3{animation:none}}
 </style>
+<script>
+/* 연말 시즌 화면 (11/23 ~ 12/31) · 미리보기: 주소 끝 ?season=1 (끄기 ?season=0) */
+(function () {
+  try {
+    var q = location.search, d = new Date(), md = (d.getMonth() + 1) * 100 + d.getDate(), on = md >= 1123 && md <= 1231;
+    if (/[?&]season=1/.test(q)) on = true; else if (/[?&]season=0/.test(q)) on = false;
+    if (on) document.documentElement.classList.add("xm");
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
 <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gtt" hidden>
@@ -2064,7 +2109,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
       <canvas id="fx"></canvas>
       <div class="glow" id="glow"></div>
       <div class="wrap">
-        <div class="live"><i></i><span id="clock">동탄 사업장 · 실시간</span></div>
+        <div><div class="live" style="display:inline-flex"><i></i><span id="clock">동탄 사업장 · 실시간</span></div><span class="xmtag">SEASON'S GREETINGS</span></div>
         <h1><span class="ln"><span>DONGTAN</span></span><span class="ln"><span class="gr">MANUFACTURING</span></span></h1>
         <p class="lead">나인벨 동탄 사업장의 장비 · 공정 · 검수 · 출하를<br>한 화면에서 확인하고, 현장에서 바로 기록합니다.</p>
         <div class="hbtn">
@@ -2367,7 +2412,7 @@ html.gate body>#lg{visibility:visible;z-index:210}
   </div></div>
 </main>
 
-<footer><div class="wrap"><span>© NINEBELL · 제조B팀 · 동탄 사업장</span><span id="upd"></span></div></footer>
+<footer><div class="wrap"><span>© NINEBELL · 제조B팀 · 동탄 사업장<span class="xmf">· 따뜻한 연말 보내십시오</span></span><span id="upd"></span></div></footer>
 
 <nav class="bot" id="nbot"><div class="in"><div class="pill"></div></div></nav>
 
@@ -2621,7 +2666,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-102000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-110000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -8762,6 +8807,73 @@ function pjAfter(f) {   // 후속 문구: '로봇만 출하' / 'CK71-165 EFEM �
   });
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
+</script>
+<script>
+/* 연말 시즌: 첫 화면 눈 · 전구 줄 (html.xm 일 때만 · 가볍게) */
+(function () {
+  if (!document.documentElement.classList.contains("xm")) return;
+  var hero = document.getElementById("hero"); if (!hero) return;
+  var RMx = false; try { RMx = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+
+  // ── 전구 줄: 처진 전선 몇 구간 + 전구 (SVG · 화면 폭 바뀌면 다시) ──
+  var lw = document.createElement("div"); lw.id = "xlite"; hero.appendChild(lw);
+  var COL = ["#ff5a5a", "#ffc85a", "#5fe3a1", "#fff3d6"];
+  function drawLite() {
+    var W = hero.clientWidth || window.innerWidth, seg = W < 640 ? 3 : W < 1100 ? 4 : 5, sw = W / seg, sag = W < 640 ? 10 : 24, per = W < 640 ? 4 : 7;
+    var h = '<svg viewBox="0 0 ' + W + ' ' + (W < 640 ? 40 : 56) + '" preserveAspectRatio="none" aria-hidden="true">', k = 0;
+    for (var i = 0; i < seg; i++) {
+      var x0 = i * sw, x1 = x0 + sw, cx = x0 + sw / 2;
+      h += '<path class="wr" d="M' + x0 + ' 6 Q' + cx + ' ' + (6 + sag * 2) + ' ' + x1 + ' 6"/>';
+      for (var j = 1; j <= per; j++) {
+        var t = j / (per + 1), x = (1 - t) * (1 - t) * x0 + 2 * (1 - t) * t * cx + t * t * x1, y = (1 - t) * (1 - t) * 6 + 2 * (1 - t) * t * (6 + sag * 2) + t * t * 6;
+        var c = COL[k % 4], tw = "t" + (1 + (k % 3)); k++;
+        h += '<g class="bb ' + tw + '"><circle class="gl" cx="' + x.toFixed(1) + '" cy="' + (y + 7).toFixed(1) + '" r="9" fill="' + c + '"/>' +
+             '<rect x="' + (x - 1.6).toFixed(1) + '" y="' + (y - 1).toFixed(1) + '" width="3.2" height="3.4" rx="1" fill="#5b616e"/>' +
+             '<ellipse cx="' + x.toFixed(1) + '" cy="' + (y + 7).toFixed(1) + '" rx="3.6" ry="5" fill="' + c + '"/>' +
+             '<ellipse cx="' + (x - 1.1).toFixed(1) + '" cy="' + (y + 5.4).toFixed(1) + '" rx="1" ry="1.6" fill="#fff" opacity=".7"/></g>';
+      }
+    }
+    lw.innerHTML = h + "</svg>";
+  }
+  drawLite();
+
+  // ── 눈: 첫 화면 캔버스 하나 · 30fps · 화면에 보일 때만 ──
+  if (RMx) return;
+  var cv = document.createElement("canvas"); cv.id = "xsnow"; hero.insertBefore(cv, hero.querySelector(".wrap"));
+  var cx = cv.getContext("2d"), W = 0, H = 0, dpr = 1, F = [], vis = true, raf = 0, last = 0, wind = 0;
+  function size() {
+    W = hero.clientWidth; H = hero.clientHeight; dpr = Math.min(1.5, window.devicePixelRatio || 1);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.round(Math.min(110, Math.max(36, W * H / 16000)) * ((navigator.hardwareConcurrency || 4) <= 4 ? .6 : 1));
+    while (F.length < n) F.push(mk(true)); F.length = n;
+  }
+  function mk(any) {
+    var z = Math.random();   // 깊이: 가까울수록 크고 빠르고 진하게
+    return { x: Math.random() * W, y: any ? Math.random() * H : -10, r: .8 + z * 2.4, v: 18 + z * 46, a: .25 + z * .6, s: Math.random() * 6.28, w: .6 + Math.random() * 1.2 };
+  }
+  function frame(t) {
+    raf = 0; if (!vis || document.hidden) return;
+    var dt = last ? Math.min(.05, (t - last) / 1000) : .016;
+    if (t - last < 30) { raf = requestAnimationFrame(frame); return; }   // 30fps 정도로
+    last = t; wind = Math.sin(t / 5200) * 12;
+    cx.clearRect(0, 0, W, H);
+    cx.fillStyle = "#fff";
+    for (var i = 0; i < F.length; i++) {
+      var f = F[i]; f.y += f.v * dt; f.s += f.w * dt; f.x += (Math.sin(f.s) * 10 + wind) * dt * (f.r / 2);
+      if (f.y > H + 6) { F[i] = mk(false); continue; }
+      if (f.x < -6) f.x = W + 6; else if (f.x > W + 6) f.x = -6;
+      cx.globalAlpha = f.a * (f.y > H * .78 ? Math.max(0, (H - f.y) / (H * .22)) : 1);   // 아래쪽에서 부드럽게 사라짐
+      cx.beginPath(); cx.arc(f.x, f.y, f.r, 0, 6.2832); cx.fill();
+    }
+    cx.globalAlpha = 1;
+    raf = requestAnimationFrame(frame);
+  }
+  function go() { if (!raf && vis && !document.hidden) { last = 0; raf = requestAnimationFrame(frame); } }
+  size(); go();
+  var rt = 0; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { size(); drawLite(); }, 200); });
+  document.addEventListener("visibilitychange", go);
+  try { new IntersectionObserver(function (es) { vis = es[0].isIntersecting; go(); }, { threshold: 0 }).observe(hero); } catch (e) {}
+})();
 </script>
 </body>
 </html>
