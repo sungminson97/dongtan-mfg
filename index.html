@@ -2081,7 +2081,6 @@ select.rqin option{background:var(--card);color:var(--text)}
 #lg8 .sbtn,#lg9 .sbtn,#lg10 .sbtn,#lg11 .sbtn{width:100%;height:52px;padding:0;margin-top:4px}
 #bname .rqbg{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:#ef4444;color:#fff;font-size:11px;font-weight:900;letter-spacing:0;line-height:1;box-shadow:0 0 0 3px color-mix(in srgb,#ef4444 22%,transparent);animation:rqpulse 2.4s ease-in-out infinite;cursor:pointer}
 #bname .rqbg[hidden]{display:none}
-#bname.hasrq .dt{display:none}
 @keyframes rqpulse{0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,#ef4444 22%,transparent)}50%{box-shadow:0 0 0 6px color-mix(in srgb,#ef4444 6%,transparent)}}
 @media (prefers-reduced-motion:reduce){#bname .rqbg{animation:none}}
 .admbtn{margin-bottom:8px!important;color:var(--text)!important;border-color:color-mix(in srgb,#ef4444 45%,var(--line))!important}
@@ -2128,6 +2127,51 @@ select.rqin option{background:var(--card);color:var(--text)}
 .dvll .v.sql{color:#fbbf24}
 .dvll .e{grid-column:1/-1;padding:24px 0;text-align:center;color:var(--sub);font-weight:700;display:block}
 @media (max-width:640px){.dvll li{grid-template-columns:1fr auto;gap:6px 10px;padding:12px 2px}.dvll .w{grid-column:1;grid-row:1}.dvll .t{grid-column:2;grid-row:1;text-align:right}.dvll .a{grid-column:1/-1;grid-row:2}.dvll .v{grid-column:1/-1;grid-row:3}.dvll .w:empty{display:none}.dvll .w:empty+.a,.dvll .t:first-child+.w:empty{grid-row:1}}
+
+/* 2026-11-14 알림 종 (이름 왼쪽 · 로그인한 분만) — 이름 버튼 안 숫자는 쓰지 않음 */
+#bname .ntbg,#bname .rqbg{display:none!important}
+.ntbell{position:relative;width:38px;padding:0!important}
+.ntbell[hidden]{display:none!important}
+.ntbell svg{width:18px;height:18px}
+.ntbell.on svg{animation:ntring 1.2s ease-in-out 1}
+@keyframes ntring{0%,100%{transform:rotate(0)}15%{transform:rotate(14deg)}30%{transform:rotate(-12deg)}45%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}75%{transform:rotate(2deg)}}
+.ntbell .ntc{position:absolute;top:-5px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;display:grid;place-items:center;background:#3b82f6;color:#fff;font-size:10.5px;font-weight:900;line-height:1;border:2px solid #0b1020}
+.ntbell .ntc.rq{background:#ef4444}
+.ntbell .ntc[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.ntbell.on svg{animation:none}}
+/* 2026-11-14 알림 (로그인한 분만 · 이름 왼쪽 파란 숫자) */
+#bname .ntbg{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:#3b82f6;color:#fff;font-size:11px;font-weight:900;letter-spacing:0;line-height:1;box-shadow:0 0 0 3px rgba(59,130,246,.25);cursor:pointer}
+#bname .ntbg[hidden]{display:none}
+#bname .ntbg+.rqbg:not([hidden]){margin-left:-2px}
+.ntbtn{margin-bottom:8px!important;color:var(--text)!important}
+.ntbtn b{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;border-radius:999px;background:#3b82f6;color:#fff;font-size:11.5px;font-weight:900;vertical-align:1px}
+.ntbtn[hidden]{display:none!important}
+#ntm .ntbox{width:min(520px,100%);max-height:calc(100vh - 40px);overflow-y:auto;overscroll-behavior:contain}
+.ntreq{display:flex;align-items:center;justify-content:space-between;width:100%;margin:-4px 0 14px;padding:12px 14px;border-radius:12px;border:1px solid color-mix(in srgb,#ef4444 45%,var(--line));background:color-mix(in srgb,#ef4444 8%,transparent);font-size:13.5px;font-weight:800;color:var(--text);text-align:left}
+.ntreq[hidden]{display:none}
+.ntreq span{color:#fca5a5;white-space:nowrap}
+.ntl{display:grid;gap:8px}
+.ntg{border:1px solid var(--line);border-radius:14px;background:var(--bg);overflow:hidden;transition:border-color .15s}
+.ntg.new{border-color:color-mix(in srgb,#3b82f6 55%,var(--line));background:color-mix(in srgb,#3b82f6 6%,var(--bg))}
+.ntg>button{display:block;width:100%;padding:13px 15px;text-align:left}
+.nth{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.nth em{font-style:normal;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px}
+.nth .ntn{font-size:10.5px;font-weight:900;letter-spacing:.08em;color:#60a5fa}
+.nth span{margin-left:auto;font-size:12px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ntt{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.ntt b{font-size:14.5px;font-weight:800;color:var(--text);line-height:1.4}
+.ntt small{flex:none;font-size:12px;font-weight:800;color:var(--sub)}
+.ntpv{margin-top:4px;font-size:12.5px;font-weight:600;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ntg.open .ntpv{display:none}
+.ntit{display:none;margin:0;padding:0 15px 13px;list-style:none}
+.ntg.open .ntit{display:grid;gap:5px}
+.ntit li{position:relative;padding:7px 10px 7px 12px;border-radius:8px;background:color-mix(in srgb,var(--text) 4%,transparent);font-size:12.5px;font-weight:600;line-height:1.5;color:color-mix(in srgb,var(--text) 85%,var(--sub));word-break:keep-all;overflow-wrap:anywhere}
+.nte{padding:30px 10px;text-align:center;font-size:14px;font-weight:700;color:var(--sub)}
+.ntf{margin-top:12px;font-size:12px;font-weight:600;color:var(--sub);text-align:center}
+.c-ncl{color:#fca5a5;background:rgba(239,68,68,.14)}.c-pj{color:#c4b5fd;background:rgba(139,92,246,.16)}.c-mech{color:#93c5fd;background:rgba(59,130,246,.16)}
+.c-ft{color:#5eead4;background:rgba(20,184,166,.16)}.c-qc{color:#fcd34d;background:rgba(245,158,11,.16)}.c-ship{color:#86efac;background:rgba(34,197,94,.16)}
+.c-new{color:#e2e8f0;background:rgba(148,163,184,.18)}.c-notice{color:#f9a8d4;background:rgba(236,72,153,.15)}
+@media (max-width:640px){#ntm{place-items:end center;padding:0}#ntm .ntbox{width:100%;max-height:88vh;border-radius:22px 22px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}}
 
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
@@ -2231,7 +2275,8 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
     <nav class="top" id="ntop"><div class="pill"></div></nav>
     <div class="hact">
       <span class="demo" id="demob" style="display:none">● 예시 데이터</span>
-      <button class="ib" id="bname" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b class="rqbg" id="rqbg" hidden></b><span class="tx" id="nmtx">로그인</span></button>
+      <button class="ib ntbell" id="ntbell" type="button" aria-label="알림" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><b class="ntc" id="ntc" hidden></b></button>
+      <button class="ib" id="bname" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b class="ntbg" id="ntbg" hidden></b><b class="rqbg" id="rqbg" hidden></b><span class="tx" id="nmtx">로그인</span></button>
       <button class="ib" id="bref" type="button" aria-label="새로고침"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
     </div>
   </div>
@@ -2589,6 +2634,14 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   <div class="dvlog" id="dvlog" hidden><div class="dvlh"><b>변경 기록</b><span>담당 · 명단 · 직함 · PIN이 바뀐 내역입니다 (최근 300건)</span></div><div class="dvlf" id="dvlf"></div><ol class="dvll" id="dvll"></ol></div>
   <div class="tbw dvw"><table class="tbl dvt"><thead><tr><th>이름</th><th>직함</th><th>담당</th><th>마지막 로그인</th><th>PIN</th><th>상태</th><th>기록</th><th>관리</th></tr></thead><tbody id="dvtb"></tbody></table></div>
 </div></div>
+<div class="modal" id="ntm"><div class="box ntbox">
+  <button class="mx" id="ntmx" type="button" aria-label="닫기">✕</button>
+  <span class="rqey">NOTIFICATIONS</span>
+  <h5>알림</h5>
+  <p id="ntp">최근 30일 동안 바뀐 내용입니다. 항목을 누르면 자세한 내용이 열립니다.</p>
+  <button class="ntreq" id="ntreq" type="button" hidden></button>
+  <div class="ntl" id="ntl"></div>
+</div></div>
 <div class="modal" id="adm"><div class="box admbox">
   <button class="mx" id="admx" type="button" aria-label="닫기">✕</button>
   <span class="rqey">ADMIN</span>
@@ -2701,6 +2754,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
+    <button class="lgl ntbtn" id="ntbtn" type="button" hidden></button>
     <button class="lgl admbtn" id="admbtn" type="button" hidden></button>
     <button class="lgl" id="dvmenu" type="button" hidden>개발자 메뉴</button>
     <button class="lgl" id="logout" type="button">로그아웃</button>
@@ -2861,7 +2915,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-184500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-191500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -5571,6 +5625,7 @@ function rolesFetch(n, pin) {
     var a = authGet(); if (!a || a.n !== n) return;
     a.roles = j.roles || []; a.admin = !!j.admin; a.req = +j.req || 0; a.sq = j.sq !== false; sset("auth", JSON.stringify(a)); authUi();
     if (j.sq === false) sqAsk();   // 2026-11-14 본인 확인 질문이 없으면 한 번 정하기
+    try { ntLoad(); } catch (eNt) {}   // 2026-11-14 알림
   }, function () {});   // 서버 준비 전이면 그냥 둠 (서버가 막지 않음)
 }
 function lgStep(n) { $("lg").classList.toggle("sqm", n === 11 && SQM); ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7", "lg8", "lg9", "lg10", "lg11"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
@@ -5584,7 +5639,7 @@ function openLogin(msg) {   // msg: 로그인 창 위에 보여 줄 안내 (예:
   var a = authGet(), last = sget("last") || "", lm = $("lgmsg");
   if (lm) { lm.textContent = typeof msg === "string" ? msg : ""; lm.hidden = typeof msg !== "string"; }
   $("lg").classList.add("on");
-  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("dvmenu").hidden = !a.dev; admBtn(); $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
+  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("dvmenu").hidden = !a.dev; admBtn(); try { ntBtn(); } catch (eNt) {} $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
   LGM = "make"; UP.pend = ""; pinReset(); lgStep(1);
   setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
 }
@@ -5818,6 +5873,7 @@ function authUi() {
   var n = authName(), b = $("bname");
   b.querySelector("svg").style.display = n ? "none" : "";
   var d = b.querySelector(".dt"); if (n && !d) b.insertBefore(el("i", "dt"), b.firstChild); else if (!n && d) d.remove();
+  try { ntBadge(); } catch (eNb) {}
   try { var aq = authGet(), rc = aq && aq.admin ? (+aq.req || 0) : 0, bg = $("rqbg"); bg.hidden = !rc; bg.textContent = rc > 99 ? "99+" : rc; b.classList.toggle("hasrq", !!rc); bg.setAttribute("aria-label", "확인할 요청 " + rc + "건"); } catch (eRq) {}
   var ti = n ? authTitle() : ""; $("nmtx").textContent = n || "로그인";
   if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));
@@ -9168,7 +9224,7 @@ function admBtn() {
   b.hidden = !(a && a.admin); if (b.hidden) return;
   var c = +a.req || 0; b.textContent = "요청 확인"; if (c) b.appendChild(el("b", null, c > 99 ? "99+" : String(c)));
 }
-function admSet(c) { var a = authGet(); if (!a) return; a.req = c; sset("auth", JSON.stringify(a)); authUi(); admBtn(); }
+function admSet(c) { var a = authGet(); if (!a) return; a.req = c; sset("auth", JSON.stringify(a)); authUi(); admBtn(); try { ntBadge(); if ($("ntm").classList.contains("on")) ntDraw(); } catch (e) {} }
 function admLoad(show) {
   var a = authGet(), pn = sget("upin"); if (!LIVE || !a || !a.admin || !pn) return Promise.resolve();
   return rpc("dt_admin_reqs", { n: a.n, pin: pn }).then(function (j) {
@@ -9225,7 +9281,7 @@ $("admx").onclick = admClose;
 $("adm").onclick = function (e) { if (e.target === this) admClose(); };
 document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("adm").classList.contains("on")) admClose(); });
 $("admbtn").onclick = admOpen;
-$("rqbg").addEventListener("click", function (e) { e.stopPropagation(); admOpen(); });
+
 setInterval(function () { if (!document.hidden) admLoad(false); }, 180000);   // 관리자만 · 3분마다 대기 요청 수
 document.addEventListener("visibilitychange", function () { if (!document.hidden) admLoad(false); });
 
@@ -9263,8 +9319,83 @@ function dvlShow(on) {
 $("dvlgb").onclick = function () { dvlShow(!DVL.on); };
 $("dvq").addEventListener("input", function () { if (DVL.on) dvlDraw(); });
 
+
+/* ═══ 2026-11-14 알림 (로그인한 분만) ═══
+ *  1차 검수 부적합 · PJ 전환 · 기구 / FT / QC / 출하 일정 · 신규 장비 · 공지 — 서버가 자동으로 쌓음 (30일)
+ *  이름 왼쪽 파란 숫자 = 아직 안 본 알림 · 읽음은 이 기기 기준 */
+var NT = { rows: [], open: {}, seenAt: "", busy: false };
+var NT_CAT = { ncl: "1차 검수 부적합", pj: "PJ 전환", mech: "기구", ft: "FT", qc: "QC", ship: "출하", "new": "신규 장비", notice: "공지" };
+function ntKey() { var a = authGet(); return a ? "ntseen_" + a.n : ""; }
+function ntSeen() { var k = ntKey(); return k ? sget(k) || "" : ""; }
+function ntUnread() { var s = ntSeen(); return NT.rows.filter(function (r) { return !s || r.at > s; }).length; }
+function ntBadge() {
+  var a = authGet(), bell = $("ntbell"), cEl = $("ntc"); if (!bell) return;
+  bell.hidden = !a; if (!a) { cEl.hidden = true; return; }
+  var c = ntUnread(), rq = a.admin ? +a.req || 0 : 0, t = c + rq;
+  cEl.hidden = !t; cEl.textContent = t > 99 ? "99+" : t; cEl.className = "ntc" + (rq ? " rq" : "");
+  bell.setAttribute("aria-label", "알림" + (c ? " · 새 알림 " + c + "건" : "") + (rq ? " · 대기 요청 " + rq + "건" : ""));
+  if (t > (NT.lastT || 0)) { bell.classList.remove("on"); void bell.offsetWidth; bell.classList.add("on"); }   // 새로 생기면 종이 한 번 흔들림
+  NT.lastT = t; ntBtn();
+}
+function ntBtn() {
+  var a = authGet(), b = $("ntbtn"); if (!b) return;
+  b.hidden = !a; if (!a) return;
+  var c = ntUnread(); b.textContent = "알림"; if (c) b.appendChild(el("b", null, c > 99 ? "99+" : String(c)));
+}
+function ntLoad() {
+  var a = authGet(), pn = sget("upin");
+  if (!LIVE || !a || !pn || NT.busy) { if (!a) { NT.rows = []; ntBadge(); } return; }
+  NT.busy = true;
+  rpc("dt_news_list", { n: a.n, pin: pn }).then(function (j) {
+    NT.busy = false;
+    if (!j || !j.ok) return;
+    var b = authGet(); if (!b || b.n !== a.n) return;
+    NT.rows = j.rows || []; ntBadge();
+    if ($("ntm").classList.contains("on")) ntDraw();
+  }, function () { NT.busy = false; });
+}
+function ntWhen(x) {
+  var d = new Date(x), m = (Date.now() - d) / 60000;
+  if (m < 1) return "방금"; if (m < 60) return Math.floor(m) + "분 전"; if (m < 1440) return Math.floor(m / 60) + "시간 전";
+  return (d.getMonth() + 1) + "/" + d.getDate() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+}
+function ntDraw() {
+  var L = $("ntl"), a = authGet(); L.innerHTML = "";
+  var rq = a && a.admin ? +a.req || 0 : 0, rb = $("ntreq");
+  rb.hidden = !rq; if (rq) { rb.textContent = "대기 중인 요청 " + rq + "건이 있습니다"; rb.appendChild(el("span", null, "확인하기")); }
+  if (!NT.rows.length) { L.appendChild(el("div", "nte", "최근 30일 동안 새 알림이 없습니다")); return; }
+  NT.rows.forEach(function (r) {
+    var isNew = !NT.snap || r.at > NT.snap, g = el("div", "ntg" + (isNew ? " new" : "") + (NT.open[r.id] ? " open" : "")), bt = el("button");
+    bt.type = "button"; bt.setAttribute("aria-expanded", NT.open[r.id] ? "true" : "false");
+    var h = el("div", "nth"); h.appendChild(el("em", "c-" + r.cat, NT_CAT[r.cat] || r.cat)); if (isNew) h.appendChild(el("i", "ntn", "NEW")); h.appendChild(el("span", null, ntWhen(r.at))); bt.appendChild(h);
+    var t = el("div", "ntt"); t.appendChild(el("b", null, r.title)); t.appendChild(el("small", null, r.n + "건")); bt.appendChild(t);
+    var it = r.items || []; bt.appendChild(el("div", "ntpv", it.slice(0, 2).join("  ·  ") + (it.length > 2 ? "  외 " + (it.length - 2) + "건" : "")));
+    bt.onclick = function () { NT.open[r.id] = !NT.open[r.id]; g.classList.toggle("open", !!NT.open[r.id]); bt.setAttribute("aria-expanded", NT.open[r.id] ? "true" : "false"); };
+    g.appendChild(bt);
+    var ul = el("ul", "ntit"); it.forEach(function (x) { ul.appendChild(el("li", null, x)); }); g.appendChild(ul);
+    L.appendChild(g);
+  });
+  L.appendChild(el("div", "ntf", "최근 30일 알림이 표시됩니다"));
+}
+function ntOpen() {
+  if (!authGet()) return;
+  closeLogin(); NT.snap = ntSeen(); NT.open = {}; ntDraw(); $("ntm").classList.add("on");
+  var top = NT.rows.length ? NT.rows[0].at : ""; if (top && top > NT.snap) { sset(ntKey(), top); ntBadge(); }   // 열면 읽음 (이 기기)
+  ntLoad();
+}
+function ntClose() { $("ntm").classList.remove("on"); }
+$("ntmx").onclick = ntClose;
+$("ntm").onclick = function (e) { if (e.target === this) ntClose(); };
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("ntm").classList.contains("on")) ntClose(); });
+$("ntbell").onclick = ntOpen;
+$("ntbtn").onclick = ntOpen;
+$("ntreq").onclick = function () { ntClose(); admOpen(); };
+setInterval(function () { if (!document.hidden) ntLoad(); }, 180000);
+document.addEventListener("visibilitychange", function () { if (!document.hidden) ntLoad(); });
+
 /* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
 var REV = [
+  ["1.9", "2026-11-14", ["로그인하면 이름 왼쪽에 새 알림 수가 표시됩니다", "1차 검수 부적합 · PJ 전환 · 기구 · FT · QC · 출하 일정 변경, 신규 장비, 공지를 알림으로 확인할 수 있습니다"]],
   ["1.8", "2026-11-14", ["명단에 없는 이름은 PIN 만들기 화면에서 관리자에게 등록 요청을 보낼 수 있습니다", "PIN을 잊으셨을 때 본인 확인 질문으로 직접 새 PIN을 정할 수 있습니다", "PIN을 만들 때 본인 확인 질문을 함께 정합니다 · 답은 암호화되어 저장됩니다"]],
   ["1.7", "2026-11-14", ["1차 검수 부적합에 사업장(동탄 · 성남)과 제조 검수자 항목을 추가했습니다", "귀책 업체별로 색을 구분해 시노드 · 동오정밀을 한눈에 볼 수 있습니다", "1차 검수 시트(인쇄용)를 개정했습니다 · 제조 담당자(EFEM · PRO) 서명 칸, 제조 확인 칸", "자재 · 수입검사 표가 넓은 화면에서 좌우 스크롤 없이 한 번에 보입니다", "출하 카드를 숫자 위주로 간결하게 정리했습니다", "푸터에 개정 이력을 추가했습니다"]],
   ["1.6", "2026-11-12", ["자재는 장비를 먼저 고른 뒤 그 안에서 품번 · 품목명으로 찾도록 바꿨습니다", "PC는 표, 휴대폰은 카드로 보기 편하게 정리했습니다"]],
