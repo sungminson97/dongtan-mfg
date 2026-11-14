@@ -2075,7 +2075,8 @@ select.rqin option{background:var(--card);color:var(--text)}
 .fgq b{font-size:16px;font-weight:800;color:var(--text);line-height:1.45}
 .fgm{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--warn) 10%,transparent);color:color-mix(in srgb,var(--warn) 85%,var(--text));font-size:13.5px;font-weight:700;line-height:1.55;margin-bottom:14px}
 .sqhint{margin:8px 2px 0;font-size:12px;font-weight:700;color:var(--sub)}
-.sqlater{margin-top:8px!important;border:0!important;height:40px!important}
+.sqmust{margin:-4px 0 14px}
+#lg.sqm .mx{display:none}
 #lg10 .nmhint,#lg11 .perr,#lg8 .perr{margin-bottom:10px}
 #lg8 .sbtn,#lg9 .sbtn,#lg10 .sbtn,#lg11 .sbtn{width:100%;height:52px;padding:0;margin-top:4px}
 #bname .rqbg{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:#ef4444;color:#fff;font-size:11px;font-weight:900;letter-spacing:0;line-height:1;box-shadow:0 0 0 3px color-mix(in srgb,#ef4444 22%,transparent);animation:rqpulse 2.4s ease-in-out infinite;cursor:pointer}
@@ -2663,13 +2664,13 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   <div class="lgs" id="lg11" hidden>
     <h5>본인 확인 질문</h5>
     <p>PIN을 잊었을 때 이 질문의 답으로 본인을 확인합니다.<br>답은 암호화되어 저장되며 관리자도 볼 수 없습니다.</p>
+    <div class="nmlock sqmust">처음 한 번만 정하면 됩니다.<br>저장해야 대시보드를 계속 이용할 수 있습니다.</div>
     <select class="rqin sqsel" id="sqsel" aria-label="본인 확인 질문"></select>
     <input class="rqin" id="sqc" maxlength="60" placeholder="질문을 직접 입력해 주세요" autocomplete="off" hidden aria-label="직접 입력한 질문">
     <input class="rqin" id="sqa" maxlength="40" placeholder="답 입력" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="답">
     <div class="sqhint">띄어쓰기와 영문 대소문자는 구분하지 않습니다.</div>
     <div class="perr" id="sqerr"></div>
     <button class="sbtn" id="sqgo" type="button" disabled>저장</button>
-    <button class="lgl sqlater" id="sqlater" type="button">다음에 하기</button>
   </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
@@ -2833,7 +2834,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-181000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-183500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -5545,7 +5546,7 @@ function rolesFetch(n, pin) {
     if (j.sq === false) sqAsk();   // 2026-11-14 본인 확인 질문이 없으면 한 번 정하기
   }, function () {});   // 서버 준비 전이면 그냥 둠 (서버가 막지 않음)
 }
-function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7", "lg8", "lg9", "lg10", "lg11"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
+function lgStep(n) { $("lg").classList.toggle("sqm", n === 11 && SQM); ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7", "lg8", "lg9", "lg10", "lg11"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
 /* 🔐 로그인: PIN 칸 하나
  *  · 개인 PIN → 서버가 누구인지 찾아서 이름 띄우고 바로 로그인
  *  · PIN 만들기 → 이름 → 본인 확인 → 개인 PIN 두 번 (공용 PIN 없음)
@@ -5567,7 +5568,7 @@ function nameMode() {   // 이름 입력 화면 문구: 처음 등록 / 개인 P
   $("nmp").textContent = d ? "개인 PIN을 정한 본인 이름을 입력해 주세요." : "기록에 남을 본인 이름을 입력해 주세요. 명단에 있는 이름만 만들 수 있습니다.";
   $("nmlk").hidden = d;
 }
-function closeLogin() { $("lg").classList.remove("on"); try { $("pini").blur(); } catch (e) {} }
+function closeLogin() { if (SQM && !$("lg11").hidden) return; $("lg").classList.remove("on"); try { $("pini").blur(); } catch (e) {} }
 function pinReset() { $("pini").value = ""; $("perr").textContent = ""; $("pinb").className = "pin"; $("lghi").hidden = true; $("pini").disabled = false; $("lgfg").hidden = FG.bad < 2; pinDraw(); }
 function pinDraw() {
   var v = $("pini").value, is = $("pinb").querySelectorAll("i"), foc = document.activeElement === $("pini");
@@ -5607,6 +5608,7 @@ $("pini").addEventListener("focus", pinDraw); $("pini").addEventListener("blur",
 /* 👤 개인 PIN: 이름을 고른 뒤 본인 PIN으로 한 번 더 확인 (다른 사람 이름으로 기록하는 것 방지)
  * 처음이면 PIN 설정(두 번 입력), 이후엔 PIN 확인 · 지금은 이 기기에 저장 → 서버 붙이면 서버에 저장해서 어느 폰에서나 같은 PIN */
 var UP = { n: "", mode: "", first: "", bad: 0, pend: "" };
+var SQM = false;   // 2026-11-14 본인 확인 질문을 꼭 정해야 하는 중 (창 닫기 막음)
 var FG = { bad: 0, n: "", a: "" };   // 2026-11-14 PIN 찾기 (틀린 횟수 · 이름 · 확인된 답)
 function upKey(n) { return "upin_" + n; }
 function upHas(n) { return !!sget(upKey(n)); }
@@ -5791,7 +5793,8 @@ function authUi() {
   var d = b.querySelector(".dt"); if (n && !d) b.insertBefore(el("i", "dt"), b.firstChild); else if (!n && d) d.remove();
   try { var aq = authGet(), rc = aq && aq.admin ? (+aq.req || 0) : 0, bg = $("rqbg"); bg.hidden = !rc; bg.textContent = rc > 99 ? "99+" : rc; b.classList.toggle("hasrq", !!rc); bg.setAttribute("aria-label", "확인할 요청 " + rc + "건"); } catch (eRq) {}
   var ti = n ? authTitle() : ""; $("nmtx").textContent = n || "로그인";
-  if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));   // 화면이 좁은 PC에선 직함 숨김 (메뉴랑 안 겹치게)
+  if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));
+  try { var adv = authGet(); if (n && adv && adv.dev) { $("nmtx").textContent = "개발자"; b.setAttribute("aria-label", "개발자 · 로그인됨"); } } catch (eDv) {}   // 2026-11-14 개발자로 로그인하면 이름 대신 '개발자'만   // 화면이 좁은 PC에선 직함 숨김 (메뉴랑 안 겹치게)
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
   [].forEach.call(document.querySelectorAll(".lockc"), function (c) {
     var need = c.dataset.role || "", ok = !!n && hasRole(need), lk = c.querySelector(".lk");
@@ -9099,7 +9102,7 @@ function fgPin(p, inp) {
   inp.disabled = true; $("perr2").textContent = "저장 중…";
   rpc("dt_pin_reset", { n: FG.n, a: FG.a, newpin: p }).then(function (j) {
     inp.disabled = false; $("perr2").textContent = "";
-    if (j && j.ok) { FG.bad = 0; FG.a = ""; UP.mode = "check"; try { sessionStorage.removeItem("dt_sqlater"); } catch (e) {} upDone(p, j.title != null ? j.title : null); setTimeout(function () { toast("새 PIN으로 바뀌었습니다"); }, 900); return; }
+    if (j && j.ok) { FG.bad = 0; FG.a = ""; UP.mode = "check"; upDone(p, j.title != null ? j.title : null); setTimeout(function () { toast("새 PIN으로 바뀌었습니다"); }, 900); return; }
     if (j && j.pinerr) { UP.mode = "r1"; UP.first = ""; upText(); upBad(j.error); try { inp.focus(); } catch (e) {} return; }
     upBad((j && j.error) || "저장하지 못했습니다."); if (j && j.locked) setTimeout(function () { fgStop(FG.n, j.error, true); lgStep(10); }, 700);
   }, function (e) { inp.disabled = false; UP.mode = "r1"; UP.first = ""; upText(); upBad("저장하지 못했습니다. " + errMsg(e)); });
@@ -9107,7 +9110,6 @@ function fgPin(p, inp) {
 
 /* 본인 확인 질문 정하기 (처음 PIN 만든 직후 · 아직 안 정한 분은 로그인할 때 한 번) */
 function sqAsk() {
-  try { if (sessionStorage.getItem("dt_sqlater")) return; } catch (e) {}
   setTimeout(function () {
     if ($("lg").classList.contains("on") || ($("adm") && $("adm").classList.contains("on"))) { setTimeout(sqAsk, 4000); return; }
     var a = authGet(); if (!a || a.sq !== false) return;
@@ -9115,7 +9117,7 @@ function sqAsk() {
     var o0 = el("option", null, "질문을 골라 주세요"); o0.value = ""; s.appendChild(o0);
     SQ_LIST.concat(["직접 입력"]).forEach(function (q) { var o = el("option", null, q); o.value = q; s.appendChild(o); });
     $("sqc").value = ""; $("sqc").hidden = true; $("sqa").value = ""; $("sqerr").textContent = ""; sqOk();
-    $("lg").classList.add("on"); lgStep(11);
+    SQM = true; $("lg").classList.add("on"); lgStep(11);
   }, 900);
 }
 function sqQ() { var v = $("sqsel").value; return v === "직접 입력" ? $("sqc").value.trim() : v; }
@@ -9126,11 +9128,10 @@ $("sqgo").onclick = function () {
   var a = authGet(), pn = sget("upin"), g = this; if (!a || g.disabled) return;
   g.disabled = true; g.textContent = "저장 중…";
   rpc("dt_sq_set", { n: a.n, pin: pn, q: sqQ(), a: $("sqa").value }).then(function (j) {
-    if (j && j.ok) { var b = authGet(); if (b) { b.sq = true; sset("auth", JSON.stringify(b)); } closeLogin(); toast("본인 확인 질문이 저장되었습니다"); return; }
+    if (j && j.ok) { var b = authGet(); if (b) { b.sq = true; sset("auth", JSON.stringify(b)); } SQM = false; closeLogin(); toast("본인 확인 질문이 저장되었습니다"); return; }
     sqOk(); $("sqerr").textContent = (j && j.error) || "저장하지 못했습니다.";
   }, function (e) { sqOk(); $("sqerr").textContent = "저장하지 못했습니다. " + errMsg(e); });
 };
-$("sqlater").onclick = function () { try { sessionStorage.setItem("dt_sqlater", "1"); } catch (e) {} closeLogin(); };
 
 /* 관리자: 요청 확인 */
 var ADM = { rows: [], busy: {} };
