@@ -2007,6 +2007,10 @@ html.gate body>#lg{visibility:visible;z-index:210}
 /* 2026-11-14 기록 창 빈 칸 */
 .nclsp{visibility:hidden}
 
+/* 2026-11-14 자재 · 수입검사: 넓은 화면에서는 표가 화면 폭을 넓게 써서 좌우 스크롤 없이 */
+@media (min-width:1300px){#v-etc .wrap{max-width:min(1760px,100%)}}
+@media (min-width:1300px) and (max-width:1599px){#v-etc .xt td.ell{max-width:200px}#v-etc .xt th,#v-etc .xt td{padding:0 8px}}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2681,7 +2685,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-144000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-151000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3163,7 +3167,7 @@ function drawDash() {
   var kp = $("kpis"); kp.innerHTML = "";
   var SS = D.ship, ms = SS ? SS.months.slice(-6).map(function (m) { return shipSum(m[1]); }) : D.months.map(function (m) { return m[1]; }), yr = SS ? SS.total : ms.reduce(function (a, b) { return a + b; }, 0);
   var done1 = D.eq.filter(function (e) { return e.q1 === "완료"; }).length, all1 = D.eq.filter(function (e) { return e.q1; }).length;
-  [[SS ? SS.year + "년 출하 (제조1팀)" : "올해 출하", yr, "대", "지난달 <b>" + (ms[ms.length - 2] || 0) + "대</b> · 이번 달 <b>" + (ms[ms.length - 1] || 0) + "대</b>", spark(ms), "dark"],
+  [[SS ? SS.year + "년 출하 (제조1팀)" : "올해 출하", yr, "대", "지난달 <b>" + (ms[ms.length - 2] || 0) + "대</b> · 이번 달 <b>" + (ms[ms.length - 1] || 0) + "대</b>", "", "dark"],
    all1 ? ["1차 검수 완료율", Math.round(done1 / all1 * 100), "%", "완료 <b>" + done1 + "</b> / " + all1 + "대", ""]
      : (function () { var d14 = addD(D.today, 13), L = D.eq.filter(function (e) { var q = sd(e, 6); return q[0] && q[0] >= D.today && q[0] <= d14 && !mDone(e, 6); }); return ["2주 내 1차 검수", L.length, "대", md(D.today) + " ~ " + md(d14) + " 예정", ""]; })(),   // 검수 업로드 기록이 없으면 일정 기준으로
    ["자리 미배정", D.eq.filter(function (e) { return !e.loc && e.st < 10; }).length, "대", "자리 배치 필요", ""],
