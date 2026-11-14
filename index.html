@@ -2044,6 +2044,64 @@ footer .mkby b{font-weight:900;letter-spacing:.18em;margin-left:2px;background:v
 .rvsig em{font-style:normal;letter-spacing:.02em;font-weight:700}
 @media (max-width:640px){footer .wrap>span:first-child{flex-direction:column;align-items:flex-start;row-gap:0}footer .rvlk{margin:12px 0 0}footer .ftag{margin-top:14px;flex-wrap:wrap;gap:8px 12px}footer #upd{margin-top:8px}}
 
+/* 2026-11-14 등록 요청 · PIN 찾기 · 본인 확인 질문 · 관리자 요청 확인 */
+.lgfg{display:block;margin:2px auto 0;padding:6px 10px;font-size:13.5px;font-weight:800;color:var(--ac);text-decoration:underline;text-underline-offset:3px;text-decoration-color:color-mix(in srgb,var(--ac) 45%,transparent)}
+.lgfg:hover{text-decoration-color:var(--ac)}
+.lgreq{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin:-4px 0 14px;padding:12px 14px;border-radius:12px;border:1px dashed color-mix(in srgb,var(--ac) 55%,var(--line));background:color-mix(in srgb,var(--ac) 7%,transparent);font-size:13px;text-align:left}
+.lgreq span{color:var(--sub);font-weight:700}
+.lgreq b{color:var(--ac);font-weight:800;white-space:nowrap}
+.lgreq:hover{border-style:solid}
+.lgreq[hidden],.lgfg[hidden],.admbtn[hidden]{display:none!important}
+.rqn{display:flex;align-items:baseline;justify-content:space-between;padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--line);margin-bottom:16px}
+.rqn span{font-size:12.5px;font-weight:800;color:var(--sub)}
+.rqn b{font-size:20px;font-weight:900;letter-spacing:.12em;color:var(--text)}
+.rqlb{font-size:12.5px;font-weight:800;color:var(--sub);margin:0 0 8px 2px}
+.rqch{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.rqch button{height:40px;border-radius:10px;border:1px solid var(--line);font-size:13.5px;font-weight:800;color:var(--sub);transition:border-color .15s,color .15s,background .15s}
+.rqch button:hover{color:var(--text)}
+.rqch button.on{border-color:var(--ac);color:var(--text);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.rqin{width:100%;height:50px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--text);padding:0 14px;font:inherit;font-size:15px;font-weight:700;outline:0;transition:border-color .2s,box-shadow .2s}
+.rqin::placeholder{color:#5a6378;font-weight:600}
+.rqin:focus{border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.rqin+.rqin{margin-top:8px}
+select.rqin{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:38px;background-image:linear-gradient(45deg,transparent 50%,var(--sub) 50%),linear-gradient(135deg,var(--sub) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+select.rqin option{background:var(--card);color:var(--text)}
+.rqey{display:block;font-size:11px;font-weight:800;letter-spacing:.18em;color:var(--sub);margin-bottom:6px}
+.rqdone{padding:6px 0 4px}
+.rqdone h5{margin-bottom:2px}
+.rqdone p{line-height:1.6}
+.fgq{padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--line);margin-bottom:10px}
+.fgq span{display:block;font-size:12px;font-weight:800;color:var(--sub);margin-bottom:4px}
+.fgq b{font-size:16px;font-weight:800;color:var(--text);line-height:1.45}
+.fgm{padding:14px 16px;border-radius:14px;background:color-mix(in srgb,var(--warn) 10%,transparent);color:color-mix(in srgb,var(--warn) 85%,var(--text));font-size:13.5px;font-weight:700;line-height:1.55;margin-bottom:14px}
+.sqhint{margin:8px 2px 0;font-size:12px;font-weight:700;color:var(--sub)}
+.sqlater{margin-top:8px!important;border:0!important;height:40px!important}
+#lg10 .nmhint,#lg11 .perr,#lg8 .perr{margin-bottom:10px}
+#lg8 .sbtn,#lg9 .sbtn,#lg10 .sbtn,#lg11 .sbtn{width:100%;height:52px;padding:0;margin-top:4px}
+#bname .rqbg{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 6px;border-radius:999px;background:#ef4444;color:#fff;font-size:11px;font-weight:900;letter-spacing:0;line-height:1;box-shadow:0 0 0 3px color-mix(in srgb,#ef4444 22%,transparent);animation:rqpulse 2.4s ease-in-out infinite;cursor:pointer}
+#bname .rqbg[hidden]{display:none}
+#bname.hasrq .dt{display:none}
+@keyframes rqpulse{0%,100%{box-shadow:0 0 0 3px color-mix(in srgb,#ef4444 22%,transparent)}50%{box-shadow:0 0 0 6px color-mix(in srgb,#ef4444 6%,transparent)}}
+@media (prefers-reduced-motion:reduce){#bname .rqbg{animation:none}}
+.admbtn{margin-bottom:8px!important;color:var(--text)!important;border-color:color-mix(in srgb,#ef4444 45%,var(--line))!important}
+.admbtn b{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;border-radius:999px;background:#ef4444;color:#fff;font-size:11.5px;font-weight:900;vertical-align:1px}
+#adm .admbox{width:min(460px,100%);max-height:calc(100vh - 40px);overflow-y:auto;overscroll-behavior:contain}
+.adml{display:grid;gap:10px}
+.admr{padding:16px;border-radius:16px;border:1px solid var(--line);background:var(--bg)}
+.admt{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.admt em{font-style:normal;font-size:11.5px;font-weight:800;padding:3px 9px;border-radius:999px;color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.admt em.reset{color:#f59e0b;background:color-mix(in srgb,#f59e0b 14%,transparent)}
+.admt span{font-size:12px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums}
+.admr>b{display:block;font-size:19px;font-weight:900;letter-spacing:.08em;color:var(--text)}
+.admm{margin-top:4px;font-size:13px;font-weight:600;color:var(--sub);line-height:1.5;word-break:keep-all;overflow-wrap:anywhere}
+.admm i{font-style:normal;color:var(--text);font-weight:700}
+.admb{display:grid;grid-template-columns:1fr 1.4fr;gap:8px;margin-top:14px}
+.admb .lgl{height:44px!important;margin:0!important}
+.admb .sbtn{height:44px;width:100%;font-size:14.5px}
+.admb .sbtn.dng{background:#dc2626;box-shadow:none}
+.adme{padding:28px 10px;text-align:center;font-size:14px;font-weight:700;color:var(--sub)}
+@media (max-width:640px){#adm{place-items:end center;padding:0}#adm .admbox{width:100%;max-height:88vh;border-radius:22px 22px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}.rqch{grid-template-columns:repeat(3,1fr)}}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2146,7 +2204,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
     <nav class="top" id="ntop"><div class="pill"></div></nav>
     <div class="hact">
       <span class="demo" id="demob" style="display:none">● 예시 데이터</span>
-      <button class="ib" id="bname" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span class="tx" id="nmtx">로그인</span></button>
+      <button class="ib" id="bname" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b class="rqbg" id="rqbg" hidden></b><span class="tx" id="nmtx">로그인</span></button>
       <button class="ib" id="bref" type="button" aria-label="새로고침"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg></button>
     </div>
   </div>
@@ -2503,6 +2561,13 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   <form class="dvaddf" id="dvaddf" hidden autocomplete="off"><input id="dvan" placeholder="이름 (한글 3글자)" maxlength="3"><input id="dvat" placeholder="직함 (예: 프로)" maxlength="10"><button class="sbtn" type="submit">추가</button><span class="dvah">명단에 넣으면 그 이름으로 PIN을 만들 수 있습니다</span></form>
   <div class="tbw dvw"><table class="tbl dvt"><thead><tr><th>이름</th><th>직함</th><th>담당</th><th>마지막 로그인</th><th>PIN</th><th>상태</th><th>기록</th><th>관리</th></tr></thead><tbody id="dvtb"></tbody></table></div>
 </div></div>
+<div class="modal" id="adm"><div class="box admbox">
+  <button class="mx" id="admx" type="button" aria-label="닫기">✕</button>
+  <span class="rqey">ADMIN</span>
+  <h5>요청 확인</h5>
+  <p id="admp">명단 등록 요청과 PIN 초기화 요청입니다.</p>
+  <div class="adml" id="adml"></div>
+</div></div>
 <div class="modal" id="lg"><div class="box">
   <button class="mx" id="lgx" type="button" aria-label="닫기">✕</button>
   <div class="lgs" id="lg1">
@@ -2511,6 +2576,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
     <div class="lgmsg" id="lgmsg" hidden></div>
     <label class="pin" id="pinb"><i></i><i></i><i></i><i></i><input id="pini" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="PIN 4자리"></label>
     <div class="perr" id="perr"></div>
+    <button class="lgfg" id="lgfg" type="button" hidden>PIN을 잊으셨나요?</button>
     <div class="lghi" id="lghi" hidden><div><b id="lghn"></b><span>확인되었습니다 · 로그인 중</span></div></div>
     <button class="lgmk" id="lgmake" type="button"><span>처음 사용하시나요?</span><b>PIN 만들기 ›</b></button>
   </div>
@@ -2522,6 +2588,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
     <form id="nmform" autocomplete="off">
       <input class="nmin" id="nmin" placeholder="예) 홍길동" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
       <div class="nmhint" id="nmhint">한글 3글자로 입력해 주세요.</div>
+      <button class="lgreq" id="nmreq" type="button" hidden><span>명단에 추가가 필요하신가요?</span><b>관리자에게 등록 요청</b></button>
       <button class="sbtn" id="nmnext" type="submit" disabled>다음</button>
     </form>
   </div>
@@ -2540,6 +2607,7 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
     <p id="upmsg"></p>
     <label class="pin" id="pinb2"><i></i><i></i><i></i><i></i><input id="pini2" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="개인 PIN 4자리"></label>
     <div class="perr" id="perr2"></div>
+    <button class="lgfg" id="upfg" type="button" hidden>PIN을 잊으셨나요?</button>
     <p class="uphelp" id="uphelp"></p>
   </div>
   <div class="lgs" id="lg6" hidden>
@@ -2558,8 +2626,54 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
       <button class="sbtn" id="dvok" type="submit">확인</button>
     </form>
   </div>
+  <div class="lgs" id="lg8" hidden>
+    <button class="lgback" id="rqback" type="button">‹ 뒤로</button>
+    <h5 id="rqh">등록 요청</h5>
+    <p id="rqp"></p>
+    <div class="rqn"><span>이름</span><b id="rqname"></b></div>
+    <div id="rqtw"><div class="rqlb">소속</div><div class="rqch" id="rqteam"></div></div>
+    <input class="rqin" id="rqmemo" maxlength="60" placeholder="관리자에게 남길 말 (선택)" autocomplete="off" aria-label="관리자에게 남길 말">
+    <div class="perr" id="rqerr"></div>
+    <button class="sbtn" id="rqgo" type="button">요청 보내기</button>
+  </div>
+  <div class="lgs" id="lg9" hidden>
+    <div class="rqdone"><span class="rqey" id="rdey">REQUEST SENT</span><h5 id="rdh"></h5><p id="rdp"></p></div>
+    <button class="sbtn" id="rdok" type="button">확인</button>
+  </div>
+  <div class="lgs" id="lg10" hidden>
+    <button class="lgback" id="fgback" type="button">‹ PIN으로 로그인</button>
+    <h5>PIN 찾기</h5>
+    <p id="fgp">PIN을 만들 때 정한 본인 확인 질문으로 본인을 확인한 뒤 새 PIN을 정합니다.</p>
+    <div id="fg1">
+      <input class="nmin" id="fgn" placeholder="예) 홍길동" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="이름 (한글 3글자)">
+      <div class="nmhint" id="fgh">한글 3글자로 입력해 주세요.</div>
+      <button class="sbtn" id="fgnext" type="button" disabled>다음</button>
+    </div>
+    <div id="fg2" hidden>
+      <div class="fgq"><span id="fgwho"></span><b id="fgq"></b></div>
+      <input class="rqin" id="fga" maxlength="40" placeholder="답 입력" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="본인 확인 질문의 답">
+      <div class="perr" id="fgerr"></div>
+      <button class="sbtn" id="fgok" type="button" disabled>확인</button>
+    </div>
+    <div id="fg3" hidden>
+      <div class="fgm" id="fgm"></div>
+      <button class="sbtn" id="fgreq" type="button">관리자에게 PIN 초기화 요청</button>
+    </div>
+  </div>
+  <div class="lgs" id="lg11" hidden>
+    <h5>본인 확인 질문</h5>
+    <p>PIN을 잊었을 때 이 질문의 답으로 본인을 확인합니다.<br>답은 암호화되어 저장되며 관리자도 볼 수 없습니다.</p>
+    <select class="rqin sqsel" id="sqsel" aria-label="본인 확인 질문"></select>
+    <input class="rqin" id="sqc" maxlength="60" placeholder="질문을 직접 입력해 주세요" autocomplete="off" hidden aria-label="직접 입력한 질문">
+    <input class="rqin" id="sqa" maxlength="40" placeholder="답 입력" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="답">
+    <div class="sqhint">띄어쓰기와 영문 대소문자는 구분하지 않습니다.</div>
+    <div class="perr" id="sqerr"></div>
+    <button class="sbtn" id="sqgo" type="button" disabled>저장</button>
+    <button class="lgl sqlater" id="sqlater" type="button">다음에 하기</button>
+  </div>
   <div class="lgs" id="lg3" hidden>
     <div class="me"><span class="av" id="meav"></span><div><b id="mename"></b><span>로그인됨 · 기록 가능</span></div></div>
+    <button class="lgl admbtn" id="admbtn" type="button" hidden></button>
     <button class="lgl" id="dvmenu" type="button" hidden>개발자 메뉴</button>
     <button class="lgl" id="logout" type="button">로그아웃</button>
   </div>
@@ -2719,7 +2833,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-153500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-181000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -5427,10 +5541,11 @@ function rolesFetch(n, pin) {
   rpc("dt_roles", { n: n, pin: pin }).then(function (j) {
     if (!j || !j.ok) return;
     var a = authGet(); if (!a || a.n !== n) return;
-    a.roles = j.roles || []; sset("auth", JSON.stringify(a)); authUi();
+    a.roles = j.roles || []; a.admin = !!j.admin; a.req = +j.req || 0; a.sq = j.sq !== false; sset("auth", JSON.stringify(a)); authUi();
+    if (j.sq === false) sqAsk();   // 2026-11-14 본인 확인 질문이 없으면 한 번 정하기
   }, function () {});   // 서버 준비 전이면 그냥 둠 (서버가 막지 않음)
 }
-function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
+function lgStep(n) { ["lg1", "lg2", "lg3", "lg4", "lg5", "lg6", "lg7", "lg8", "lg9", "lg10", "lg11"].forEach(function (id, i) { $(id).hidden = i !== n - 1; }); }
 /* 🔐 로그인: PIN 칸 하나
  *  · 개인 PIN → 서버가 누구인지 찾아서 이름 띄우고 바로 로그인
  *  · PIN 만들기 → 이름 → 본인 확인 → 개인 PIN 두 번 (공용 PIN 없음)
@@ -5441,7 +5556,7 @@ function openLogin(msg) {   // msg: 로그인 창 위에 보여 줄 안내 (예:
   var a = authGet(), last = sget("last") || "", lm = $("lgmsg");
   if (lm) { lm.textContent = typeof msg === "string" ? msg : ""; lm.hidden = typeof msg !== "string"; }
   $("lg").classList.add("on");
-  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("dvmenu").hidden = !a.dev; $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
+  if (a) { $("mename").textContent = dname(a.n, a.ti) + (a.dev ? " · 개발자" : ""); $("dvmenu").hidden = !a.dev; admBtn(); $("meav").textContent = a.n.slice(-2, -1) || a.n[0]; lgStep(3); return; }
   LGM = "make"; UP.pend = ""; pinReset(); lgStep(1);
   setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80);
 }
@@ -5453,7 +5568,7 @@ function nameMode() {   // 이름 입력 화면 문구: 처음 등록 / 개인 P
   $("nmlk").hidden = d;
 }
 function closeLogin() { $("lg").classList.remove("on"); try { $("pini").blur(); } catch (e) {} }
-function pinReset() { $("pini").value = ""; $("perr").textContent = ""; $("pinb").className = "pin"; $("lghi").hidden = true; $("pini").disabled = false; pinDraw(); }
+function pinReset() { $("pini").value = ""; $("perr").textContent = ""; $("pinb").className = "pin"; $("lghi").hidden = true; $("pini").disabled = false; $("lgfg").hidden = FG.bad < 2; pinDraw(); }
 function pinDraw() {
   var v = $("pini").value, is = $("pinb").querySelectorAll("i"), foc = document.activeElement === $("pini");
   [].forEach.call(is, function (x, i) { x.className = (i < v.length ? "f" : "") + (foc && i === Math.min(v.length, 3) ? " c" : ""); });
@@ -5471,7 +5586,7 @@ $("pini").addEventListener("input", function () {
     setTimeout(function () { upDone(p, ti == null ? null : ti); }, 650);
   };
   var multi = function () { LGM = "direct"; TP = ""; UP.pend = p; nameGrid(); lgStep(2); $("nmp").textContent = "같은 PIN을 쓰는 사람이 있어 이름을 한 번만 확인합니다."; };
-  var bad = function (m) { $("pinb").className = "pin bad"; $("perr").textContent = m || "PIN이 올바르지 않습니다. 다시 입력해 주세요."; setTimeout(function () { inp.value = ""; pinDraw(); }, 420); };
+  var bad = function (m) { $("pinb").className = "pin bad"; $("perr").textContent = m || "PIN이 올바르지 않습니다. 다시 입력해 주세요."; setTimeout(function () { inp.value = ""; pinDraw(); }, 420); if (++FG.bad >= 2) $("lgfg").hidden = false; };
   if (!LIVE) {
     var hit = TEAM.filter(function (n) { return sget(upKey(n)) === upHash(n, p); });
     if (hit.length === 1) me(hit[0]); else bad(); return;
@@ -5492,6 +5607,7 @@ $("pini").addEventListener("focus", pinDraw); $("pini").addEventListener("blur",
 /* 👤 개인 PIN: 이름을 고른 뒤 본인 PIN으로 한 번 더 확인 (다른 사람 이름으로 기록하는 것 방지)
  * 처음이면 PIN 설정(두 번 입력), 이후엔 PIN 확인 · 지금은 이 기기에 저장 → 서버 붙이면 서버에 저장해서 어느 폰에서나 같은 PIN */
 var UP = { n: "", mode: "", first: "", bad: 0, pend: "" };
+var FG = { bad: 0, n: "", a: "" };   // 2026-11-14 PIN 찾기 (틀린 횟수 · 이름 · 확인된 답)
 function upKey(n) { return "upin_" + n; }
 function upHas(n) { return !!sget(upKey(n)); }
 function upHash(n, p) { return String(pinHash(n + "|" + p)); }
@@ -5503,6 +5619,7 @@ function nameGrid() {
 }
 function nmCheck(quiet) {
   var v = $("nmin").value.replace(/\s/g, ""), h = $("nmhint"), i = $("nmin"), ok = NAME_RE.test(v);
+  $("nmreq").hidden = true;
   var bad = !ok && v.length > 0 && (v.length > 3 || /[^가-힣ㄱ-ㅎㅏ-ㅣ]/.test(v));
   h.className = "nmhint" + (ok ? " ok" : bad && !quiet ? " bad" : "");
   i.className = "nmin" + (ok ? " ok" : bad && !quiet ? " bad" : "");
@@ -5522,12 +5639,13 @@ function nmShow(v) {
     : st === "new" ? (mk ? ["ok", "명단에서 확인되었습니다"] : ["ok", "명단에서 확인되었습니다 · 다음에서 PIN을 만듭니다"]) : st === "err" ? ["", "다음을 누르면 명단을 확인합니다"] : ["", "명단 확인 중…"];
   h.className = "nmhint" + (T[0] ? " " + T[0] : ""); i.className = "nmin" + (T[0] ? " " + T[0] : ""); h.textContent = T[1];
   $("nmnext").disabled = st === "notlisted";
+  if (st === "notlisted") nmReq(v, NMQ.pend);
 }
 function nmLook(v) {
   clearTimeout(NMQ.tm);
   if (!LIVE || NMQ.v === v && NMQ.st) { nmShow(v); return; }
   NMQ.tm = setTimeout(function () {
-    rpc("dt_name_status", { n: v }).then(function (j) { NMQ.v = v; NMQ.st = j && j.ok ? j.status : "err"; nmShow(v); }, function () { NMQ.v = v; NMQ.st = "err"; nmShow(v); });
+    rpc("dt_name_status", { n: v }).then(function (j) { NMQ.v = v; NMQ.st = j && j.ok ? j.status : "err"; NMQ.pend = !!(j && j.pend); nmShow(v); }, function () { NMQ.v = v; NMQ.st = "err"; nmShow(v); });
   }, 250);
 }
 $("nmin").addEventListener("input", function () { nmCheck(false); });
@@ -5563,7 +5681,7 @@ $("nmform").onsubmit = function (e) {
   rpc("dt_name_status", { n: v }).then(function (j) {
     nb2.disabled = false; nb2.textContent = "다음";
     var st = j && j.ok ? j.status : "";
-    if (st === "notlisted") { nmBad("명단에 없는 이름입니다. 이름을 다시 확인해 주세요."); return; }
+    if (st === "notlisted") { nmBad("명단에 없는 이름입니다. 이름을 다시 확인해 주세요."); nmReq(v, !!(j && j.pend)); return; }
     if (st === "set") { nmBad("이미 PIN이 있는 이름입니다. 개인 PIN으로 로그인해 주세요."); setTimeout(function () { LGM = "make"; pinReset(); lgStep(1); $("perr").textContent = v + "님은 이미 PIN이 있습니다. 개인 PIN을 입력해 주세요."; setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 60); }, 1400); return; }
     toCf();
   }, function () { nb2.disabled = false; nb2.textContent = "다음"; toCf(); });   // 서버에 명단 기능이 아직 없으면 예전처럼
@@ -5583,11 +5701,17 @@ function upStart(n, st) {
 }
 function upText() {
   var m = UP.mode;
+  if (m === "r1" || m === "r2") {   // 2026-11-14 PIN 찾기 → 새 PIN
+    $("upst").textContent = "새 PIN 정하기";
+    $("upmsg").textContent = m === "r1" ? "본인 확인이 끝났습니다. 새로 사용할 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
+    $("uphelp").textContent = "다른 사람이 쓰는 PIN이나 같은 숫자 4개는 쓸 수 없습니다.";
+    $("upfg").hidden = true; return;
+  }
   $("upst").textContent = m === "check" ? "본인 확인" : "PIN 만들기";
   $("upmsg").textContent = m === "check" ? "개인 PIN 4자리를 입력해 주세요." : m === "set1" ? "본인만 아는 PIN 4자리를 정해 주세요." : "확인을 위해 한 번 더 입력해 주세요.";
   $("uphelp").textContent = m === "check" ? "처음에 정한 개인 PIN입니다. 잊으셨으면 관리자에게 초기화를 요청해 주세요. (5회 틀리면 10분간 잠김)" : "다음부터는 이 PIN 하나로 로그인합니다. 다른 사람이 이 이름으로 기록하지 못하도록 막는 용도이니 본인만 알고 계세요.";
 }
-function upReset() { $("pini2").value = ""; $("perr2").textContent = ""; $("pinb2").className = "pin"; upDraw(); }
+function upReset() { $("pini2").value = ""; $("perr2").textContent = ""; $("pinb2").className = "pin"; $("upfg").hidden = !(UP.mode === "check" && FG.bad >= 2); upDraw(); }
 function upDraw() {
   var v = $("pini2").value, is = $("pinb2").querySelectorAll("i"), foc = document.activeElement === $("pini2");
   [].forEach.call(is, function (x, i) { x.className = (i < v.length ? "f" : "") + (foc && i === Math.min(v.length, 3) ? " c" : ""); });
@@ -5622,12 +5746,13 @@ $("pini2").addEventListener("input", function () {
   var p = this.value;
   var inp = this;
   if (UP.mode !== "check" && p === "0000") { upBad("0000은 사용할 수 없는 PIN입니다. 다른 번호로 정해 주세요."); return; }
+  if (UP.mode === "r1" || UP.mode === "r2") { fgPin(p, inp); return; }   // 2026-11-14 PIN 찾기 → 새 PIN
   if (LIVE && UP.mode === "check") {
     inp.disabled = true; $("perr2").textContent = "확인 중…";
     rpc("dt_login2", { n: UP.n, pin: p }).then(function (j) {
       inp.disabled = false; $("perr2").textContent = ""; try { inp.focus(); } catch (e) {}
       if (j && j.ok) { upDone(p, j.title != null ? j.title : null); return; }
-      var m = (j && j.error) || "로그인 실패"; upBad(m);
+      var m = (j && j.error) || "로그인 실패"; upBad(m); if (++FG.bad >= 2) $("upfg").hidden = false;
     }, function (e) { inp.disabled = false; try { inp.focus(); } catch (er) {} upBad("" + e.message); });
     return;
   }
@@ -5659,11 +5784,12 @@ function authLost(msg) {
   authUi(); toast("" + (msg || "다시 로그인해 주세요")); setTimeout(openLogin, 600);
 }
 $("pini2").addEventListener("focus", upDraw); $("pini2").addEventListener("blur", upDraw);
-$("lgback").onclick = function () { nameGrid(); lgStep(2); };
+$("lgback").onclick = function () { if (UP.mode === "r1" || UP.mode === "r2") { UP.mode = ""; FG.a = ""; pinReset(); lgStep(1); return; } nameGrid(); lgStep(2); };
 function authUi() {
   var n = authName(), b = $("bname");
   b.querySelector("svg").style.display = n ? "none" : "";
   var d = b.querySelector(".dt"); if (n && !d) b.insertBefore(el("i", "dt"), b.firstChild); else if (!n && d) d.remove();
+  try { var aq = authGet(), rc = aq && aq.admin ? (+aq.req || 0) : 0, bg = $("rqbg"); bg.hidden = !rc; bg.textContent = rc > 99 ? "99+" : rc; b.classList.toggle("hasrq", !!rc); bg.setAttribute("aria-label", "확인할 요청 " + rc + "건"); } catch (eRq) {}
   var ti = n ? authTitle() : ""; $("nmtx").textContent = n || "로그인";
   if (ti) $("nmtx").appendChild(el("span", "nti", " " + ti));   // 화면이 좁은 PC에선 직함 숨김 (메뉴랑 안 겹치게)
   b.setAttribute("aria-label", n ? n + " · 로그인됨" : "로그인");
@@ -8861,8 +8987,222 @@ function pjAfter(f) {   // 후속 문구: '로봇만 출하' / 'CK71-165 EFEM �
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
 
+
+/* ═══ 2026-11-14 등록 요청 · PIN 찾기 · 본인 확인 질문 · 관리자 요청 확인 ═══
+ *  · 명단에 없는 이름 → 관리자에게 등록 요청 (승인되면 명단에 이름만 추가)
+ *  · PIN 2번 틀리면 'PIN을 잊으셨나요?' → 본인 확인 질문 → 새 PIN · 답 5번 틀리면 30분 잠김 → 관리자에게 초기화 요청
+ *  · 관리자: 이름 왼쪽 빨간 숫자 = 대기 요청 수 → 눌러서 승인 · 거절 */
+var SQ_LIST = ["처음 다닌 초등학교 이름은?", "어릴 때 살던 동네 이름은?", "가장 기억에 남는 선생님 성함은?", "처음 키운 반려동물 이름은?", "가장 좋아하는 음식은?", "어머니 고향은?"];
+var RQ_TEAM = ["기구", "전장", "FT", "품질", "입고 · 출하", "기타"];
+var RQ = { kind: "join", n: "", team: "", back: 2 };
+function nmReq(v, pend) {
+  if (!LIVE || LGM === "direct") return;
+  var b = $("nmreq"), h = $("nmhint");
+  if (pend) { b.hidden = true; h.className = "nmhint ok"; $("nmin").className = "nmin"; h.textContent = "등록 요청이 접수되어 관리자 확인을 기다리고 있습니다. 승인되면 PIN을 만들 수 있습니다."; return; }
+  b.hidden = false; b.dataset.n = v;
+}
+$("nmreq").onclick = function () { rqOpen("join", this.dataset.n || $("nmin").value.replace(/\s/g, ""), 2); };
+function rqOpen(kind, n, back) {
+  RQ.kind = kind; RQ.n = n; RQ.back = back; RQ.team = "";
+  $("rqh").textContent = kind === "join" ? "등록 요청" : "PIN 초기화 요청";
+  $("rqp").textContent = kind === "join" ? "명단에 없는 이름은 관리자가 확인한 뒤 추가합니다. 승인되면 같은 이름으로 PIN을 만들 수 있습니다." : "관리자가 확인한 뒤 PIN을 초기화합니다. 초기화되면 PIN 만들기에서 같은 이름으로 새 PIN을 정할 수 있습니다.";
+  $("rqname").textContent = n; $("rqtw").hidden = kind !== "join"; $("rqmemo").value = ""; $("rqerr").textContent = "";
+  var ch = $("rqteam"); ch.innerHTML = "";
+  RQ_TEAM.forEach(function (t) { var b = el("button", null, t); b.type = "button"; b.onclick = function () { RQ.team = t; [].forEach.call(ch.children, function (x) { x.classList.toggle("on", x === b); }); rqOk(); }; ch.appendChild(b); });
+  rqOk(); lgStep(8);
+}
+function rqOk() { var g = $("rqgo"); g.disabled = RQ.kind === "join" && !RQ.team; g.textContent = "요청 보내기"; }
+$("rqback").onclick = function () {
+  if (RQ.back === 10) { lgStep(10); return; }
+  lgStep(2); setTimeout(function () { try { $("nmin").focus(); } catch (e) {} }, 60);
+};
+$("rqgo").onclick = function () {
+  var g = this; if (g.disabled) return;
+  g.disabled = true; g.textContent = "보내는 중…"; $("rqerr").textContent = "";
+  rpc("dt_join_request", { n: RQ.n, kind: RQ.kind, team: RQ.team, memo: $("rqmemo").value }).then(function (j) {
+    rqOk();
+    if (!j || !j.ok) { $("rqerr").textContent = (j && j.error) || "요청을 보내지 못했습니다."; return; }
+    var jn = RQ.kind === "join";
+    $("rdey").textContent = j.dup ? "ALREADY REQUESTED" : "REQUEST SENT";
+    $("rdh").textContent = j.dup ? "이미 요청이 접수되어 있습니다" : jn ? "등록 요청을 보냈습니다" : "PIN 초기화 요청을 보냈습니다";
+    $("rdp").textContent = jn ? "관리자가 승인하면 PIN 만들기에서 " + RQ.n + " 이름으로 다시 진행해 주세요." : "관리자가 초기화하면 PIN 만들기에서 " + RQ.n + " 이름으로 새 PIN을 정해 주세요.";
+    lgStep(9);
+  }, function (e) { rqOk(); $("rqerr").textContent = "요청을 보내지 못했습니다. " + errMsg(e); });
+};
+$("rdok").onclick = function () { LGM = "make"; UP.mode = ""; pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80); };
+function errMsg(e) { return e && e.message ? e.message : ""; }
+
+/* PIN 찾기 */
+function fgOpen(n) {
+  FG.n = ""; FG.a = "";
+  $("fg1").hidden = false; $("fg2").hidden = true; $("fg3").hidden = true;
+  $("fgp").textContent = "PIN을 만들 때 정한 본인 확인 질문으로 본인을 확인한 뒤 새 PIN을 정합니다.";
+  $("fgn").value = n || ""; fgCheck(); lgStep(10);
+  setTimeout(function () { try { (n ? $("fgnext") : $("fgn")).focus(); } catch (e) {} }, 80);
+}
+function fgCheck() {
+  var v = $("fgn").value.replace(/\s/g, ""), ok = NAME_RE.test(v), h = $("fgh");
+  h.className = "nmhint"; $("fgn").className = "nmin"; h.textContent = ok ? "다음을 누르면 본인 확인 질문이 나옵니다." : "한글 3글자로 입력해 주세요.";
+  $("fgnext").disabled = !ok; return ok ? v : "";
+}
+$("fgn").addEventListener("input", fgCheck); $("fgn").addEventListener("compositionend", fgCheck);
+$("fgn").addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.isComposing) { e.preventDefault(); $("fgnext").click(); } });
+$("lgfg").onclick = function () { fgOpen(""); };
+$("upfg").onclick = function () { fgOpen(UP.n); };
+$("fgback").onclick = function () { LGM = "make"; pinReset(); lgStep(1); setTimeout(function () { try { $("pini").focus(); } catch (e) {} }, 80); };
+function fgStop(n, msg, canReq) {   // 질문으로 찾을 수 없을 때 → 관리자에게 초기화 요청
+  FG.n = n; $("fg1").hidden = true; $("fg2").hidden = true; $("fg3").hidden = false;
+  $("fgm").textContent = msg; $("fgreq").hidden = !canReq;
+}
+$("fgnext").onclick = function () {
+  var v = fgCheck(); if (!v) return;
+  var b = this; b.disabled = true; b.textContent = "확인 중…";
+  rpc("dt_sq_get", { n: v }).then(function (j) {
+    b.disabled = false; b.textContent = "다음";
+    if (j && j.ok) {
+      if (j.locked) { fgStop(v, "답을 5회 틀려 잠겨 있습니다. 30분 뒤 다시 시도하거나 관리자에게 초기화를 요청해 주세요.", !j.pend); if (j.pend) $("fgm").textContent += " (초기화 요청이 이미 접수되어 있습니다)"; return; }
+      FG.n = v; $("fg1").hidden = true; $("fg2").hidden = false; $("fg3").hidden = true;
+      $("fgwho").textContent = v + "님의 본인 확인 질문"; $("fgq").textContent = j.q; $("fga").value = ""; $("fgerr").textContent = ""; $("fgok").disabled = true;
+      $("fgp").textContent = "질문의 답을 입력해 주세요. 맞으면 바로 새 PIN을 정할 수 있습니다.";
+      setTimeout(function () { try { $("fga").focus(); } catch (e) {} }, 60);
+      return;
+    }
+    if (j && j.nosq) { fgStop(v, "본인 확인 질문을 아직 정하지 않은 이름입니다. 관리자에게 PIN 초기화를 요청해 주세요.", true); return; }
+    $("fgh").className = "nmhint bad"; $("fgn").className = "nmin bad"; $("fgh").textContent = (j && j.error) || "확인하지 못했습니다.";
+  }, function (e) { b.disabled = false; b.textContent = "다음"; $("fgh").className = "nmhint bad"; $("fgh").textContent = "확인하지 못했습니다. " + errMsg(e); });
+};
+$("fga").addEventListener("input", function () { $("fgok").disabled = !this.value.trim(); $("fgerr").textContent = ""; });
+$("fga").addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.isComposing && !$("fgok").disabled) { e.preventDefault(); $("fgok").click(); } });
+$("fgok").onclick = function () {
+  var a = $("fga").value, b = this; if (!a.trim()) return;
+  b.disabled = true; b.textContent = "확인 중…";
+  rpc("dt_pin_reset", { n: FG.n, a: a }).then(function (j) {
+    b.textContent = "확인";
+    if (j && j.ok) {   // 답 맞음 → 새 PIN 두 번
+      FG.a = a; UP.n = FG.n; UP.first = ""; UP.mode = "r1";
+      $("upname").textContent = FG.n; $("upav").textContent = FG.n.slice(-2, -1) || FG.n[0]; $("lgback").textContent = "‹ PIN으로 로그인";
+      upText(); upReset(); lgStep(4); setTimeout(function () { try { $("pini2").focus(); } catch (e) {} }, 80);
+      return;
+    }
+    b.disabled = false;
+    if (j && j.locked) { fgStop(FG.n, j.error, true); return; }
+    $("fgerr").textContent = (j && j.error) || "확인하지 못했습니다."; $("fga").select();
+  }, function (e) { b.disabled = false; b.textContent = "확인"; $("fgerr").textContent = "확인하지 못했습니다. " + errMsg(e); });
+};
+$("fgreq").onclick = function () { rqOpen("reset", FG.n, 10); };
+function fgPin(p, inp) {
+  if (UP.mode === "r1") {
+    if (/^(\d)\1{3}$/.test(p)) { upBad("같은 숫자 4개는 쓸 수 없습니다."); return; }
+    UP.first = p; UP.mode = "r2"; upText(); setTimeout(function () { $("pini2").value = ""; upDraw(); }, 160); return;
+  }
+  if (p !== UP.first) { UP.mode = "r1"; UP.first = ""; upText(); upBad("두 번 입력한 PIN이 다릅니다. 처음부터 다시 정해 주세요."); return; }
+  inp.disabled = true; $("perr2").textContent = "저장 중…";
+  rpc("dt_pin_reset", { n: FG.n, a: FG.a, newpin: p }).then(function (j) {
+    inp.disabled = false; $("perr2").textContent = "";
+    if (j && j.ok) { FG.bad = 0; FG.a = ""; UP.mode = "check"; try { sessionStorage.removeItem("dt_sqlater"); } catch (e) {} upDone(p, j.title != null ? j.title : null); setTimeout(function () { toast("새 PIN으로 바뀌었습니다"); }, 900); return; }
+    if (j && j.pinerr) { UP.mode = "r1"; UP.first = ""; upText(); upBad(j.error); try { inp.focus(); } catch (e) {} return; }
+    upBad((j && j.error) || "저장하지 못했습니다."); if (j && j.locked) setTimeout(function () { fgStop(FG.n, j.error, true); lgStep(10); }, 700);
+  }, function (e) { inp.disabled = false; UP.mode = "r1"; UP.first = ""; upText(); upBad("저장하지 못했습니다. " + errMsg(e)); });
+}
+
+/* 본인 확인 질문 정하기 (처음 PIN 만든 직후 · 아직 안 정한 분은 로그인할 때 한 번) */
+function sqAsk() {
+  try { if (sessionStorage.getItem("dt_sqlater")) return; } catch (e) {}
+  setTimeout(function () {
+    if ($("lg").classList.contains("on") || ($("adm") && $("adm").classList.contains("on"))) { setTimeout(sqAsk, 4000); return; }
+    var a = authGet(); if (!a || a.sq !== false) return;
+    var s = $("sqsel"); s.innerHTML = "";
+    var o0 = el("option", null, "질문을 골라 주세요"); o0.value = ""; s.appendChild(o0);
+    SQ_LIST.concat(["직접 입력"]).forEach(function (q) { var o = el("option", null, q); o.value = q; s.appendChild(o); });
+    $("sqc").value = ""; $("sqc").hidden = true; $("sqa").value = ""; $("sqerr").textContent = ""; sqOk();
+    $("lg").classList.add("on"); lgStep(11);
+  }, 900);
+}
+function sqQ() { var v = $("sqsel").value; return v === "직접 입력" ? $("sqc").value.trim() : v; }
+function sqOk() { var g = $("sqgo"); g.disabled = sqQ().length < 2 || !$("sqa").value.trim(); g.textContent = "저장"; }
+$("sqsel").onchange = function () { var c = this.value === "직접 입력"; $("sqc").hidden = !c; if (c) setTimeout(function () { try { $("sqc").focus(); } catch (e) {} }, 40); else try { $("sqa").focus(); } catch (e) {} sqOk(); };
+$("sqc").addEventListener("input", sqOk); $("sqa").addEventListener("input", function () { $("sqerr").textContent = ""; sqOk(); });
+$("sqgo").onclick = function () {
+  var a = authGet(), pn = sget("upin"), g = this; if (!a || g.disabled) return;
+  g.disabled = true; g.textContent = "저장 중…";
+  rpc("dt_sq_set", { n: a.n, pin: pn, q: sqQ(), a: $("sqa").value }).then(function (j) {
+    if (j && j.ok) { var b = authGet(); if (b) { b.sq = true; sset("auth", JSON.stringify(b)); } closeLogin(); toast("본인 확인 질문이 저장되었습니다"); return; }
+    sqOk(); $("sqerr").textContent = (j && j.error) || "저장하지 못했습니다.";
+  }, function (e) { sqOk(); $("sqerr").textContent = "저장하지 못했습니다. " + errMsg(e); });
+};
+$("sqlater").onclick = function () { try { sessionStorage.setItem("dt_sqlater", "1"); } catch (e) {} closeLogin(); };
+
+/* 관리자: 요청 확인 */
+var ADM = { rows: [], busy: {} };
+function admBtn() {
+  var a = authGet(), b = $("admbtn"); if (!b) return;
+  b.hidden = !(a && a.admin); if (b.hidden) return;
+  var c = +a.req || 0; b.textContent = "요청 확인"; if (c) b.appendChild(el("b", null, c > 99 ? "99+" : String(c)));
+}
+function admSet(c) { var a = authGet(); if (!a) return; a.req = c; sset("auth", JSON.stringify(a)); authUi(); admBtn(); }
+function admLoad(show) {
+  var a = authGet(), pn = sget("upin"); if (!LIVE || !a || !a.admin || !pn) return Promise.resolve();
+  return rpc("dt_admin_reqs", { n: a.n, pin: pn }).then(function (j) {
+    if (!j || !j.ok) { if (show) $("adml").innerHTML = '<div class="adme">' + esc((j && j.error) || "불러오지 못했습니다.") + "</div>"; return; }
+    ADM.rows = j.rows || []; admSet(ADM.rows.length); if (show || $("adm").classList.contains("on")) admDraw();
+  }, function () { if (show) $("adml").innerHTML = '<div class="adme">불러오지 못했습니다.</div>'; });
+}
+function admDraw() {
+  var L = $("adml"); L.innerHTML = "";
+  $("admp").textContent = ADM.rows.length ? "대기 중인 요청 " + ADM.rows.length + "건입니다. 등록 승인은 명단에 이름만 추가합니다." : "명단 등록 요청과 PIN 초기화 요청입니다.";
+  if (!ADM.rows.length) { L.appendChild(el("div", "adme", "대기 중인 요청이 없습니다")); return; }
+  ADM.rows.forEach(function (r) {
+    var jn = r.kind === "join", c = el("div", "admr"), t = el("div", "admt");
+    t.appendChild(el("em", jn ? "join" : "reset", jn ? "등록 요청" : "PIN 초기화"));
+    t.appendChild(el("span", null, r.at)); c.appendChild(t);
+    c.appendChild(el("b", null, r.name));
+    var m = el("div", "admm"), info = [];
+    if (jn) { info.push(r.team ? "소속 " + r.team : "소속 미선택"); if (r.listed) info.push("이미 명단에 있음"); }
+    else info.push(r.haspin ? "초기화하면 기존 PIN과 본인 확인 질문이 지워지고, 본인이 PIN 만들기를 다시 진행합니다" : "PIN이 이미 없는 상태입니다");
+    m.textContent = info.join(" · ");
+    if (r.memo) { m.appendChild(document.createElement("br")); m.appendChild(el("i", null, "“" + r.memo + "”")); }
+    c.appendChild(m);
+    var bx = el("div", "admb"), no = el("button", "lgl", "거절"), ok = el("button", "sbtn" + (jn ? "" : " dng"), jn ? "승인 · 명단에 추가" : "PIN 초기화");
+    no.type = ok.type = "button";
+    no.onclick = function () { admGo(r, false, no, ok); };
+    ok.onclick = function () {
+      if (!jn && !ok.dataset.sure) { ok.dataset.sure = "1"; ok.textContent = "한 번 더 누르면 초기화"; setTimeout(function () { if (ok.isConnected) { delete ok.dataset.sure; ok.textContent = "PIN 초기화"; } }, 3000); return; }
+      admGo(r, true, no, ok);
+    };
+    bx.appendChild(no); bx.appendChild(ok); c.appendChild(bx); L.appendChild(c);
+  });
+}
+function admGo(r, yes, no, ok) {
+  var a = authGet(), pn = sget("upin"); if (!a || ADM.busy[r.id]) return;
+  ADM.busy[r.id] = 1; no.disabled = ok.disabled = true; (yes ? ok : no).textContent = "처리 중…";
+  rpc("dt_admin_decide", { n: a.n, pin: pn, req_id: r.id, approve: yes }).then(function (j) {
+    delete ADM.busy[r.id];
+    if (j && (j.ok || j.gone)) {
+      ADM.rows = ADM.rows.filter(function (x) { return x.id !== r.id && !(x.name === r.name && x.kind === r.kind); });
+      admSet(j.ok && j.left != null ? +j.left : ADM.rows.length); admDraw();
+      toast(j.ok ? r.name + (yes ? (r.kind === "join" ? " · 명단에 추가했습니다" : " · PIN을 초기화했습니다") : " · 요청을 거절했습니다") : j.error);
+      return;
+    }
+    no.disabled = ok.disabled = false; admDraw(); toast((j && j.error) || "처리하지 못했습니다");
+  }, function (e) { delete ADM.busy[r.id]; admDraw(); toast("처리하지 못했습니다 " + errMsg(e)); });
+}
+function admOpen() {
+  closeLogin(); $("adm").classList.add("on");
+  if (ADM.rows.length) admDraw(); else $("adml").innerHTML = '<div class="adme">불러오는 중…</div>';
+  admLoad(true);
+}
+function admClose() { $("adm").classList.remove("on"); }
+$("admx").onclick = admClose;
+$("adm").onclick = function (e) { if (e.target === this) admClose(); };
+document.addEventListener("keydown", function (e) { if (e.key === "Escape" && $("adm").classList.contains("on")) admClose(); });
+$("admbtn").onclick = admOpen;
+$("rqbg").addEventListener("click", function (e) { e.stopPropagation(); admOpen(); });
+setInterval(function () { if (!document.hidden) admLoad(false); }, 180000);   // 관리자만 · 3분마다 대기 요청 수
+document.addEventListener("visibilitychange", function () { if (!document.hidden) admLoad(false); });
+
 /* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
 var REV = [
+  ["1.8", "2026-11-14", ["명단에 없는 이름은 PIN 만들기 화면에서 관리자에게 등록 요청을 보낼 수 있습니다", "PIN을 잊으셨을 때 본인 확인 질문으로 직접 새 PIN을 정할 수 있습니다", "PIN을 만들 때 본인 확인 질문을 함께 정합니다 · 답은 암호화되어 저장됩니다"]],
   ["1.7", "2026-11-14", ["1차 검수 부적합에 사업장(동탄 · 성남)과 제조 검수자 항목을 추가했습니다", "귀책 업체별로 색을 구분해 시노드 · 동오정밀을 한눈에 볼 수 있습니다", "1차 검수 시트(인쇄용)를 개정했습니다 · 제조 담당자(EFEM · PRO) 서명 칸, 제조 확인 칸", "자재 · 수입검사 표가 넓은 화면에서 좌우 스크롤 없이 한 번에 보입니다", "출하 카드를 숫자 위주로 간결하게 정리했습니다", "푸터에 개정 이력을 추가했습니다"]],
   ["1.6", "2026-11-12", ["자재는 장비를 먼저 고른 뒤 그 안에서 품번 · 품목명으로 찾도록 바꿨습니다", "PC는 표, 휴대폰은 카드로 보기 편하게 정리했습니다"]],
   ["1.5", "2026-11-11", ["PJ 전환 탭을 추가했습니다"]],
