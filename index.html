@@ -2011,6 +2011,39 @@ html.gate body>#lg{visibility:visible;z-index:210}
 @media (min-width:1300px){#v-etc .wrap{max-width:min(1760px,100%)}}
 @media (min-width:1300px) and (max-width:1599px){#v-etc .xt td.ell{max-width:200px}#v-etc .xt th,#v-etc .xt td{padding:0 8px}}
 
+/* 2026-11-14 개정 이력 (푸터 → 창) */
+footer .rvlk{margin-left:12px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);font:inherit;font-size:11.5px;font-weight:800;color:var(--sub);letter-spacing:.01em;cursor:pointer;transition:color .15s,border-color .15s}
+footer .rvlk:hover{color:var(--text);border-color:color-mix(in srgb,var(--text) 35%,transparent)}
+#rvm .bk{position:absolute;inset:0;opacity:1;background:none;backdrop-filter:none}
+#rvm .rvbox{width:min(640px,100%);max-height:calc(100vh - 40px);overflow-y:auto;padding:30px 30px 26px;overscroll-behavior:contain}
+.rvhd{padding-right:40px;margin-bottom:18px}
+.rvey{display:block;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--sub);margin-bottom:6px}
+#rvm .rvhd p{margin:6px 0 0}
+.rvl{list-style:none;margin:0;padding:0;position:relative}
+.rvl::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:var(--line);border-radius:2px}
+.rvl>li{position:relative;padding:0 0 22px 28px}
+.rvl>li:last-child{padding-bottom:4px}
+.rvl>li::before{content:"";position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid color-mix(in srgb,var(--sub) 60%,transparent);box-sizing:border-box}
+.rvl>li.now::before{border-color:transparent;background:var(--grd0,var(--grd));box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.rvt{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.rvt b{font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.rvt span{font-size:12.5px;font-weight:700;color:var(--sub);font-variant-numeric:tabular-nums}
+.rvt em{font-style:normal;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.rvl ul{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:5px}
+.rvl ul li{position:relative;padding-left:12px;font-size:13.5px;font-weight:600;line-height:1.55;color:color-mix(in srgb,var(--text) 82%,var(--sub))}
+.rvl ul li::before{content:"";position:absolute;left:0;top:calc(.775em - 2px);width:4px;height:4px;border-radius:50%;background:var(--sub)}
+@media (max-width:640px){footer{padding-bottom:calc(130px + env(safe-area-inset-bottom))}footer .wrap{flex-direction:column;gap:6px}footer .rvlk{margin:10px 0 0;display:inline-block;padding:7px 14px;font-size:12.5px}footer .wrap>span:first-child{display:flex;flex-direction:column;align-items:flex-start}#rvm{place-items:end center;padding:0}#rvm .rvbox{width:100%;max-height:88vh;border-radius:22px 22px 0 0;padding:24px 20px calc(22px + env(safe-area-inset-bottom))}}
+
+footer .wrap>span:first-child{display:flex;flex-wrap:wrap;align-items:center;row-gap:10px}
+footer .ftag{flex-basis:100%;display:flex;align-items:center;gap:12px;font-size:11px;font-weight:600;font-style:italic;letter-spacing:.04em;color:color-mix(in srgb,var(--sub) 80%,transparent)}
+footer .ftag i{width:22px;height:1px;background:var(--line)}
+footer .mkby{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:color-mix(in srgb,var(--sub) 75%,transparent)}
+footer .mkby b{font-weight:900;letter-spacing:.18em;margin-left:2px;background:var(--grd0,var(--grd));-webkit-background-clip:text;background-clip:text;color:transparent}
+.rvsig{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sub)}
+.rvsig b{font-size:12.5px;font-weight:900;letter-spacing:.2em;color:var(--text)}
+.rvsig em{font-style:normal;letter-spacing:.02em;font-weight:700}
+@media (max-width:640px){footer .wrap>span:first-child{flex-direction:column;align-items:flex-start;row-gap:0}footer .rvlk{margin:12px 0 0}footer .ftag{margin-top:14px;flex-wrap:wrap;gap:8px 12px}footer #upd{margin-top:8px}}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2431,7 +2464,8 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   </div></div>
 </main>
 
-<footer><div class="wrap"><span>© NINEBELL · 제조B팀 · 동탄 사업장<span class="xmf">· 따뜻한 연말 보내십시오</span></span><span id="upd"></span></div></footer>
+<footer><div class="wrap"><span>© NINEBELL · 제조B팀 · 동탄 사업장<span class="xmf">· 따뜻한 연말 보내십시오</span><button class="rvlk" id="rvlk" type="button"></button><span class="ftag">Built on the floor, for the floor.<i></i><span class="mkby">Made by <b>SON</b></span></span></span><span id="upd"></span></div></footer>
+<div class="modal" id="rvm"><div class="bk"></div><div class="box rvbox"><button class="mx" id="rvmx" type="button" aria-label="닫기">✕</button><div class="rvhd"><span class="rvey">REVISION HISTORY</span><h5>개정 이력</h5><p>동탄 현장 대시보드가 바뀌어 온 기록입니다.</p></div><ol class="rvl" id="rvl"></ol><div class="rvsig"><span>Designed &amp; built by</span><b>SUNGMIN SON</b><em>제조B팀</em></div></div></div>
 
 <nav class="bot" id="nbot"><div class="in"><div class="pill"></div></div></nav>
 
@@ -2685,7 +2719,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-151000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-153500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -8826,6 +8860,40 @@ function pjAfter(f) {   // 후속 문구: '로봇만 출하' / 'CK71-165 EFEM �
   });
 })();
 try { document.fonts.ready.then(pill); } catch (e) {}
+
+/* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
+var REV = [
+  ["1.7", "2026-11-14", ["1차 검수 부적합에 사업장(동탄 · 성남)과 제조 검수자 항목을 추가했습니다", "귀책 업체별로 색을 구분해 시노드 · 동오정밀을 한눈에 볼 수 있습니다", "1차 검수 시트(인쇄용)를 개정했습니다 · 제조 담당자(EFEM · PRO) 서명 칸, 제조 확인 칸", "자재 · 수입검사 표가 넓은 화면에서 좌우 스크롤 없이 한 번에 보입니다", "출하 카드를 숫자 위주로 간결하게 정리했습니다", "푸터에 개정 이력을 추가했습니다"]],
+  ["1.6", "2026-11-12", ["자재는 장비를 먼저 고른 뒤 그 안에서 품번 · 품목명으로 찾도록 바꿨습니다", "PC는 표, 휴대폰은 카드로 보기 편하게 정리했습니다"]],
+  ["1.5", "2026-11-11", ["PJ 전환 탭을 추가했습니다"]],
+  ["1.4", "2026-11-10", ["장비에 가공업체와 하네스업체를 함께 표시합니다", "자재 입고 · 불출을 장비별로 찾아볼 수 있습니다 · 3공장 · 1공장 불출 구분", "공정 명칭을 'FRAME 배선'으로 통일했습니다"]],
+  ["1.3", "2026-11-09", ["제조 1차 검수 부적합 관리대장을 대시보드에서 바로 작성할 수 있습니다"]],
+  ["1.2", "2026-11-06", ["새 주소로 이전했습니다", "검수 시트 업로드 현황을 제조 기구 · FT 탭에서 확인할 수 있습니다", "대시보드 상단에 QC 검수 현황을 표시합니다"]],
+  ["1.1", "2026-11-05", ["제조 메뉴(기구 · 전장 · FT)와 품질 탭을 추가했습니다", "개인 PIN 로그인을 추가했습니다 · 평소에는 로그인 없이 조회할 수 있습니다"]],
+  ["1.0", "2026-11-04", ["동탄 현장 대시보드를 처음 공개했습니다"]]
+];
+(function () {
+  var lk = $("rvlk"), m = $("rvm"); if (!lk || !m) return;
+  lk.textContent = "Rev " + REV[0][0] + " · 개정 이력";
+  var built = false, last = null;
+  function draw() {
+    var L = $("rvl"), wk = ["일", "월", "화", "수", "목", "금", "토"]; L.innerHTML = "";
+    REV.forEach(function (r, i) {
+      var li = el("li", i ? "" : "now"), t = el("div", "rvt"), d = new Date(r[1] + "T00:00:00");
+      t.appendChild(el("b", null, "Rev " + r[0]));
+      t.appendChild(el("span", null, r[1].slice(0, 4) + "." + r[1].slice(5, 7) + "." + r[1].slice(8, 10) + " (" + wk[d.getDay()] + ")"));
+      if (!i) t.appendChild(el("em", null, "현재"));
+      li.appendChild(t);
+      var ul = el("ul"); r[2].forEach(function (x) { ul.appendChild(el("li", null, x)); }); li.appendChild(ul);
+      L.appendChild(li);
+    });
+    built = true;
+  }
+  function open() { if (!built) draw(); last = document.activeElement; m.classList.add("on"); document.body.style.overflow = "hidden"; m.querySelector(".rvbox").scrollTop = 0; $("rvmx").focus(); }
+  function close() { m.classList.remove("on"); document.body.style.overflow = ""; try { last && last.focus(); } catch (e) {} }
+  lk.onclick = open; $("rvmx").onclick = close; m.querySelector(".bk").onclick = close;
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && m.classList.contains("on")) close(); });
+})();
 </script>
 <script>
 /* 연말 시즌: 첫 화면 눈 · 전구 줄 (html.xm 일 때만 · 가볍게) */
