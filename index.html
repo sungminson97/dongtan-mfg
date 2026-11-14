@@ -2617,7 +2617,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-095000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-095500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -6979,20 +6979,7 @@ function nclRender() {
   var B = R.filter(function (x) { return (NCL.m === "all" || String(x.occ_date).slice(0, 7) === NCL.m) && (NCL.c === "all" || x.cat1 === NCL.c); });
   nclKpi(kb, B);
   $("nclsub").textContent = L.length + "개 기록 · 발생일 최신 순" + (L.length !== R.length ? " · 전체 " + R.length + "개" : "");
-  // 예시 줄 (관리대장 7행처럼 · 숫자 · 엑셀에는 안 들어감)
-  var EX = { no: "예)", site: "동탄", ship_month: "11월", occ_date: "11/09", ship_name: "CC04-161", prj: "CC04-161", type: "12CH-L3", pos: "PROCESS2", qty: 2, cat1: "업체불량", cat2: "전장작업불량", cat3: "배선불량", blame: "동오정밀", insp: "제조", vendor_who: "홍길동", mfg_who: "손성민", body: "전장 판넬부 프레임 30파이 각관 홀캡 누락" };
-  var ex = el("tr", "nex");
-  ex.innerHTML = COLS.map(function (c) {
-    var k = c[0], v = EX[k];
-    if (k === "act") return '<td class="c-act"><span class="nexb">예시</span></td>';
-    if (c[3] === "sel" && k !== "ship_month" && k !== "site") return '<td class="c-' + k + '"><span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span></td>";
-    return '<td class="c-' + k + '">' + esc(v) + "</td>";
-  }).join("");
-  tb.appendChild(ex);
-  var exm = el("div", "nclm nexm");
-  exm.innerHTML = '<b><span class="nexb">예시</span>' + esc(EX.prj) + '</b><span class="nqt">' + EX.qty + "건</span>" + '<div class="s1">' + esc(EX.body) + "</div>" +
-    '<div class="s2"><span class="npl ' + nclPl("cat1", EX.cat1) + '">' + esc(EX.cat1) + "</span><em>" + esc(["11/9", EX.pos, EX.cat2 + " › " + EX.cat3, EX.blame].join(" · ")) + "</em></div>";
-  mb.appendChild(exm);
+  // 2026-11-14: 예시 줄 뺌
   // 작성 중인 새 줄 → 맨 위 (노란 줄)
   NCL.dr.forEach(function (d) { if (!d.x) tb.appendChild(nclDraftRow(d, "")); });
   if (!L.length && !NCL.dr.some(function (d) { return !d.x; })) {
