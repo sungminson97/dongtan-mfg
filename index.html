@@ -1998,6 +1998,11 @@ html.gate body>#lg{visibility:visible;z-index:210}
 /* 2026-11-13 작업자별 FT 실적: 명단 외 · 이름 없음 줄 */
 .ftprw.x{border-top:1px dashed var(--line);margin-top:4px}
 .ftprw.x .pn b{color:var(--sub);font-weight:700}
+
+.nbr.bl-v u{background:var(--ac2)!important}.nbr.bl-o u{background:var(--amb)!important}.nbr.bl-b u{background:var(--ac)!important}.nbr.bl-c u{background:var(--cy)!important}.nbr.bl-n u{background:var(--sub)!important;opacity:.6}
+/* 2026-11-14 귀책 업체별 색 */
+.npl.o{background:color-mix(in srgb,var(--amb) 18%,transparent);color:color-mix(in srgb,var(--amb) 72%,var(--text))}
+.npl.c{background:color-mix(in srgb,var(--cy) 16%,transparent);color:color-mix(in srgb,var(--cy) 70%,var(--text))}
 </style>
 </head>
 <body>
@@ -2611,7 +2616,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261113-074000";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-091500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -6933,9 +6938,11 @@ var NCLC = [["act", "", 54], ["no", "NO.", 46], ["site", "사업장", 54], ["shi
   ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"]];
 var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
 NCL.dr = []; NCL.dn = 0;
+// 2026-11-14: 귀책 업체별 색 (시노드 보라 · 동오정밀 주황 · 제조1팀 · 제조2팀 파랑 · N/A 회색 · 그 밖 업체 청록)
+function nclBl(v) { v = String(v || ""); return v === "N/A" ? "" : /시노드/.test(v) ? "v" : /동오/.test(v) ? "o" : /^제조/.test(v) ? "b" : "c"; }
 function nclPl(k, v) {   // 드롭다운 값 색 (시트 칩처럼)
   if (!v) return "";
-  var t = k === "cat1" ? (v === "업체불량" ? "r" : v === "제조불량" ? "b" : "") : k === "insp" ? "g" : k === "blame" ? (v === "N/A" ? "" : "v") : "";
+  var t = k === "cat1" ? (v === "업체불량" ? "r" : v === "제조불량" ? "b" : "") : k === "insp" ? "g" : k === "blame" ? nclBl(v) : "";
   return t;
 }
 function nclRender() {
@@ -7018,7 +7025,7 @@ function nclRender() {
     var ks = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a]; }), mx = ks.length ? cnt[ks[0]] : 1;
     var c = el("div", "card"); c.appendChild(el("h3", null, "불량 수량 · " + g[0])); var w = el("div", "nclbars");
     if (!ks.length) w.appendChild(el("div", "empty", "기록이 없습니다"));
-    ks.forEach(function (k) { var r = el("div", "nbr"); r.innerHTML = "<span>" + esc(k) + '</span><i><u style="width:' + Math.max(4, Math.round(cnt[k] / mx * 100)) + '%"></u></i><b>' + cnt[k] + "<small>" + (tot ? Math.round(cnt[k] / tot * 100) : 0) + "%</small></b>"; w.appendChild(r); });
+    ks.forEach(function (k) { var r = el("div", "nbr" + (g[1] === "blame" && k !== "미입력" ? " bl-" + (nclBl(k) || "n") : "")); r.innerHTML = "<span>" + esc(k) + '</span><i><u style="width:' + Math.max(4, Math.round(cnt[k] / mx * 100)) + '%"></u></i><b>' + cnt[k] + "<small>" + (tot ? Math.round(cnt[k] / tot * 100) : 0) + "%</small></b>"; w.appendChild(r); });
     c.appendChild(w); st.appendChild(c);
   });
 }
@@ -7302,7 +7309,7 @@ function nclBuild(X, L) {
     R.getCell(9).font = { name: F, size: 11, bold: true, color: { argb: C.red } };
     R.getCell(18).font = { name: F, size: 9, color: { argb: C.sub } };
     var t1 = tone[x.cat1]; if (t1) { var c1 = R.getCell(10); c1.fill = fill(t1[1]); c1.font = { name: F, size: 10, bold: true, color: { argb: t1[0] } }; }
-    if (x.blame) { var cb = R.getCell(13), na = x.blame === "N/A"; cb.fill = fill(na ? C.gryBg : C.vioBg); cb.font = { name: F, size: 10, bold: true, color: { argb: na ? C.gry : C.vio } }; }
+    if (x.blame) { var cb = R.getCell(13), bt = nclBl(x.blame), bc = { "": [C.gry, C.gryBg], v: [C.vio, C.vioBg], o: [C.amb, C.ambBg], b: [C.blue, C.blueBg], c: ["FF0E7490", "FFCFFAFE"] }[bt]; cb.fill = fill(bc[1]); cb.font = { name: F, size: 10, bold: true, color: { argb: bc[0] } }; }
     if (x.insp) { var ci = R.getCell(14); ci.fill = fill(C.grnBg); ci.font = { name: F, size: 10, bold: true, color: { argb: C.grn } }; }
     if (x.pos) { var cp = R.getCell(8); cp.font = { name: F, size: 9.5, bold: true, color: { argb: C.gry } }; }
   });
