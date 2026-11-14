@@ -2193,6 +2193,10 @@ select.rqin option{background:var(--card);color:var(--text)}
 body.netdown .syncw{display:none!important}
 @media (prefers-reduced-motion:reduce){.netw i{animation:none}}
 
+/* 2026-11-14 날짜 칸에 적힌 메모 (생산관리) — 빈칸 대신 */
+.sdm{display:inline-block;max-width:180px;padding:1px 7px;border-radius:6px;font-style:normal;font-size:11.5px;font-weight:800;line-height:1.5;color:#fcd34d;background:rgba(245,158,11,.13);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.tline .sdm{max-width:220px}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2936,7 +2940,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-195500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-205500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -3240,7 +3244,7 @@ function drawAll() {
 }
 function stCount() { var c = STAGES.map(function () { return 0; }); D.eq.forEach(function (e) { if (e.st < 10) c[e.st]++; }); return c; }
 var DRN = "", DRO = null;
-function sdTx(e, i, fb) { var p = sd(e, i), d = p[0] || fb || ""; return d ? md(d) + (i < e.st && i < 10 && p[0] === D.today ? " 진행 중" : p[1] || e.st > i ? " 완료" : " 예정") : "-"; }   // 2026-11-12: 날짜가 오늘인 공정은 끝나는 날이라 '진행 중'   // 장비 상세: 공정 날짜 + 완료/예정
+function sdTx(e, i, fb) { var p = sd(e, i), d = p[0] || fb || ""; return d ? md(d) + (i < e.st && i < 10 && p[0] === D.today ? " 진행 중" : p[1] || e.st > i ? " 완료" : " 예정") : (smm(e, i) || "-"); }   // 2026-11-12: 날짜가 오늘인 공정은 끝나는 날이라 '진행 중'   // 장비 상세: 공정 날짜 + 완료/예정
 function eqOpen(n, opt) {
   var e = D.eq.filter(function (x) { return x.n === n; })[0]; if (!e) return;
   opt = opt || {}; var same = DRN === n && $("dr").classList.contains("on"), keepY = same ? $("drp").scrollTop : 0; DRN = n; DRO = opt;
@@ -3268,7 +3272,7 @@ function eqOpen(n, opt) {
     c.appendChild(fb);
   } else c.appendChild(el("h3", null, "공정 진행"));
   // ✅ 2026-11-12: 앞 공정 날짜가 오늘이면 그 공정도 아직 끝나는 날이라 '진행 중' (예: 1차 LEVEL · 1차 검수 둘 다 오늘 → 둘 다 진행 중)
-  STAGES.forEach(function (s, i) { var dd = sd(e, i)[0], on = i < dc && !!dd && dd === D.today, r = el("div", on ? "c" : i < dc ? "d" : i === dc ? (fut ? "c nx" : "c") : ""); r.appendChild(el("i")); r.appendChild(el("b", null, s)); r.appendChild(el("span", null, (dd ? md(dd) + (i <= dc ? " · " : "") : "") + (on ? "진행 중" : i < dc ? "완료" : i === dc ? (fut ? "예정" : "진행 중") : dd ? "" : "-"))); tl.appendChild(r); });
+  STAGES.forEach(function (s, i) { var dd = sd(e, i)[0], on = i < dc && !!dd && dd === D.today, r = el("div", on ? "c" : i < dc ? "d" : i === dc ? (fut ? "c nx" : "c") : ""); r.appendChild(el("i")); r.appendChild(el("b", null, s)); r.appendChild(el("span", null, (dd ? md(dd) + (i <= dc ? " · " : "") : "") + (on ? "진행 중" : i < dc ? "완료" : i === dc ? (fut ? "예정" : "진행 중") : dd ? "" : "-"))); var mm = !dd && smm(e, i); if (mm) { var sp = r.lastChild; sp.textContent = ""; var me = el("em", "sdm", mm); me.title = mm; sp.appendChild(me); } tl.appendChild(r); });
   c.appendChild(tl); bd.appendChild(c);
   var fc = opt.map || opt.eq ? null : drFt(e, opt); if (fc) bd.appendChild(fc);   // 배치도 · 장비 탭에선 FT · 품질 카드 없음
   var mc = opt.ft ? null : drMat(e); if (mc) bd.appendChild(mc);
@@ -3464,7 +3468,7 @@ function dday(ymdS) { if (!ymdS) return ["미정", ""]; var n = Math.round((new 
 // 📥 장비 엑셀: 지금 화면에 보이는 장비(거르기 · 찾기 그대로) · 공정 날짜까지
 function eqBuild(X, list, fname, q, tag) {
   var T = D.today, fn = "동탄제조_장비현황_" + (tag ? tag + "_" : "") + T + ".xlsx";
-  var dt = function (p) { return p && p[0] ? (p[0] === "NA" ? "해당 없음" : p[0].slice(5).replace("-", "/") + (p[1] ? " ✓" : "")) : "-"; };
+  var dt = function (p) { return p && p[0] ? (p[0] === "NA" ? "해당 없음" : p[0].slice(5).replace("-", "/") + (p[1] ? " ✓" : "")) : (p && p[2]) || "-"; };
   var H = ["장비", "TYPE", "현재 공정", "자리", "업체", "담당", "FRAME 입고", "FRAME 배선", "I/O CHECK", "1차 검수", "PACKING", "출하 예정", "D-Day", "하네스", "1차 검수 기록", "긴급"];
   var rows = list.map(function (e) {
     var dd = dday(e.out), q1 = (e.qc || []).filter(function (c) { return c.k === "1차 검수"; })[0], q2 = (e.qc || []).filter(function (c) { return c.k === "2차 검수"; })[0];
@@ -3753,6 +3757,8 @@ $("qform").onsubmit = function (e) {
  */
 var EWF = "ing", EIF = "open", EMORE = false;
 function sd(e, i) { var s = (e.ds && e.ds.s) || []; return s[i] || ["", 0]; }
+function smm(e, i) { var p = sd(e, i); return p[0] ? "" : String(p[2] || ""); }   // 2026-11-14 날짜 대신 적힌 메모 (예: 우선출하장비 아님으로 홀드)
+function smmH(e, i, fb) { var m = smm(e, i); return m ? '<span class="sdm" title="' + esc(m) + '">' + esc(m) + "</span>" : fb; }
 function dsx(e, k) { return (e.ds && e.ds[k]) || ["", 0]; }
 function wireOf(e) {   // FRAME 배선 상태
   var T = D.today, fi = sd(e, 1), wr = sd(e, 2), io = sd(e, 4);
@@ -3824,7 +3830,7 @@ function drawElec() {
       var dl = Math.round((new Date(b0) - new Date(T)) / 864e5);
       st = '<div class="wpg' + (w.k === "late" ? " late" : "") + '"><i><u style="width:' + pc + '%"></u></i><span class="tag ' + (w.k === "late" ? "r" : dl <= 1 ? "a" : "b") + '">' + (w.k === "late" ? "지연 " + (-dl) + "일" : dl === 0 ? "오늘 완료" : "D-" + dl) + "</span></div>";
     }
-    var dt = function (p) { return p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0])) + (p[1] ? " ✓" : "") + "</span>" : '<span class="dim">-</span>'; };
+    var dt = function (p) { return p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0])) + (p[1] ? " ✓" : "") + "</span>" : p[2] ? '<span class="sdm" title="' + esc(p[2]) + '">' + esc(p[2]) + "</span>" : '<span class="dim">-</span>'; };
     tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
     var m = el("div"); m.onclick = function () { eqOpen(e.n); };
     var dm = function (lb, p) { return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (p[1] ? "✓" : "") + "</span>" : "-"); };
@@ -3920,7 +3926,7 @@ function mPrepList() {
 }
 function mMatTxt(x) { var T = D.today, md3 = sd(x.e, 3)[0]; if (!x.m.wait) return "전부 입고"; return "미입고 " + x.m.wait + (md3 && md3 <= addD(T, 7) ? " · 긴급" : ""); }
 function mBuild(X, G, prep, mlogs) {
-  var T = D.today, fn = "동탄제조_기구현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : "-"; };
+  var T = D.today, fn = "동탄제조_기구현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : (p[2] || "-"); };
   var H1 = ["구분", "장비", "자리", "업체", "담당", "FRAME 입고", "MODULE", "1차 LEVEL", "1차 검수", "제조완료", "상태", "긴급"], r1 = [];
   G.forEach(function (g) {
     r1.push({ t: "band", v: [g[0] + " · " + g[1].length + "대"] });
@@ -3959,8 +3965,8 @@ function drawMech() {
     var e = x.e, w = x.w, tr = el("tr"), s0 = mStat(w);
     var tg = w.k === "done" ? "g" : w.k === "late" ? "r" : w.k === "pre" ? "" : (w.nd && mDays(w.nd, T) <= 1 ? "a" : "b");
     var st = w.k === "done" || w.k === "pre" ? '<span class="tag ' + tg + '">' + esc(s0) + "</span>" : '<div class="wpg' + (w.k === "late" ? " late" : "") + '" title="기구 ' + w.n + ' / 5단계 완료"><i><u style="width:' + Math.max(6, w.n / 5 * 100) + '%"></u></i><span class="tag ' + tg + '">' + esc(s0) + "</span></div>";
-    var dt = function (i) { var p = sd(e, i), ok = mDone(e, i), bad = !ok && w.k === "late" && w.nx && w.nx[0] === i; return p[0] ? '<span class="' + (ok ? "ok" : bad ? "bad" : "") + '">' + esc(md(p[0])) + (ok ? " ✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : '<span class="dim">-</span>'; };
-    var dm = function (lb, i) { var p = sd(e, i), ok = mDone(e, i); return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (ok ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (ok ? "✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : "-"); };
+    var dt = function (i) { var p = sd(e, i), ok = mDone(e, i), bad = !ok && w.k === "late" && w.nx && w.nx[0] === i; return p[0] ? '<span class="' + (ok ? "ok" : bad ? "bad" : "") + '">' + esc(md(p[0])) + (ok ? " ✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : smmH(e, i, '<span class="dim">-</span>'); };
+    var dm = function (lb, i) { var p = sd(e, i), ok = mDone(e, i); return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (ok ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (ok ? "✓" : "") + "</span>" : ok ? '<span class="ok">✓</span>' : smmH(e, i, "-")); };
     tr.style.cursor = "pointer"; tr.onclick = function () { eqOpen(e.n); };
     var m = el("div"); m.onclick = function () { eqOpen(e.n); };
     m.innerHTML = "<b>" + esc(e.n) + (e.u ? ' <span class="tag r">긴급</span>' : "") + "</b><span>" + st + '</span><span class="s1">' + esc([e.loc, e.v, e.p].filter(Boolean).join(" · ") || "-") + '</span><span class="s2">' + dm("입고", 1) + " · " + dm("MODULE", 3) + " · " + dm("LEVEL", 5) + " · " + dm("1차", 6) + " · " + dm("완료", 7) + "</span>";
@@ -4055,11 +4061,11 @@ function ftCell(f) {
 function isFtRun(x) { return x.k === "FT·구동시간"; }
 function isFtIss(x) { return /^FT/.test(x.k || "") && !isFtRun(x); }
 function isQaIss(x) { return (/^(FT|품질)/.test(x.k || "")) && !isFtRun(x); }
-function dCell(e, i, hot) { var p = sd(e, i), ok = mDone(e, i); return p[0] ? '<span class="' + (ok ? "ok" : hot ? "bad" : "") + '">' + esc(md(p[0])) + (ok ? " ✓" : "") + "</span>" : '<span class="dim">-</span>'; }
+function dCell(e, i, hot) { var p = sd(e, i), ok = mDone(e, i); return p[0] ? '<span class="' + (ok ? "ok" : hot ? "bad" : "") + '">' + esc(md(p[0])) + (ok ? " ✓" : "") + "</span>" : smmH(e, i, '<span class="dim">-</span>'); }
 function acmP(e) { return dsx(e, "acm"); }   // ACM 검수 [날짜, 완료] (QC와 별도 칸)
 function dCellA(e) { var p = acmP(e); return p[0] && p[0] !== "NA" ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0])) + (p[1] ? " ✓" : "") + "</span>" : '<span class="dim">-</span>'; }
 function dMobA(e) { var p = acmP(e); return "<em>ACM</em> " + (p[0] && p[0] !== "NA" ? '<span class="' + (p[1] ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (p[1] ? "✓" : "") + "</span>" : "-"); }
-function dMob(lb, e, i) { var p = sd(e, i), ok = mDone(e, i); return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (ok ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (ok ? "✓" : "") + "</span>" : "-"); }
+function dMob(lb, e, i) { var p = sd(e, i), ok = mDone(e, i); return "<em>" + lb + "</em> " + (p[0] ? '<span class="' + (ok ? "ok" : "") + '">' + esc(md(p[0]).replace(/\(.\)/, "")) + (ok ? "✓" : "") + "</span>" : smmH(e, i, "-")); }
 // 이슈 목록 (FT · 품질 공용) — 진행 중 / 전체 · 완료 처리
 function issBox(o) {
   var open = o.logs.filter(function (x) { return x.r !== "완료"; });
@@ -4267,7 +4273,7 @@ function drFt(e, opt) {
   var c = el("div", "card dri"), h = el("div", "drh"); h.appendChild(el("h3", null, opt && opt.qa ? "품질" : "FT · 품질"));   // 품질 탭에서 열면 '품질'
   var ch = el("div", "drc"); ch.innerHTML = mfgTag(m, f) + (f.ok ? "" : ftTag(f)); h.appendChild(ch); c.appendChild(h);
   var kv = el("div", "kv");
-  [["제조완료", sd(e, 7)[0]], ["QC", sd(e, 8)[0]], ["ACM 검수", acmP(e)[0] === "NA" ? "" : acmP(e)[0]], ["PACKING", sd(e, 9)[0]], ["출하", sd(e, 10)[0] || e.out], ["제조현황", f.r ? hf(f.tot) + " / " + FT_NEED + "h" : stTxt(m, f)]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1] ? (/^\d{4}-/.test(k[1]) ? md(k[1]) : k[1]) : "-")); kv.appendChild(d); });
+  [["제조완료", sd(e, 7)[0] || smm(e, 7)], ["QC", sd(e, 8)[0] || smm(e, 8)], ["ACM 검수", acmP(e)[0] === "NA" ? "" : acmP(e)[0]], ["PACKING", sd(e, 9)[0] || smm(e, 9)], ["출하", sd(e, 10)[0] || e.out || smm(e, 10)], ["제조현황", f.r ? hf(f.tot) + " / " + FT_NEED + "h" : stTxt(m, f)]].forEach(function (k) { var d = el("div"); d.appendChild(el("span", null, k[0])); d.appendChild(el("b", null, k[1] ? (/^\d{4}-/.test(k[1]) ? md(k[1]) : k[1]) : "-")); kv.appendChild(d); });
   c.appendChild(kv);
   var bar = el("div", "drbar"), u = el("u"); u.style.width = Math.min(100, f.tot / FT_NEED * 100) + "%"; if (f.ok) u.style.background = "var(--ok)"; bar.appendChild(u); c.appendChild(bar);
   c.appendChild(el("p", "drp2", f.r ? "DRY " + hf(f.dry) + " · FULL CYCLE " + hf(f.full) + " · 합계 " + hf(f.tot) + " / " + FT_NEED + "h" + (f.r.w ? " · 작성 " + f.r.w : "") : "FT 구동 시간이 아직 기록되지 않았습니다"));
@@ -4323,7 +4329,7 @@ function ftSelect(sel) {
   if (keep && L.some(function (e) { return e.n === keep; })) sel.value = keep;
 }
 function ftBuild(X, G, flogs) {
-  var T = D.today, fn = "동탄제조_FT현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : "-"; };
+  var T = D.today, fn = "동탄제조_FT현황_" + T + ".xlsx", d = function (e, i) { var p = sd(e, i); return p[0] ? p[0].slice(5).replace("-", "/") + (mDone(e, i) ? " ✓" : "") : mDone(e, i) ? "✓" : (p[2] || "-"); };
   var da = function (e) { var q = acmP(e); return q[0] && q[0] !== "NA" ? q[0].slice(5).replace("-", "/") + (q[1] ? " ✓" : "") : "-"; };
   var hv = function (v) { return Math.round(v * 10) / 10; };
   var H1 = ["구분", "장비", "자리", "업체", "담당", "1차 검수", "제조완료", "DRY (h)", "FULL CYCLE (h)", "합계 (h)", "남은 시간 (h)", "QC", "ACM 검수", "PACKING", "출하", "상태", "긴급"], r1 = [], flat = [];
@@ -9459,7 +9465,7 @@ window.addEventListener("online", function () { netText(); setTimeout(netPing, 8
 
 /* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
 var REV = [
-  ["1.9", "2026-11-14", ["로그인하면 이름 왼쪽에 새 알림 수가 표시됩니다", "1차 검수 부적합 · PJ 전환 · 기구 · FT · QC · 출하 일정 변경, 신규 장비, 공지를 알림으로 확인할 수 있습니다", "인터넷이나 서버 연결이 끊기면 화면 위에 안내가 뜨고, 다시 연결되면 자동으로 최신 내용으로 바뀝니다"]],
+  ["1.9", "2026-11-14", ["로그인하면 이름 왼쪽에 새 알림 수가 표시됩니다", "1차 검수 부적합 · PJ 전환 · 기구 · FT · QC · 출하 일정 변경, 신규 장비, 공지를 알림으로 확인할 수 있습니다", "인터넷이나 서버 연결이 끊기면 화면 위에 안내가 뜨고, 다시 연결되면 자동으로 최신 내용으로 바뀝니다", "공정 날짜 대신 메모가 적힌 장비는 빈칸 대신 그 메모가 보입니다 (예: 홀드)"]],
   ["1.8", "2026-11-14", ["명단에 없는 이름은 PIN 만들기 화면에서 관리자에게 등록 요청을 보낼 수 있습니다", "PIN을 잊으셨을 때 본인 확인 질문으로 직접 새 PIN을 정할 수 있습니다", "PIN을 만들 때 본인 확인 질문을 함께 정합니다 · 답은 암호화되어 저장됩니다"]],
   ["1.7", "2026-11-14", ["1차 검수 부적합에 사업장(동탄 · 성남)과 제조 검수자 항목을 추가했습니다", "귀책 업체별로 색을 구분해 시노드 · 동오정밀을 한눈에 볼 수 있습니다", "1차 검수 시트(인쇄용)를 개정했습니다 · 제조 담당자(EFEM · PRO) 서명 칸, 제조 확인 칸", "자재 · 수입검사 표가 넓은 화면에서 좌우 스크롤 없이 한 번에 보입니다", "출하 카드를 숫자 위주로 간결하게 정리했습니다", "푸터에 개정 이력을 추가했습니다"]],
   ["1.6", "2026-11-12", ["자재는 장비를 먼저 고른 뒤 그 안에서 품번 · 품목명으로 찾도록 바꿨습니다", "PC는 표, 휴대폰은 카드로 보기 편하게 정리했습니다"]],
