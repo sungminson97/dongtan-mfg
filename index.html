@@ -2103,6 +2103,32 @@ select.rqin option{background:var(--card);color:var(--text)}
 .adme{padding:28px 10px;text-align:center;font-size:14px;font-weight:700;color:var(--sub)}
 @media (max-width:640px){#adm{place-items:end center;padding:0}#adm .admbox{width:100%;max-height:88vh;border-radius:22px 22px 0 0;padding:22px 16px calc(22px + env(safe-area-inset-bottom))}.rqch{grid-template-columns:repeat(3,1fr)}}
 
+/* 2026-11-14 개발자 메뉴: 변경 기록 */
+.dvlgb{background:transparent;color:var(--text);border:1px solid var(--line)}
+.dvlgb:hover{border-color:color-mix(in srgb,var(--text) 40%,transparent)}
+.dvlgb.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.dvlog{border:1px solid var(--line);border-radius:16px;background:var(--bg);padding:16px 18px}
+.dvlh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.dvlh b{font-size:15px;font-weight:900}
+.dvlh span{font-size:12.5px;font-weight:700;color:var(--sub)}
+.dvlf{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.dvlf button{height:30px;padding:0 12px;border-radius:999px;border:1px solid var(--line);font-size:12px;font-weight:800;color:var(--sub)}
+.dvlf button.on{color:var(--text);border-color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,transparent)}
+.dvll{list-style:none;margin:0;padding:0}
+.dvll li{display:grid;grid-template-columns:128px 92px minmax(0,1fr) auto;gap:14px;align-items:center;padding:11px 4px;border-top:1px solid var(--line);font-size:13px}
+.dvll li:first-child{border-top:0}
+.dvll .t{font-family:var(--mono);font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.dvll .w{font-weight:900;letter-spacing:.04em}
+.dvll .a{min-width:0;font-weight:700;color:var(--text)}
+.dvll .a em{font-style:normal;display:inline-block;margin-right:8px;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:800;background:color-mix(in srgb,var(--sub) 16%,transparent);color:var(--text)}
+.dvll .a em.add{background:color-mix(in srgb,#34d399 16%,transparent);color:#6ee7b7}
+.dvll .a em.del{background:color-mix(in srgb,#f87171 16%,transparent);color:#fca5a5}
+.dvll .a em.chg{background:color-mix(in srgb,#fbbf24 16%,transparent);color:#fde68a}
+.dvll .v{font-size:11.5px;font-weight:800;color:var(--sub);white-space:nowrap}
+.dvll .v.sql{color:#fbbf24}
+.dvll .e{grid-column:1/-1;padding:24px 0;text-align:center;color:var(--sub);font-weight:700;display:block}
+@media (max-width:640px){.dvll li{grid-template-columns:1fr auto;gap:6px 10px;padding:12px 2px}.dvll .w{grid-column:1;grid-row:1}.dvll .t{grid-column:2;grid-row:1;text-align:right}.dvll .a{grid-column:1/-1;grid-row:2}.dvll .v{grid-column:1/-1;grid-row:3}.dvll .w:empty{display:none}.dvll .w:empty+.a,.dvll .t:first-child+.w:empty{grid-row:1}}
+
 /* ═════ 연말 시즌 (html.xm) — 11/23 ~ 12/31 ═════
  * 색: 깊은 빨강 · 따뜻한 금색 · 상록 초록 / 차트 막대 색은 그대로 (데이터 색 의미 유지)
  * 가벼움: 눈은 첫 화면 안에서만 · 화면 밖이거나 다른 탭이면 멈춤 · 전구는 opacity 애니메이션만 */
@@ -2558,8 +2584,9 @@ html.xm .eyebrow::before{background:#d9a03a;box-shadow:0 0 0 3px rgba(217,160,58
   <button class="mx" id="dvmx" type="button" aria-label="닫기">✕</button>
   <h5>개발자 메뉴</h5>
   <div class="dvsum" id="dvsum"></div>
-  <div class="dvtool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="dvq" placeholder="이름 · 직함 검색" autocomplete="off"></div><div class="chips" id="dvf"></div><button class="wbtn" id="dvadd" type="button">명단 추가</button></div>
+  <div class="dvtool"><div class="srch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="dvq" placeholder="이름 · 직함 검색" autocomplete="off"></div><div class="chips" id="dvf"></div><button class="wbtn dvlgb" id="dvlgb" type="button">변경 기록</button><button class="wbtn" id="dvadd" type="button">명단 추가</button></div>
   <form class="dvaddf" id="dvaddf" hidden autocomplete="off"><input id="dvan" placeholder="이름 (한글 3글자)" maxlength="3"><input id="dvat" placeholder="직함 (예: 프로)" maxlength="10"><button class="sbtn" type="submit">추가</button><span class="dvah">명단에 넣으면 그 이름으로 PIN을 만들 수 있습니다</span></form>
+  <div class="dvlog" id="dvlog" hidden><div class="dvlh"><b>변경 기록</b><span>담당 · 명단 · 직함 · PIN이 바뀐 내역입니다 (최근 300건)</span></div><div class="dvlf" id="dvlf"></div><ol class="dvll" id="dvll"></ol></div>
   <div class="tbw dvw"><table class="tbl dvt"><thead><tr><th>이름</th><th>직함</th><th>담당</th><th>마지막 로그인</th><th>PIN</th><th>상태</th><th>기록</th><th>관리</th></tr></thead><tbody id="dvtb"></tbody></table></div>
 </div></div>
 <div class="modal" id="adm"><div class="box admbox">
@@ -2834,7 +2861,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-183500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-184500";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -7739,6 +7766,7 @@ function dvCall(fn, args) { var a = authGet(); return rpc(fn, Object.assign({ n:
 function dvOpen() {
   var a = authGet(); if (!a || !a.dev) { toast("개발자만 사용할 수 있습니다"); return; }
   closeLogin(); $("dvm").classList.add("on"); document.body.style.overflow = "hidden";
+  if (typeof DVL !== "undefined" && DVL.on) { DVL.on = false; $("dvlog").hidden = true; document.querySelector("#dvm .dvw").style.display = ""; $("dvf").style.display = ""; $("dvadd").style.display = ""; $("dvlgb").classList.remove("on"); $("dvlgb").textContent = "변경 기록"; $("dvq").placeholder = "이름 · 직함 검색"; }   // 2026-11-14 열 때는 명단부터
   $("dvtb").innerHTML = '<tr><td colspan="8"><div class="empty">불러오는 중입니다…</div></td></tr>'; $("dvsum").innerHTML = "";
   dvLoad();
 }
@@ -9200,6 +9228,40 @@ $("admbtn").onclick = admOpen;
 $("rqbg").addEventListener("click", function (e) { e.stopPropagation(); admOpen(); });
 setInterval(function () { if (!document.hidden) admLoad(false); }, 180000);   // 관리자만 · 3분마다 대기 요청 수
 document.addEventListener("visibilitychange", function () { if (!document.hidden) admLoad(false); });
+
+
+/* 2026-11-14 개발자 메뉴: 변경 기록 (담당 · 명단 · 직함 · PIN) */
+var DVL = { on: false, rows: null, f: "" };
+function dvlDraw() {
+  var L = $("dvll"), R = DVL.rows || [], k = nq(DVM.q || ""), F = $("dvlf");
+  var cats = [["", "전체"], ["담당", "담당"], ["명단", "명단 · 직함"], ["PIN", "PIN · 질문"]];
+  F.innerHTML = "";
+  cats.forEach(function (c) { var b = el("button", DVL.f === c[0] ? "on" : "", c[1]); b.type = "button"; b.onclick = function () { DVL.f = c[0]; dvlDraw(); }; F.appendChild(b); });
+  var cat = function (a) { return /담당/.test(a) ? "담당" : /명단|직함/.test(a) ? "명단" : /PIN|질문/.test(a) ? "PIN" : ""; };
+  var V = R.filter(function (r) { return (!DVL.f || cat(r.act) === DVL.f) && (!k || nq(r.target + " " + r.act + " " + r.detail).indexOf(k) >= 0); });
+  L.innerHTML = "";
+  if (!DVL.rows) { L.appendChild(el("li", "e", "불러오는 중입니다…")); return; }
+  if (!V.length) { L.appendChild(el("li", "e", R.length ? "조건에 맞는 기록이 없습니다" : "아직 변경 기록이 없습니다")); return; }
+  V.forEach(function (r) {
+    var li = el("li"), tone = /추가|만들기|등록|시작/.test(r.act) ? "add" : /해제|빼기|초기화/.test(r.act) ? "del" : "chg";
+    li.appendChild(el("span", "t", r.at.slice(5).replace("-", "/")));
+    li.appendChild(el("span", "w", r.target === "-" ? "" : r.target));
+    var a = el("span", "a"); a.appendChild(el("em", tone, r.act)); if (r.detail) a.appendChild(document.createTextNode(r.detail)); li.appendChild(a);
+    li.appendChild(el("span", "v" + (r.via === "SQL 직접" ? " sql" : ""), r.via));
+    L.appendChild(li);
+  });
+}
+function dvlShow(on) {
+  DVL.on = on; $("dvlog").hidden = !on; document.querySelector("#dvm .dvw").style.display = on ? "none" : ""; $("dvf").style.display = on ? "none" : ""; $("dvadd").style.display = on ? "none" : ""; if (on) $("dvaddf").hidden = true;
+  $("dvlgb").classList.toggle("on", on); $("dvlgb").textContent = on ? "명단 보기" : "변경 기록";
+  $("dvq").placeholder = on ? "이름 · 내용 검색" : "이름 · 직함 검색";
+  if (!on) { dvDraw(); return; }
+  dvlDraw();
+  dvCall("dt_dev_log").then(function (j) { DVL.rows = j.rows || []; dvlDraw(); },
+    function (e) { $("dvll").innerHTML = ""; $("dvll").appendChild(el("li", "e", /dt_dev_log|PGRST202|404/.test(e.message || "") ? "변경 기록 SQL을 먼저 실행해 주세요" : e.message)); });
+}
+$("dvlgb").onclick = function () { dvlShow(!DVL.on); };
+$("dvq").addEventListener("input", function () { if (DVL.on) dvlDraw(); });
 
 /* 2026-11-14 개정 이력 — 업데이트할 때마다 맨 위에 한 줄 추가 (관리자 기능은 적지 않음) */
 var REV = [
