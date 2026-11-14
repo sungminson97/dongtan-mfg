@@ -2377,7 +2377,8 @@ html.gate body>#lg{visibility:visible;z-index:210}
   <form class="fm" id="nclfm" autocomplete="off" novalidate>
     <div class="wrt"><span>작성자</span><b id="nclwr"></b><small id="nclwrs"></small></div>
     <div class="nclro" id="nclro" hidden></div>
-    <div class="row"><label>발주 프로젝트 명<input id="nclp" list="ncldl" placeholder="예) CC04-161"></label><label>발생일 (검수일)<input id="ncld" type="date"></label></div>
+    <div class="row"><label>사업장<select id="nclsi"></select></label><label>발생일 (검수일)<input id="ncld" type="date"></label></div>
+    <label>발주 프로젝트 명<input id="nclp" list="ncldl" placeholder="예) CC04-161"></label>
     <div class="nclh" id="nclph"></div>
     <div class="row"><label>출하 프로젝트 명<input id="nclsn" placeholder="자동 입력"></label><label>TYPE<input id="nclty" placeholder="자동 입력"></label></div>
     <div class="row"><label>출하월<select id="nclsm"></select></label><label>위치<select id="nclpos"></select></label></div>
@@ -2616,7 +2617,7 @@ function updDiff(a, b) {   // 일정이 바뀐 장비 이름들
  *  3분마다 확인할 때 같이 · 사이트 파일을 받아 '지문'(짧은 값)을 만들어 처음 연 때와 비교
  *  (이 사이트 서버는 버전 표시(ETag)를 안 보내서 파일 내용으로 비교 · 압축돼서 한 번에 약 100KB · 서버 데이터 요청 없음) */
 var VER = { tag: null, on: false };
-var VER_BUILD = "20261114-091500";   // 올릴 때마다 바뀜 (새 버전 안내용)
+var VER_BUILD = "20261114-095000";   // 올릴 때마다 바뀜 (새 버전 안내용)
 function verHash(s) { var x = 2166136261; for (var i = 0; i < s.length; i++) { x ^= s.charCodeAt(i); x = Math.imul(x, 16777619); } return (x >>> 0).toString(36) + "." + s.length; }
 function verCheck() {
   if (VER.on || VER.busy || !/^https?:$/.test(location.protocol)) return;
@@ -6932,11 +6933,11 @@ function drawNcl() {
   if (LIVE && !NCL.p && Date.now() - NCL.t > 60000) nclLoad(true).then(function () { if (cur === "ncl") nclRender(); });   // 1분 지났으면 조용히 새로
 }
 /* 관리대장 표 — 칸 순서 · 이름은 관리대장(시트)과 똑같이 */
-var NCLC = [["act", "", 54], ["no", "NO.", 46], ["site", "사업장", 54], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
+var NCLC = [["act", "", 54], ["no", "NO.", 46], ["site", "사업장", 70, "sel"], ["ship_month", "출하월", 72, "sel"], ["occ_date", "발생일<br>(검수일)", 130, "date"],
   ["ship_name", "출하 프로젝트 명", 150, "txt"], ["prj", "발주 프로젝트 명", 156, "prj"], ["type", "TYPE", 156, "txt"], ["pos", "위치", 110, "sel"],
   ["qty", "불량<br>수량", 58, "num"], ["cat1", "불량<br>(대분류)", 102, "sel"], ["cat2", "불량<br>(중분류)", 116, "sel"], ["cat3", "불량<br>(소분류)", 108, "sel"],
   ["blame", "귀책", 96, "sel"], ["insp", "검사구분", 80, "sel"], ["vendor_who", "업체<br>담당자", 78, "txt"], ["mfg_who", "제조<br>담당자", 78, "txt"], ["body", "불량내용", 290, "txt"]];
-var NCLS = { ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
+var NCLS = { site: ["동탄", "성남"], ship_month: "1월 2월 3월 4월 5월 6월 7월 8월 9월 10월 11월 12월".split(" "), pos: NCLO.pos, cat1: NCLO.c1, cat2: NCLO.c2, cat3: NCLO.c3, insp: NCLO.insp, blame: NCLO.bl };
 NCL.dr = []; NCL.dn = 0;
 // 2026-11-14: 귀책 업체별 색 (시노드 보라 · 동오정밀 주황 · 제조1팀 · 제조2팀 파랑 · N/A 회색 · 그 밖 업체 청록)
 function nclBl(v) { v = String(v || ""); return v === "N/A" ? "" : /시노드/.test(v) ? "v" : /동오/.test(v) ? "o" : /^제조/.test(v) ? "b" : "c"; }
@@ -6984,7 +6985,7 @@ function nclRender() {
   ex.innerHTML = COLS.map(function (c) {
     var k = c[0], v = EX[k];
     if (k === "act") return '<td class="c-act"><span class="nexb">예시</span></td>';
-    if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '"><span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span></td>";
+    if (c[3] === "sel" && k !== "ship_month" && k !== "site") return '<td class="c-' + k + '"><span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span></td>";
     return '<td class="c-' + k + '">' + esc(v) + "</td>";
   }).join("");
   tb.appendChild(ex);
@@ -7005,7 +7006,7 @@ function nclRender() {
     tr.innerHTML = COLS.map(function (c) {
       var k = c[0], v = k === "no" ? no[x.id] || "" : k === "site" ? x.site || "동탄" : k === "occ_date" ? String(x.occ_date).slice(5).replace("-", "/") : k === "act" ? "" : x[k];
       if (k === "act") return '<td class="c-act">' + (nclCan(x) ? '<button type="button" class="ned">수정</button>' : "") + "</td>";
-      if (c[3] === "sel" && k !== "ship_month") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
+      if (c[3] === "sel" && k !== "ship_month" && k !== "site") return '<td class="c-' + k + '">' + (v ? '<span class="npl ' + nclPl(k, v) + '">' + esc(v) + "</span>" : "") + "</td>";
       if (k === "prj") return '<td class="c-prj"><button type="button" class="neqb">' + esc(v || "") + "</button></td>";
       return '<td class="c-' + k + '"' + (k === "type" || k === "ship_name" || k === "body" ? ' title="' + esc(v == null ? "" : v) + '"' : "") + '>' + esc(v == null ? "" : v) + "</td>";
     }).join("");
@@ -7063,7 +7064,6 @@ function nclDraftRow(d, noTxt) {
   NCLC.forEach(function (c) {
     var k = c[0], td = el("td", "c-" + k), v = d.v[k] == null ? "" : d.v[k];
     if (k === "no") { td.innerHTML = d.x ? noTxt + '<small class="nst2">수정 중</small>' : '<small class="nst2">새 기록</small>'; }
-    else if (k === "site") td.textContent = "동탄";
     else if (k === "act") {
       var sv = el("button", "nsv", d.x ? "완료" : "추가"); sv.type = "button"; sv.onclick = function () { nclDraftSave(d, tr); };
       var cc = el("button", "ncc", "취소"); cc.type = "button"; cc.onclick = function () { NCL.dr = NCL.dr.filter(function (z) { return z !== d; }); nclRender(); };
@@ -7072,7 +7072,7 @@ function nclDraftRow(d, noTxt) {
       bw.appendChild(b2); td.appendChild(bw);
     } else {
       var inp;
-      if (c[3] === "sel") { inp = el("select", "nin npl " + nclPl(k, v)); inp.innerHTML = '<option value=""></option>' + NCLS[k].map(function (o) { return "<option>" + esc(o) + "</option>"; }).join(""); inp.value = v; }
+      if (c[3] === "sel") { inp = el("select", "nin npl " + nclPl(k, v)); inp.innerHTML = (k === "site" ? "" : '<option value=""></option>') + NCLS[k].map(function (o) { return "<option>" + esc(o) + "</option>"; }).join(""); inp.value = v; }
       else { inp = el("input", "nin"); inp.type = c[3] === "date" ? "date" : c[3] === "num" ? "number" : "text"; if (c[3] === "num") { inp.min = 1; inp.max = 999; inp.inputMode = "numeric"; } if (c[3] === "prj") inp.setAttribute("list", "ncldl"); inp.value = v; inp.autocomplete = "off"; }
       if (k === "ship_name" || k === "type") { td.classList.add("auto"); inp.placeholder = "자동"; }
       if (k === "prj") inp.placeholder = "예) CC04-161";
@@ -7161,11 +7161,11 @@ $("nclk").querySelector("button").onclick = function () { openLogin("1차 검수
 /* ── 기록 창 (새 기록 · 고치기) ── */
 (function () {
   function opt(id, L, blank) { $(id).innerHTML = (blank ? '<option value="">선택</option>' : "") + L.map(function (v) { return "<option>" + esc(v) + "</option>"; }).join(""); }
-  opt("nclpos", NCLO.pos, 1); opt("nclc1", NCLO.c1, 1); opt("nclc2", NCLO.c2, 1); opt("nclc3", NCLO.c3, 1); opt("nclin", NCLO.insp); opt("nclbl", NCLO.bl, 1);
+  opt("nclpos", NCLO.pos, 1); opt("nclc1", NCLO.c1, 1); opt("nclc2", NCLO.c2, 1); opt("nclc3", NCLO.c3, 1); opt("nclin", NCLO.insp); opt("nclbl", NCLO.bl, 1); opt("nclsi", ["동탄", "성남"]);
   var ms = []; for (var i = 1; i <= 12; i++) ms.push(i + "월"); opt("nclsm", ms, 1);
 })();
-var NCLF = ["prj", "occ_date", "ship_name", "type", "ship_month", "pos", "qty", "insp", "cat1", "cat2", "cat3", "blame", "vendor_who", "mfg_who", "body"];
-var NCLI = { prj: "nclp", occ_date: "ncld", ship_name: "nclsn", type: "nclty", ship_month: "nclsm", pos: "nclpos", qty: "nclqt", insp: "nclin", cat1: "nclc1", cat2: "nclc2", cat3: "nclc3", blame: "nclbl", vendor_who: "nclvw", mfg_who: "nclmw", body: "nclbd" };
+var NCLF = ["site", "prj", "occ_date", "ship_name", "type", "ship_month", "pos", "qty", "insp", "cat1", "cat2", "cat3", "blame", "vendor_who", "mfg_who", "body"];
+var NCLI = { site: "nclsi", prj: "nclp", occ_date: "ncld", ship_name: "nclsn", type: "nclty", ship_month: "nclsm", pos: "nclpos", qty: "nclqt", insp: "nclin", cat1: "nclc1", cat2: "nclc2", cat3: "nclc3", blame: "nclbl", vendor_who: "nclvw", mfg_who: "nclmw", body: "nclbd" };
 function nclNames() { var m = {}; D.eq.forEach(function (e) { m[e.n] = 1; }); (NCL.rows || []).forEach(function (x) { if (x.prj) m[x.prj] = 1; }); return Object.keys(m).sort(); }
 function nclAuto(v) {
   var e = nclEqOf(v);
@@ -7180,8 +7180,9 @@ function nclOpen(x) {
   NCL.ed = x; var can = nclCan(x);
   $("ncldl").innerHTML = nclNames().map(function (n) { return '<option value="' + esc(n) + '"></option>'; }).join("");
   $("nclft").textContent = x ? "부적합 기록 #" + (nclNo()[x.id] || "") : "부적합 기록";
-  var v = x || { occ_date: D.today, qty: 1, insp: "제조", mfg_who: me };
+  var v = x || { site: "동탄", occ_date: D.today, qty: 1, insp: "제조", mfg_who: me };
   NCLF.forEach(function (k) { var f = $(NCLI[k]); f.value = v[k] == null ? "" : v[k]; f.disabled = !can; f.classList.remove("bad"); if (/^(ship_name|type|ship_month)$/.test(k)) f.dataset.auto = "1"; else delete f.dataset.auto; });
+  if (!$("nclsi").value) $("nclsi").value = "동탄";   // 사업장이 비어 있던 예전 기록 → 동탄
   $("nclwr").textContent = x ? dname(x.writer, "") + (x.updated_by && x.updated_by !== x.writer ? " · 수정 " + x.updated_by : "") : dname(me, authTitle());
   $("nclwrs").textContent = x ? "기록 " + kday(x.created_at) : "로그인한 이름으로 자동 기록";
   $("nclhint").textContent = ""; nclEqHint();
